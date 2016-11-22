@@ -64,7 +64,7 @@
                 </ul>
             </li>
             <li>
-                <a href="{{ url('booking/booking_list') }}"><i class="fa fa-credit-card" aria-hidden="true"></i> <span class="nav-label">Booking and Sales</span><span class="fa arrow"></span></a>
+                <a href="{{ url('booking/booking-list') }}"><i class="fa fa-credit-card" aria-hidden="true"></i> <span class="nav-label">Booking and Sales</span><span class="fa arrow"></span></a>
             </li>
         </ul>
     </div>

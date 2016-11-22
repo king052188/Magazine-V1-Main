@@ -13,7 +13,7 @@
         <h2>Booking</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="{{ url('/booking/add_booking') }}">Booking List</a>
+                <a href="{{ url('/booking/add-booking') }}">Booking List</a>
             </li>
             <li class="active">
                 <strong>Add Booking</strong>
@@ -38,7 +38,7 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12">
-                            <form role="form" action="{{ url('/booking/magazine_transaction') }}" method="post">
+                            <form role="form" action="{{ url('/booking/magazine-transaction-save-process') }}" method="post">
                                 <div class="form-group">
                                     <label>Trans Code</label>
                                     <input class="form-control" id="ex2" type="text" value = "{{ $n_booking['id'] }}" name = "trans_num">

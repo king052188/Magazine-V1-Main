@@ -28,6 +28,7 @@
     </div>
 </div>
 
+
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
@@ -89,7 +90,7 @@
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <form role="form" action="{{ url('/booking/save_magazine_transaction/' . $which_country . '/' . $client_id) }}" method="post">
+                                <form role="form" action="{{ url('/booking/save-magazine-transaction/'. $booking_uid .'/'. $which_country . '/' . $client_id) }}" method="post">
                                         <div class="form-group">
                                             <label for="ex2">Magazine</label>
                                             <select class="form-control" name = "magazine_id">
@@ -98,13 +99,9 @@
                                                 @endfor
                                             </select>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="ex2">Transaction ID</label>
-                                            <input class="form-control" id="ex2" type="text" value = "{{ $booking_uid }}" name = "transaction_id" readonly>
-                                        </div>
                                         <div>
                                             <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                            <input type="submit" class="btn btn-primary pull-right" value = "Save" {{ $disabled }}>
+                                            <input type="submit" class="btn btn-primary pull-right" value = "Save" {{ $disabled["set"] }}>
                                         </div>
                                 </form>
                             </div>
