@@ -44,7 +44,7 @@ class bookingController extends Controller
         if($booking_uid > 0) {
             return redirect("/booking/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id);
         }
-        return redirect('https://google.com'); // error
+        
     }
 
     public function show_transaction_mag($trans_uid, $which_country, $client_id) {
@@ -85,11 +85,100 @@ class bookingController extends Controller
         /* END = Additional 11-20-2016 8:54PM | MJT */
     }
 
+    public function getPackageName($criteria_id)
+    {
+        $ad_p = DB::SELECT("SELECT * FROM price_package_table WHERE criteria_id = {$criteria_id}");
+
+        if($ad_p != null)
+        {
+            for($i = 0; $i < COUNT($ad_p); $i++)
+            {
+                $result[] = array(
+                    "id" => $ad_p[$i]->Id,
+                    "criteria_id" => $ad_p[$i]->criteria_id,
+                    "package_name" => $ad_p[$i]->package_name
+                );
+            }
+        }
+        return array(
+            "list" => $result
+        );
+    }
+
     public function add_issue($mag_trans_uid, $client_id)
     {
         $ad_c = DB::table('price_criteria_table')->get();
         $ad_p = DB::table('price_package_table')->get();
+        $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
 
-        return view('booking.add_issue', compact('mag_trans_uid', 'ad_c', 'ad_p', 'client_id'));
+        return view('booking.add_issue', compact('mag_trans_uid', 'ad_c', 'ad_p', 'client_id','transaction_uid'));
     }
+
+    public function save_issue(Request $request, $mag_trans_uid, $client_id)
+    {
+        $mt_uid = (int)$mag_trans_uid;
+        $isMoreThatOne = DB::SELECT("SELECT * FROM magazine_issue_transaction_table WHERE magazine_trans_id = {$mt_uid}");
+        if(COUNT($isMoreThatOne) == 0 OR COUNT($isMoreThatOne) > 1)
+        {
+            $type = DB::SELECT("SELECT bb.type as client_type FROM client_contacts_table as aa INNER JOIN client_table as bb ON bb.Id = aa.client_id WHERE aa.Id = {$client_id}");
+
+            $ad_c = $request['ad_criteria_id'];
+            $ad_p = $request['ad_package_id'];
+            $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
+
+
+            $mit = new MagIssueTransaction();
+            $mit->magazine_trans_id = $request['magazine_trans_id'];
+            $mit->ad_criteria_id = $ad_c;
+            $mit->ad_package_id = $ad_p;
+            $mit->amount = $amount[0]->amount_x1;
+            $mit->date_issued = date('Y-m-d H:i:s');
+            $mit->status = 2;
+            $mit->save();
+
+            $mag_trans_uid = $request['magazine_trans_id'];
+            $ad_c = DB::table('price_criteria_table')->get();
+            $ad_p = DB::table('price_package_table')->get();
+            $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
+
+            return view('booking.add_issue', compact('mag_trans_uid','ad_c', 'ad_p', 'client_id', 'transaction_uid'));
+
+        }
+        elseif(COUNT($isMoreThatOne) == 1)
+        {
+            $type = DB::SELECT("SELECT bb.type as client_type FROM client_contacts_table as aa INNER JOIN client_table as bb ON bb.Id = aa.client_id WHERE aa.Id = {$client_id}");
+
+            $aa = DB::SELECT("SELECT * FROM magazine_issue_transaction_table WHERE magazine_trans_id = {$mag_trans_uid}");
+            $update_1st_amount = DB::table('price_table')->where('criteria_id', '=', $aa[0]->ad_criteria_id)->where('package_id', '=', $aa[0]->ad_package_id)->where('type', '=', $type[0]->client_type)->get();
+
+            MagIssueTransaction::where('magazine_trans_id', '=', $mag_trans_uid)
+                ->where('ad_criteria_id', '=', $aa[0]->ad_criteria_id)
+                ->where('ad_package_id', '=', $aa[0]->ad_package_id)
+                ->update([
+                    'amount' => $update_1st_amount[0]->amount_x2_more
+                ]);
+
+            $ad_c = $request['ad_criteria_id'];
+            $ad_p = $request['ad_package_id'];
+            $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
+
+            $mit = new MagIssueTransaction();
+            $mit->magazine_trans_id = $request['magazine_trans_id'];
+            $mit->ad_criteria_id = $ad_c;
+            $mit->ad_package_id = $ad_p;
+            $mit->amount = $amount[0]->amount_x2_more;
+            $mit->date_issued = date('Y-m-d H:i:s');
+            $mit->status = 2;
+            $mit->save();
+
+            $mag_trans_uid = $request['magazine_trans_id'];
+            $ad_c = DB::table('price_criteria_table')->get();
+            $ad_p = DB::table('price_package_table')->get();
+            $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
+
+            return view('booking.add_issue', compact('mag_trans_uid','ad_c', 'ad_p', 'client_id', 'transaction_uid'));
+        }
+
+    }
+
 }
