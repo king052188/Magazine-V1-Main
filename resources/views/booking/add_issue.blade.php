@@ -136,7 +136,7 @@
 
                                     $(document).ready( function() {
                                         $.ajax({
-                                            url: "http://192.168.20.6:8004/kpa/work/magazine-issue-lists/"+uid,
+                                            url: "http://192.168.1.45:8004/kpa/work/magazine-issue-lists/"+uid,
                                             dataType: "text",
                                             beforeSend: function () {
                                                 $('#mag_name').text("***");
