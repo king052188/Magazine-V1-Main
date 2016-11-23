@@ -1,8 +1,12 @@
 <?php
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login.login');
 });
+
+Route::get('/login', 'loginController@login');
+Route::get('/login_process/{username}/{password}', 'loginController@login_process');
+Route::get('/logout_process', 'loginController@logout_process');
 
 Route::get('/dashboard', 'dashboardController@dashboard');
 
