@@ -44,7 +44,7 @@ class bookingController extends Controller
         if($booking_uid > 0) {
             return redirect("/booking/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id);
         }
-        
+
     }
 
     public function show_transaction_mag($trans_uid, $which_country, $client_id) {
@@ -141,7 +141,8 @@ class bookingController extends Controller
             $ad_p = DB::table('price_package_table')->get();
             $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
 
-            return view('booking.add_issue', compact('mag_trans_uid','ad_c', 'ad_p', 'client_id', 'transaction_uid'));
+//            return view('booking.add_issue', compact('mag_trans_uid','ad_c', 'ad_p', 'client_id', 'transaction_uid'));
+            return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id);
 
         }
         elseif(COUNT($isMoreThatOne) == 1)
@@ -176,7 +177,8 @@ class bookingController extends Controller
             $ad_p = DB::table('price_package_table')->get();
             $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
 
-            return view('booking.add_issue', compact('mag_trans_uid','ad_c', 'ad_p', 'client_id', 'transaction_uid'));
+//            return view('booking.add_issue', compact('mag_trans_uid','ad_c', 'ad_p', 'client_id', 'transaction_uid'));
+            return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id);
         }
 
     }
