@@ -47,14 +47,14 @@
                     <li><a href="/salesperson/all">View All Salesperson</a></li>
                 </ul>
             </li>
-            <li>
-                <a href="#"><i class="fa fa-briefcase" aria-hidden="true"></i> <span class="nav-label">Contract</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="/contract/create">Create New Contract</a></li>
-                    <li><a href="#">Edit Contract</a></li>
-                    <li><a href="/contract/all">View All Contract</a></li>
-                </ul>
-            </li>
+            {{--<li>--}}
+                {{--<a href="#"><i class="fa fa-briefcase" aria-hidden="true"></i> <span class="nav-label">Contract</span><span class="fa arrow"></span></a>--}}
+                {{--<ul class="nav nav-second-level collapse">--}}
+                    {{--<li><a href="/contract/create">Create New Contract</a></li>--}}
+                    {{--<li><a href="#">Edit Contract</a></li>--}}
+                    {{--<li><a href="/contract/all">View All Contract</a></li>--}}
+                {{--</ul>--}}
+            {{--</li>--}}
             <li>
                 <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Magazine</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
