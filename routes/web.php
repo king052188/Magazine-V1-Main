@@ -56,3 +56,7 @@ Route::post('/booking/save-magazine-transaction/{trans_id}/{which_country}/{clie
 
 Route::get('/booking/add_issue/{mag_trans_uid}/{client_id}', 'bookingController@add_issue');
 
+Route::post('/booking/save_issue/{mag_trans_uid}/{client_id}', 'bookingController@save_issue');
+
+Route::get('/booking/getPackageName/{criteria_id}', 'bookingController@getPackageName');
+
