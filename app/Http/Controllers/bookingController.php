@@ -14,7 +14,44 @@ class bookingController extends Controller
 {
     public function booking_list()
     {
-        $booking = DB::table('booking_sales_table')->where('status', '=', 2)->get();
+//        $booking = DB::table('booking_sales_table')->where('status', '=', 2)->get();
+
+        $booking = DB::SELECT("    
+                        SELECT 
+                        booking.*, mag_l.mag_code, mag_l.magazine_country , mag_l.magazine_name,
+                        (
+                            SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
+                            FROM client_contacts_table AS a
+                            INNER JOIN client_table AS b
+                            ON a.client_id = b.Id
+                            WHERE a.Id = booking.client_id
+                            AND b.type = 1
+                        ) AS client_name,
+                        (
+                            SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
+                            FROM client_contacts_table AS a
+                            INNER JOIN client_table AS b
+                            ON a.client_id = b.Id
+                            WHERE a.Id = booking.agency_id
+                            AND b.type = 2
+                        ) AS agency_name,
+                        (
+                            SELECT 
+                                CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) AS sales_name
+                            FROM user_account AS a
+                            WHERE a.Id = booking.sales_rep_code
+                        ) AS sales_name
+                    FROM 
+                        booking_sales_table AS booking
+                    INNER JOIN 
+                        magazine_transaction_table AS mag_t
+                    ON 
+                        booking.Id = mag_t.transaction_id
+                    INNER JOIN 
+                        magazine_table AS mag_l
+                    ON 
+                        mag_t.magazine_id = mag_l.Id
+        ");
 
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();
 
@@ -25,8 +62,38 @@ class bookingController extends Controller
     {
         $n_booking = \App\Http\Controllers\VMKhelper::get_new_contract();
 
-        $subscriber = DB::table('client_table')->where('type', '=', 1)->get(); //1 = Subscriber
-        $agency = DB::table('client_table')->where('type', '=', 2)->get(); //2 = Agency
+//        $subscriber = DB::table('client_table')->where('type', '=', 1)->get(); //1 = Subscriber
+
+        $subscriber = DB::SELECT("
+                    SELECT 
+                        master.company_name, master.type, master.status, child.*, child.Id as child_uid
+                    FROM 
+                        client_table AS master
+                    INNER JOIN
+                        client_contacts_table AS child
+                    ON
+                        master.Id = child.client_id
+                    WHERE master.type = 1
+                    ORDER BY master.company_name, branch_name ASC
+        ");
+
+
+//        $agency = DB::table('client_table')->where('type', '=', 2)->get(); //2 = Agency
+
+        $agency = DB::SELECT("
+                    SELECT 
+                        master.company_name, master.type, master.status, child.*, child.Id as child_uid
+                    FROM 
+                        client_table AS master
+                    INNER JOIN
+                        client_contacts_table AS child
+                    ON
+                        master.Id = child.client_id
+                    WHERE master.type = 2
+                    ORDER BY master.company_name, branch_name ASC
+        ");
+
+
 
         return view('booking.add_booking', compact('n_booking','subscriber','agency'))->with('success', 'Booking details successful added!');
     }
@@ -124,7 +191,8 @@ class bookingController extends Controller
         if(COUNT($isMoreThatOne) == 0 OR COUNT($isMoreThatOne) > 1)
         {
             $type = DB::SELECT("SELECT bb.type as client_type FROM client_contacts_table as aa INNER JOIN client_table as bb ON bb.Id = aa.client_id WHERE aa.Id = {$client_id}");
-            
+//            $type = DB::SELECT("SELECT aa.type as client_type FROM client_table as aa WHERE aa.Id = {$client_id}");
+
             $ad_c = $request['ad_criteria_id'];
             $ad_p = $request['ad_package_id'];
             $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
@@ -151,6 +219,7 @@ class bookingController extends Controller
         elseif(COUNT($isMoreThatOne) == 1)
         {
             $type = DB::SELECT("SELECT bb.type as client_type FROM client_contacts_table as aa INNER JOIN client_table as bb ON bb.Id = aa.client_id WHERE aa.Id = {$client_id}");
+//            $type = DB::SELECT("SELECT aa.type as client_type FROM client_table as aa WHERE aa.Id = {$client_id}");
 
             $aa = DB::SELECT("SELECT * FROM magazine_issue_transaction_table WHERE magazine_trans_id = {$mag_trans_uid}");
             $update_1st_amount = DB::table('price_table')->where('criteria_id', '=', $aa[0]->ad_criteria_id)->where('package_id', '=', $aa[0]->ad_package_id)->where('type', '=', $type[0]->client_type)->get();

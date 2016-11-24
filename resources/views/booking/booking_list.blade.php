@@ -48,10 +48,11 @@
                         <tr>
                             <th>#</th>
                             <th>TRANSACTION NUMBER</th>
-                            <th>SALES REP CODE</th>
-                            <th>CLIENT ID</th>
-                            <th>AGENCY ID</th>
+                            <th>SALES AGENT NAME</th>
+                            <th>CLIENT NAME</th>
+                            <th>AGENCY NAME</th>
                             <th>STATUS</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -59,11 +60,22 @@
                             @for($i = 0; $i < COUNT($booking); $i++)
                                 <tr>
                                     <td>{{ $n++ }}</td>
-                                    <td><a href = "{{ URL('/show_transaction_mag/' . $booking[$i]->Id . '/' . $booking[$i]->client_id) }}">{{ $booking[$i]->trans_num }}</a></td>
-                                    <td>{{ $booking[$i]->sales_rep_code }}</td>
-                                    <td>{{ $booking[$i]->client_id }}</td>
-                                    <td>{{ $booking[$i]->agency_id }}</td>
-                                    <td>{{ $booking[$i]->status }}</td>
+                                    <td><a href = "{{ URL('/booking/magazine-transaction/' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
+                                    <td>{{ $booking[$i]->sales_name }}</td>
+                                    <td>{{ $booking[$i]->client_name }}</td>
+                                    <td>{{ $booking[$i]->agency_name }}</td>
+                                    <td>
+                                        @if($booking[$i]->status == 1)
+                                            Pending
+                                        @elseif($booking[$i]->status == 2)
+                                            On Process
+                                        @else
+                                            Approved
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href = "http://192.168.43.132/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target = "_blank">Share</a>
+                                    </td>
                                 </tr>
                             @endfor
                         </tbody>

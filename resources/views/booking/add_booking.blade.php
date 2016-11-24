@@ -50,7 +50,7 @@
                                     <label>Client ID <i>(UID of client_contacts_table)</i></label>
                                     <select class="form-control" name="client_id">
                                         @for($i = 0; $i < COUNT($subscriber); $i++)
-                                            <option value = {{ $subscriber[$i]->Id }}>{{ $subscriber[$i]->company_name }}</option>
+                                            <option value = {{ $subscriber[$i]->child_uid }}>{{ $subscriber[$i]->company_name . "-" . $subscriber[$i]->branch_name }}</option>
                                         @endfor
                                     </select>
                                 </div>
@@ -58,13 +58,13 @@
                                     <label for="ex2">Agency ID</label>
                                     <select class="form-control" name="agency_id">
                                         @for($i = 0; $i < COUNT($agency); $i++)
-                                            <option value = {{ $agency[$i]->Id }}>{{ $agency[$i]->company_name }}</option>
+                                            <option value = {{ $agency[$i]->child_uid }}>{{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}</option>
                                         @endfor
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="ex2">Status</label>
-                                    <input class="form-control" id="ex2" type="text" value = "2" name = "status" readonly>
+                                    <input class="form-control" id="ex2" type="text" value = "1" name = "status" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="ex2">Select Country</label>

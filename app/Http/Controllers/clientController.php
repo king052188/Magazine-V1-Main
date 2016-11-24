@@ -95,8 +95,8 @@ class clientController extends Controller
         $client->email = $request['email'];
         $client->landline = $request['landline'];
         $client->mobile = $request['mobile'];
-        $client->type = $request['type'];
-        $client->status = $request['status'];
+        $client->type = 1;
+        $client->status = 1;
         $client->save();
 
         return redirect('/client/all')->with('success', 'Successfully Added New Contact.');
