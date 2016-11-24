@@ -54,7 +54,7 @@ class loginController extends Controller
     {
         Cache::flush();
         setcookie('Id','',time()-3600);
-        setcookie('Role','',time()-3600);
+        setcookie('role','',time()-3600);
         return redirect("/login");
     }
 }
