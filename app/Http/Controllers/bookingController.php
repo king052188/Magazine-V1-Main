@@ -252,7 +252,26 @@ class bookingController extends Controller
 //            return view('booking.add_issue', compact('mag_trans_uid','ad_c', 'ad_p', 'client_id', 'transaction_uid'));
             return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id);
         }
+    }
 
+    public function trans_selected_row_update($trans_id, $trans_status)
+    {
+        $t_uid = (int)$trans_id;
+        $t_status = (int)$trans_status;
+
+        $update = DB::table('booking_sales_table')
+            ->where('Id', $t_uid)
+            ->update(['status' => $t_status]);
+
+        if($update){
+            return [
+                "status" => 200
+            ];
+        }
+
+        return [
+            "status" => 500
+        ];
     }
 
 }

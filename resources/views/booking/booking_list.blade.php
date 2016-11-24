@@ -43,6 +43,42 @@
                 </div>
                 @endif
                 <div class="table-responsive">
+                    <script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
+                    <script>
+
+                        update_status = function(control_id) {
+
+                            var selected = $('#ddlStatus_' + control_id).val();
+
+                            var url = "/transaction/update/row/"+ control_id +"/"+ selected;
+
+                            $(document).ready( function() {
+
+                                $.ajax({
+                                    url: url,
+                                    dataType: "text",
+                                    beforeSend: function () {
+
+                                    },
+                                    success: function(data) {
+                                        var json = $.parseJSON(data);
+
+                                        console.log(json);
+
+                                        if(json.status == 200)
+                                        {
+                                            alert("Update was successful");
+                                            location.reload();
+                                        }
+                                    }
+                                });
+
+                            } );
+
+                        }
+
+
+                    </script>
                     <table class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
@@ -65,13 +101,31 @@
                                     <td>{{ $booking[$i]->client_name }}</td>
                                     <td>{{ $booking[$i]->agency_name }}</td>
                                     <td>
-                                        @if($booking[$i]->status == 1)
-                                            Pending
-                                        @elseif($booking[$i]->status == 2)
-                                            On Process
+                                        @if($_COOKIE['role'] > 2)
+
+                                            <select id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
+                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">On Process</option>
+                                                <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
+                                                <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>
+                                                <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
+                                            </select>
+
+                                            @if($booking[$i]->status <= 2)
+                                                <button id = "btn_update" onclick="update_status({{ $booking[$i]->Id  }})">Update</button>
+                                            @endif
+
                                         @else
-                                            Approved
+                                            <select id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
+                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">On Process</option>
+                                                <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
+                                                <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>
+                                                <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
+                                            </select>
+                                            <button id = "btn_update" onclick="update_status({{ $booking[$i]->Id  }})">Update</button>
                                         @endif
+
                                     </td>
                                     <td>
                                         <a href = "http://192.168.43.132/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target = "_blank">Share</a>
