@@ -28,6 +28,14 @@ class VMKhelper extends Controller
        non-member = false
    */
 
+    public static function check_cookies() {
+        $request = new Request();
+
+        $value = $request->cookie('role');
+
+        return $value;
+    }
+
     public static function get_price_by_type($IsMember = false) {
 
         $IsMemberPayment = $IsMember ? 1 : 2;

@@ -52,9 +52,8 @@ class loginController extends Controller
 
     public function logout_process()
     {
-        Cache::flush();
-        setcookie('Id','',time()-3600);
-        setcookie('role','',time()-3600);
+        setcookie('Id','',time()+3600);
+        setcookie('role',0,time()+3600);
         return redirect("/login");
     }
 }

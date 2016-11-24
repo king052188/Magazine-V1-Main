@@ -10,6 +10,12 @@ class dashboardController extends Controller
 
 //        return $_COOKIE['Role'];
 
+//        $cookies = VMKhelper::check_cookies();
+//
+//        if($cookies == null) {
+//            return redirect('/logout_process');
+//        }
+
         return view('/dashboard');
     }
 }
