@@ -72,7 +72,7 @@
 
                                                 var criteria_id = $(this).val();
                                                 $.ajax({
-                                                    url: "http://localhost:5304/booking/getPackageName/" + criteria_id,
+                                                    url: "/booking/getPackageName/" + criteria_id,
                                                     dataType: 'text',
                                                     success: function(data)
                                                     {
@@ -136,7 +136,7 @@
 
                                     $(document).ready( function() {
                                         $.ajax({
-                                            url: "http://192.168.1.45:8004/kpa/work/magazine-issue-lists/"+uid,
+                                            url: "http://192.168.43.132/kpa/work/magazine-issue-lists/"+uid,
                                             dataType: "text",
                                             beforeSend: function () {
                                                 $('#mag_name').text("***");

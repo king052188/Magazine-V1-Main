@@ -59,7 +59,7 @@
                             @for($i = 0; $i < COUNT($booking); $i++)
                                 <tr>
                                     <td>{{ $n++ }}</td>
-                                    <td><a href = "{{ URL('/add_more_magazine_contracts/' . $booking[$i]->Id . '/' . $booking[$i]->client_id) }}">{{ $booking[$i]->trans_num }}</a></td>
+                                    <td><a href = "{{ URL('/show_transaction_mag/' . $booking[$i]->Id . '/' . $booking[$i]->client_id) }}">{{ $booking[$i]->trans_num }}</a></td>
                                     <td>{{ $booking[$i]->sales_rep_code }}</td>
                                     <td>{{ $booking[$i]->client_id }}</td>
                                     <td>{{ $booking[$i]->agency_id }}</td>

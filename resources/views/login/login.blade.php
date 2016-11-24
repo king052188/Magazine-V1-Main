@@ -19,15 +19,16 @@
             }
 
             $.ajax({
-                url: 'http://localhost:5304/login_process/'+ username +'/' + password,
+                url: '/login_process/'+ username +'/' + password,
                 dataType: 'text',
                 success: function(username){
+
                     var json = $.parseJSON(username);
                     $(json).each(function(m, mem){
                         if(mem.login_status == 200) {
                             //document.cookie = "Id="+ mem.Id + ";" + expires;
                             $.cookie("Id",mem.Id,{expires: 365});
-                            $.cookie("Role",mem.role,{expires: 365});
+                            $.cookie("role",mem.role,{expires: 365});
 
                             window.location = '/dashboard'
                         }

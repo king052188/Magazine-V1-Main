@@ -4,6 +4,9 @@ Route::get('/', function () {
     return view('login.login');
 });
 
+Route::get('/get_new_password/{value}', 'loginController@get_new_password');
+
+
 Route::get('/login', 'loginController@login');
 Route::get('/login_process/{username}/{password}', 'loginController@login_process');
 Route::get('/logout_process', 'loginController@logout_process');

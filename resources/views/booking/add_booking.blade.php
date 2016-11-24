@@ -43,17 +43,24 @@
                                     <label>Trans Code</label>
                                     <input class="form-control" id="ex2" type="text" value = "{{ $n_booking['id'] }}" name = "trans_num">
                                 </div>
-                                <div class="form-group">
-                                    <label>Sales Representative Code</label>
-                                    <input class="form-control" placeholder="Sales Representative Code" id="ex2" type="text" name = "sales_rep_code">
-                                </div>
+
+                                <input class="form-control" placeholder="Sales Representative Code" id="ex2" type="hidden" value = "{{ $_COOKIE['Id'] }}" name = "sales_rep_code">
+
                                 <div class="form-group">
                                     <label>Client ID <i>(UID of client_contacts_table)</i></label>
-                                    <input class="form-control" type="text" name="client_id">
+                                    <select class="form-control" name="client_id">
+                                        @for($i = 0; $i < COUNT($subscriber); $i++)
+                                            <option value = {{ $subscriber[$i]->Id }}>{{ $subscriber[$i]->company_name }}</option>
+                                        @endfor
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="ex2">Agency ID</label>
-                                    <input class="form-control" id="ex2" type="text" name = "agency_id">
+                                    <select class="form-control" name="agency_id">
+                                        @for($i = 0; $i < COUNT($agency); $i++)
+                                            <option value = {{ $agency[$i]->Id }}>{{ $agency[$i]->company_name }}</option>
+                                        @endfor
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="ex2">Status</label>

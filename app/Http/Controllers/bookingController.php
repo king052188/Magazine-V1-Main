@@ -25,7 +25,10 @@ class bookingController extends Controller
     {
         $n_booking = \App\Http\Controllers\VMKhelper::get_new_contract();
 
-        return view('booking.add_booking', compact('n_booking'))->with('success', 'Booking details successful added!');
+        $subscriber = DB::table('client_table')->where('type', '=', 1)->get(); //1 = Subscriber
+        $agency = DB::table('client_table')->where('type', '=', 2)->get(); //2 = Agency
+
+        return view('booking.add_booking', compact('n_booking','subscriber','agency'))->with('success', 'Booking details successful added!');
     }
 
     public function save_booking(Request $request)
@@ -121,7 +124,7 @@ class bookingController extends Controller
         if(COUNT($isMoreThatOne) == 0 OR COUNT($isMoreThatOne) > 1)
         {
             $type = DB::SELECT("SELECT bb.type as client_type FROM client_contacts_table as aa INNER JOIN client_table as bb ON bb.Id = aa.client_id WHERE aa.Id = {$client_id}");
-
+            
             $ad_c = $request['ad_criteria_id'];
             $ad_p = $request['ad_package_id'];
             $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
