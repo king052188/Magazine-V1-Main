@@ -1,67 +1,52 @@
-<script src="http://cheappartsguy.com:8091/js/jquery-3.0.0.min.js"></script>
-<script src="http://cheappartsguy.com:8091/js/cookie/jquery.cookie.js" type="text/javascript"></script>
+<!DOCTYPE html>
+<html>
 
-<script>
-    $(document).ready(function(){
+<head>
 
-        $('#login_button').on('click', function(e){
-            var username = document.getElementById('username').value;
-            var password = document.getElementById('password').value;
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-            if (username == null || username == "") {
-                document.getElementById("chk_username").innerHTML = "Required Email";
-                return false;
-            }
+    <title>Magazine v1 | Login</title>
 
-            if (password == null || password == "") {
-                document.getElementById("chk_password").innerHTML = "Required Password";
-                return false;
-            }
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('font-awesome/css/font-awesome.css') }}" rel="stylesheet">
 
-            $.ajax({
-                url: '/login_process/'+ username +'/' + password,
-                dataType: 'text',
-                success: function(username){
+    <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-                    var json = $.parseJSON(username);
-                    $(json).each(function(m, mem){
-                        if(mem.login_status == 200) {
-                            //document.cookie = "Id="+ mem.Id + ";" + expires;
-                            $.cookie("Id",mem.Id,{expires: 365});
-                            $.cookie("role",mem.role,{expires: 365});
+</head>
 
-                            window.location = '/dashboard'
-                        }
-                        else if(mem.LoginStatus == 404){
-                            document.getElementById("chk_login").innerHTML = "Username doesn't exist!";
-                        }
-                        else if(mem.LoginStatus == 403){
-                            document.getElementById("chk_login").innerHTML = "Password doesn't match!";
-                        }
-                    });
-                },
-                error: function(username){
-                    alert("error!");
-                }
-            });
-            e.preventDefault();
-        });
+<body class="gray-bg">
 
-    });
-</script>
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <h3>Welcome to (Company Name or Logo)</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
+            </p>
+            <p>Login in. To see it in action.</p>
+                <div class="form-group">
+                    <input type="text" name="username" id="username" class="form-control" placeholder="Username" required="">
+                    <div id="chk_username"></div>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Password" required="">
+                    <div id="chk_password"></div>
+                </div>
+                <input type="submit" class="btn btn-primary block full-width m-b" name="login" value="Log In" id="login_button" tabindex="3" >
+                <div id="chk_login"></div>
 
 
-<center>
-Sign In
-<br /><br />
-<input type="text" name="username" id="username" placeholder="Username" tabindex="1">
-<div id="chk_username"></div>
-<br />
-<input type="password" name="password" id="password" placeholder="Password" tabindex="2">
-<div id="chk_password"></div>
-<br />
-<input type="hidden" name="_token" id="csrf-token" value="QbEze2UnMybWW3OXNH8uDkPYR931ck86HfiBIL4H" /><br />
-<input type="submit" name="login" value="Log In" id="login_button" tabindex="3" >
-<div id="chk_login"></div>
+                <a href="#"><small>Forgot password?</small></a>
+ 
+            <p class="m-t"> <small>VMK Developers &copy; 2016</small> </p>
+        </div>
+    </div>
 
-</center>
+    <!-- Mainly scripts -->
+    <script src="{{ asset('js/jquery-3.0.0.js') }}"></script>
+    <script src="{{ asset('js/plugins/cookie/jquery.cookie.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('js/login.js') }}" type="text/javascript"></script>
+</body>
+
+</html>

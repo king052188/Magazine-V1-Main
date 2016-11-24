@@ -52,19 +52,12 @@ Route::get('/transaction/all', 'transactionController@index');
 
 // Booking Routes
 Route::get('/booking/booking-list', 'bookingController@booking_list');
-
 Route::get('/booking/add-booking', 'bookingController@add_booking');
-Route::get('/booking/add-more-booking/{trans_uid}', 'bookingController@add_more_booking');
 
 Route::post('/booking/magazine-transaction-save-process', 'bookingController@save_booking'); // Process
-
 Route::any('/booking/magazine-transaction/{trans_uid}/{which_country}/{client_id}', 'bookingController@show_transaction_mag'); // after process viewing
-
 Route::post('/booking/save-magazine-transaction/{trans_id}/{which_country}/{client_id}', 'bookingController@save_magazine_transaction');
-
 Route::get('/booking/add_issue/{mag_trans_uid}/{client_id}', 'bookingController@add_issue');
-
 Route::post('/booking/save_issue/{mag_trans_uid}/{client_id}', 'bookingController@save_issue');
-
 Route::get('/booking/getPackageName/{criteria_id}', 'bookingController@getPackageName');
 
