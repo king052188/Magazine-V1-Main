@@ -105,7 +105,7 @@ class bookingController extends Controller
         $booking->sales_rep_code = $request['sales_rep_code'];
         $booking->client_id = $request['client_id'];
         $booking->agency_id = $request['agency_id'];
-        $booking->status = $request['status'];
+        $booking->status = 1;
         $booking->save();
 
         $booking_uid = $booking->id; //last_inserted_id
@@ -157,7 +157,7 @@ class bookingController extends Controller
 
     public function getPackageName($criteria_id)
     {
-        $ad_p = DB::SELECT("SELECT * FROM price_package_table WHERE criteria_id = {$criteria_id}");
+        $ad_p = DB::SELECT("SELECT * FROM price_package_table WHERE criteria_id = {$criteria_id} AND status = 2");
 
         if($ad_p != null)
         {
@@ -177,8 +177,8 @@ class bookingController extends Controller
 
     public function add_issue($mag_trans_uid, $client_id)
     {
-        $ad_c = DB::table('price_criteria_table')->get();
-        $ad_p = DB::table('price_package_table')->get();
+        $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
+        $ad_p = DB::table('price_package_table')->where('status','=',2)->get();
         $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
 
         return view('booking.add_issue', compact('mag_trans_uid', 'ad_c', 'ad_p', 'client_id','transaction_uid'));
@@ -195,19 +195,20 @@ class bookingController extends Controller
 
             $ad_c = $request['ad_criteria_id'];
             $ad_p = $request['ad_package_id'];
+            $quarter_issue = (int)$request['quarter_issue'];
             $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
 
 
             $mit = new MagIssueTransaction();
-            $mit->magazine_trans_id = $request['magazine_trans_id'];
+            $mit->magazine_trans_id = $mag_trans_uid;
             $mit->ad_criteria_id = $ad_c;
             $mit->ad_package_id = $ad_p;
             $mit->amount = $amount[0]->amount_x1;
-            $mit->date_issued = date('Y-m-d H:i:s');
+            $mit->quarter_issued = $quarter_issue;
             $mit->status = 2;
             $mit->save();
 
-            $mag_trans_uid = $request['magazine_trans_id'];
+//            $mag_trans_uid = $request['magazine_trans_id'];
             $ad_c = DB::table('price_criteria_table')->get();
             $ad_p = DB::table('price_package_table')->get();
             $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
@@ -233,18 +234,19 @@ class bookingController extends Controller
 
             $ad_c = $request['ad_criteria_id'];
             $ad_p = $request['ad_package_id'];
+            $quarter_issue = (int)$request['quarter_issue'];
             $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
 
             $mit = new MagIssueTransaction();
-            $mit->magazine_trans_id = $request['magazine_trans_id'];
+            $mit->magazine_trans_id = $mag_trans_uid;
             $mit->ad_criteria_id = $ad_c;
             $mit->ad_package_id = $ad_p;
             $mit->amount = $amount[0]->amount_x2_more;
-            $mit->date_issued = date('Y-m-d H:i:s');
+            $mit->quarter_issued = $quarter_issue;
             $mit->status = 2;
             $mit->save();
 
-            $mag_trans_uid = $request['magazine_trans_id'];
+//            $mag_trans_uid = $request['magazine_trans_id'];
             $ad_c = DB::table('price_criteria_table')->get();
             $ad_p = DB::table('price_package_table')->get();
             $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();

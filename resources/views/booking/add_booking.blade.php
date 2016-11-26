@@ -63,10 +63,6 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label for="ex2">Status</label>
-                                    <input class="form-control" id="ex2" type="text" value = "1" name = "status" readonly>
-                                </div>
-                                <div class="form-group">
                                     <label for="ex2">Select Country</label>
                                     <select class = "form-control" name = "which_country">
                                         <option value = "1">US</option>

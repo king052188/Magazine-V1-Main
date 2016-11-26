@@ -57,7 +57,6 @@
                                 <th>Magazine Code</th>
                                 <th>Magazine Name</th>
                                 <th>Country</th>
-                                <th>Status</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -67,8 +66,13 @@
                                             <td>{{ $n++ }}</td>
                                             <td><a href = "{{ URL('/booking/add_issue/' . $mag_l[$i]->Id . '/' . $client_id) }}">{{ $mag_l[$i]->mag_code }}</a></td>
                                             <td>{{ $mag_l[$i]->magazine_name }}</td>
-                                            <td>{{ $mag_l[$i]->magazine_country }}</td>
-                                            <td>{{ $mag_l[$i]->status }}</td>
+                                            <td>
+                                                @if($mag_l[$i]->magazine_country == 1)
+                                                    US
+                                                @elseif($mag_l[$i]->magazine_country == 2)
+                                                    CANADA
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endfor
                             </tbody>

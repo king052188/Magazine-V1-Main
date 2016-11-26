@@ -105,7 +105,7 @@
 
                                             <select id="ddlStatus_{{ $booking[$i]->Id }}">
                                                 <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
-                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">On Process</option>
+                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
                                                 <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
                                                 <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>
                                                 <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
@@ -118,7 +118,7 @@
                                         @else
                                             <select id="ddlStatus_{{ $booking[$i]->Id }}">
                                                 <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
-                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">On Process</option>
+                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
                                                 <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
                                                 <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>
                                                 <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
@@ -128,7 +128,7 @@
 
                                     </td>
                                     <td>
-                                        <a href = "http://192.168.43.132/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target = "_blank">Share</a>
+                                        <a href = "http://magazine-api.kpa21.com/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target = "_blank">Share</a>
                                     </td>
                                 </tr>
                             @endfor

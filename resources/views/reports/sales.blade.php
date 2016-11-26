@@ -47,7 +47,7 @@
                                 var html_thmb = null;
 
                                 $.ajax({
-                                    url: "http://192.168.43.132/kpa/work/booking-sales-report",
+                                    url: "http://magazine-api.kpa21.com/kpa/work/booking-sales-report",
                                     dataType: "text",
                                     beforeSend: function () {
 //                                        $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="7">Loading... Please wait...</td> </tr>');
@@ -78,20 +78,20 @@
                                             html_thmb += "<td>"+tran.number_of_issue+"</td>";
                                             html_thmb += "<td>"+tran.total_amount+"</td>";
 
-                                            var n_status = "VOID";
+                                            var n_status = "Void";
                                             var p_status = parseInt(tran.status);
 
                                             if(p_status == 1) {
-                                                n_status = "PENDING";
+                                                n_status = "Pending";
                                             }
                                             else if(p_status == 2) {
-                                                n_status = "ON PROCESS";
+                                                n_status = "For Approval";
                                             }
                                             else if(p_status == 3) {
-                                                n_status = "APPROVED";
+                                                n_status = "Approved";
                                             }
                                             else if(p_status == 4) {
-                                                n_status = "DECLINED";
+                                                n_status = "Declined";
                                             }
 
                                             html_thmb += "<td>"+n_status+"</td>";
