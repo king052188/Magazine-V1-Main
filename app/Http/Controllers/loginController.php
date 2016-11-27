@@ -38,7 +38,7 @@ class loginController extends Controller
             return array("login_status" => 403); //password Not Match
         }
 
-        return  array(
+        return array(
             "login_status" => 200, //Success
             "Id" => $user_info[0]->Id,
             "username" => $user_info[0]->username,

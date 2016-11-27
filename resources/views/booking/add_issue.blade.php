@@ -159,7 +159,7 @@
                                     $(document).ready( function() {
                                         $.ajax({
 //                                            url: "http://magazine-api.kpa21.com/kpa/work/magazine-issue-lists/"+uid,
-                                            url: "http://192.168.1.41/kpa/work/magazine-issue-lists/"+uid,
+                                            url: "http:"+report_url_api+"/kpa/work/magazine-issue-lists/"+uid,
                                             dataType: "text",
                                             beforeSend: function () {
                                                 $('#mag_name').text("***");

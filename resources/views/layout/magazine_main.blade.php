@@ -1,20 +1,19 @@
+<?php
+    $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
+?>
 <!DOCTYPE html>
 <html>
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <script>var report_url_api = "{{ $report_api["Url_Port"] }}";</script>
     <title>Magazine | @yield('title')</title>
-
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet">
-
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
     @yield('styles')
-
 </head> 
 
 <body>
