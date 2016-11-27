@@ -179,8 +179,9 @@ class bookingController extends Controller
         $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
         $ad_p = DB::table('price_package_table')->where('status','=',2)->get();
         $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
+        $booking_trans_num = DB::table('booking_sales_table')->where('Id','=',$transaction_uid[0]->transaction_id)->get();
 
-        return view('booking.add_issue', compact('mag_trans_uid', 'ad_c', 'ad_p', 'client_id','transaction_uid'));
+        return view('booking.add_issue', compact('mag_trans_uid', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num'));
     }
 
     public function save_issue(Request $request, $mag_trans_uid, $client_id)
