@@ -208,6 +208,7 @@
                                                     item_count++;
                                                 });
 
+
                                                 $('table#issue_reports > tbody').empty().prepend(html_thmb);
                                             }
                                         });

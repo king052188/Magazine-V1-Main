@@ -114,17 +114,17 @@
                         <table class="table table-striped table-bordered table-hover dataTables-example" id="issue_reports">
                             <thead>
                             <tr>
-                                <th>item no</th>
-                                <th>trans_num</th>
-                                <th>sales_rep_code</th>
-                                <th>client_id</th>
-                                <th>agency_id</th>
-                                <th>sales_rep_name</th>
-                                <th>client_name</th>
-                                <th>agency_name</th>
-                                <th>number_of_issue</th>
-                                <th>total_amount</th>
-                                <th>status</th>
+                                <th>Item #</th>
+                                <th>Transaction #</th>
+                                <th>Sales Rep Code</th>
+                                <th>Client ID</th>
+                                <th>Agency ID</th>
+                                <th>Sales Rep Name</th>
+                                <th>Client Name</th>
+                                <th>Agency Name</th>
+                                <th># of issue</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
                             </tr>
                             </thead>
                             <tbody>

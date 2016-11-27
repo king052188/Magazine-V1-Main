@@ -103,12 +103,13 @@
                                     <td>
                                         @if($_COOKIE['role'] > 2)
 
-                                            <select id="ddlStatus_{{ $booking[$i]->Id }}">
-                                                <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
-                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
-                                                <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
-                                                <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>
-                                                <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
+                                            <select id="ddlStatus_{{ $booking[$i]->Id }}" {{ $booking[$i]->status == 4 ? "disabled" : "" }}>
+                                                @if($booking[$i]->status == 4)
+                                                    <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>
+                                                @else
+                                                    <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
+                                                    <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
+                                                @endif
                                             </select>
 
                                             @if($booking[$i]->status <= 2)
