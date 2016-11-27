@@ -132,7 +132,6 @@
 
                                     </td>
                                     <td>
-
                                         <a href = "http://{{ $report_api["Url_Port"] }}/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target = "_blank">Share</a>
                                     </td>
                                 </tr>
