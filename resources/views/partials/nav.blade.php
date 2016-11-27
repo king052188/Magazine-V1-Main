@@ -4,12 +4,20 @@
             <li class="nav-header">
                 <div class="dropdown profile-element">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">FName LName</strong>
-                         </span> <span class="text-muted text-xs block">Administrator <b class="caret"></b></span> </span> </a>
+                        <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ $user_info[0]->first_name }} {{ $user_info[0]->middle_name }} {{ $user_info[0]->last_name }}</strong>
+                            </span> <span class="text-muted text-xs block">
+                                @if($user_info[0]->role == 1)
+                                    Administrator
+                                @elseif($user_info[0]->role == 2)
+                                    Admin/Manager
+                                @elseif($user_info[0]->role == 3)
+                                    Sales Representative
+                                @endif
+                            <b class="caret"></b></span> </span> </a>
                     <ul class="dropdown-menu animated fadeInRight m-t-xs">
                         <li><a href="profile.html">Profile</a></li>
                         <li class="divider"></li>
-                        <li><a href="login.html">Logout</a></li>
+                        <li><a href="{{ URL('/logout_process') }}">Logout</a></li>
                     </ul>
                 </div>
                 <div class="logo-element">

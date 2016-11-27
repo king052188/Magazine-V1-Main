@@ -77,7 +77,6 @@ class bookingController extends Controller
                     ORDER BY master.company_name, branch_name ASC
         ");
 
-
 //        $agency = DB::table('client_table')->where('type', '=', 2)->get(); //2 = Agency
 
         $agency = DB::SELECT("
