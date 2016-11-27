@@ -148,7 +148,7 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12">
-                            <script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
+                            <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
                             <script>
                                 var trans_id = {{ $transaction_uid[0]->transaction_id }};
                                 populate_issues_transaction(trans_id);

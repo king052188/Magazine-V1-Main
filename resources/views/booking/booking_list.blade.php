@@ -43,7 +43,7 @@
                 </div>
                 @endif
                 <div class="table-responsive">
-                    <script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
+                    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
                     <script>
 
                         update_status = function(control_id) {
@@ -92,7 +92,10 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <?php $n = 1; ?>
+                            <?php
+                                $n = 1;
+                                $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
+                            ?>
                             @for($i = 0; $i < COUNT($booking); $i++)
                                 <tr>
                                     <td>{{ $n++ }}</td>
@@ -129,7 +132,8 @@
 
                                     </td>
                                     <td>
-                                        <a href = "http://magazine-api.kpa21.com/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target = "_blank">Share</a>
+
+                                        <a href = "http://{{ $report_api["Url_Port"] }}/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target = "_blank">Share</a>
                                     </td>
                                 </tr>
                             @endfor

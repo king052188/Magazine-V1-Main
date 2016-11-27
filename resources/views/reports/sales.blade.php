@@ -35,7 +35,7 @@
             </div>
             <div class="ibox-content">
                 <div class="table-responsive">
-                    <script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
+                    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
                     <script>
 
                         populate_sales_report();
@@ -47,7 +47,7 @@
                                 var html_thmb = null;
 
                                 $.ajax({
-                                    url: "http://magazine-api.kpa21.com/kpa/work/booking-sales-report",
+                                    url: "http://"+report_url_api+"/kpa/work/booking-sales-report",
                                     dataType: "text",
                                     beforeSend: function () {
 //                                        $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="7">Loading... Please wait...</td> </tr>');
