@@ -82,13 +82,13 @@
                     <table class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>TRANSACTION NUMBER</th>
-                            <th>SALES AGENT NAME</th>
-                            <th>CLIENT NAME</th>
-                            <th>AGENCY NAME</th>
-                            <th>STATUS</th>
-                            <th></th>
+                            <th style='text-align: center; width: 50px;'>#</th>
+                            <th style='text-align: left;'>TRANS#</th>
+                            <th style='text-align: left; width: 150px;'>SALES</th>
+                            <th style='text-align: left; width: 150px;'>CLIENT</th>
+                            <th style='text-align: left; width: 150px;'>AGENCY</th>
+                            <th style='text-align: center; width: 185px;'>STATUS</th>
+                            <th style='text-align: center; width: 50px;'></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -98,12 +98,12 @@
                             ?>
                             @for($i = 0; $i < COUNT($booking); $i++)
                                 <tr>
-                                    <td>{{ $n++ }}</td>
-                                    <td><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
-                                    <td>{{ $booking[$i]->sales_name }}</td>
-                                    <td>{{ $booking[$i]->client_name }}</td>
-                                    <td>{{ $booking[$i]->agency_name }}</td>
-                                    <td>
+                                    <td style='text-align: center;'>{{ $n++ }}</td>
+                                    <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->sales_name }}</td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->agency_name }}</td>
+                                    <td style='text-align: left;'>
                                         @if($_COOKIE['role'] > 2)
 
                                             <select id="ddlStatus_{{ $booking[$i]->Id }}" {{ $booking[$i]->status == 4 ? "disabled" : "" }}>
@@ -131,8 +131,8 @@
                                         @endif
 
                                     </td>
-                                    <td>
-                                        <a href = "http://{{ $report_api["Url_Port"] }}/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target = "_blank">Share</a>
+                                    <td style='text-align: left;'>
+                                        <a href = "http://{{ $report_api["Url_Port"] }}/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target = "_blank">Preview</a>
                                     </td>
                                 </tr>
                             @endfor
