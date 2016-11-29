@@ -97,7 +97,7 @@
                             color: #FFFFFF;
                         }
 
-                        .trans_declined_void {
+                        .trans_declined_void:hover {
                             background-color: #FFFFFF;
                             border-color: #D83C2F;
                             color: #D83C2F;
