@@ -182,7 +182,7 @@
 
                         }
 
-//                        setInterval(populate_sales_report, 2000);
+                        setInterval(populate_sales_report, 2000);
 
                     </script>
                     <section class="panel">
