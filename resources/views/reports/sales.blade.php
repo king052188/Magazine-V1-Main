@@ -38,6 +38,8 @@
                     <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
                     <script>
 
+                        var isFirstLoad = true;
+
                         populate_sales_report();
 
                         function populate_sales_report() {
@@ -50,7 +52,10 @@
                                     url: "http://"+report_url_api+"/kpa/work/booking-sales-report",
                                     dataType: "text",
                                     beforeSend: function () {
-                                        $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+                                        if(isFirstLoad) {
+                                            isFirstLoad = false;
+                                            $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+                                        }
                                     },
                                     success: function(data) {
                                         var json = $.parseJSON(data);
@@ -104,7 +109,7 @@
 
                         }
 
-//                        setInterval(populate_sales_report, 2000);
+                        setInterval(populate_sales_report, 2000);
 
                     </script>
                     <section class="panel">

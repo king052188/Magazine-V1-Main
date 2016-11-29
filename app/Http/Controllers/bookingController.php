@@ -28,7 +28,7 @@ class bookingController extends Controller
                             AND b.type = 1
                         ) AS client_name,
                         (
-                            SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
+                            SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name)
                             FROM client_contacts_table AS a
                             INNER JOIN client_table AS b
                             ON a.client_id = b.Id
