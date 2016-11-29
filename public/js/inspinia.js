@@ -8,6 +8,15 @@
 
 $(document).ready(function () {
 
+    var url = window.location;
+    // Will only work if string in href matches with location
+    $('ul.nav a[href="'+ url +'"]').parent().addClass('active');
+
+    // Will also work for relative and absolute hrefs
+    $('ul.nav a').filter(function() {
+        return this.href == url;
+    }).parent().addClass('active');
+
 
     // Add body-small class if window less than 768px
     if ($(this).width() < 769) {
@@ -102,6 +111,8 @@ $(document).ready(function () {
     //    if (!$('body').hasClass('no-skin-config'))
     //        $('body').append(data);
     //});
+
+
 
     // Minimalize menu
     $('.navbar-minimalize').click(function () {
