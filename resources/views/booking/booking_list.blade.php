@@ -43,113 +43,79 @@
                 </div>
                 @endif
                 <div class="table-responsive">
-                    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-                    <script>
+                
+                        <table class="table table-striped table-bordered table-hover dataTables-example" >
+                            <thead>
+                            <tr>
+                                <th style='text-align: center; width: 40px;'>#</th>
+                                <th style='text-align: left; width: 100px;''>TRANS#</th>
+                                <th style='text-align: left; width: 100px;'>MAG NAME</th>
+                                <th style='text-align: left; width: 100px;'>SALES</th>
+                                <th style='text-align: left; width: 100px;'>CLIENT</th>
+                                <th style='text-align: left; width: 100px;'>AGENCY</th>
+                                <th style='text-align: center; width: 40px;'># OF ISSUE</th>
+                                <th style='text-align: left; width: 100px;'>AMOUNT</th>
+                                <th style='text-align: center; width: 245px;'>STATUS</th>
+                                <th style='text-align: center; width: 50px;'></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $n = 1;
+                                    $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
+                                ?>
+                                @for($i = 0; $i < COUNT($booking); $i++)
+                                    <tr>
+                                        <td style='text-align: center;'>{{ $n++ }}</td>
+                                        <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_name . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->agency_name }}</td>
+                                        <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->total_amount }}</td>
+                                        <td style='text-align: center;'>
 
-                        update_status = function(control_id) {
-
-                            var selected = $('#ddlStatus_' + control_id).val();
-
-                            var url = "/transaction/update/row/"+ control_id +"/"+ selected;
-
-                            $(document).ready( function() {
-
-                                $.ajax({
-                                    url: url,
-                                    dataType: "text",
-                                    beforeSend: function () {
-
-                                    },
-                                    success: function(data) {
-                                        var json = $.parseJSON(data);
-
-                                        console.log(json);
-
-                                        if(json.status == 200)
-                                        {
-                                            alert("Update was successful");
-                                            location.reload();
-                                        }
-                                    }
-                                });
-
-                            } );
-
-                        }
-
-
-                    </script>
-                    <table class="table table-striped table-bordered table-hover dataTables-example" >
-                        <thead>
-                        <tr>
-                            <th style='text-align: center; width: 50px;'>#</th>
-                            <th style='text-align: left; width: 150px;''>TRANS#</th>
-                            <th style='text-align: left; width: 150px;'>MAG NAME</th>
-                            <th style='text-align: left; width: 150px;'>SALES</th>
-                            <th style='text-align: left; width: 150px;'>CLIENT</th>
-                            <th style='text-align: left; width: 150px;'>AGENCY</th>
-                            <th style='text-align: left; width: 150px;'># OF ISSUE</th>
-                            <th style='text-align: left; width: 150px;'>AMOUNT</th>
-                            <th style='text-align: center; width: 245px;'>STATUS</th>
-                            <th style='text-align: center; width: 50px;'></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                                $n = 1;
-                                $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
-                            ?>
-                            @for($i = 0; $i < COUNT($booking); $i++)
-                                <tr>
-                                    <td style='text-align: center;'>{{ $n++ }}</td>
-                                    <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_name . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->agency_name }}</td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->number_of_issue }}</td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->total_amount }}</td>
-                                    <td style='text-align: center;'>
-
-                                        @if($_COOKIE['role'] > 2)
-                                            <form class="form-inline">
+                                            @if($_COOKIE['role'] > 2)
+                                                <form class="form-inline">
+                                                    <div class="form-group">
+                                                                    <select class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ $booking[$i]->status == 4 ? "disabled" : "" }}>
+                                                                        @if($booking[$i]->status == 4)
+                                                                            <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value="4">Declined</option>
+                                                                        @else
+                                                                            <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value="1">Pending</option>
+                                                                            <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value="2">For Approval</option>
+                                                                        @endif
+                                                                    </select>
+                                                                @if($booking[$i]->status <= 2)
+                                                                    <button class="btn btn-info" id="btn_update" onclick="update_status({{ $booking[$i]->Id  }})" style="margin-bottom: 0;">Update</button>
+                                                                @endif
+                                                       </div>
+                                                </form>
+                                            @else
+                                            <div class="form-inline">
                                                 <div class="form-group">
-                                                                <select class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ $booking[$i]->status == 4 ? "disabled" : "" }}>
-                                                                    @if($booking[$i]->status == 4)
-                                                                        <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value="4">Declined</option>
-                                                                    @else
-                                                                        <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value="1">Pending</option>
-                                                                        <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value="2">For Approval</option>
-                                                                    @endif
-                                                                </select>
-                                                            @if($booking[$i]->status <= 2)
-                                                                <button class="btn btn-info" id="btn_update" onclick="update_status({{ $booking[$i]->Id  }})" style="margin-bottom: 0;">Update</button>
-                                                            @endif
-                                                   </div>
-                                            </form>
-                                        @else
-                                        <div class="form-inline">
-                                            <div class="form-group">
-                                                <select class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
-                                                    <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
-                                                    <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
-                                                    <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
-                                                    <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>
-                                                    <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
-                                                </select>
-                                                <button class="btn btn-info" id="btn_update" onclick="update_status({{ $booking[$i]->Id  }})" style="margin-bottom: 0;">Update</button>
+                                                    <select class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                        <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
+                                                        <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
+                                                        <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
+                                                        <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>
+                                                        <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
+                                                    </select>
+                                                    <button class="btn btn-info" id="btn_update" onclick="update_status({{ $booking[$i]->Id  }})" style="margin-bottom: 0;">Update</button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        @endif
+                                            @endif
 
-                                    </td>
-                                    <td style='text-align: center;'>
-                                        <a href="http://{{ $report_api['Url_Port'] }}/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target="_blank" class="btn btn-primary">Preview</a>
-                                    </td>
-                                </tr>
-                            @endfor
-                        </tbody>
-                    </table>
+                                        </td>
+                                        <td style='text-align: center;'>
+                                            <a href="http://{{ $report_api['Url_Port'] }}/kpa/work/transaction/generate/pdf/{{ $booking[$i]->trans_num }}" target="_blank" class="btn btn-primary">Preview</a>
+                                        </td>
+                                    </tr>
+                                @endfor
+                            </tbody>
+                        </table>
+                   
                 </div>
             </div>
         </div>
@@ -157,3 +123,39 @@
     </div>
 </div>
 @endsection
+
+<script>
+
+    update_status = function(control_id) {
+
+        var selected = $('#ddlStatus_' + control_id).val();
+
+        var url = "/transaction/update/row/"+ control_id +"/"+ selected;
+
+        $(document).ready( function() {
+
+            $.ajax({
+                url: url,
+                dataType: "text",
+                beforeSend: function () {
+
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+
+                    console.log(json);
+
+                    if(json.status == 200)
+                    {
+                        alert("Update was successful");
+                        location.reload();
+                    }
+                }
+            });
+
+        } );
+
+    }
+
+
+</script>
