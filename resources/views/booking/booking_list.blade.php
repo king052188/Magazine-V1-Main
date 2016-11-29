@@ -84,9 +84,12 @@
                         <tr>
                             <th style='text-align: center; width: 50px;'>#</th>
                             <th style='text-align: left; width: 150px;''>TRANS#</th>
+                            <th style='text-align: left; width: 150px;'>MAG NAME</th>
                             <th style='text-align: left; width: 150px;'>SALES</th>
                             <th style='text-align: left; width: 150px;'>CLIENT</th>
                             <th style='text-align: left; width: 150px;'>AGENCY</th>
+                            <th style='text-align: left; width: 150px;'># OF ISSUE</th>
+                            <th style='text-align: left; width: 150px;'>AMOUNT</th>
                             <th style='text-align: center; width: 245px;'>STATUS</th>
                             <th style='text-align: center; width: 50px;'></th>
                         </tr>
@@ -99,10 +102,13 @@
                             @for($i = 0; $i < COUNT($booking); $i++)
                                 <tr>
                                     <td style='text-align: center;'>{{ $n++ }}</td>
-                                    <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->sales_name }}</td>
+                                    <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_name . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
                                     <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
                                     <td style='text-align: left;'>{{ $booking[$i]->agency_name }}</td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->number_of_issue }}</td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->total_amount }}</td>
                                     <td style='text-align: center;'>
 
                                         @if($_COOKIE['role'] > 2)
