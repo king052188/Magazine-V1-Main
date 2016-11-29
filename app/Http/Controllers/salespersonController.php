@@ -28,6 +28,8 @@ class salespersonController extends Controller
     public function create()
     {
        return view('salesperson/create');
+        
+        
     }
 
     /**

@@ -148,7 +148,17 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12">
+                            <?php
+                                $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
+                            ?>
                             <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+                            <script>
+                                function open_preview(trans_number)
+                                {
+                                    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_number + "?show=preview",
+                                            "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
+                                }
+                            </script>
                             <script>
                                 var trans_id = {{ $transaction_uid[0]->transaction_id }};
                                 populate_issues_transaction(trans_id);
@@ -186,7 +196,6 @@
                                                     html_thmb += "<td>"+item_count+"</td>";
                                                     html_thmb += "<td>"+tran.criteria_name+"</td>";
                                                     html_thmb += "<td>"+tran.package_name+"</td>";
-                                                    html_thmb += "<td>"+tran.amount+"</td>";
                                                     html_thmb += "<td>"+tran.quarter_issued+"</td>";
 
                                                     var n_status = "Void";
@@ -203,14 +212,18 @@
                                                     }
 
                                                     html_thmb += "<td>"+n_status+"</td>";
-                                                    html_thmb += "<td>"+tran.created_at+"</td>";
+                                                    html_thmb += "<td>"+tran.amount+"</td>";
+                                                    html_thmb += "<td><button>Delete</button></td>";
                                                     html_thmb += "</tr>";
 
                                                     item_count++;
                                                 });
 
-
                                                 $('table#issue_reports > tbody').empty().prepend(html_thmb);
+
+                                                $('#total_result').append('<b style = "font-size: 15px;">Total Amount : ' + json.Total_Amount + '</b>');
+                                                $('#show_button').append(' <a href = "{{ URL('/booking/booking-list') }}" class="btn btn-default">Back</a>');
+                                                $('#show_button').append(' <a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); class = "btn btn-primary">Preview</a>');
                                             }
                                         });
                                     } )
@@ -229,16 +242,18 @@
                                             <th>Item#</th>
                                             <th>Criteria Name</th>
                                             <th>Package Size</th>
-                                            <th>Amount</th>
-                                            <th>Quarter Issued</th>
+                                            <th>Quarter / Issued</th>
                                             <th>Status</th>
-                                            <th>Date Created</th>
+                                            <th>Amount</th>
+                                            <th>-</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                     </tbody>
                                 </table>
+                                <div id = "total_result" style = "margin-top: 10px;" class = "pull-left"></div>
+                                <div id = "show_button" style = "margin-top: 35px;" class = "pull-right"></div>
                             </section>
                         </div>
                     </div>
