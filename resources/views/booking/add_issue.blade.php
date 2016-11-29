@@ -32,7 +32,7 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <div class="col-lg-2">
+        <div class="col-lg-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Add Issue <small> *all fields are required</small></h5>
@@ -135,7 +135,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-10">
+        <div class="col-lg-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>List Of Issue</h5>
