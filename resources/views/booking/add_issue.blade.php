@@ -252,8 +252,8 @@
 
                                     </tbody>
                                 </table>
-                                <div id = "total_result" style = "margin-top: 10px;" class = "pull-left"></div>
-                                <div id = "show_button" style = "margin-top: 35px;" class = "pull-right"></div>
+                                <div id="total_result" style="margin-top: 10px;" class="pull-left"></div>
+                                <div id="show_button" style="margin-top: 35px;" class="pull-right"></div>
                             </section>
                         </div>
                     </div>
