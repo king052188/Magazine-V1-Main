@@ -35,6 +35,75 @@
             </div>
             <div class="ibox-content">
                 <div class="table-responsive">
+                    <style>
+
+                        .trans {
+                            display: inline-block;
+                            padding: 6px 12px;
+                            margin-bottom: 0;
+                            font-weight: 400;
+                            line-height: 1.42857143;
+                            text-align: center;
+                            -ms-touch-action: manipulation;
+                            touch-action: manipulation;
+                            -webkit-user-select: none;
+                            -moz-user-select: none;
+                            -ms-user-select: none;
+                            user-select: none;
+                            background-image: none;
+                            border: 1px solid transparent;
+                            border-radius: 4px;
+                        }
+
+                        .trans_pending {
+                            background-color: #8B8B8B;
+                            border-color: #8B8B8B;
+                            color: #FFFFFF;
+                        }
+
+                        .trans_pending:hover {
+                            background-color: #ffffff;
+                            border-color: #8B8B8B;
+                            color: #8B8B8B;
+                        }
+
+                        .trans_for_approval {
+                            background-color: #D329D8;
+                            border-color: #D329D8;
+                            color: #FFFFFF;
+                        }
+
+                        .trans_for_approval:hover {
+                            background-color: #FFFFFF;
+                            border-color: #D329D8;
+                            color: #D329D8;
+                        }
+
+                        .trans_approved {
+                            background-color: #3FD127;
+                            border-color: #3FD127;
+                            color: #FFFFFF;
+                        }
+
+                        .trans_approved:hover {
+                            background-color: #FFFFFF;
+                            border-color: #3FD127;
+                            color: #3FD127;
+                        }
+
+                        .trans_declined_void {
+                            background-color: #D83C2F;
+                            border-color: #D83C2F;
+                            color: #FFFFFF;
+                        }
+
+                        .trans_declined_void {
+                            background-color: #FFFFFF;
+                            border-color: #D83C2F;
+                            color: #D83C2F;
+                        }
+
+                    </style>
                     <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
                     <script>
 
@@ -85,18 +154,22 @@
 
                                             if(p_status == 1) {
                                                 n_status = "Pending";
+                                                html_thmb += "<td style='text-align: left;'> <span class='trans trans_pending'>"+n_status+"</span> </td>";
                                             }
                                             else if(p_status == 2) {
                                                 n_status = "For Approval";
+                                                html_thmb += "<td style='text-align: left;'> <span class='trans trans_for_approval'>"+n_status+"</span> </td>";
                                             }
                                             else if(p_status == 3) {
                                                 n_status = "Approved";
+                                                html_thmb += "<td style='text-align: left;'> <span class='trans trans_approved'>"+n_status+"</span> </td>";
                                             }
-                                            else if(p_status == 4) {
-                                                n_status = "Declined";
+                                            else {
+                                                n_status = "Void";
+                                                html_thmb += "<td style='text-align: left;'> <span class='trans trans_declined_void'>"+n_status+"</span> </td>";
                                             }
 
-                                            html_thmb += "<td style='text-align: left;'>"+n_status+"</td>";
+
                                             html_thmb += "</tr>";
 
                                             item_count++;
@@ -109,7 +182,7 @@
 
                         }
 
-                        setInterval(populate_sales_report, 2000);
+//                        setInterval(populate_sales_report, 2000);
 
                     </script>
                     <section class="panel">
