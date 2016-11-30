@@ -52,7 +52,8 @@
                                     <label>Client ID <i>(UID of client_contacts_table)</i></label>
 
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Client ID" name="client_id" id="clientIdField">
+                                        <input type="text" class="form-control hidden" name="client_id" id="clientIdField" value="">
+                                        <input type="text" class="form-control" placeholder="Client ID" id="clientIdFieldView">
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_client"><i class="fa fa-search"></i></button>
                                         </span>
@@ -64,7 +65,8 @@
                                     <label for="ex2">Agency ID</label>
 
                                     <div class="input-group">
-                                        <input type="text" class="form-control" placeholder="Agency ID" name="agency_id" id="agencyIdField">
+                                        <input type="text" class="form-control hidden" name="agency_id" id="agencyIdField" value="">
+                                        <input type="text" class="form-control" placeholder="Agency ID"  id="agencyIdFieldView">
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_agency"><i class="fa fa-search"></i></button>
                                         </span>
@@ -99,7 +101,7 @@
                             <div class="modal-body">
                                 <ul class="list-group list_client">
                                     @for($i = 0; $i < COUNT($subscriber); $i++)
-                                            <li class="list-group-item" data-dismiss="modal" onclick="getClientValue('{{ $subscriber[$i]->company_name . "-" . $subscriber[$i]->branch_name }}')" value="{{ $subscriber[$i]->child_uid }}"> {{ $subscriber[$i]->company_name . "-" . $subscriber[$i]->branch_name }}</li>
+                                            <li class="list-group-item" data-dismiss="modal" id="{{ $subscriber[$i]->child_uid }}"  > {{ $subscriber[$i]->company_name . "-" . $subscriber[$i]->branch_name }}</li>
                                     @endfor
                                 </ul>
                             </div>
@@ -120,9 +122,9 @@
                                 <h4 class="modal-title" id="myModalLabel">Client List</h4>
                             </div>
                             <div class="modal-body">
-                                <ul class="list-group list_client">
+                                <ul class="list-group list_agency">
                                     @for($i = 0; $i < COUNT($agency); $i++)
-                                            <li class="list-group-item" data-dismiss="modal" onclick="getAgencyValue('{{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}')" > {{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}</li>
+                                            <li class="list-group-item" data-dismiss="modal" id="{{ $agency[$i]->child_uid }}"> {{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}</li>
                                     @endfor
                                 </ul>
                             </div>
@@ -134,6 +136,7 @@
                 </div>
 
 
+
             </div>
         </div>
     </div>
@@ -141,15 +144,18 @@
 @endsection
 
 @section('scripts')
+
 <script type="text/javascript">
 
-        function getClientValue(value) {
-            $('#clientIdField').val(value);
-        }
-        
-        function getAgencyValue(value) {
-            $('#agencyIdField').val(value);
-        }
+$(".list_client li").click(function() {
+    $('#clientIdField').val($(this).attr('id'));
+    $('#clientIdFieldView').val($(this).text());
+});
+
+$(".list_agency li").click(function() {
+    $('#agencyIdField').val($(this).attr('id'));
+    $('#agencyIdFieldView').val($(this).text());
+});
 
 </script>
 
