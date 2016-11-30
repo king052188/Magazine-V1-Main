@@ -50,9 +50,9 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
+                            <th style="width:30px;">#</th>
+                            <th>Company</th>
+                            <th style="width:30px;">&nbsp;</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -61,7 +61,7 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td><a href = "{{ URL('/client/client_contacts/' . $subscribers[$i]->Id) }}">{{ $subscribers[$i]->company_name }}</a></td>
-                                <td>{{ $subscribers[$i]->type == 1 ? "Subscriber" : "" }}</td>
+                                <td> <button> EDIT </button> </td>
                             </tr>
                         @endfor
                         </tbody>
@@ -84,9 +84,9 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
+                            <th style="width:30px;">#</th>
+                            <th>Company</th>
+                            <th style="width:30px;">&nbsp;</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -95,7 +95,7 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td><a href = "{{ URL('/client/client_contacts/' . $agencies[$i]->Id) }}">{{ $agencies[$i]->company_name }}</a></td>
-                                <td>{{ $agencies[$i]->type == 2 ? "Agency" : "" }}</td>
+                                <td> <button> EDIT </button> </td>
                             </tr>
                         @endfor
                         </tbody>

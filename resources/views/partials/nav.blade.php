@@ -34,7 +34,6 @@
                     <a href="#"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="/client/create">Create New Clients</a></li>
-                        <li><a href="#">Edit Clients</a></li>
                         <li><a href="/client/all">View All Clients</a></li>
                     </ul>
                 </li>
@@ -49,18 +48,12 @@
                     <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="/sales_report/view">Sales Report</a></li>
-                        <li><a href="#">Report Sample 2</a></li>
-                        <li><a href="#">Report Sample 3</a></li>
-                        <li><a href="#">Report Sample 4</a></li>
-                        <li><a href="#">Report Sample 5</a></li>
-                        <li><a href="#">Report Sample 6</a></li>
                     </ul>
                 </li>
                 <li class="{{ Request::is('client') || Request::is('client/*') ? 'active' : '' }}">
                     <a href="#"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="/client/create">Create New Clients</a></li>
-                        <li><a href="#">Edit Clients</a></li>
                         <li><a href="/client/all">View All Clients</a></li>
                     </ul>
                 </li>
@@ -68,7 +61,6 @@
                     <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Salesperson</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="/salesperson/create">Create New Salesperson</a></li>
-                        <li><a href="#">Edit Salesperson</a></li>
                         <li><a href="/salesperson/all">View All Salesperson</a></li>
                     </ul>
                 </li>
@@ -84,7 +76,6 @@
                     <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Magazine</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="/magazine/create">Create New Magazine</a></li>
-                        <li><a href="#">Edit Magazine</a></li>
                         <li><a href="/magazine/all">View All Magazine</a></li>
                     </ul>
                 </li>
