@@ -134,13 +134,6 @@
                 </div>
 
 
-                      <select class="form-control" name="agency_id">
-                                        @for($i = 0; $i < COUNT($agency); $i++)
-                                            <option value = {{ $agency[$i]->child_uid }}>{{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}</option>
-                                        @endfor
-                                    </select>
-
-
             </div>
         </div>
     </div>
