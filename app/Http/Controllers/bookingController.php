@@ -18,39 +18,54 @@ class bookingController extends Controller
 
         $booking = DB::SELECT("    
                         SELECT 
-                        booking.*, mag_l.mag_code, mag_l.magazine_country , mag_l.magazine_name,
-                        (
-                            SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
-                            FROM client_contacts_table AS a
-                            INNER JOIN client_table AS b
-                            ON a.client_id = b.Id
-                            WHERE a.Id = booking.client_id
-                            AND b.type = 1
-                        ) AS client_name,
-                        (
-                            SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
-                            FROM client_contacts_table AS a
-                            INNER JOIN client_table AS b
-                            ON a.client_id = b.Id
-                            WHERE a.Id = booking.agency_id
-                            AND b.type = 2
-                        ) AS agency_name,
-                        (
-                            SELECT 
-                                CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) AS sales_name
-                            FROM user_account AS a
-                            WHERE a.Id = booking.sales_rep_code
-                        ) AS sales_name
-                    FROM 
-                        booking_sales_table AS booking
-                    INNER JOIN 
-                        magazine_transaction_table AS mag_t
-                    ON 
-                        booking.Id = mag_t.transaction_id
-                    INNER JOIN 
-                        magazine_table AS mag_l
-                    ON 
-                        mag_t.magazine_id = mag_l.Id
+	book_trans.*, 
+	(
+		SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name)
+		FROM user_account AS a
+		WHERE Id = book_trans.sales_rep_code 
+	) AS sales_rep_name,
+	(
+		SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
+		FROM client_contacts_table AS a
+		INNER JOIN client_table AS b
+		ON a.client_id = b.Id
+		WHERE a.Id = book_trans.client_id
+		AND b.type = 1
+	) AS client_name,
+	(
+		SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
+		FROM client_contacts_table AS a
+		INNER JOIN client_table AS b
+		ON a.client_id = b.Id
+		WHERE a.Id = book_trans.agency_id
+		AND b.type = 2
+	) AS agency_name,
+    ( 
+		SELECT magazine_name FROM magazine_table WHERE Id = m_trans.magazine_id 
+	) AS magazine_name,
+    ( 
+		SELECT 
+			CASE WHEN magazine_country = 1 THEN 'USA' 
+			WHEN magazine_country = 2 THEN 'CANADA' 
+			ELSE 'PHILIPPINES' END AS magazine_country_name
+		FROM magazine_table
+		WHERE Id = m_trans.magazine_id
+	) AS magazine_country_name,
+	COUNT(*) AS number_of_issue, 
+	SUM(m_issue.amount) AS total_amount
+FROM 
+	magazine_issue_transaction_table AS m_issue
+INNER JOIN
+	magazine_transaction_table AS m_trans
+ON
+	m_issue.magazine_trans_id = m_trans.Id
+INNER JOIN
+	booking_sales_table AS book_trans
+ON
+	m_trans.transaction_id = book_trans.Id
+GROUP BY 
+	book_trans.Id, book_trans.trans_num, book_trans.sales_rep_code, book_trans.client_id, book_trans.agency_id, book_trans.status, book_trans.updated_at, book_trans.created_at, m_trans.magazine_id
+
         ");
 
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();

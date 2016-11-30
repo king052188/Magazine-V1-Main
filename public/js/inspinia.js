@@ -1,13 +1,4 @@
-/*
- *
- *   INSPINIA - Responsive Admin Theme
- *   version 2.4
- *
- */
-
-
 $(document).ready(function () {
-
 
     // Add body-small class if window less than 768px
     if ($(this).width() < 769) {
@@ -102,6 +93,8 @@ $(document).ready(function () {
     //    if (!$('body').hasClass('no-skin-config'))
     //        $('body').append(data);
     //});
+
+
 
     // Minimalize menu
     $('.navbar-minimalize').click(function () {
@@ -240,6 +233,7 @@ $(document).ready(function () {
         }
     }
 });
+
 
 // check if browser support HTML5 local storage
 function localStorageSupport() {

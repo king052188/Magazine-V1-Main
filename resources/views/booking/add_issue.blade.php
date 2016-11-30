@@ -32,7 +32,7 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <div class="col-lg-2">
+        <div class="col-lg-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Add Issue <small> *all fields are required</small></h5>
@@ -135,7 +135,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-10">
+        <div class="col-lg-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>List Of Issue</h5>
@@ -213,7 +213,7 @@
 
                                                     html_thmb += "<td>"+n_status+"</td>";
                                                     html_thmb += "<td>"+tran.amount+"</td>";
-                                                    html_thmb += "<td><button>Delete</button></td>";
+                                                    html_thmb += "<td style='text-align: center;'><button class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></button></td>";
                                                     html_thmb += "</tr>";
 
                                                     item_count++;
@@ -245,15 +245,15 @@
                                             <th>Quarter / Issued</th>
                                             <th>Status</th>
                                             <th>Amount</th>
-                                            <th>-</th>
+                                            <th style="text-align: center;">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                     </tbody>
                                 </table>
-                                <div id = "total_result" style = "margin-top: 10px;" class = "pull-left"></div>
-                                <div id = "show_button" style = "margin-top: 35px;" class = "pull-right"></div>
+                                <div id="total_result" style="margin-top: 10px;" class="pull-left"></div>
+                                <div id="show_button" style="margin-top: 35px;" class="pull-right"></div>
                             </section>
                         </div>
                     </div>
@@ -265,5 +265,4 @@
 @endsection
 
 @section('scripts')
-{{--code later--}}
 @endsection
