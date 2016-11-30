@@ -290,5 +290,12 @@ GROUP BY
             "status" => 500
         ];
     }
+    
+    public function delete_issue($tran_issue_uid, $mag_trans_uid, $client_id)
+    {
+        MagIssueTransaction::where('id', $tran_issue_uid)->delete();
+
+        return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id);
+    }
 
 }

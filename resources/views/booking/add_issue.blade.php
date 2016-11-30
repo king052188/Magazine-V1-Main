@@ -160,6 +160,15 @@
                                 }
                             </script>
                             <script>
+                                function ConfirmDelete()
+                                {
+                                    var x = confirm("Are you sure you want to delete?");
+                                    if (x)
+                                        return true;
+                                    else
+                                        return false;
+                                }
+
                                 var trans_id = {{ $transaction_uid[0]->transaction_id }};
                                 populate_issues_transaction(trans_id);
                                 function populate_issues_transaction(uid)
@@ -213,7 +222,7 @@
 
                                                     html_thmb += "<td>"+n_status+"</td>";
                                                     html_thmb += "<td>"+tran.amount+"</td>";
-                                                    html_thmb += "<td style='text-align: center;'><button class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></button></td>";
+                                                    html_thmb += "<td style='text-align: center;'><a onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a></td>";
                                                     html_thmb += "</tr>";
 
                                                     item_count++;
