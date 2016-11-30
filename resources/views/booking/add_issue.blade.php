@@ -75,10 +75,10 @@
                                                         if(json == null)
                                                             return false;
 
-                                                        $('#ad_package_id').empty();
-                                                        $('#package_label').append("Package");
-                                                        $('#ad_package_id').append("<select class='form-control' name = 'ad_package_id' id = 'ad_package_id_select'>");
-                                                        $('#ad_package_id_select').append("<option value = '' disabled selected>select</option>");
+//                                                        $('#ad_package_id').empty();
+                                                        $('#package_label').empty().append("Package");
+                                                        $('#ad_package_id').empty().append("<select class='form-control' name = 'ad_package_id' id = 'ad_package_id_select'>");
+                                                        $('#ad_package_id_select').empty().append("<option value = '' disabled selected>select</option>");
                                                         $(json.list).each(function(g, gl){
                                                             $('#ad_package_id_select').append("<option value = "+ gl.id +">"+ gl.package_name +"</option>");
                                                         });
@@ -89,8 +89,9 @@
                                                         $('#ad_package_id_select').on('change',function()
                                                         {
                                                             var i;
-                                                            $('#quarter_issues_label').append("Quarter Issued");
-                                                            $('#quarter_issued_box').append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
+                                                            $('#quarter_issues_label').empty().append("Quarter Issued");
+                                                            $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
+                                                            $('#quarter_issued_select').append("<option value = '' disabled selected>select</option>");
                                                             for(i = 1; i <= 10; i++) {
                                                                 $('#quarter_issued_select').append("<option value = "+ i +"> " + i + "</option>");
                                                             }
@@ -99,8 +100,7 @@
                                                             //select quarter
                                                             $('#quarter_issued_select').on('change',function()
                                                             {
-                                                                $('#btn_save_box').append('<input type="submit" class="btn btn-primary" value = "Save">');
-                                                                $('#btn_save_box').append(' <a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Back</a>');
+                                                                $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary" value = "Save">');
                                                             });
                                                         });
                                                     }
@@ -124,9 +124,9 @@
                                     <br />
                                     <div class="row">
                                         <div class="col-xs-12" id = "btn_save_box">
-                                            <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                                             <div id = "btn_save_box"></div>
                                         </div>
+                                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                                     </div>
                                 </section>
                             </form>
