@@ -118,7 +118,7 @@ GROUP BY
         $booking->trans_num = $request['trans_num'];
         $booking->sales_rep_code = $request['sales_rep_code'];
         $booking->client_id = $request['client_id'];
-        $booking->agency_id = $request['agency_id'];
+        $booking->agency_id = $request['agency_id'] == "" ? 0 : $request['agency_id'];
         $booking->status = 1;
         $booking->save();
 
@@ -206,13 +206,23 @@ GROUP BY
         if(COUNT($isMoreThatOne) == 0 OR COUNT($isMoreThatOne) > 1)
         {
             $type = DB::SELECT("SELECT bb.type as client_type FROM client_contacts_table as aa INNER JOIN client_table as bb ON bb.Id = aa.client_id WHERE aa.Id = {$client_id}");
-//            $type = DB::SELECT("SELECT aa.type as client_type FROM client_table as aa WHERE aa.Id = {$client_id}");
 
             $ad_c = $request['ad_criteria_id'];
             $ad_p = $request['ad_package_id'];
             $quarter_issue = (int)$request['quarter_issue'];
             $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
 
+            $check = DB::table('magazine_issue_transaction_table')
+                ->where('magazine_trans_id', '=', $mag_trans_uid)
+                ->where('ad_criteria_id', '=', $ad_c)
+                ->where('ad_package_id', '=', $ad_p)
+                ->where('quarter_issued', '=', $quarter_issue)
+                ->get();
+
+            if(COUNT($check) > 0)
+            {
+                return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('fail', 'Already exists.');
+            }
 
             $mit = new MagIssueTransaction();
             $mit->magazine_trans_id = $mag_trans_uid;
@@ -223,19 +233,12 @@ GROUP BY
             $mit->status = 2;
             $mit->save();
 
-//            $mag_trans_uid = $request['magazine_trans_id'];
-            $ad_c = DB::table('price_criteria_table')->get();
-            $ad_p = DB::table('price_package_table')->get();
-            $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
-
-//            return view('booking.add_issue', compact('mag_trans_uid','ad_c', 'ad_p', 'client_id', 'transaction_uid'));
-            return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id);
+            return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Add Successful');
 
         }
         elseif(COUNT($isMoreThatOne) == 1)
         {
             $type = DB::SELECT("SELECT bb.type as client_type FROM client_contacts_table as aa INNER JOIN client_table as bb ON bb.Id = aa.client_id WHERE aa.Id = {$client_id}");
-//            $type = DB::SELECT("SELECT aa.type as client_type FROM client_table as aa WHERE aa.Id = {$client_id}");
 
             $aa = DB::SELECT("SELECT * FROM magazine_issue_transaction_table WHERE magazine_trans_id = {$mag_trans_uid}");
             $update_1st_amount = DB::table('price_table')->where('criteria_id', '=', $aa[0]->ad_criteria_id)->where('package_id', '=', $aa[0]->ad_package_id)->where('type', '=', $type[0]->client_type)->get();
@@ -261,12 +264,6 @@ GROUP BY
             $mit->status = 2;
             $mit->save();
 
-//            $mag_trans_uid = $request['magazine_trans_id'];
-            $ad_c = DB::table('price_criteria_table')->get();
-            $ad_p = DB::table('price_package_table')->get();
-            $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
-
-//            return view('booking.add_issue', compact('mag_trans_uid','ad_c', 'ad_p', 'client_id', 'transaction_uid'));
             return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id);
         }
     }

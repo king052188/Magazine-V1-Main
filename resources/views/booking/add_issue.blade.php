@@ -33,6 +33,12 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-4">
+            @if(Session::has('fail'))
+                <div class="alert alert-danger alert-dismissable">
+                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                    {{ Session::get('fail') }}
+                </div>
+            @endif
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Add Issue <small> *all fields are required</small></h5>

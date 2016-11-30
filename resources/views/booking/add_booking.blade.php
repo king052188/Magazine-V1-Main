@@ -27,7 +27,6 @@
     <div class="row">
         <div class="col-lg-7">
             <div class="ibox float-e-margins">
-
                 <div class="ibox-title">
                     <h5>Create New Booking <small> *all fields are required</small></h5>
                     <div class="ibox-tools">
@@ -43,7 +42,7 @@
                             <form role="form" action="{{ url('/booking/magazine-transaction-save-process') }}" method="post">
                                 <div class="form-group">
                                     <label>Trans Code</label>
-                                    <input class="form-control" id="ex2" type="text" value = "{{ $n_booking['id'] }}" name = "trans_num">
+                                    <input class="form-control" id="ex2" type="text" value = "{{ $n_booking['id'] }}" name = "trans_num" readonly>
                                 </div>
 
                                 <input class="form-control" placeholder="Sales Representative Code" id="ex2" type="hidden" value = "{{ $_COOKIE['Id'] }}" name = "sales_rep_code">
@@ -52,7 +51,7 @@
                                     <label>Client ID <i>(UID of client_contacts_table)</i></label>
 
                                     <div class="input-group">
-                                        <input type="text" class="form-control hidden" name="client_id" id="clientIdField" value="">
+                                        <input type="text" class="form-control hidden" name="client_id" id="clientIdField" value="" required>
                                         <input type="text" class="form-control" placeholder="Client ID" id="clientIdFieldView">
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_client"><i class="fa fa-search"></i></button>
