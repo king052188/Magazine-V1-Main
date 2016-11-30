@@ -61,7 +61,7 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td><a href = "{{ URL('/client/client_contacts/' . $subscribers[$i]->Id) }}">{{ $subscribers[$i]->company_name }}</a></td>
-                                <td> <button> EDIT </button> </td>
+                                <td> <a href = "{{ URL('/client/update/' . $subscribers[$i]->Id) }}" class="btn btn-info"> EDIT </a> </td>
                             </tr>
                         @endfor
                         </tbody>
@@ -95,7 +95,7 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td><a href = "{{ URL('/client/client_contacts/' . $agencies[$i]->Id) }}">{{ $agencies[$i]->company_name }}</a></td>
-                                <td> <button> EDIT </button> </td>
+                                <td> <a href = "{{ URL('/client/update/' . $agencies[$i]->Id) }}" class="btn btn-info"> EDIT </a> </td>
                             </tr>
                         @endfor
                         </tbody>

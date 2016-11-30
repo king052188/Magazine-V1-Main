@@ -102,6 +102,25 @@ class clientController extends Controller
         return redirect('/client/all')->with('success', 'Successfully Added New Contact.');
     }
 
+    public function client_update($company_uid)
+    {
+        $result = DB::table('client_reference_table')->get();
+
+        $result_client = DB::table('client_table')->where('Id', '=', $company_uid)->get();
+        return view('client.client_update', compact('result', 'result_client'));
+    }
+
+    public function client_update_save(Request $request, $company_uid)
+    {
+        Client::where('Id', '=', $company_uid)
+            ->update([
+                'company_name' => $request['company_name'],
+                'type' => $request['type']
+            ]);
+
+        return redirect('client/all')->with('success', 'Successfully Updated.');
+    }
+
    
 
     private function generate_branch_number($company_uid)
