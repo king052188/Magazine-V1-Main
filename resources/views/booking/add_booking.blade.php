@@ -27,6 +27,7 @@
     <div class="row">
         <div class="col-lg-7">
             <div class="ibox float-e-margins">
+
                 <div class="ibox-title">
                     <h5>Create New Booking <small> *all fields are required</small></h5>
                     <div class="ibox-tools">
@@ -35,6 +36,7 @@
                         </a>
                     </div>
                 </div>
+
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12">
@@ -48,20 +50,27 @@
 
                                 <div class="form-group">
                                     <label>Client ID <i>(UID of client_contacts_table)</i></label>
-                                    <select class="form-control" name="client_id">
-                                        @for($i = 0; $i < COUNT($subscriber); $i++)
-                                            <option value = {{ $subscriber[$i]->child_uid }}>{{ $subscriber[$i]->company_name . "-" . $subscriber[$i]->branch_name }}</option>
-                                        @endfor
-                                    </select>
+
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Client ID" name="client_id" id="clientIdField">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_client"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
+
                                 </div>
+
                                 <div class="form-group">
                                     <label for="ex2">Agency ID</label>
-                                    <select class="form-control" name="agency_id">
-                                        @for($i = 0; $i < COUNT($agency); $i++)
-                                            <option value = {{ $agency[$i]->child_uid }}>{{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}</option>
-                                        @endfor
-                                    </select>
+
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="Agency ID" name="agency_id" id="agencyIdField">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_agency"><i class="fa fa-search"></i></button>
+                                        </span>
+                                    </div>
                                 </div>
+
                                 <div class="form-group">
                                     <label for="ex2">Select Country</label>
                                     <select class = "form-control" name = "which_country">
@@ -77,8 +86,78 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="modal fade" id="modal_client" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Client List</h4>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="list-group list_client">
+                                    @for($i = 0; $i < COUNT($subscriber); $i++)
+                                            <li class="list-group-item" data-dismiss="modal" onclick="getClientValue('{{ $subscriber[$i]->company_name . "-" . $subscriber[$i]->branch_name }}')" value="{{ $subscriber[$i]->child_uid }}"> {{ $subscriber[$i]->company_name . "-" . $subscriber[$i]->branch_name }}</li>
+                                    @endfor
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modal_agency" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Client List</h4>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="list-group list_client">
+                                    @for($i = 0; $i < COUNT($agency); $i++)
+                                            <li class="list-group-item" data-dismiss="modal" onclick="getAgencyValue('{{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}')" > {{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}</li>
+                                    @endfor
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                      <select class="form-control" name="agency_id">
+                                        @for($i = 0; $i < COUNT($agency); $i++)
+                                            <option value = {{ $agency[$i]->child_uid }}>{{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}</option>
+                                        @endfor
+                                    </select>
+
+
             </div>
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script type="text/javascript">
+
+        function getClientValue(value) {
+            $('#clientIdField').val(value);
+        }
+        
+        function getAgencyValue(value) {
+            $('#agencyIdField').val(value);
+        }
+
+</script>
+
 @endsection
