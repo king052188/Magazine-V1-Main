@@ -44,7 +44,7 @@
                 @endif
                 <div class="table-responsive">
                 
-                        <table class="table table-striped table-bordered table-hover dataTables-example" >
+                        <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example" >
                             <thead>
                             <tr>
                                 <th style='text-align: center; width: 40px;'>#</th>
@@ -55,7 +55,7 @@
                                 <th style='text-align: left; width: 100px;'>AGENCY</th>
                                 <th style='text-align: center; width: 40px;'># OF ISSUE</th>
                                 <th style='text-align: left; width: 100px;'>AMOUNT</th>
-                                <th style='text-align: center; width: 280px;'>STATUS</th>
+                                <th style='text-align: center; width: 280px;'>STATUS / ACTION</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -73,13 +73,12 @@
                                         <td style='text-align: left;'>{{ $booking[$i]->agency_name }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->total_amount }}</td>
-
-
                                     @if($_COOKIE['role'] > 2)
                                         <td style='text-align: right; width: 280px;'>
                                             <form class="form-inline">
                                                 <div class="form-group">
                                                     <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ ($booking[$i]->status == 5 OR $booking[$i]->status == 3)  ? "disabled" : "" }}>
+                                                        <optgroup label="-- Status --"> -- Status -- </optgroup>
                                                         @if($booking[$i]->status == 5)
                                                             <option value="0">Void</option>
                                                         @elseif($booking[$i]->status == 3)
@@ -87,8 +86,9 @@
                                                         @else
                                                             <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value="1">Pending</option>
                                                             <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value="2">For Approval</option>
-                                                            <option disabled>_____________</option>
-                                                                <option value = "0">Preview</option>
+                                                            <optgroup label="-- Action --"> -- Action -- </optgroup>
+                                                                <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
+                                                                <option value = "-2:{{ $booking[$i]->trans_num  }}">Preview (As Client)</option>
                                                             </optgroup>
                                                         @endif
                                                     </select>
@@ -112,13 +112,15 @@
                                               ...
                                             </ul>
                                                 <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                    <optgroup label="-- Status --"> -- Status -- </optgroup>
                                                     <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
                                                     <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
                                                     <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
                                                     {{--<option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>--}}
                                                     <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
-                                                    <option disabled>_____________</option>
-                                                    <option value = "0">Preview</option>
+                                                    <optgroup label="-- Action --"> -- Action -- </optgroup>
+                                                    <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
+                                                    <option value = "-2:{{ $booking[$i]->trans_num  }}">Preview (As Client)</option>
                                                     </optgroup>
                                                 </select>
                                                 <button class="btn btn-info" id="btn_update" style = "width: 80px;margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
@@ -138,6 +140,8 @@
     </div>
 </div>
 @endsection
+
+<script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
 <script>
     function open_preview(trans_number)
     {
@@ -147,16 +151,34 @@
 </script>
 <script>
 
+    $(document).ready( function() {
+        $("#tbl_booking_lists > tbody  > tr").change(function(){
+            var value =  $(this).find('select:first').val();
+            var values = value.split(":");
+
+            if(values.length > 1) {
+                var str_to_int = parseInt(values[0]);
+                var trans_num = values[1];
+
+                if(str_to_int == -1) {
+                    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_num + "?show=preview",
+                            "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
+                }
+                if(str_to_int == -2) {
+                    window.open("http://dashboard.magazine.com/?trans="+trans_num,'_blank');
+
+                }
+            }
+        });
+    } );
+
     update_status = function(control_id, trans_num) {
 
         var selected = $('#ddlStatus_' + control_id).val();
 
-        if(selected == 0)
-        {
-            window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_num + "?show=preview",
-                    "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
-        }
-        else
+        var str_to_int = parseInt(selected);
+
+        if(str_to_int > 0)
         {
             var url = "/transaction/update/row/"+ control_id +"/"+ selected;
 
