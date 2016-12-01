@@ -208,10 +208,10 @@
                                                 $(json.Data).each(function(i, tran){
 
                                                     html_thmb += "<tr>";
-                                                    html_thmb += "<td>"+item_count+"</td>";
-                                                    html_thmb += "<td>"+tran.criteria_name+"</td>";
-                                                    html_thmb += "<td>"+tran.package_name+"</td>";
-                                                    html_thmb += "<td>"+tran.quarter_issued+"</td>";
+                                                    html_thmb += "<td style='text-align: center;'>"+item_count+"</td>";
+                                                    html_thmb += "<td style='text-align: left;'>"+tran.criteria_name+"</td>";
+                                                    html_thmb += "<td style='text-align: left;'>"+tran.package_name+"</td>";
+                                                    html_thmb += "<td style='text-align: center;'> Q"+tran.quarter_issued+"</td>";
 
                                                     var n_status = "Void";
                                                     var p_status = parseInt(tran.status);
@@ -226,8 +226,7 @@
                                                         n_status = "Declined";
                                                     }
 
-                                                    html_thmb += "<td>"+n_status+"</td>";
-                                                    html_thmb += "<td>"+tran.amount+"</td>";
+                                                    html_thmb += "<td style='text-align: right;'>"+tran.amount+"</td>";
                                                     html_thmb += "<td style='text-align: center;'><a onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a></td>";
                                                     html_thmb += "</tr>";
 
@@ -254,13 +253,12 @@
                                 <table class="table table-striped table-bordered table-hover dataTables-example" id="issue_reports">
                                     <thead>
                                         <tr>
-                                            <th>Item#</th>
-                                            <th>Criteria Name</th>
-                                            <th>Package Size</th>
-                                            <th>Quarter / Issued</th>
-                                            <th>Status</th>
-                                            <th>Amount</th>
-                                            <th style="text-align: center;">Action</th>
+                                            <th style="width: 50px; text-align: center;">Item#</th>
+                                            <th style="text-align: left;">TYPE</th>
+                                            <th style="text-align: left;">SIZE</th>
+                                            <th style="width: 100px; text-align: center;">QUARTER / ISSUED</th>
+                                            <th style="width: 100px; text-align: right;">AMOUNT</th>
+                                            <th style="width: 50px; text-align: center;">ACTION</th>
                                         </tr>
                                     </thead>
                                     <tbody>
