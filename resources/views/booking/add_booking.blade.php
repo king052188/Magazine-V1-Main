@@ -57,7 +57,6 @@
                                             <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_client"><i class="fa fa-search"></i></button>
                                         </span>
                                     </div>
-
                                 </div>
 
                                 <div class="form-group">

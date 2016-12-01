@@ -79,9 +79,9 @@
                                         <td style='text-align: right; width: 280px;'>
                                             <form class="form-inline">
                                                 <div class="form-group">
-                                                    <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ ($booking[$i]->status == 4 OR $booking[$i]->status == 3)  ? "disabled" : "" }}>
-                                                        @if($booking[$i]->status == 4)
-                                                            <option value="0">Declined</option>
+                                                    <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ ($booking[$i]->status == 5 OR $booking[$i]->status == 3)  ? "disabled" : "" }}>
+                                                        @if($booking[$i]->status == 5)
+                                                            <option value="0">Void</option>
                                                         @elseif($booking[$i]->status == 3)
                                                             <option value="0">Approved</option>
                                                         @else
@@ -92,7 +92,7 @@
                                                             </optgroup>
                                                         @endif
                                                     </select>
-                                                    @if($booking[$i]->status == 4)
+                                                    @if($booking[$i]->status == 5)
                                                         <a class="btn btn-primary" style = "width: 80px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
                                                     @elseif($booking[$i]->status == 3)
                                                         <a class="btn btn-primary" style = "width: 80px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
@@ -110,7 +110,7 @@
                                                     <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
                                                     <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
                                                     <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
-                                                    <option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>
+                                                    {{--<option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>--}}
                                                     <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
                                                     <optgroup label="----------">
                                                         <option value = "0">Preview</option>
