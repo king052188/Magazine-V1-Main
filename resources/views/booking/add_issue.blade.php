@@ -17,9 +17,6 @@
                 <a href="index.html">Booking List</a>
             </li>
             <li>
-                <a href="index.html">Add Booking</a>
-            </li>
-            <li>
                 <a href="index.html">Add Magazine</a>
             </li>
             <li class="active">

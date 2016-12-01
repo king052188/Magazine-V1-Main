@@ -96,12 +96,23 @@
                                 </button>
                                 <h4 class="modal-title" id="myModalLabel">Client List</h4>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body">.
+
+                               <div class="form-group">
+                                    <div class="input-group">
+                                      <input type="text" class="form-control" placeholder="Search for...">
+                                      <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">Go!</button>
+                                      </span>
+                                    </div>
+                                </div>
+
                                 <ul class="list-group list_client">
                                     @for($i = 0; $i < COUNT($subscriber); $i++)
                                             <li class="list-group-item" data-dismiss="modal" id="{{ $subscriber[$i]->child_uid }}"  > {{ $subscriber[$i]->company_name . "-" . $subscriber[$i]->branch_name }}</li>
                                     @endfor
                                 </ul>
+                                
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -117,9 +128,19 @@
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
-                                <h4 class="modal-title" id="myModalLabel">Client List</h4>
+                                <h4 class="modal-title" id="myModalLabel">Agency List</h4>
                             </div>
                             <div class="modal-body">
+
+                                <div class="form-group">
+                                    <div class="input-group">
+                                      <input type="text" class="form-control" placeholder="Search for...">
+                                      <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">Go!</button>
+                                      </span>
+                                    </div>
+                                </div>
+
                                 <ul class="list-group list_agency">
                                     @for($i = 0; $i < COUNT($agency); $i++)
                                             <li class="list-group-item" data-dismiss="modal" id="{{ $agency[$i]->child_uid }}"> {{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}</li>

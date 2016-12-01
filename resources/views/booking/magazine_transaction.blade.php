@@ -16,9 +16,6 @@
             <li>
                 <a href="{{ url('/booking/booking_list') }}">Booking List</a>
             </li>
-            <li>
-                <a href="{{ url('/booking/add_booking') }}">Add Booking</a>
-            </li>
             <li class="active">
                 <strong>Add Magazine</strong>
             </li>
