@@ -16,7 +16,8 @@ class salespersonController extends Controller
      */
     public function index()
     {
-        $salesperson = Salesperson::all();
+//        $salesperson = Salesperson::all();
+        $salesperson = DB::table('user_account')->where('role', '=', 3)->get();
         return view('salesperson/index', compact('salesperson'));
     }
 

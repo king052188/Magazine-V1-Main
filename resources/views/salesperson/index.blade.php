@@ -46,31 +46,19 @@
                     <table class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                         <tr>
-                            <th>Salesperson Code</th>
                             <th>Salesperson First Name</th>
                             <th>Salesperson Middle Name</th>
                             <th>Salesperson Last Name</th>
-                            <th>Salesperson Address</th>
-                            <th>Salesperson Address Line 2</th>
-                            <th>Salesperson Landline</th>
-                            <th>Salesperson Mobile Number</th>
                             <th>Salesperson Email</th>
-                            <th>Salesperson Status</th>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach ($salesperson as $salesrep)
                                 <tr>
-                                    <td>{{ $salesrep->srepcode }}</td>
-                                    <td>{{ $salesrep->srepfname }}</td>
-                                    <td>{{ $salesrep->sremname }}</td>
-                                    <td>{{ $salesrep->srepsurname }}</td>
-                                    <td>{{ $salesrep->srepadd1 }}</td>
-                                    <td>{{ $salesrep->srepadd2 }}</td>
-                                    <td>{{ $salesrep->slandline }}</td>
-                                    <td>{{ $salesrep->srepmobile }}</td>
-                                    <td>{{ $salesrep->srepemail }}</td>
-                                    <td>{{ $salesrep->srepstatus }}</td>
+                                    <td>{{ $salesrep->first_name }}</td>
+                                    <td>{{ $salesrep->middle_name }}</td>
+                                    <td>{{ $salesrep->last_name }}</td>
+                                    <td>{{ $salesrep->email }}</td>
                                 </tr>
                             @endforeach
 
