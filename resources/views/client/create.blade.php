@@ -41,7 +41,7 @@
                             <form role="form" action="{{ url('/client/save_client') }}" method="post">
                                 <div class="form-group">
                                     <label>Client/Company Name</label>
-                                    <input type="text" placeholder="Client Code" class="form-control"  name="company_name">
+                                    <input type="text" placeholder="Client / Company Name" class="form-control"  name="company_name">
                                 </div>
                                 <div class="form-group">
                        

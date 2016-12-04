@@ -53,7 +53,7 @@
                                 <th style='text-align: left; width: 100px;'>SALES</th>
                                 <th style='text-align: left; width: 100px;'>CLIENT</th>
                                 <th style='text-align: left; width: 100px;'>AGENCY</th>
-                                <th style='text-align: center; width: 40px;'># OF ISSUE</th>
+                                <th style='text-align: center; width: 40px;'>LINE ITEM</th>
                                 <th style='text-align: left; width: 100px;'>AMOUNT</th>
                                 <th style='text-align: center; width: 280px;'>STATUS / ACTION</th>
                             </tr>
@@ -70,7 +70,7 @@
                                         <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
-                                        <td style='text-align: left;'>{{ $booking[$i]->agency_name }}</td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->total_amount }}</td>
                                     @if($_COOKIE['role'] > 2)
@@ -88,7 +88,7 @@
                                                             <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value="2">For Approval</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
-                                                                <option value = "-2:{{ $booking[$i]->trans_num  }}">Preview (As Client)</option>
+                                                                <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
                                                             </optgroup>
                                                         @endif
                                                     </select>
@@ -120,7 +120,7 @@
                                                     <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
                                                     <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                     <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
-                                                    <option value = "-2:{{ $booking[$i]->trans_num  }}">Preview (As Client)</option>
+                                                    <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
                                                     </optgroup>
                                                 </select>
                                                 <button class="btn btn-info" id="btn_update" style = "width: 80px;margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
