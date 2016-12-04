@@ -96,21 +96,13 @@
                                 </button>
                                 <h4 class="modal-title" id="myModalLabel">Client List</h4>
                             </div>
-                            <div class="modal-body">.
+                            <div class="modal-body">
 
                                <div class="form-group">
-                                    <div class="input-group">
-                                      <input type="text" class="form-control" placeholder="Search for...">
-                                      <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button">Go!</button>
-                                      </span>
-                                    </div>
+                                      <input type="text" class="form-control" id="executeSearchClient" placeholder="Search for...">
                                 </div>
 
-                                <ul class="list-group list_client">
-                                    @for($i = 0; $i < COUNT($subscriber); $i++)
-                                            <li class="list-group-item" data-dismiss="modal" id="{{ $subscriber[$i]->child_uid }}"  > {{ $subscriber[$i]->company_name . "-" . $subscriber[$i]->branch_name }}</li>
-                                    @endfor
+                                <ul class="list-group list_client" id="searchResultClient">
                                 </ul>
                                 
                             </div>
@@ -133,19 +125,11 @@
                             <div class="modal-body">
 
                                 <div class="form-group">
-                                    <div class="input-group">
-                                      <input type="text" class="form-control" placeholder="Search for...">
-                                      <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button">Go!</button>
-                                      </span>
-                                    </div>
+                                      <input type="text" class="form-control" id="executeSearchAgency" placeholder="Search for...">
                                 </div>
-
-                                <ul class="list-group list_agency">
-                                    @for($i = 0; $i < COUNT($agency); $i++)
-                                            <li class="list-group-item" data-dismiss="modal" id="{{ $agency[$i]->child_uid }}"> {{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }}</li>
-                                    @endfor
+                                <ul class="list-group list_agency" id="searchResultAgency">
                                 </ul>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -166,16 +150,49 @@
 
 <script type="text/javascript">
 
-$(".list_client li").click(function() {
-    $('#clientIdField').val($(this).attr('id'));
-    $('#clientIdFieldView').val($(this).text());
+$('#executeSearchClient').on('keyup', function(){
+    $value = $(this).val();
+    $.ajax({
+        type    : 'get',
+        url     : '{{ URL::to('executeSearchClient') }}',
+        data    : {'search':$value},
+        success : function(data){
+            if($value.length > 0){
+                $('#searchResultClient').html(data);
+            }else{
+                $('#searchResultClient').html("");
+            }
+        }
+    });
 });
 
-$(".list_agency li").click(function() {
-    $('#agencyIdField').val($(this).attr('id'));
-    $('#agencyIdFieldView').val($(this).text());
+$('#executeSearchAgency').on('keyup', function(){
+    $value = $(this).val();
+    $.ajax({
+        type    : 'get',
+        url     : '{{ URL::to('executeSearchAgency') }}',
+        data    : {'search':$value},
+        success : function(data){
+            if($value.length > 0){
+                $('#searchResultAgency').html(data);
+            }else{
+                $('#searchResultAgency').html("");
+            }
+        }
+    });
 });
 
+$(document).ajaxComplete(function (data) {
+    $(".list_client li").click(function() {
+        $('#clientIdField').val($(this).attr('id'));
+        $('#clientIdFieldView').val($(this).text());
+    });
+
+    $(".list_agency li").click(function() {
+        $('#agencyIdField').val($(this).attr('id'));
+        $('#agencyIdFieldView').val($(this).text());
+    });
+});
 </script>
 
 @endsection

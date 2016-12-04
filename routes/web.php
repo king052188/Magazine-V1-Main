@@ -68,3 +68,7 @@ Route::get('/booking/delete_issue/{tran_issue_uid}/{mag_trans_uid}/{client_id}',
 
 Route::get('/transaction/update/row/{trans_id}/{trans_status}', 'bookingController@trans_selected_row_update');
 
+// Search Routes
+Route::get('/executeSearchClient', 'searchController@executeSearchClient');
+Route::get('/executeSearchAgency', 'searchController@executeSearchAgency');
+
