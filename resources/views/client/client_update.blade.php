@@ -52,10 +52,14 @@
                                             @endfor
                                         </select>
                                     </div>
+                                    <div class="form-group">
+                                        <label>Member?</label>
+                                        <input type="checkbox" name="is_member" {{ $result_client[0]->is_member == 1 ? "checked" : "" }}>
+                                    </div>
 
                                     <div>
                                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                        <button class="btn btn-primary pull-right" type="submit"><strong>Create New Client</strong></button>
+                                        <button class="btn btn-primary pull-right" type="submit"><strong>Update Client</strong></button>
                                     </div>
                                 </form>
                             </div>
