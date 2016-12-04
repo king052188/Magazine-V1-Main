@@ -145,7 +145,8 @@
                                             html_thmb += "<td style='text-align: left;'>"+tran.trans_num+"</td>";
                                             html_thmb += "<td style='text-align: left;'>"+tran.sales_rep_name+"</td>";
                                             html_thmb += "<td style='text-align: left;'>"+tran.client_name+"</td>";
-                                            html_thmb += "<td style='text-align: left;'>"+tran.agency_name+"</td>";
+                                            var agency = tran.agency_name == null ? "NONE" : tran.agency_name;
+                                            html_thmb += "<td style='text-align: left;'>"+agency+"</td>";
                                             html_thmb += "<td style='text-align: center;'>"+tran.number_of_issue+"</td>";
                                             html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount).format('0,0.00')+"</td>";
 
@@ -194,7 +195,7 @@
                                 <th style='text-align: left;'>SALES</th>
                                 <th style='text-align: left;'>CLIENT</th>
                                 <th style='text-align: left;'>AGENCY</th>
-                                <th style='text-align: center;'># OF ISSUE</th>
+                                <th style='text-align: center;'>LINE ITEM</th>
                                 <th style='text-align: right;'>TOTAL AMOUNT</th>
                                 <th style='text-align: left;'>STATUS</th>
                             </tr>

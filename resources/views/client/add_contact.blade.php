@@ -80,12 +80,12 @@
                                         <input class="form-control" id="ex2" type="text" name="mobile">
                                     </div>
                                     <div class="form-group">
-                                        <label for="ex2">Type</label>
-                                        <input disabled class="form-control" value="1" type="text" name="type">
+                                        {{--<label for="ex2">Type</label>--}}
+                                        <input disabled class="form-control" value="1" type="hidden" name="type">
                                     </div>
                                     <div class="form-group">
-                                        <label for="ex2">Status</label>
-                                        <input disabled class="form-control" value="1" type="text" name="status">
+                                        {{--<label for="ex2">Status</label>--}}
+                                        <input disabled class="form-control" value="1" type="hidden" name="status">
                                     </div>
                                 </div>
                                     <div>
