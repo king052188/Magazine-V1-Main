@@ -20,7 +20,7 @@
 <body>
     <div id="wrapper">
         @include('partials.nav')
-        <div id="page-wrapper" class="gray-bg">
+        <div id="page-wrapper" class="dark-gray-bg">
             @include('partials.header')
             @yield('magazine_content')
             @include('partials.footer')

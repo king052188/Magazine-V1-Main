@@ -3843,6 +3843,9 @@ table.table-mail tr td {
 .gray-bg {
   background-color: #f3f3f4;
 }
+.dark-gray-bg {
+  background-color: #d2d2d2;
+}
 .white-bg {
   background-color: #ffffff;
 }
