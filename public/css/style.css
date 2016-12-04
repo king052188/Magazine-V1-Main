@@ -8285,4 +8285,6 @@ body.md-skin {
     background-color: #4a9fe9;
 }
 
-
+#tbl_booking_lists tr td {
+  font-size: 13px;
+}

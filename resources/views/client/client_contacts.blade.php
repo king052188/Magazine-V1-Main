@@ -34,6 +34,17 @@
 
 
 <div class="wrapper wrapper-content animated fadeInRight">
+    @if(Session::has('success'))
+        <div class="alert alert-success alert-dismissable">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            {{ Session::get('success') }}
+        </div>
+    @elseif(Session::has('failed'))
+        <div class="alert alert-danger alert-dismissable">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            {{ Session::get('failed') }}
+        </div>
+    @endif
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
@@ -59,7 +70,7 @@
                             <th>Landline</th>
                             <th>Mobile</th>
                             <th>Type</th>
-                            <th>Status</th>
+                            <th></th>
                         </tr>
                         </thead>
                         <tbody>
@@ -75,8 +86,8 @@
                                         <td>{{ $result[$i]->email }}</td>
                                         <td>{{ $result[$i]->landline }}</td>
                                         <td>{{ $result[$i]->mobile }}</td>
-                                        <td>{{ $result[$i]->type }}</td>
-                                        <td>{{ $result[$i]->status }}</td>
+                                        <td>{{ $result[$i]->type == 1 ? "Primary" : "Secondary" }}</td>
+                                        <td><a href = "{{ URL('/contact/update') . '/' . $result[$i]->Id }}" class="btn btn-info"> EDIT </a></td>
                                     </tr>
                                 @endfor
                         </tbody>

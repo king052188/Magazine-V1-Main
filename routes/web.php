@@ -29,7 +29,10 @@ Route::post('/client/save_client', 'clientController@save_client');
 Route::post('/client/save_contact/{company_uid}', 'clientController@save_contact');
 Route::get('/client/client_contacts/{company_uid}', 'clientController@client_contacts');
 Route::get('/client/update/{company_uid}', 'clientController@client_update');
-Route::post('/client/update/save/{company_uid}', 'clientController@client_update_save');
+Route::post('/client/update/save/{company_uid}/{client_id}', 'clientController@client_update_save');
+
+Route::get('/contact/update/{contact_uid}', 'clientController@contact_update');
+Route::post('/client/save_contact/{company_uid}/{client_id}', 'clientController@contact_update_save');
 
 // Salesperson Routes
 Route::get('/salesperson/create', 'salespersonController@create');

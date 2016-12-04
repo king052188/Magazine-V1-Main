@@ -32,9 +32,28 @@ class clientController extends Controller
 
     public function save_client(Request $request)
     {
-        $client = new Client();
-        $client->company_name = $request['company_name'];
-        $client->type = $request['type'];
+        $clientx = new Client();
+        $clientx->company_name = $request['company_name'];
+        $clientx->type = $request['type'];
+        $clientx->is_member = $request['is_member'] == false ? -1 : 1;
+        $clientx->save();
+        $company_last_uid = $clientx->id;
+
+        $new_bn = $this->generate_branch_number($company_last_uid);
+        $branch_name = $new_bn['new_bn'];
+
+        $client = new ClientContact();
+        $client->client_id = $company_last_uid;
+        $client->branch_name = $branch_name;
+        $client->first_name = $request['first_name'];
+        $client->middle_name = $request['middle_name'];
+        $client->last_name = $request['last_name'];
+        $client->address_1 = $request['address_1'];
+        $client->email = $request['email'];
+        $client->landline = $request['landline'];
+        $client->mobile = $request['mobile'];
+        $client->type = 1; //primary
+        $client->status = 1;
         $client->save();
 
         return redirect('/client/all')->with('success', 'Successfully Added New Client.');
@@ -115,7 +134,7 @@ class clientController extends Controller
         $client->email = $request['email'];
         $client->landline = $request['landline'];
         $client->mobile = $request['mobile'];
-        $client->type = 1;
+        $client->type = 2; //secondary
         $client->status = 1;
         $client->save();
 
@@ -139,13 +158,60 @@ class clientController extends Controller
         Client::where('Id', '=', $company_uid)
             ->update([
                 'company_name' => $request['company_name'],
-                'type' => $request['type']
+                'type' => $request['type'],
+                'is_member' => $request['is_member']
             ]);
 
         return redirect('client/all')->with('success', 'Successfully Updated.');
     }
 
-   
+    public function contact_update($contact_uid)
+    {
+        $result_contact = DB::table('client_contacts_table')->where('Id', '=', $contact_uid)->get();
+        return view('client.update_contact', compact('result_contact'));
+    }
+
+    public function contact_update_save(Request $request, $company_uid, $client_id)
+    {
+
+        $primary = $request['type'] == false ? 2 : 1;
+
+        if($primary == 1)
+        {
+            ClientContact::where('client_id', '=', $client_id)
+                ->update([
+                    'type' => 2
+                ]);
+
+            ClientContact::where('Id', '=', $company_uid)
+                ->update([
+                    'branch_name' => $request['branch_name'],
+                    'first_name' => $request['first_name'],
+                    'middle_name' => $request['middle_name'],
+                    'last_name' => $request['last_name'],
+                    'address_1' => $request['address_1'],
+                    'email' => $request['email'],
+                    'landline' => $request['landline'],
+                    'mobile' => $request['mobile'],
+                    'type' => $primary
+                ]);
+
+            return redirect('client/client_contacts/' . $client_id)->with('success', 'Successfully Updated.');
+        }
+
+        $chk = DB::table('client_contacts_table')
+            ->where('Id','=',$company_uid)
+            ->where('client_id','=',$client_id)
+            ->where('type','=',1)->get();
+
+        if(COUNT($chk) == 1)
+        {
+            return redirect('client/client_contacts/' . $client_id)->with('failed', 'Please set at-least 1 primary contact.');
+        }
+
+
+        return redirect('client/client_contacts/' . $client_id)->with('success', 'Successfully Updated.');
+    }
 
     private function generate_branch_number($company_uid)
     {
