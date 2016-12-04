@@ -16,12 +16,20 @@ class transactionController extends Controller
 {
     public function index()
     {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
         $transactions = Transaction::all();
         return view('transaction/index', compact('transactions'));
     }
 
     public function create()
-    {   
+    {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+        
         $salespersons = Salesperson::all();
         $magazines = Magazine::all();
         $magazines = Client::all();

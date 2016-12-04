@@ -72,13 +72,13 @@
                 {{--<li><a href="/contract/all">View All Contract</a></li>--}}
                 {{--</ul>--}}
                 {{--</li>--}}
-                {{--<li class="{{ Request::is('magazine') || Request::is('magazine/*') ? 'active' : '' }}">--}}
-                    {{--<a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Magazine</span><span class="fa arrow"></span></a>--}}
-                    {{--<ul class="nav nav-second-level collapse">--}}
-                        {{--<li><a href="/magazine/create">Create New Magazine</a></li>--}}
-                        {{--<li><a href="/magazine/all">View All Magazine</a></li>--}}
-                    {{--</ul>--}}
-                {{--</li>--}}
+                <li class="{{ Request::is('magazine') || Request::is('magazine/*') ? 'active' : '' }}">
+                    <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Magazine</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/magazine/create">Create New Magazine</a></li>
+                        <li><a href="/magazine/all">View All Magazine</a></li>
+                    </ul>
+                </li>
                 <li class="{{ Request::is('booking') || Request::is('booking/*') ? 'active' : '' }}">
                     <a href="{{ url('booking/booking-list') }}"><i class="fa fa-credit-card" aria-hidden="true"></i> <span class="nav-label">Booking and Sales</span></a>
                 </li>

@@ -161,17 +161,12 @@
                                 <div class="form-group">
                                       <input type="text" class="form-control" id="executeSearchAgency" placeholder="Search for...">
                                 </div>
-<<<<<<< HEAD
                                 <ul class="list-group list_agency" id="searchResultAgency">
-=======
-
                                 <ul class="list-group list_agency">
                                     @for($i = 0; $i < COUNT($agency); $i++)
                                             <li class="list-group-item" data-dismiss="modal" id="{{ $agency[$i]->child_uid }}">  {{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }} </li>
                                     @endfor
->>>>>>> origin/master
                                 </ul>
-
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

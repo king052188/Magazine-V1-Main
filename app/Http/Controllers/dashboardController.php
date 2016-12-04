@@ -10,6 +10,9 @@ class dashboardController extends Controller
 {
     public function dashboard() {
 
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
 
         return view('/dashboard');
     }

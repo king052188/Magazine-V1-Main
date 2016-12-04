@@ -16,7 +16,10 @@ class salespersonController extends Controller
      */
     public function index()
     {
-//        $salesperson = Salesperson::all();
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
         $salesperson = DB::table('user_account')->where('role', '=', 3)->get();
         return view('salesperson/index', compact('salesperson'));
     }
@@ -28,9 +31,11 @@ class salespersonController extends Controller
      */
     public function create()
     {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
        return view('salesperson/create');
-        
-        
     }
 
     /**

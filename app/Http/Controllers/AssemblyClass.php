@@ -22,4 +22,11 @@ class AssemblyClass extends Controller
             "Url_Port" => "api.magazine.com"
         ];
     }
+
+    public static function check_cookies() {
+        if(count($_COOKIE) <= 3) {
+            return false;
+        }
+        return true;
+    }
 }

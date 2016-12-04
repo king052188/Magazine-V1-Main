@@ -9,88 +9,50 @@ use DB;
 
 class magazineController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
         $magazines = Magazine::all();
         return view('magazine/index', compact('magazines'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
         return view('magazine/create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function magazine_add_new(Request $request)
     {
         $magazine = new Magazine();
-        $magazine->magcode = $request['magcode'];
-        $magazine->clientcode = $request['clientcode'];
-        $magazine->agencycode = $request['agencycode'];
-        $magazine->magname = $request['magname'];
-        $magazine->status = $request['status'];
+        $magazine->company_id = (int)$request['cid'];
+        $magazine->mag_code = $request['magcode'];
+        $magazine->magazine_name = $request['magname'];
+        $magazine->magazine_country = (int)$request['magcountry'];
+        $magazine->status = (int)$request['status'];
         $magazine->save();
 
-        return redirect('magazine/all')->with('success', 'Successfully Added New Magazine.');
+        if($magazine->id > 0) {
+            $mag_uid = $magazine->id;
+            return redirect('magazine/add-ad-color-and-size/'. $mag_uid)->with('success', 'Successfully Added New Magazine.');
+        }
+        return redirect('magazine/create')->with('success', 'Oops, Something went wrong.');
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function magazine_add_color_size($mag_uid)
     {
-        //
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        return view('magazine/ad');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

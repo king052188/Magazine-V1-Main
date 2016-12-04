@@ -12,12 +12,20 @@ class clientController extends Controller
 {
     public function index()
     {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
         $clients = Client::all();
         return view('client/index', compact('clients'));
     }
     
     public function create()
-    {   
+    {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
         $result = DB::table('client_reference_table')->get();
         return view('client.create', compact('result'));
     }
@@ -34,6 +42,10 @@ class clientController extends Controller
 
     public function add_contact($company_uid)
     {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
         $new_bn = $this->generate_branch_number($company_uid);
         $branch_name = $new_bn['new_bn'];
         $result = DB::table('client_table')->where('Id', '=', $company_uid)->get();
@@ -42,6 +54,10 @@ class clientController extends Controller
 
     public function client_contacts($company_uid)
     {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
         $result = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->get();
         $branch_name = DB::table('client_table')->where('Id', '=', $company_uid)->get();
 
@@ -50,6 +66,10 @@ class clientController extends Controller
 
     public function companies()
     {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
         $subscribers = DB::table('client_table')->where('type', '=', 1)->get(); //Subscriber
         $agencies = DB::table('client_table')->where('type', '=', 2)->get(); //Agency
 
@@ -75,7 +95,7 @@ class clientController extends Controller
            }
 
         $client->save();
-        $meal->ingredients()->saveMany($meal_ingredients);
+//        $meal->ingredients()->saveMany($meal_ingredients);
 
         return redirect('client/all')->with('success', 'Successfully Added New Client.');
     }
@@ -104,6 +124,10 @@ class clientController extends Controller
 
     public function client_update($company_uid)
     {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+        
         $result = DB::table('client_reference_table')->get();
 
         $result_client = DB::table('client_table')->where('Id', '=', $company_uid)->get();
