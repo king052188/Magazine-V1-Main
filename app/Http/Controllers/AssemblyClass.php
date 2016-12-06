@@ -19,7 +19,7 @@ class AssemblyClass extends Controller
 
     public static function get_reports_api() {
         return [
-            "Url_Port" => "api.magazine.com"
+            "Url_Port" => "192.168.1.7:80"
         ];
     }
 

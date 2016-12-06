@@ -165,7 +165,7 @@
                             "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
                 }
                 if(str_to_int == -2) {
-                    window.open("http://dashboard.magazine.com/?trans="+trans_num,'_blank');
+                    window.open("http://192.168.1.7:8080/?trans="+trans_num,'_blank');
 
                 }
             }
