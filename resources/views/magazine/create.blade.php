@@ -58,11 +58,13 @@
                                                 if(json.result == 404){
                                                     $("#cid").empty().append("<option>--no data--</option>");
                                                 }
-
-                                                $(json.result).each(function(i, country){
-                                                    $("#cid").empty().append("<option>--select--</option>");
-                                                    $("#cid").empty().append("<option value = '"+ country.Id +"'>"+ country.company_name +"</option>");
-                                                });
+                                                else
+                                                {
+                                                    $(json.result).each(function(i, country){
+                                                        $("#cid").empty().append("<option>--select--</option>");
+                                                        $("#cid").empty().append("<option value = '"+ country.Id +"'>"+ country.company_name +"</option>");
+                                                    });
+                                                }
                                             }
                                         })
                                     });
