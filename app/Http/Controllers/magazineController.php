@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Magazine;
 use App\MagazineCompany;
+use App\MagazinePrice;
+use App\MagazineDiscount;
 use DB;
 
 class magazineController extends Controller
@@ -53,7 +55,34 @@ class magazineController extends Controller
             return redirect("/logout_process");
         }
 
-        return view('magazine/ad');
+        return view('magazine/ad', compact('mag_uid'));
+    }
+
+    public function add_color_size_discount(Request $request, $mag_uid)
+    {
+        $mp = new MagazinePrice();
+        $mp->mag_id = (int)$mag_uid;
+        $mp->ad_color = $request['ad_color'];
+        $mp->ad_size = $request['ad_size'];
+        $mp->ad_amount = $request['ad_amount'];
+        $mp->ad_status = 2;
+        $mp->save();
+        $mp_last_id = $mp->id;
+
+        $discount = $request['discount'];
+        $type = 2;
+
+        foreach($discount as $dis) {
+
+            $md = new MagazineDiscount();
+            $md->mag_price_id = (int)$mp_last_id;
+            $md->percent = $dis;
+            $md->type = $type++;
+            $md->status = 2;
+            $md->save();
+        }
+
+        return redirect('/magazine/all')->with('success', 'Successfully Saved.');
     }
 
     public function save_company(Request $request)

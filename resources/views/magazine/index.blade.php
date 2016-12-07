@@ -47,19 +47,17 @@
                         <thead>
                         <tr>
                             <th>Magazine Code</th>
-                            <th>Client Code</th>
-                            <th>Agency Code</th>
                             <th>Magazine Name</th>
+                            <th>Magazine Country</th>
                             <th>Status</th>
                         </tr>
                         </thead>
                         <tbody>
                             @foreach ($magazines as $magazine)
                                 <tr>
-                                    <td>{{ $magazine->magcode }}</td>
-                                    <td>{{ $magazine->clientcode }}</td>
-                                    <td>{{ $magazine->agencycode }}</td>
-                                    <td>{{ $magazine->magname }}</td>
+                                    <td>{{ $magazine->mag_code }}</td>
+                                    <td>{{ $magazine->magazine_name }}</td>
+                                    <td>{{ $magazine->magazine_country }}</td>
                                     <td>{{ $magazine->status }}</td>
                                 </tr>
                             @endforeach

@@ -51,6 +51,7 @@ Route::get('/magazine/add-ad-color-and-size/{mag_uid}', 'magazineController@maga
 Route::get('/magazine/all', 'magazineController@index');
 Route::post('/magazine/company/save', 'magazineController@save_company');
 Route::get('/magazine/company/get_country/{magc_id}', 'magazineController@get_country');
+Route::post('/magazine/add-color-size-discount/{mag_uid}', 'magazineController@add_color_size_discount');
 
 // Transaction Routes
 Route::get('/transaction/create', 'transactionController@create');
