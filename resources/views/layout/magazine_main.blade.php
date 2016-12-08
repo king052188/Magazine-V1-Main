@@ -12,7 +12,9 @@
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet">
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/checkbox.css') }}">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
+
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.5.6/numeral.min.js"></script>
     @yield('styles')
 </head> 

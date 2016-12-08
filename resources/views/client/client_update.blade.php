@@ -52,9 +52,14 @@
                                             @endfor
                                         </select>
                                     </div>
+                                    
                                     <div class="form-group">
-                                        <label>Member?</label>
-                                        <input type="checkbox" name="is_member" {{ $result_client[0]->is_member == 1 ? "checked" : "" }}>
+                                        <div class="checkbox checkbox-primary">
+                                            <input id="checkbox2" class="styled" type="checkbox" name="is_member" {{ $result_client[0]->is_member == 1 ? "checked" : "" }}>
+                                            <label for="checkbox2">
+                                                Member?
+                                            </label>
+                                        </div>
                                     </div>
 
                                     <div>

@@ -87,7 +87,7 @@
                                         <td>{{ $result[$i]->landline }}</td>
                                         <td>{{ $result[$i]->mobile }}</td>
                                         <td>{{ $result[$i]->type == 1 ? "Primary" : "Secondary" }}</td>
-                                        <td><a href = "{{ URL('/contact/update') . '/' . $result[$i]->Id }}" class="btn btn-info"> EDIT </a></td>
+                                        <td><a href = "{{ URL('/contact/update') . '/' . $result[$i]->Id }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit </a></td>
                                     </tr>
                                 @endfor
                         </tbody>

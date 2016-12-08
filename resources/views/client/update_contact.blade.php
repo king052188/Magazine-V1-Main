@@ -80,8 +80,12 @@
                                             <input class="form-control" id="ex2" type="text" name="mobile" value = "{{ $result_contact[0]->mobile }}">
                                         </div>
                                         <div class="form-group">
-                                            <label for="ex2">Primary?</label>
-                                            <input type="checkbox" name="type" {{ $result_contact[0]->type == 1 ? "checked" : "" }}>
+                                            <div class="checkbox checkbox-primary">
+                                                <input id="checkbox2" class="styled" type="checkbox" name="type" {{ $result_contact[0]->type == 1 ? "checked" : "" }}>
+                                                <label for="checkbox2">
+                                                    Primary?
+                                                </label>
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             {{--<label for="ex2">Status</label>--}}

@@ -21,8 +21,6 @@
             </li>
         </ol>
     </div>
-    <div class="col-lg-2">
-    </div>
 </div>
 
 
@@ -30,10 +28,10 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
 
-        <div class="col-lg-6">
+        <div class="col-lg-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Subscribers</h5>
+                    <h5>List of Clients</h5>
                     <div class="ibox-tools">
                         <a class="collapse-link">
                             <i class="fa fa-chevron-up"></i>
@@ -48,11 +46,11 @@
                     </div>
                     @endif
 
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th style="width:30px;">#</th>
-                            <th>Company</th>
+                            <th>Subscribers</th>
                             <th style="width:30px;">&nbsp;</th>
                         </tr>
                         </thead>
@@ -62,32 +60,17 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td><a href = "{{ URL('/client/client_contacts/' . $subscribers[$i]->Id) }}">{{ $subscribers[$i]->company_name }}</a></td>
-                                <td> <a href = "{{ URL('/client/update/' . $subscribers[$i]->Id) }}" class="btn btn-info"> EDIT </a> </td>
+                                <td><a href = "{{ URL('/client/update/' . $subscribers[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a></td>
                             </tr>
                         @endfor
                         </tbody>
                     </table>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-lg-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Agencies</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-
-                    <table class="table">
+                    <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th style="width:30px;">#</th>
-                            <th>Company</th>
+                            <th>Agency</th>
                             <th style="width:30px;">&nbsp;</th>
                         </tr>
                         </thead>
@@ -97,13 +80,14 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td><a href = "{{ URL('/client/client_contacts/' . $agencies[$i]->Id) }}">{{ $agencies[$i]->company_name }}</a></td>
-                                <td> <a href = "{{ URL('/client/update/' . $agencies[$i]->Id) }}" class="btn btn-info"> EDIT </a> </td>
+                                <td><a href = "{{ URL('/client/update/' . $agencies[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a></td>
                             </tr>
                         @endfor
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

@@ -8291,3 +8291,7 @@ body.md-skin {
 #tbl_booking_lists tr td {
   font-size: 13px;
 }
+
+#tbl_booking_lists tr th {
+  font-size: 13px;
+}
