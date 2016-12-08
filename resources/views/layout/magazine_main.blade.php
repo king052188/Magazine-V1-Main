@@ -37,6 +37,17 @@
 
     <!-- Custom and plugin javascript -->
     <script src="{{ asset('js/inspinia.js')}}"></script>
+
+    <!-- FooTable -->
+    <link href="{{ asset('css/plugins/footable/footable.core.css')}}" rel="stylesheet">
+    <script src="{{ asset('js/plugins/footable/footable.all.min.js')}}"></script>
+    <!-- FooTable -- Page-Level Scripts -->
+    <script>
+        $(document).ready(function() {
+            $('.footable').footable();
+            $('.footable2').footable();
+        });
+    </script>
     @yield('scripts')
 
 </body>

@@ -43,8 +43,25 @@
                             <script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
                             <script>
                                 $(document).ready(function(){
-                                    eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('$(\'#l\').k(\'m\',3(){9 8=$(n).o();$.j({h:"/d/c/e/"+8,g:"p",q:3(4){9 1=$.y(4);b(1==z)B w;b(1.a==r){$("#2").5().6("<0>--s 4--</0>")}u{$(1.a).A(3(i,7){$("#2").5().6("<0>--t--</0>");$("#2").5().6("<0 v = \'"+7.x+"\'>"+7.f+"</0>")})}}})});',38,38,'option|json|cid|function|data|empty|append|country|magc_id|var|result|if|company|magazine|get_country|company_name|dataType|url||ajax|on|magcountry|change|this|val|text|success|404|no|select|else|value|false|Id|parseJSON|null|each|return'.split('|'),0,{}))
-
+                                    $('#magcountry').on('change', function() {
+                                        var magc_id = $(this).val();
+                                        $.ajax({
+                                            url: "/magazine/company/get_country/" + magc_id,
+                                            dataType: "text",
+                                            success: function(data) {
+                                                var json = $.parseJSON(data);
+                                                if (json == null) return false;
+                                                if (json.result == 404) {
+                                                    $("#cid").empty().append("<option>--no data--</option>")
+                                                } else {
+                                                    $(json.result).each(function(i, country) {
+                                                        $("#cid").empty().append("<option>--select--</option>");
+                                                        $("#cid").empty().append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
+                                                    })
+                                                }
+                                            }
+                                        })
+                                    });
                                 });
                             </script>
                             <form role="form" action="/magazine/add-new" method="POST">

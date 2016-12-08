@@ -5,6 +5,7 @@
 @endsection
 
 @section('styles')
+
 @endsection
 
 @section('magazine_content')
@@ -26,8 +27,7 @@
 
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
-
-            <div id="tab_1" class="col-lg-6">
+            <div id="tab_1" class="col-lg-4">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>Create Ad Color & Size<small> *all fields are required</small></h5>
@@ -50,9 +50,8 @@
                                             <option value="3">Black & White</option>
                                         </select>
                                     </div>
-
                                     <div class="form-group">
-                                        <label for="ex2">Color</label>
+                                        <label for="ex2">Ad Size</label>
                                         <select class="form-control" name="ad_size">
                                             <option value="0"> -- Select -- </option>
                                             <option value="1">Double Page Spread</option>
@@ -70,15 +69,12 @@
 
                                     <div class="form-group">
                                         <label>Amount</label>
-                                        <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount">
+                                        <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount" required>
                                     </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div id="tab_1" class="col-lg-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5> Amount Discount by 1 or more Line Items <small> *all fields are required</small></h5>
@@ -147,6 +143,104 @@
                 </div>
             </div>
 
+            <div class="col-lg-8">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Magazine List</h5>
+                    </div>
+                    <div class="ibox-content">
+                        @if(Session::has('success'))
+                            <div class="alert alert-success alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                {{ Session::get('success') }}
+                            </div>
+                        @endif
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th data-toggle="true">No</th>
+                                    <th>Company ID</th>
+                                    <th>Magazine Code</th>
+                                    <th>Magazine Name</th>
+                                    <th>Magazine Country</th>
+                                    <th data-hide="all"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $n = 1 ?>
+                                    @for($i=0; $i < COUNT($mag); $i++)
+                                        <tr>
+                                            <td style = "padding: 5px; text-align: center;">{{ $n++ }}</td>
+                                            <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['company_id'] }}</td>
+                                            <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['mag_code'] }}</td>
+                                            <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['magazine_name'] }}</td>
+                                            <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['magazine_country'] }}</td>
+                                            <td><a data-toggle="collapse" data-target="#demo_{{ $mag[$i]['Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan = "7">
+                                                <div id="demo_{{ $mag[$i]['Id'] }}" class="collapse">
+                                                    @if(COUNT($mag[$i]['ad_result']) > 0)
+                                                        <b>&raquo Price</b>
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                            <tr>
+                                                                <th data-toggle="true" style = "padding: 5px; text-align: center;">Ad Color</th>
+                                                                <th style = "padding: 5px; text-align: center;">Ad Size</th>
+                                                                <th style = "padding: 5px; text-align: center;">Ad Amount</th>
+                                                                <th style = "padding: 5px; text-align: center;">Ad Created</th>
+                                                                <th></th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            @foreach ($mag[$i]['ad_result'] as $ad)
+                                                                <tr>
+                                                                    <td style = "padding: 5px; text-align: center;">{{ $ad['ad_color'] }}</td>
+                                                                    <td style = "padding: 5px; text-align: center;">{{ $ad['ad_size'] }}</td>
+                                                                    <td style = "padding: 5px; text-align: center;">{{ $ad['ad_amount'] }}</td>
+                                                                    <td style = "padding: 5px; text-align: center;">{{ $ad['ad_created'] }}</td>
+                                                                    <td><a data-toggle="collapse" data-target="#demo_{{ $ad['ad_Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan = "6">
+                                                                        <div id="demo_{{ $ad['ad_Id'] }}" class="collapse">
+                                                                            <b>&raquo Discount</b>
+                                                                            <table class="table table-striped table-bordered">
+                                                                                <thead>
+                                                                                <tr>
+                                                                                    <th style = "padding: 5px; text-align: center;">Quantity</th>
+                                                                                    <th data-toggle="true" style = "padding: 5px; text-align: center;">Percent</th>
+                                                                                </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                @foreach ($ad['discount_result'] as $dis)
+                                                                                    <tr>
+                                                                                        <td style = "padding: 5px; text-align: center;">{{ $dis->type }}</td>
+                                                                                        <td style = "padding: 5px; text-align: center;">{{ $dis->percent }}</td>
+                                                                                    </tr>
+                                                                                @endforeach
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    @else
+                                                        <b>No Data</b>
+                                                    @endif
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endfor
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
