@@ -12,10 +12,16 @@ use App\MagIssueTransaction;
 
 class bookingController extends Controller
 {
-    public function booking_list()
+    public function booking_list($filter)
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
+        }
+
+        if($filter == 0){
+            $filter_tran = "WHERE book_trans.status IN (1, 2, 3, 5)";
+        }else{
+            $filter_tran = "WHERE book_trans.status = {$filter}";
         }
 
         $booking = DB::SELECT("    
@@ -53,6 +59,11 @@ class bookingController extends Controller
                                 FROM magazine_table
                                 WHERE Id = m_trans.magazine_id
                             ) AS magazine_country_name,
+                            ( 
+                                SELECT magazine_country
+                                FROM magazine_table
+                                WHERE Id = m_trans.magazine_id
+                            ) AS magazine_country_id,
                             COUNT(*) AS number_of_issue, 
                             SUM(m_issue.amount) AS total_amount
                         FROM 
@@ -65,6 +76,9 @@ class bookingController extends Controller
                             booking_sales_table AS book_trans
                         ON
                             m_trans.transaction_id = book_trans.Id
+                            
+                        $filter_tran
+                        
                         GROUP BY 
                             book_trans.Id, book_trans.trans_num, book_trans.sales_rep_code, book_trans.client_id, book_trans.agency_id, book_trans.status, book_trans.updated_at, book_trans.created_at, m_trans.magazine_id
 
@@ -72,7 +86,7 @@ class bookingController extends Controller
 
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();
 
-        return view('booking.booking_list', compact('booking', 'magazine'))->with('success', 'Booking details successful added!');
+        return view('booking.booking_list', compact('booking', 'magazine', 'filter'))->with('success', 'Booking details successful added!');
     }
 
     public function add_booking()

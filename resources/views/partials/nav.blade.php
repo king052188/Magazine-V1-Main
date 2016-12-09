@@ -80,7 +80,7 @@
                     </ul>
                 </li>
                 <li class="{{ Request::is('booking') || Request::is('booking/*') ? 'active' : '' }}">
-                    <a href="{{ url('booking/booking-list') }}"><i class="fa fa-credit-card" aria-hidden="true"></i> <span class="nav-label">Booking and Sales</span></a>
+                    <a href="{{ url('booking/booking-list/0') }}"><i class="fa fa-credit-card" aria-hidden="true"></i> <span class="nav-label">Booking and Sales</span></a>
                 </li>
 
             @endif
