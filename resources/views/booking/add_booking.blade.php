@@ -87,40 +87,6 @@
                     </div>
                 </div>
 
-                <style>
-
-                    .m_button {
-                        display: inline-block;
-                        padding: 0px 12px;
-                        margin-bottom: 0;
-                        font-weight: 400;
-                        line-height: 1.42857143;
-                        text-align: center;
-                        -ms-touch-action: manipulation;
-                        touch-action: manipulation;
-                        -webkit-user-select: none;
-                        -moz-user-select: none;
-                        -ms-user-select: none;
-                        user-select: none;
-                        background-image: none;
-                        border: 1px solid transparent;
-                        border-radius: 4px;
-                    }
-
-                    .m_button_design {
-                        background-color: #3FD127;
-                        border-color: #3FD127;
-                        color: #FFFFFF;
-                    }
-
-                    .m_button_design:hover {
-                        background-color: #FFFFFF;
-                        border-color: #3FD127;
-                        color: #3FD127;
-                    }
-
-                </style>
-
                 <div class="modal fade" id="modal_client" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -133,11 +99,21 @@
                             <div class="modal-body">
 
                                <div class="form-group">
+                                      <p><i>Type a Phrase or Keyword</i>*</p>
                                       <input type="text" class="form-control" id="executeSearchClient" placeholder="Search for...">
                                 </div>
 
-                                <ul class="list-group list_client" id="searchResultClient">
-                                </ul>
+                                <table class="table table-bordered">
+                                  <thead class="resultheader hidden">
+                                    <tr>
+                                      <th>Agency Name</th>
+                                      <th>Branch Name</th>
+                                      <th>Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="searchResultClient">
+                                  </tbody>
+                                </table>
                                 
                             </div>
                             <div class="modal-footer">
@@ -157,16 +133,22 @@
                                 <h4 class="modal-title" id="myModalLabel">Agency List</h4>
                             </div>
                             <div class="modal-body">
-
                                 <div class="form-group">
+                                      <p><i>Type a Phrase or Keyword</i>*</p>
                                       <input type="text" class="form-control" id="executeSearchAgency" placeholder="Search for...">
                                 </div>
-                                <ul class="list-group list_agency" id="searchResultAgency">
-                                <ul class="list-group list_agency">
-                                    @for($i = 0; $i < COUNT($agency); $i++)
-                                            <li class="list-group-item" data-dismiss="modal" id="{{ $agency[$i]->child_uid }}">  {{ $agency[$i]->company_name . "-" . $agency[$i]->branch_name }} </li>
-                                    @endfor
-                                </ul>
+
+                                <table class="table table-bordered">
+                                  <thead class="resultheader hidden">
+                                    <tr>
+                                      <th>Agency Name</th>
+                                      <th>Branch Name</th>
+                                      <th>Action</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody id="searchResultAgency">
+                                  </tbody>
+                                </table>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -196,8 +178,10 @@ $('#executeSearchClient').on('keyup', function(){
         success : function(data){
             if($value.length > 0){
                 $('#searchResultClient').html(data);
+                $('.resultheader').removeClass('hidden');
             }else{
                 $('#searchResultClient').html("");
+                $('.resultheader').addClass('hidden');
             }
         }
     });
@@ -212,24 +196,27 @@ $('#executeSearchAgency').on('keyup', function(){
         success : function(data){
             if($value.length > 0){
                 $('#searchResultAgency').html(data);
+                $('.resultheader').removeClass('hidden');
             }else{
                 $('#searchResultAgency').html("");
+                $('.resultheader').addClass('hidden');
             }
         }
     });
 });
 
 $(document).ajaxComplete(function (data) {
-    $(".list_client li").click(function() {
-        $('#clientIdField').val($(this).attr('id'));
-        $('#clientIdFieldView').val($(this).text());
+    $(".list_client").click(function() {
+        $('#clientIdField').val($(this).closest('tr').attr('id'));
+        $('#clientIdFieldView').val($(this).closest('tr').attr('class'));
     });
 
-    $(".list_agency li").click(function() {
-        $('#agencyIdField').val($(this).attr('id'));
-        $('#agencyIdFieldView').val($(this).text());
+    $(".list_agency").click(function() {
+        $('#agencyIdField').val($(this).closest('tr').attr('id'));
+        $('#agencyIdFieldView').val($(this).closest('tr').attr('class'));
     });
 });
+
 </script>
 
 @endsection

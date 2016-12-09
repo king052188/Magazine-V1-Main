@@ -156,6 +156,8 @@
                             </div>
                         @endif
                         <div class="table-responsive">
+
+                        <div class="col-lg-12">
                             <table class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
@@ -176,14 +178,14 @@
                                             <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['mag_code'] }}</td>
                                             <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['magazine_name'] }}</td>
                                             <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['magazine_country'] }}</td>
-                                            <td><a data-toggle="collapse" data-target="#demo_{{ $mag[$i]['Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
+                                            <td style = "padding: 5px; text-align: center;"><a data-toggle="collapse" data-target="#demo_{{ $mag[$i]['Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
                                         </tr>
                                         <tr>
-                                            <td colspan = "7">
+                                            <td colspan = "7" class="p0">
                                                 <div id="demo_{{ $mag[$i]['Id'] }}" class="collapse">
                                                     @if(COUNT($mag[$i]['ad_result']) > 0)
-                                                        <b>&raquo Price</b>
-                                                        <table class="table table-striped table-bordered">
+                                                        <b>&raquo; Prices</b>
+                                                        <table class="table table-striped table-bordered mb0">
                                                             <thead>
                                                             <tr>
                                                                 <th data-toggle="true" style = "padding: 5px; text-align: center;">Ad Color</th>
@@ -200,13 +202,13 @@
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_size'] }}</td>
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_amount'] }}</td>
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_created'] }}</td>
-                                                                    <td><a data-toggle="collapse" data-target="#demo_{{ $ad['ad_Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
+                                                                    <td style = "padding: 5px; text-align: center;"><a data-toggle="collapse" data-target="#demo_{{ $ad['ad_Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan = "6">
+                                                                    <td colspan = "6" class="p0">
                                                                         <div id="demo_{{ $ad['ad_Id'] }}" class="collapse">
                                                                             <b>&raquo Discount</b>
-                                                                            <table class="table table-striped table-bordered">
+                                                                            <table class="table table-striped table-bordered mb0">
                                                                                 <thead>
                                                                                 <tr>
                                                                                     <th style = "padding: 5px; text-align: center;">Quantity</th>
@@ -243,6 +245,7 @@
             </div>
         </div>
     </div>
+</div>
 
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 

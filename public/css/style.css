@@ -8295,3 +8295,11 @@ body.md-skin {
 #tbl_booking_lists tr th {
   font-size: 13px;
 }
+
+.p0 {
+  padding: 0px !important;
+}
+
+.mb0 {
+  margin-bottom: 0px !important;
+}

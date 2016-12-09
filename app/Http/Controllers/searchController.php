@@ -28,14 +28,17 @@ class searchController extends Controller
     	if($clients)
     	{
 			foreach($clients as $key => $clients)
-                $output.="<li class='list-group-item' data-dismiss='modal' id='"
-                		.$clients->child_uid. 
-                		"'>"
-                		.$clients->company_name.
-                		"-"
-                		.$clients->branch_name.
-                		"</li>";
+                $output.="<tr id='" . $clients->child_uid ."' class='".$clients->company_name."'>
+                          <td style='width:45%'>". $clients->company_name. "</td>
+                          <td style='width:45%'>". $clients->branch_name ."</td>
+                          <td style='width:10%'><button class='btn btn-primary btn-sm list_client' data-dismiss='modal'><i class='fa fa-plus'></i>&nbsp;&nbsp;Select</button></td>
+                          </tr>";
+
 		}
+
+        if($output == ""){
+             $output = "<tr><td  colspan='3' style='width:45%; text-align:center;'>Not Data Found!</td></tr>";
+        }
 
 		return Response($output);
     }
@@ -59,14 +62,17 @@ class searchController extends Controller
     	if($agency)
     	{
 			foreach($agency as $key => $agency)
-                $output.="<li class='list-group-item' data-dismiss='modal' id='"
-                		.$agency->child_uid. 
-                		"'>"
-                		.$agency->company_name.
-                		"-"
-                		.$agency->branch_name.
-                		"</li>";
+                $output.="<tr id='" . $agency->child_uid ."' class='".$agency->company_name."'>
+                          <td style='width:45%'>". $agency->company_name. "</td>
+                          <td style='width:45%'>". $agency->branch_name ."</td>
+                          <td style='width:10%'><button class='btn btn-primary btn-sm list_agency' data-dismiss='modal'><i class='fa fa-plus'></i>&nbsp;&nbsp;Select</button></td>
+                          </tr>";
+             
 		}
+
+        if($output == ""){
+             $output = "<tr><td  colspan='3' style='width:45%; text-align:center;'>Not Data Found!</td></tr>";
+        }
 
 		return Response($output);
     }
