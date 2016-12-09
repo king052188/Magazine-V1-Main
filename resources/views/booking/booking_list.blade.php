@@ -58,14 +58,14 @@
                             <thead>
                             <tr>
                                 <th style='text-align: center; width: 40px;'>#</th>
-                                <th style='text-align: left; width: 100px;'>TRANS#</th>
-                                <th style='text-align: left; width: 100px;'>MAG NAME</th>
-                                <th style='text-align: left; width: 100px;'>SALES</th>
-                                <th style='text-align: left; width: 100px;'>CLIENT</th>
-                                <th style='text-align: left; width: 100px;'>AGENCY</th>
-                                <th style='text-align: center; width: 40px;'>LINE ITEM</th>
-                                <th style='text-align: left; width: 100px;'>AMOUNT</th>
-                                <th style='text-align: center; width: 280px;'>STATUS / ACTION</th>
+                                <th style='text-align: left; width: 100px;'>Trans #</th>
+                                <th style='text-align: left; width: 100px;'>Magazine Name</th>
+                                <th style='text-align: left; width: 100px;'>Sales Rep</th>
+                                <th style='text-align: left; width: 100px;'>Client</th>
+                                <th style='text-align: left; width: 100px;'>Agency</th>
+                                <th style='text-align: center; width: 40px;'>Line Item</th>
+                                <th style='text-align: left; width: 100px;'>Amount</th>
+                                <th style='text-align: center; width: 280px;'>Status / Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -133,7 +133,7 @@
                                                     <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
                                                     </optgroup>
                                                 </select>
-                                                <button class="btn btn-info" id="btn_update" style = "width: 80px;margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
+                                                <button class="btn btn-primary" id="btn_update" style = "width: 80px;margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
                                             </div>
                                         </div>
                                     </td>

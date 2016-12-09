@@ -106,8 +106,8 @@
                                 <table class="table table-bordered">
                                   <thead class="resultheader hidden">
                                     <tr>
-                                      <th>Agency Name</th>
-                                      <th>Branch Name</th>
+                                      <th>Company Name</th>
+                                      <th>Type</th>
                                       <th>Action</th>
                                     </tr>
                                   </thead>
@@ -141,8 +141,8 @@
                                 <table class="table table-bordered">
                                   <thead class="resultheader hidden">
                                     <tr>
-                                      <th>Agency Name</th>
-                                      <th>Branch Name</th>
+                                      <th>Company Name</th>
+                                      <th>Type</th>
                                       <th>Action</th>
                                     </tr>
                                   </thead>
