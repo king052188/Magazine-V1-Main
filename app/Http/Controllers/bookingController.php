@@ -12,18 +12,18 @@ use App\MagIssueTransaction;
 
 class bookingController extends Controller
 {
-    public function booking_list($filter)
+    public function booking_list($filter = null)
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
+        
+        $filter_tran = "WHERE book_trans.status IN (1, 2, 3, 5)";
 
-        if($filter == 0){
-            $filter_tran = "WHERE book_trans.status IN (1, 2, 3, 5)";
-        }else{
+        if($filter != null){
             $filter_tran = "WHERE book_trans.status = {$filter}";
         }
-
+        
         $booking = DB::SELECT("    
                         SELECT 
                             book_trans.*, 

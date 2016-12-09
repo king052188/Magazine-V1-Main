@@ -159,7 +159,7 @@ class clientController extends Controller
             ->update([
                 'company_name' => $request['company_name'],
                 'type' => $request['type'],
-                'is_member' => $request['is_member']
+                'is_member' => $request['is_member'] == false ? -1 : 1
             ]);
 
         return redirect('client/all')->with('success', 'Successfully Updated.');

@@ -29,7 +29,7 @@ Route::post('/client/save_client', 'clientController@save_client');
 Route::post('/client/save_contact/{company_uid}', 'clientController@save_contact');
 Route::get('/client/client_contacts/{company_uid}', 'clientController@client_contacts');
 Route::get('/client/update/{company_uid}', 'clientController@client_update');
-Route::post('/client/update/save/{company_uid}/{client_id}', 'clientController@client_update_save');
+Route::post('/client/update/save/{company_uid}', 'clientController@client_update_save');
 
 Route::get('/contact/update/{contact_uid}', 'clientController@contact_update');
 Route::post('/client/save_contact/{company_uid}/{client_id}', 'clientController@contact_update_save');
@@ -61,7 +61,7 @@ Route::get('/transaction/all', 'transactionController@index');
 
 
 // Booking Routes
-Route::get('/booking/booking-list/{filter}', 'bookingController@booking_list');
+Route::get('/booking/booking-list/{filter?}', 'bookingController@booking_list');
 Route::get('/booking/add-booking', 'bookingController@add_booking');
 
 Route::post('/booking/magazine-transaction-save-process', 'bookingController@save_booking'); // Process

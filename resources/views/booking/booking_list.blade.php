@@ -35,15 +35,15 @@
                 <h5>Booking List</h5>
                 <div class = "pull-right">
                     <select class="form-control" id = "filter" style = "margin-top: -7px;">
-                        <optgroup label="Filter Status">
-                            <option value = "0" {{ $filter == 0 ? "selected" : "" }}>All</option>
-                            <option value = "1" {{ $filter == 1 ? "selected" : "" }}>Pending</option>
-                            <option value = "2" {{ $filter == 2 ? "selected" : "" }}>For Approval</option>
-                            <option value = "3" {{ $filter == 3 ? "selected" : "" }}>Approved</option>
-                            <option value = "5" {{ $filter == 5 ? "selected" : "" }}>Void</option>
-                        </optgroup>
+                        <option disabled>--select--</option>
+                        <option value = "" {{ $filter == "" ? "selected" : "" }}>All</option>
+                        <option value = "1" {{ $filter == 1 ? "selected" : "" }}>Pending</option>
+                        <option value = "2" {{ $filter == 2 ? "selected" : "" }}>For Approval</option>
+                        <option value = "3" {{ $filter == 3 ? "selected" : "" }}>Approved</option>
+                        <option value = "5" {{ $filter == 5 ? "selected" : "" }}>Void</option>
                     </select>
                 </div>
+                <div style = "float: right; margin-right: 5px; font-size: 15px;"><label>Sort by:</label></div>
             </div>
 
             <div class="ibox-content">
@@ -164,7 +164,7 @@
     $(document).ready( function() {
 
         $("#filter").on('change', function(){
-            window.location.href = $(this).val();
+            window.location.href = "/booking/booking-list/" + $(this).val();
         });
 
 
