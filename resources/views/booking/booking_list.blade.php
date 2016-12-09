@@ -33,6 +33,17 @@
         <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Booking List</h5>
+                <div class = "pull-right">
+                    <select class="form-control" id = "filter" style = "margin-top: -7px;">
+                        <optgroup label="Filter Status">
+                            <option value = "0" {{ $filter == 0 ? "selected" : "" }}>All</option>
+                            <option value = "1" {{ $filter == 1 ? "selected" : "" }}>Pending</option>
+                            <option value = "2" {{ $filter == 2 ? "selected" : "" }}>For Approval</option>
+                            <option value = "3" {{ $filter == 3 ? "selected" : "" }}>Approved</option>
+                            <option value = "5" {{ $filter == 5 ? "selected" : "" }}>Void</option>
+                        </optgroup>
+                    </select>
+                </div>
             </div>
 
             <div class="ibox-content">
@@ -43,7 +54,6 @@
                 </div>
                 @endif
                 <div class="table-responsive">
-                
                         <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example" >
                             <thead>
                             <tr>
@@ -66,7 +76,7 @@
                                 @for($i = 0; $i < COUNT($booking); $i++)
                                     <tr>
                                         <td style='text-align: center;'>{{ $n++ }}</td>
-                                        <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_name . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
+                                        <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
                                         <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
@@ -152,6 +162,12 @@
 <script>
 
     $(document).ready( function() {
+
+        $("#filter").on('change', function(){
+            window.location.href = $(this).val();
+        });
+
+
         $("#tbl_booking_lists > tbody  > tr").change(function(){
             var value =  $(this).find('select:first').val();
             var values = value.split(":");
