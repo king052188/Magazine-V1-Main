@@ -87,11 +87,9 @@
                                             <input class="form-control" type="text" name="mobile" placeholder="Mobile Number" required>
                                         </div>
                                     </div>
-
-                            </div>
+                                </div>
 
                                 <div class="col-lg-6">
-
                                     <h3 class="m-t-none m-b">Company Details</h3>
                                     <div class="form-group">
                                         <label>Client/Company Name</label>
@@ -113,20 +111,15 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div>
-
+                                    <div class="form-group" >
                                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                                         <button class="btn btn-primary pull-right" type="submit">Create new client</button>
                                     </div>
-
                                 </div>
-
 
                             </div>
                         </div>
                     </div>
-
-
 
                 </div> {{-- ibox end  --}}
                 

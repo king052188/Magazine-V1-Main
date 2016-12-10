@@ -215,11 +215,13 @@ $(document).ajaxComplete(function (data) {
     $(".list_client").click(function() {
         $('#clientIdField').val($(this).closest('tr').attr('id'));
         $('#clientIdFieldView').val($(this).closest('tr').attr('class'));
+        $('.resultheader').addClass('hidden');
     });
 
     $(".list_agency").click(function() {
         $('#agencyIdField').val($(this).closest('tr').attr('id'));
         $('#agencyIdFieldView').val($(this).closest('tr').attr('class'));
+        $('.resultheader').addClass('hidden');
     });
 });
 </script>
