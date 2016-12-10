@@ -69,6 +69,11 @@
                                         <option value="2">Active</option>
                                     </select>
                                 </div>
+                                <div class = "form-group">
+                                    <iframe src = "http://192.168.1.121:8080/basic-multiple/index.php?mid=1" width="400" height="300" frameborder="0" scrolling="no">
+
+                                    </iframe>
+                                </div>
                                 <div>
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                                     <button class="btn btn-sm btn-primary pull-right">Create New Magazine</button>
@@ -84,7 +89,7 @@
 </div>
 
 <div class="modal fade" id="modal_add_company_magazine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -95,65 +100,66 @@
             <form role="form" action="{{ url('/magazine/company/save') }}" method="post">
                 <div class="col-lg-12">
                     <div class="modal-body form group">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Company Name</label>
-                                <input type="text" placeholder="Company / Business Name" class="form-control"  name="company_name">
+                        <div class="col-lg-8">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Company Name</label>
+                                    <input type="text" placeholder="Company / Business Name" class="form-control"  name="company_name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Address 1</label>
+                                    <input type="text" placeholder="Address 1" class="form-control" name="address_1">
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Address 1</label>
-                                <input type="text" placeholder="Address 1" class="form-control" name="address_1">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Address 2 (Optional)</label>
+                                    <input type="text" placeholder="Address 2 (Optional)" class="form-control" name="address_2">
+                                </div>
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input type="text" placeholder="City" class="form-control"  name="city">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Address 2 (Optional)</label>
-                                <input type="text" placeholder="Address 2 (Optional)" class="form-control" name="address_2">
-                            </div>
-                            <div class="form-group">
-                                <label>City</label>
-                                <input type="text" placeholder="City" class="form-control"  name="city">
-                            </div>
-                        </div>
 
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>State</label>
-                                <input type="text" placeholder="State" class="form-control"  name="state">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <input type="text" placeholder="State" class="form-control"  name="state">
+                                </div>
+                                <div class="form-group">
+                                    <label>Country</label>
+                                    <select class="form-control" name="country">
+                                        <option value="1">USA</option>
+                                        <option value="2">CANADA</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Country</label>
-                                <select class="form-control" name="country">
-                                    <option value="1">USA</option>
-                                    <option value="2">CANADA</option>
-                                </select>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="text" placeholder="Email" class="form-control"  name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="text" placeholder="Phone" class="form-control"  name="phone">
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Email</label>
-                                <input type="text" placeholder="Email" class="form-control"  name="email">
-                            </div>
-                            <div class="form-group">
-                                <label>Phone</label>
-                                <input type="text" placeholder="Phone" class="form-control"  name="phone">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Fax</label>
-                                <input type="text" placeholder="Fax" class="form-control"  name="fax">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label>Upload Logo</label>
-                                <input type="file" name="logo" id = "logo" accept="image/*" class="form-control">
-                                <img id="logo_preview" src="#" alt="your image" />
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Fax</label>
+                                    <input type="text" placeholder="Fax" class="form-control"  name="fax">
+                                </div>
                             </div>
                         </div>
+                        <div class = "col-lg-4">
+                            <div class="form-group">
+                                {{--<img id="logo_preview" src="#" alt="your image" style = "width: 250px; height: 250px"/>--}}
+                                <iframe src = "http://192.168.1.121:8080/basic-multiple/index.php?mid=1" width="250" height="300" frameborder="0" scrolling="no">
 
-
+                                </iframe>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -173,21 +179,18 @@
 <script>
 $(document).ready(function() {
 
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
+//    function readURL(input) {
+//        if (input.files && input.files[0])
+//        {
+//            var reader = new FileReader();
+//            reader.onload = function (e) {
+//                $('#logo_preview').attr('src', e.target.result);
+//            }
+//            reader.readAsDataURL(input.files[0]);
+//        }
+//    }
 
-            console.log(COUNT(input));
-
-            reader.onload = function (e) {
-                $('#logo_preview').attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    $("#imgInp").change(function(){
+    $("#logo").change(function(){
         readURL(this);
     });
 

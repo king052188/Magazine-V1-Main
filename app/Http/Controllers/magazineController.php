@@ -33,7 +33,10 @@ class magazineController extends Controller
 
     public function magazine_add_new(Request $request)
     {
+        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
+
         $magazine = new Magazine();
+        $magazine->logo_uid = $logo_uid['id'];
         $magazine->company_id = (int)$request['cid'];
         $magazine->mag_code = $request['magcode'];
         $magazine->magazine_name = $request['magname'];
@@ -164,7 +167,10 @@ class magazineController extends Controller
 
     public function save_company(Request $request)
     {
+        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
+
         $company = new MagazineCompany();
+        $company->logo_uid = $logo_uid['id'];
         $company->company_name = $request['company_name'];
         $company->address_1 = $request['address_1'];
         $company->address_2 = $request['address_2'];

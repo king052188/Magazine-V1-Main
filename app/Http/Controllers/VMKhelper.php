@@ -168,6 +168,22 @@ class VMKhelper extends Controller
         return $n_uid;
     }
 
+    public static function get_logo_uid($isCompany = true) {
+        do {
+
+            $n_uid = array("id" => date("Ymdms") ."". strtoupper(uniqid()));
+
+            if($isCompany)
+            {
+                $data = DB::select("SELECT * FROM magazine_company_table WHERE logo_uid = '{$n_uid["id"]}';");
+            }else{
+                $data = DB::select("SELECT * FROM client_table WHERE logo_uid = '{$n_uid["id"]}';");
+            }
+        }while( count($data) > 0 );
+
+        return $n_uid;
+    }
+
     public static function get_new_reference() {
         $n_uid = array("number" => date("Ymdms") ."". strtoupper(uniqid()));
         return $n_uid;
