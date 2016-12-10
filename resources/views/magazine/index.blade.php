@@ -58,7 +58,6 @@
                                     <tr>
                                         <td>{{ $magazine->mag_code }}</td>
                                         <td>{{ $magazine->magazine_name }}</td>
-                                        <if 
                                         <td>{{ $magazine->magazine_country }}</td>
                                         <td>{{ $magazine->status }}</td>
                                         <td><a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-sm btn-primary">View</a></td>
