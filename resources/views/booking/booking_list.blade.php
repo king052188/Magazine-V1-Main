@@ -54,18 +54,18 @@
                 </div>
                 @endif
                 <div class="table-responsive">
-                        <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example" >
+                        <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover table-responsive dataTables-example" >
                             <thead>
                             <tr>
-                                <th style='text-align: center; width: 40px;'>#</th>
-                                <th style='text-align: left; width: 100px;'>Trans #</th>
-                                <th style='text-align: left; width: 100px;'>Magazine Name</th>
-                                <th style='text-align: left; width: 100px;'>Sales Rep</th>
-                                <th style='text-align: left; width: 100px;'>Client</th>
-                                <th style='text-align: left; width: 100px;'>Agency</th>
-                                <th style='text-align: center; width: 40px;'>Line Item</th>
-                                <th style='text-align: left; width: 100px;'>Amount</th>
-                                <th style='text-align: center; width: 280px;'>Status / Action</th>
+                                <th style='text-align: center; width: 5%;'>#</th>
+                                <th style='text-align: left; width: 20%;'>Trans #</th>
+                                <th style='text-align: left; width: 10%;'>Magazine Name</th>
+                                <th style='text-align: left; width: 10%;'>Sales Rep</th>
+                                <th style='text-align: left; width: 10%;'>Client</th>
+                                <th style='text-align: left; width: 15%;'>Agency</th>
+                                <th style='text-align: center; width: 5%;'>Line Item</th>
+                                <th style='text-align: left; width: 5%;'>Amount</th>
+                                <th style='text-align: center; width: 20%;'>Status / Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -113,7 +113,7 @@
                                             </form>
                                         </td>
                                     @else
-                                    <td style='text-align: right; width: 280px;'>
+                                    <td style='text-align: center; width: 280px;'>
                                         <div class="form-inline">
                                             <div class="form-group">
                                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">

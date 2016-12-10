@@ -43,7 +43,7 @@
                     </div>
                     @endif
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover dataTables-example" >
+                        <table class="table table-striped table-bordered table-hover table-responsive" >
                             <thead>
                             <tr>
                                 <th>Magazine Code</th>
@@ -58,9 +58,10 @@
                                     <tr>
                                         <td>{{ $magazine->mag_code }}</td>
                                         <td>{{ $magazine->magazine_name }}</td>
+                                        <if 
                                         <td>{{ $magazine->magazine_country }}</td>
                                         <td>{{ $magazine->status }}</td>
-                                        <td><a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-info btn-xs">View</a></td>
+                                        <td><a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-sm btn-primary">View</a></td>
                                     </tr>
                                 @endforeach
 

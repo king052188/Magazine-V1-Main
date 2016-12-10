@@ -40,30 +40,6 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12">
-                            <script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
-                            <script>
-                                $(document).ready(function(){
-                                    $('#magcountry').on('change', function() {
-                                        var magc_id = $(this).val();
-                                        $.ajax({
-                                            url: "/magazine/company/get_country/" + magc_id,
-                                            dataType: "text",
-                                            success: function(data) {
-                                                var json = $.parseJSON(data);
-                                                if (json == null) return false;
-                                                if (json.result == 404) {
-                                                    $("#cid").empty().append("<option>--no data--</option>")
-                                                } else {
-                                                    $(json.result).each(function(i, country) {
-                                                        $("#cid").empty().append("<option>--select--</option>");
-                                                        $("#cid").empty().append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
-                                                    })
-                                                }
-                                            }
-                                        })
-                                    });
-                                });
-                            </script>
                             <form role="form" action="/magazine/add-new" method="POST">
                                 <div class="form-group">
                                     <label>Magazine Code</label>
@@ -95,7 +71,7 @@
                                 </div>
                                 <div>
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                    <button class="btn btn-sm btn-primary pull-right"><strong>Create New Magazine</strong></button>
+                                    <button class="btn btn-sm btn-primary pull-right">Create New Magazine</button>
                                 </div>
                             </form>
                         </div>
@@ -117,84 +93,111 @@
                 <h4 class="modal-title" id="myModalLabel">Company Name of Magazine</h4>
             </div>
             <form role="form" action="{{ url('/magazine/company/save') }}" method="post">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <div class="form-group">
-                            <label>Company Name</label>
-                            <input type="text" placeholder="Company / Business Name" class="form-control"  name="company_name">
+                <div class="col-lg-12">
+                    <div class="modal-body form group">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Company Name</label>
+                                <input type="text" placeholder="Company / Business Name" class="form-control"  name="company_name">
+                            </div>
+                            <div class="form-group">
+                                <label>Address 1</label>
+                                <input type="text" placeholder="Address 1" class="form-control" name="address_1">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Address 1</label>
-                            <input type="text" placeholder="Address 1" class="form-control" name="address_1">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Address 2 (Optional)</label>
+                                <input type="text" placeholder="Address 2 (Optional)" class="form-control" name="address_2">
+                            </div>
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" placeholder="City" class="form-control"  name="city">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>Address 2 (OPTIONAL)</label>
-                            <input type="text" placeholder="Address 2 (OPTIONAL)" class="form-control" name="address_2">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>State</label>
+                                <input type="text" placeholder="State" class="form-control"  name="state">
+                            </div>
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select class="form-control" name="country">
+                                    <option value="1">USA</option>
+                                    <option value="2">CANADA</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>City</label>
-                            <input type="text" placeholder="City" class="form-control"  name="city">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" placeholder="Email" class="form-control"  name="email">
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" placeholder="Phone" class="form-control"  name="phone">
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label>State</label>
-                            <input type="text" placeholder="State" class="form-control"  name="state">
-                        </div>
-                        <div class="form-group">
-                            <label>Country</label>
-                            <select class="form-control" name="country">
-                                <option value="1">USA</option>
-                                <option value="2">CANADA</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="text" placeholder="Email" class="form-control"  name="email">
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input type="text" placeholder="Phone" class="form-control"  name="phone">
-                        </div>
-                        <div class="form-group">
-                            <label>Fax</label>
-                            <input type="text" placeholder="Fax" class="form-control"  name="fax">
-                        </div>
-                        <div>
-                            <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Fax</label>
+                                <input type="text" placeholder="Fax" class="form-control"  name="fax">
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="modal-footer">
-                    <button class="btn btn-primary" type="submit"><strong>Create New Company</strong></button>
+                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Create New Company</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<script src="http://localhost:5304/js/jquery-2.1.1.js"></script>
+@endsection
 
+@section('scripts')
 <script>
+$(document).ready(function() {
 
-    $(document).ready(function() {
+    $("#tab_2").hide();
+    $("#tab_3").hide();
 
-        $("#tab_2").hide();
-        $("#tab_3").hide();
+    $("#btn_create_new_mag").click(function() {
+        $("#tab_1").hide( 600 );
+        $("#tab_2").show("slide", { direction: "right" }, 5000);
+    });
 
-        $("#btn_create_new_mag").click(function() {
-            $("#tab_1").hide( 600 );
-            $("#tab_2").show("slide", { direction: "right" }, 5000);
-        })
-
-        $("#btn_back_1").click(function() {
-            $("#tab_2").hide( 600 );
-            $("#tab_1").show("slide", { direction: "right" }, 5000);
-
-
-        })
+    $("#btn_back_1").click(function() {
+        $("#tab_2").hide( 600 );
+        $("#tab_1").show("slide", { direction: "right" }, 5000);
+    });
 
 
-    })
+    $('#magcountry').on('change', function() {
+        var magc_id = $(this).val();
+        $.ajax({
+            url: "/magazine/company/get_country/" + magc_id,
+            dataType: "text",
+            success: function(data) {
+                var json = $.parseJSON(data);
+                if (json == null) return false;
+                if (json.result == 404) {
+                    $("#cid").empty().append("<option>--no data--</option>")
+                } else {
+                    $(json.result).each(function(i, country) {
+                        $("#cid").empty().append("<option>--select--</option>");
+                        $("#cid").empty().append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
+                    });
+                }
+            }
+        });
+    });
+
+});
 
 </script>
 @endsection

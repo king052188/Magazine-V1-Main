@@ -14,131 +14,160 @@
         <h2>Booking</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="index.html">Booking List</a>
+                <a href="{{ url('/booking/booking-list') }}">Booking List</a>
             </li>
             <li>
-                <a href="index.html">Add Magazine</a>
+                <a href="#">Add Magazine</a>
             </li>
             <li class="active">
                 <strong>Add Issue</strong>
             </li>
         </ol>
     </div>
-    <div class="col-lg-2">
-    </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-4">
-            @if(Session::has('fail'))
-                <div class="alert alert-danger alert-dismissable">
-                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                    {{ Session::get('fail') }}
-                </div>
-            @endif
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Add Issue <small> *all fields are required</small></h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <form method="post" action = "{{ url('/booking/save_issue') . '/' . $mag_trans_uid . '/' . $client_id}}">
-                                <section class="panel">
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <label for="ex2">Criteria</label>
-                                            <select class="form-control" name = "ad_criteria_id" id = "ad_criteria_id">
-                                                <option value = "" disabled selected>select</option>
-                                                @for($i = 0; $i < COUNT($ad_c); $i++)
-                                                    <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->name }}</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
-                                    <script>
-                                        $(document).ready(function(){
 
-                                            var client_id = {{ $client_id }};
-                                            $('#ad_criteria_id').on('change',function(){
+    <div class="container">
+    
 
-                                                var criteria_id = $(this).val();
-                                                $.ajax({
-                                                    url: "/booking/getPackageName/" + criteria_id,
-                                                    dataType: 'text',
-                                                    success: function(data)
-                                                    {
-                                                        var json = $.parseJSON(data);
-                                                        if(json == null)
-                                                            return false;
-
-//                                                        $('#ad_package_id').empty();
-                                                        $('#package_label').empty().append("Package");
-                                                        $('#ad_package_id').empty().append("<select class='form-control' name = 'ad_package_id' id = 'ad_package_id_select'>");
-                                                        $('#ad_package_id_select').empty().append("<option value = '' disabled selected>select</option>");
-                                                        $(json.list).each(function(g, gl){
-                                                            $('#ad_package_id_select').append("<option value = "+ gl.id +">"+ gl.package_name +"</option>");
-                                                        });
-                                                        $('#ad_package_id').append("</select>");
-
-
-                                                        //select package and call quarter issue
-                                                        $('#ad_package_id_select').on('change',function()
-                                                        {
-                                                            var i;
-                                                            $('#quarter_issues_label').empty().append("Quarter Issued");
-                                                            $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
-                                                            $('#quarter_issued_select').append("<option value = '' disabled selected>select</option>");
-                                                            for(i = 1; i <= 10; i++) {
-                                                                $('#quarter_issued_select').append("<option value = "+ i +"> " + i + "</option>");
-                                                            }
-                                                            $('#quarter_issued_box').append('</select>');
-
-                                                            //select quarter
-                                                            $('#quarter_issued_select').on('change',function()
-                                                            {
-                                                                $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary" value = "Save">');
-                                                            });
-                                                        });
-                                                    }
-                                                });
-                                            });
-
-                                        });
-                                    </script>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <label id = "package_label"></label>
-                                            <div id = "ad_package_id"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-xs-12">
-                                            <label id = "quarter_issues_label"></label>
-                                            <div id = "quarter_issued_box"></div>
-                                        </div>
-                                    </div>
-                                    <br />
-                                    <div class="row">
-                                        <div class="col-xs-12" id = "btn_save_box">
-                                            <div id = "btn_save_box"></div>
-                                        </div>
-                                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                    </div>
-                                </section>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        <div class="row form-group mb0 mrl15">
+            <div class="col-xs-12">
+                <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                    <li class="disabled"><a href="#step-1">
+                        <h4 class="list-group-item-heading">Step 1</h4>
+                        <p class="list-group-item-text">Add Booking Details</p>
+                    </a></li>
+                    <li class="disabled"><a href="#step-2">
+                        <h4 class="list-group-item-heading">Step 2</h4>
+                        <p class="list-group-item-text">Select Magazine</p>
+                    </a></li>
+                    <li class="active"><a href="#step-3">
+                        <h4 class="list-group-item-heading">Step 3</h4>
+                        <p class="list-group-item-text">Add Issue</p>
+                    </a></li>
+                </ul>
             </div>
         </div>
-        <div class="col-lg-8">
+
+        <div class="row setup-content" id="step-1">
+                <div class="col-md-12 well">
+                    <div class="col-lg-4">
+                        @if(Session::has('fail'))
+                            <div class="alert alert-danger alert-dismissable">
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                {{ Session::get('fail') }}
+                            </div>
+                        @endif
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Add Issue <small> *all fields are required</small></h5>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <form method="post" action = "{{ url('/booking/save_issue') . '/' . $mag_trans_uid . '/' . $client_id}}">
+                                            <section class="panel">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label for="ex2">Criteria</label>
+                                                        <select class="form-control" name = "ad_criteria_id" id = "ad_criteria_id">
+                                                            <option value = "" disabled selected>select</option>
+                                                            @for($i = 0; $i < COUNT($ad_c); $i++)
+                                                                <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->name }}</option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
+                                                <script>
+                                                    $(document).ready(function(){
+
+                                                        var client_id = {{ $client_id }};
+                                                        $('#ad_criteria_id').on('change',function(){
+
+                                                            var criteria_id = $(this).val();
+                                                            $.ajax({
+                                                                url: "/booking/getPackageName/" + criteria_id,
+                                                                dataType: 'text',
+                                                                success: function(data)
+                                                                {
+                                                                    var json = $.parseJSON(data);
+                                                                    if(json == null)
+                                                                        return false;
+
+            //                                                        $('#ad_package_id').empty();
+                                                                    $('#package_label').empty().append("Package");
+                                                                    $('#ad_package_id').empty().append("<select class='form-control' name = 'ad_package_id' id = 'ad_package_id_select'>");
+                                                                    $('#ad_package_id_select').empty().append("<option value = '' disabled selected>select</option>");
+                                                                    $(json.list).each(function(g, gl){
+                                                                        $('#ad_package_id_select').append("<option value = "+ gl.id +">"+ gl.package_name +"</option>");
+                                                                    });
+                                                                    $('#ad_package_id').append("</select>");
+
+
+                                                                    //select package and call quarter issue
+                                                                    $('#ad_package_id_select').on('change',function()
+                                                                    {
+                                                                        var i;
+                                                                        $('#quarter_issues_label').empty().append("Quarter Issued");
+                                                                        $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
+                                                                        $('#quarter_issued_select').append("<option value = '' disabled selected>select</option>");
+                                                                        for(i = 1; i <= 10; i++) {
+                                                                            $('#quarter_issued_select').append("<option value = "+ i +"> " + i + "</option>");
+                                                                        }
+                                                                        $('#quarter_issued_box').append('</select>');
+
+                                                                        //select quarter
+                                                                        $('#quarter_issued_select').on('change',function()
+                                                                        {
+                                                                            $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary" value = "Save">');
+                                                                        });
+                                                                    });
+                                                                }
+                                                            });
+                                                        });
+
+                                                    });
+                                                </script>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label id = "package_label"></label>
+                                                        <div id = "ad_package_id"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label id = "quarter_issues_label"></label>
+                                                        <div id = "quarter_issued_box"></div>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="row">
+                                                    <div class="col-xs-12" id = "btn_save_box">
+                                                        <div id = "btn_save_box"></div>
+                                                    </div>
+                                                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                                                </div>
+                                            </section>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+
+
+
+
+
+
+                        <div class="col-lg-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>List Of Issue</h5>
@@ -270,7 +299,28 @@
                 </div>
             </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+        </div>
     </div>
+
+
+
+
+
+
+
+
 </div>
 @endsection
 

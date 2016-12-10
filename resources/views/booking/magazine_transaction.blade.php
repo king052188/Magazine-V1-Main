@@ -14,106 +14,102 @@
         <h2>Booking</h2>
         <ol class="breadcrumb">
             <li>
-                <a href="{{ url('/booking/booking_list') }}">Booking List</a>
+                <a href="#">Booking List</a>
             </li>
             <li class="active">
                 <strong>Add Magazine</strong>
             </li>
         </ol>
     </div>
-    <div class="col-lg-2">
-    </div>
 </div>
 
 
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="col-lg-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Magazine Added</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        @if(Session::has('success'))
-                        <div class="alert alert-success alert-dismissable">
-                            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                            {{ Session::get('success') }}
-                        </div>
-                        @endif
+    <div class="container">
 
-                        <table class="table table-stripe">
-                            <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Magazine Code</th>
-                                <th>Magazine Name</th>
-                                <th>Country</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                                  <?php $n = 1; ?>
-                                    @for($i = 0; $i < COUNT($mag_l); $i++)
-                                        <tr>
-                                            <td>{{ $n++ }}</td>
-                                            <td><a href = "{{ URL('/booking/add_issue/' . $mag_l[$i]->Id . '/' . $client_id) }}">{{ $mag_l[$i]->mag_code }}</a></td>
-                                            <td>{{ $mag_l[$i]->magazine_name }}</td>
-                                            <td>
-                                                @if($mag_l[$i]->magazine_country == 1)
-                                                    US
-                                                @elseif($mag_l[$i]->magazine_country == 2)
-                                                    CANADA
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @endfor
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        <div class="row form-group mb0">
+            <div class="col-xs-12">
+                <ul class="nav nav-pills nav-justified thumbnail setup-panel">
+                    <li class="disabled"><a href="#step-1">
+                        <h4 class="list-group-item-heading">Step 1</h4>
+                        <p class="list-group-item-text">Add Booking Details</p>
+                    </a></li>
+                    <li class="active"><a href="#step-2">
+                        <h4 class="list-group-item-heading">Step 2</h4>
+                        <p class="list-group-item-text">Select Magazine</p>
+                    </a></li>
+                    <li class="disabled"><a href="#step-3">
+                        <h4 class="list-group-item-heading">Step 3</h4>
+                        <p class="list-group-item-text">Add Issue</p>
+                    </a></li>
+                </ul>
             </div>
-            <div class="col-lg-6">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Select Magazine to Add</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
+        </div>
+
+        <div class="row setup-content" id="step-1">
+            <div class="col-xs-12">
+                <div class="col-md-12 well white-bg">
+
+                    @if(Session::has('success'))
+                    <div class="alert alert-success alert-dismissable">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        {{ Session::get('success') }}
                     </div>
-                    <div class="ibox-content">
+                    @endif
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <form role="form" action="{{ url('/booking/save-magazine-transaction/'. $booking_uid .'/'. $which_country . '/' . $client_id) }}" method="post">
-                                        <div class="form-group">
-                                            <label for="ex2">Magazine</label>
-                                            <select class="form-control" name = "magazine_id">
-                                                @for($i = 0; $i < COUNT($mag_list); $i++)
-                                                    <option value = "{{ $mag_list[$i]->Id }}">{{ $mag_list[$i]->magazine_name }}</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                            <input type="submit" class="btn btn-primary pull-right" value = "Save" {{ $disabled["set"] }}>
-                                        </div>
-                                </form>
-                            </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Magazine Code</th>
+                            <th>Magazine Name</th>
+                            <th>Country</th>
+                        </tr>
+                        </thead>
+                        <tbody id="magactive">
+                              <?php $n = 1; ?>
+                                @for($i = 0; $i < COUNT($mag_l); $i++)
+                                    <tr>
+                                        <td>{{ $n++ }}</td>
+                                        <td><a href = "{{ URL('/booking/add_issue/' . $mag_l[$i]->Id . '/' . $client_id) }}">{{ $mag_l[$i]->mag_code }}</a></td>
+                                        <td>{{ $mag_l[$i]->magazine_name }}</td>
+                                        <td>
+                                            @if($mag_l[$i]->magazine_country == 1)
+                                                US
+                                            @elseif($mag_l[$i]->magazine_country == 2)
+                                                CANADA
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endfor
+                        </tbody>
+                    </table>
+
+                    <form role="form" action="{{ url('/booking/save-magazine-transaction/'. $booking_uid .'/'. $which_country . '/' . $client_id) }}" method="post">
+                        <div class="form-group">
+                            <label for="ex2">Select Magazine</label>
+                            <select class="form-control" name = "magazine_id">
+                                @for($i = 0; $i < COUNT($mag_list); $i++)
+                                    <option value = "{{ $mag_list[$i]->Id }}">{{ $mag_list[$i]->magazine_name }}</option>
+                                @endfor
+                            </select>
                         </div>
+                        <div>
+                            <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                            <input type="submit" class="btn btn-primary pull-right" value = "Save" {{ $disabled["set"] }}>
+                        </div>
+                    </form>
 
+                   
 
-                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-@endsection 
+@endsection
+
+@section('scripts')
+
+@endsection
