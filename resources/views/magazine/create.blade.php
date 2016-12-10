@@ -115,6 +115,7 @@
                                 <input type="text" placeholder="City" class="form-control"  name="city">
                             </div>
                         </div>
+
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label>State</label>
@@ -144,6 +145,15 @@
                                 <input type="text" placeholder="Fax" class="form-control"  name="fax">
                             </div>
                         </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Upload Logo</label>
+                                <input type="file" name="logo" id = "logo" accept="image/*" class="form-control">
+                                <img id="logo_preview" src="#" alt="your image" />
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
 
@@ -162,6 +172,24 @@
 @section('scripts')
 <script>
 $(document).ready(function() {
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            console.log(COUNT(input));
+
+            reader.onload = function (e) {
+                $('#logo_preview').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    $("#imgInp").change(function(){
+        readURL(this);
+    });
 
     $("#tab_2").hide();
     $("#tab_3").hide();
