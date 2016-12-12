@@ -201,6 +201,17 @@ class VMKhelper extends Controller
         return array("new_password" => $value, "hash_password" => $result);
     }
 
+    public static function get_new_password($value = null) {
+        $password = $value;
+        if($value == null) {
+            $password = "123456";
+        }
+        return array(
+            "Password" => $password,
+            "Hash" => md5("ABC12abc" . $password)
+        );
+    }
+
     /*
        check if manage client existing to un-manage or has 2 agents
 

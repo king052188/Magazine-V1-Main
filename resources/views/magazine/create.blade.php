@@ -71,7 +71,7 @@
                                 </div>
                                 <div class = "form-group">
                                     <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
-                                    <iframe src = "http://192.168.21.155:8003/basic-multiple/index.php?type=MAGAZINE&uid={{ $logo_uid['id_magazine'] }}" width="400" height="300" frameborder="0" scrolling="no">
+                                    <iframe src = "http://192.168.1.121:8003/basic-multiple/index.php?type=MAGAZINE&uid={{ $logo_uid['id_magazine'] }}" width="400" height="300" frameborder="0" scrolling="no">
 
                                     </iframe>
                                 </div>
@@ -156,7 +156,7 @@
                         <div class = "col-lg-4">
                             <div class="form-group">
                                 <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_company'] }}">
-                                <iframe src = "http://192.168.21.155:8003/basic-multiple/index.php?type=COMPANY&uid={{ $logo_uid['id_company'] }}" width="250" height="300" frameborder="0" scrolling="no">
+                                <iframe src = "http://192.168.1.121:8003/basic-multiple/index.php?type=COMPANY&uid={{ $logo_uid['id_company'] }}" width="250" height="300" frameborder="0" scrolling="no">
 
                                 </iframe>
                             </div>

@@ -35,9 +35,9 @@ Route::get('/contact/update/{contact_uid}', 'clientController@contact_update');
 Route::post('/client/save_contact/{company_uid}/{client_id}', 'clientController@contact_update_save');
 
 // Salesperson Routes
-Route::get('/salesperson/create', 'salespersonController@create');
-Route::post('/salesperson/store', 'salespersonController@store');
-Route::get('/salesperson/all', 'salespersonController@index');
+Route::get('/users/create', 'userAccountController@create');
+Route::post('/users/store', 'userAccountController@store');
+Route::get('/users/all/{filter?}', 'userAccountController@index');
 
 // Contract Routes
 Route::get('/contract/create', 'contractController@create');
