@@ -12,3 +12,4 @@ composer.lock
 .phpintel/index
 .phpintel/bf3be73e3647f3f4bb03991efad5bf57+
 config/database.php
+config/database.php

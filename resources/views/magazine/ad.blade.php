@@ -195,7 +195,7 @@
                                                             </thead>
                                                             <tbody>
                                                             @foreach ($mag[$i]['ad_result'] as $ad)
-                                                                <tr>
+                                                                <tr style="background-color: rgba(196, 218, 255, 0.3);">
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_color'] }}</td>
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_size'] }}</td>
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_amount'] }}</td>
