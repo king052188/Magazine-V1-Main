@@ -39,7 +39,7 @@
                         <option value = "" {{ $filter == "" ? "selected" : "" }}>All</option>
                         <option value = "1" {{ $filter == 1 ? "selected" : "" }}>Admin</option>
                         <option value = "2" {{ $filter == 2 ? "selected" : "" }}>Manager</option>
-                        <option value = "3" {{ $filter == 3 ? "selected" : "" }}>Salesperson</option>
+                        <option value = "3" {{ $filter == 3 ? "selected" : "" }}>Sales Person</option>
                     </select>
                 </div>
                 <div style = "float: right; margin-right: 5px; font-size: 15px;"><label>Sort by:</label></div>
@@ -77,7 +77,7 @@
                                             }elseif($u->role == 2){
                                                 echo "Manager";
                                             }else{
-                                                echo "Salesperson";
+                                                echo "Sales Person";
                                             }
                                         ?>
                                     </td>

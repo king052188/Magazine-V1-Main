@@ -242,7 +242,6 @@ var trans_id = {{ $transaction_uid[0]->transaction_id }};
 populate_issues_transaction(trans_id);
 function populate_issues_transaction(uid)
 {
-
 var html_thmb = "";
 var isFirstLoad = true;
 
