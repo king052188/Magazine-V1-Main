@@ -40,7 +40,9 @@ return [
     |
     | All database work in Laravel is done through the PHP PDO facilities
     | so make sure you have the driver for your particular database of
-    | choice installed on your machine before you begin development.
+    | choice installed on your machine before you begin development. 
+    | servce ref no. 921-139-77-48 
+    | acnt number. 0774109722 htline number *18888-6727277 / 1800-10-6727277.
     |
     */
 
@@ -54,11 +56,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '192.168.1.121'),
+            'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'db_magazine_v1'),
             'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', 'ABC12abc'),
+            'password' => env('DB_PASSWORD', '@VRB12vrb'),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
