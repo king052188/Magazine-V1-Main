@@ -70,7 +70,8 @@
                                     </select>
                                 </div>
                                 <div class = "form-group">
-                                    <iframe src = "http://192.168.1.121:8080/basic-multiple/index.php?mid=1" width="400" height="300" frameborder="0" scrolling="no">
+                                    <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
+                                    <iframe src = "http://192.168.21.155:8003/basic-multiple/index.php?type=MAGAZINE&uid={{ $logo_uid['id_magazine'] }}" width="400" height="300" frameborder="0" scrolling="no">
 
                                     </iframe>
                                 </div>
@@ -154,8 +155,8 @@
                         </div>
                         <div class = "col-lg-4">
                             <div class="form-group">
-                                {{--<img id="logo_preview" src="#" alt="your image" style = "width: 250px; height: 250px"/>--}}
-                                <iframe src = "http://192.168.1.121:8080/basic-multiple/index.php?mid=1" width="250" height="300" frameborder="0" scrolling="no">
+                                <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_company'] }}">
+                                <iframe src = "http://192.168.21.155:8003/basic-multiple/index.php?type=COMPANY&uid={{ $logo_uid['id_company'] }}" width="250" height="300" frameborder="0" scrolling="no">
 
                                 </iframe>
                             </div>

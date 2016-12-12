@@ -51,12 +51,6 @@
         <div class="row setup-content" id="step-1">
                 <div class="col-md-12 well">
                     <div class="col-lg-4">
-                        @if(Session::has('fail'))
-                            <div class="alert alert-danger alert-dismissable">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                {{ Session::get('fail') }}
-                            </div>
-                        @endif
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <h5>Add Issue <small> *all fields are required</small></h5>
@@ -93,6 +87,12 @@
                                                     <div class="col-xs-12">
                                                         <label id = "quarter_issues_label"></label>
                                                         <div id = "quarter_issued_box"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label id = "line_item_qty_label"></label>
+                                                        <div id = "line_item_qty"></div>
                                                     </div>
                                                 </div>
                                                 <br />
@@ -133,6 +133,11 @@
                                                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                                                     {{ Session::get('success') }}
                                                 </div>
+                                            @elseif(Session::has('fail'))
+                                                <div class="alert alert-danger alert-dismissable">
+                                                    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                                    {{ Session::get('fail') }}
+                                                </div>
                                             @endif
                                             <table class="table table-striped table-bordered table-hover dataTables-example" id="issue_reports">
                                                 <thead>
@@ -141,6 +146,7 @@
                                                         <th style="text-align: left;">TYPE</th>
                                                         <th style="text-align: left;">SIZE</th>
                                                         <th style="width: 100px; text-align: center;">QUARTER / ISSUED</th>
+                                                        <th style="width: 100px; text-align: center;">QTY</th>
                                                         <th style="width: 100px; text-align: right;">AMOUNT</th>
                                                         <th style="width: 50px; text-align: center;">ACTION</th>
                                                     </tr>
@@ -206,6 +212,8 @@
                         //select quarter
                         $('#quarter_issued_select').on('change',function()
                         {
+                            $('#line_item_qty_label').empty().append("Line Item QTY");
+                            $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control">');
                             $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary" value = "Save">');
                         });
                     });
@@ -236,15 +244,19 @@ function populate_issues_transaction(uid)
 {
 
 var html_thmb = "";
+var isFirstLoad = true;
 
 $(document).ready( function() {
     $.ajax({
-//  url: "http://magazine-api.kpa21.com/kpa/work/magazine-issue-lists/"+uid,
         url: "http://"+report_url_api+"/kpa/work/magazine-issue-lists/"+uid,
         dataType: "text",
         beforeSend: function () {
-            $('#mag_name').text("***");
-            $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="7">Loading... Please wait...</td> </tr>');
+            if(isFirstLoad) {
+                isFirstLoad = false;
+                $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+            }
+//            $('#mag_name').text("***");
+//            $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="7">Loading... Please wait...</td> </tr>');
         },
         success: function(data) {
             var json = $.parseJSON(data);
@@ -267,6 +279,7 @@ $(document).ready( function() {
                 html_thmb += "<td style='text-align: left;'>"+tran.criteria_name+"</td>";
                 html_thmb += "<td style='text-align: left;'>"+tran.package_name+"</td>";
                 html_thmb += "<td style='text-align: center;'> Q"+tran.quarter_issued+"</td>";
+                html_thmb += "<td style='text-align: center;'> "+tran.line_item_qty+"</td>";
 
                 var n_status = "Void";
                 var p_status = parseInt(tran.status);
@@ -281,7 +294,7 @@ $(document).ready( function() {
                     n_status = "Declined";
                 }
 
-                html_thmb += "<td style='text-align: right;'>"+tran.amount+"</td>";
+                html_thmb += "<td style='text-align: right;'>"+ (tran.line_item_qty * tran.amount) +"</td>";
                 html_thmb += "<td style='text-align: center;'><a onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a></td>";
                 html_thmb += "</tr>";
 

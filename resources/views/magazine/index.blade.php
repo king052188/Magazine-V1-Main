@@ -49,7 +49,6 @@
                                 <th>Magazine Code</th>
                                 <th>Magazine Name</th>
                                 <th>Magazine Country</th>
-                                <th>Status</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -58,8 +57,7 @@
                                     <tr>
                                         <td>{{ $magazine->mag_code }}</td>
                                         <td>{{ $magazine->magazine_name }}</td>
-                                        <td>{{ $magazine->magazine_country }}</td>
-                                        <td>{{ $magazine->status }}</td>
+                                        <td>{{ $magazine->magazine_country == 1 ? "US" : "CANADA" }}</td>
                                         <td><a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-sm btn-primary">View</a></td>
                                     </tr>
                                 @endforeach

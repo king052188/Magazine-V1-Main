@@ -90,7 +90,7 @@
                                     <div class="form-group ">
                                         <div class="inline">
                                             <label>2x Percent Discount</label>
-                                            <input id="2x_per" type="text" placeholder="Enter amount" class="form-control" value = "0.000" name="discount[]">
+                                            <input id="2x_per" type="text" placeholder="Enter Discount (0.000)" class="form-control" name="discount[]">
                                         </div>
                                         <div class="inline">
                                             <label>2x Amount</label>
@@ -101,7 +101,7 @@
                                     <div class="form-group ">
                                         <div class="inline">
                                             <label>3x Percent Discount</label>
-                                            <input id="3x_per" type="text" placeholder="Amount" class="form-control" value = "0.000" name="discount[]">
+                                            <input id="3x_per" type="text" placeholder="Enter Discount (0.000)" class="form-control" name="discount[]">
                                         </div>
                                         <div class="inline">
                                             <label>3x Amount</label>
@@ -112,7 +112,7 @@
                                     <div class="form-group ">
                                         <div class="inline">
                                             <label>4x Percent Discount</label>
-                                            <input id="4x_per" type="text" placeholder="Enter amount" class="form-control" value = "0.000" name="discount[]">
+                                            <input id="4x_per" type="text" placeholder="Enter Discount (0.000)" class="form-control" name="discount[]">
                                         </div>
                                         <div class="inline">
                                             <label>4x Amount</label>
@@ -123,7 +123,7 @@
                                     <div class="form-group ">
                                         <div class="inline">
                                             <label>5x Percent Discount</label>
-                                            <input id="5x_per" type="text" placeholder="Enter amount" class="form-control" value = "0.000" name="discount[]">
+                                            <input id="5x_per" type="text" placeholder="Enter Discount (0.000)" class="form-control" name="discount[]">
                                         </div>
                                         <div class="inline">
                                             <label>5x Amount</label>

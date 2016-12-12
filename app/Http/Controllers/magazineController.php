@@ -28,15 +28,17 @@ class magazineController extends Controller
             return redirect("/logout_process");
         }
 
-        return view('magazine/create');
+        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
+
+        return view('magazine/create', compact('logo_uid'));
     }
 
     public function magazine_add_new(Request $request)
     {
-        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
+//        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
 
         $magazine = new Magazine();
-        $magazine->logo_uid = $logo_uid['id'];
+        $magazine->logo_uid = $request['logo_uid'];
         $magazine->company_id = (int)$request['cid'];
         $magazine->mag_code = $request['magcode'];
         $magazine->magazine_name = $request['magname'];
@@ -93,15 +95,23 @@ class magazineController extends Controller
 //        {
 //            $get_ad[] = DB::SELECT("SELECT aa.*, aa.created_at as ad_created FROM magzine_price_table as aa WHERE aa.mag_id = {$get_magazines[$i]->Id}");
 //        }
-
-        $get_magazines = DB::SELECT("SELECT * FROM magazine_table WHERE Id = {$mag_uid}");
+        $get_magazines = DB::SELECT("SELECT aa.*, bb.company_name as company_name
+                                    FROM 
+                                    magazine_table as aa
+                                    INNER JOIN magazine_company_table as bb ON bb.Id = aa.company_id
+                                    WHERE aa.Id = {$mag_uid}");
         if ($get_magazines != null)
         {
             $price = array();
             $mag = array();
             for($i = 0; $i < COUNT($get_magazines); $i++)
             {
-                $get_price = DB::SELECT("SELECT aa.*, aa.created_at as ad_created FROM magzine_price_table as aa WHERE aa.mag_id = {$get_magazines[$i]->Id}");
+                $get_price = DB::SELECT("SELECT 
+                                      aa.*, aa.created_at as ad_created, bb.name as ad_color_name, cc.package_name as ad_size_package_name
+                                      FROM magzine_price_table as aa 
+                                      INNER JOIN price_criteria_table as bb ON bb.Id = aa.ad_color
+                                      INNER JOIN price_package_table as cc ON cc.Id = aa.ad_size
+                                      WHERE aa.mag_id = {$get_magazines[$i]->Id}");
 
                 for($x = 0; $x < COUNT($get_price); $x++)
                 {
@@ -109,8 +119,8 @@ class magazineController extends Controller
 
                     $price[] = array(
                         "ad_Id" => $get_price[$x]->Id,
-                        "ad_color" => $get_price[$x]->ad_color,
-                        "ad_size" => $get_price[$x]->ad_size,
+                        "ad_color" => $get_price[$x]->ad_color_name,
+                        "ad_size" => $get_price[$x]->ad_size_package_name,
                         "ad_amount" => $get_price[$x]->ad_amount,
                         "ad_status" => $get_price[$x]->ad_status,
                         "ad_created" => $get_price[$x]->ad_created,
@@ -120,10 +130,10 @@ class magazineController extends Controller
 
                 $mag[] = array(
                     "Id" => $get_magazines[$i]->Id,
-                    "company_id" => $get_magazines[$i]->company_id,
+                    "company_id" => $get_magazines[$i]->company_name,
                     "mag_code" => $get_magazines[$i]->mag_code,
                     "magazine_name" => $get_magazines[$i]->magazine_name,
-                    "magazine_country" => $get_magazines[$i]->magazine_country,
+                    "magazine_country" => $get_magazines[$i]->magazine_country == 1 ? "US" : "CANADA",
                     "status" => $get_magazines[$i]->status,
                     "ad_result" => $price
                 );
@@ -140,6 +150,10 @@ class magazineController extends Controller
 
     public function add_color_size_discount(Request $request, $mag_uid)
     {
+//        $discount = trim($request['discount']) == "" ? 0 : $request['discount'];
+//
+//       return ($discount);
+
         $mp = new MagazinePrice();
         $mp->mag_id = (int)$mag_uid;
         $mp->ad_color = $request['ad_color'];
@@ -156,7 +170,7 @@ class magazineController extends Controller
 
             $md = new MagazineDiscount();
             $md->mag_price_id = (int)$mp_last_id;
-            $md->percent = $dis;
+            $md->percent = trim($dis) == "" ? 0 : $dis;
             $md->type = $type++;
             $md->status = 2;
             $md->save();
@@ -167,10 +181,10 @@ class magazineController extends Controller
 
     public function save_company(Request $request)
     {
-        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
+//        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
 
         $company = new MagazineCompany();
-        $company->logo_uid = $logo_uid['id'];
+        $company->logo_uid = $request['logo_uid'];
         $company->company_name = $request['company_name'];
         $company->address_1 = $request['address_1'];
         $company->address_2 = $request['address_2'];
