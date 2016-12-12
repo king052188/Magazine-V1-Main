@@ -27,7 +27,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
 
-        <div id="tab_1" class="col-lg-6">
+        <div id="tab_1" class="col-lg-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Create New Magazine<small> *all fields are required</small></h5>
@@ -39,46 +39,49 @@
                 </div>
                 <div class="ibox-content">
                     <div class="row">
-                        <div class="col-sm-12">
+                        <div class="col-lg-12">
                             <form role="form" action="/magazine/add-new" method="POST">
-                                <div class="form-group">
-                                    <label>Magazine Code</label>
-                                    <input type="text" placeholder="Magazine Code" class="form-control"  name="magcode" required>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Magazine Code</label>
+                                        <input type="text" placeholder="Magazine Code" class="form-control"  name="magcode" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Magazine Name</label>
+                                        <input type="text" placeholder="Magazine Name" class="form-control" name="magname" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ex2">Country</label>
+                                        <select class="form-control" name="magcountry" id = "magcountry" required>
+                                            <option>--select--</option>
+                                            <option value="1">USA</option>
+                                            <option value="2">CANADA</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Company Name</label>
+                                        <select class="form-control" name="cid" id = "cid" required>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ex2">Status</label>
+                                        <select class="form-control" name="status" required>
+                                            <option value="1">Inactive</option>
+                                            <option value="2">Active</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Magazine Name</label>
-                                    <input type="text" placeholder="Magazine Name" class="form-control" name="magname" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="ex2">Country</label>
-                                    <select class="form-control" name="magcountry" id = "magcountry" required>
-                                        <option>--select--</option>
-                                        <option value="1">USA</option>
-                                        <option value="2">CANADA</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Company Name</label>
-                                    <select class="form-control" name="cid" id = "cid" required>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="ex2">Status</label>
-                                    <select class="form-control" name="status" required>
-                                        <option value="1">Inactive</option>
-                                        <option value="2">Active</option>
-                                    </select>
-                                </div>
-                                <div class = "form-group">
-                                    <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
-                                    <iframe src = "http://192.168.21.155:8003/basic-multiple/index.php?type=MAGAZINE&uid={{ $logo_uid['id_magazine'] }}" width="400" height="300" frameborder="0" scrolling="no">
-
-                                    </iframe>
-                                </div>
-                                <div>
-                                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                    <button class="btn btn-sm btn-primary pull-right">Create New Magazine</button>
-                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
+                                        <iframe src = "http://192.168.21.155:8003/basic-multiple/index.php?type=MAGAZINE&uid={{ $logo_uid['id_magazine'] }}" width="400" height="300" frameborder="0" scrolling="no">
+                                        </iframe>
+                                    </div>
+                                    <div>
+                                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                                        <button class="btn btn-sm btn-primary pull-right">Create New Magazine</button>
+                                    </div>
+                               </div>
                             </form>
                         </div>
                     </div>
@@ -156,8 +159,7 @@
                         <div class = "col-lg-4">
                             <div class="form-group">
                                 <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_company'] }}">
-                                <iframe src = "http://192.168.21.155:8003/basic-multiple/index.php?type=COMPANY&uid={{ $logo_uid['id_company'] }}" width="250" height="300" frameborder="0" scrolling="no">
-
+                                <iframe src = "http://192.168.21.155:8003/basic-multiple/index.php?type=COMPANY&uid={{ $logo_uid['id_company'] }}" height="300" frameborder="0" scrolling="no">
                                 </iframe>
                             </div>
                         </div>

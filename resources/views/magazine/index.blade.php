@@ -21,15 +21,13 @@
             </li>
         </ol>
     </div>
-    <div class="col-lg-2">
-    </div>
 </div>
 
 
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-8">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Magazine List</h5>
@@ -46,10 +44,10 @@
                         <table class="table table-striped table-bordered table-hover table-responsive" >
                             <thead>
                             <tr>
-                                <th>Magazine Code</th>
-                                <th>Magazine Name</th>
-                                <th>Magazine Country</th>
-                                <th>Action</th>
+                                <th style="text-align: center; width: 30%;">Magazine Code</th>
+                                <th style="text-align: center;width: 30%;">Magazine Name</th>
+                                <th style="text-align: center;width: 30%;">Magazine Country</th>
+                                <th style="text-align: center;width: 10%;">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -58,7 +56,7 @@
                                         <td>{{ $magazine->mag_code }}</td>
                                         <td>{{ $magazine->magazine_name }}</td>
                                         <td>{{ $magazine->magazine_country == 1 ? "US" : "CANADA" }}</td>
-                                        <td><a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-sm btn-primary">View</a></td>
+                                        <td style="text-align: center;"><a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-sm btn-primary"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a></td>
                                     </tr>
                                 @endforeach
 
