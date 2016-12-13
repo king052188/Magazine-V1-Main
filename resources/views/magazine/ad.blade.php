@@ -179,7 +179,6 @@
                                                                 <th data-toggle="true" style = "padding: 5px; text-align: center;">Ad Color</th>
                                                                 <th style = "padding: 5px; text-align: center;">Ad Size</th>
                                                                 <th style = "padding: 5px; text-align: center;">Ad Amount</th>
-                                                                <th style = "padding: 5px; text-align: center;">Ad Created</th>
                                                                 <th></th>
                                                             </tr>
                                                             </thead>
@@ -189,7 +188,6 @@
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_color'] }}</td>
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_size'] }}</td>
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_amount'] }}</td>
-                                                                    <td style = "padding: 5px; text-align: center;">{{ $ad['ad_created'] }}</td>
                                                                     <td style = "padding: 5px; text-align: center;"><a data-toggle="collapse" data-target="#demo_{{ $ad['ad_Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
                                                                 </tr>
                                                                 <tr>
