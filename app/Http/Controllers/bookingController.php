@@ -64,8 +64,7 @@ class bookingController extends Controller
                                 FROM magazine_table
                                 WHERE Id = m_trans.magazine_id
                             ) AS magazine_country_id,
-                            COUNT(*) AS number_of_issue, 
-                            SUM(m_issue.amount) AS total_amount
+                            SUM(m_issue.line_item_qty) AS number_of_issue
                         FROM 
                             magazine_issue_transaction_table AS m_issue
                         INNER JOIN

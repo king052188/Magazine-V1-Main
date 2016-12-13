@@ -64,7 +64,6 @@
                                 <th style='text-align: left; width: 10%;'>Client</th>
                                 <th style='text-align: left; width: 15%;'>Agency</th>
                                 <th style='text-align: center; width: 5%;'>Line Item</th>
-                                <th style='text-align: left; width: 5%;'>Amount</th>
                                 <th style='text-align: center; width: 20%;'>Status / Action</th>
                             </tr>
                             </thead>
@@ -82,7 +81,6 @@
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
-                                        <td style='text-align: left;'>{{ $booking[$i]->total_amount }}</td>
                                     @if($_COOKIE['role'] > 2)
                                         <td style='text-align: right; width: 280px;'>
                                             <form class="form-inline">
