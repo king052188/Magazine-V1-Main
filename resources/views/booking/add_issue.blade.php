@@ -67,11 +67,11 @@
                                             <section class="panel">
                                                 <div class="row">
                                                     <div class="col-xs-12">
-                                                        <label for="ex2">Criteria</label>
+                                                        <label for="ex2">Ad Color</label>
                                                         <select class="form-control" name = "ad_criteria_id" id = "ad_criteria_id">
                                                             <option value = "" disabled selected>select</option>
                                                             @for($i = 0; $i < COUNT($ad_c); $i++)
-                                                                <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->name }}</option>
+                                                                <option value = "{{ $ad_c[$i]->c_uid }}">{{ $ad_c[$i]->name }}</option>
                                                             @endfor
                                                         </select>
                                                     </div>
@@ -87,6 +87,12 @@
                                                     <div class="col-xs-12">
                                                         <label id = "quarter_issues_label"></label>
                                                         <div id = "quarter_issued_box"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label id = "amount_label"></label>
+                                                        <div id = "amount_box"></div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -113,7 +119,7 @@
                     <div class="col-lg-8">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>List Of Issue</h5>
+                                <h5>List issue of <b>{{ $mag_name[0]->magazine_name }}</b></h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
@@ -147,6 +153,7 @@
                                                         <th style="text-align: left;">SIZE</th>
                                                         <th style="width: 100px; text-align: center;">QUARTER / ISSUED</th>
                                                         <th style="width: 100px; text-align: center;">QTY</th>
+                                                        <th style="width: 100px; text-align: center;">DISCOUNT</th>
                                                         <th style="width: 100px; text-align: right;">AMOUNT</th>
                                                         <th style="width: 50px; text-align: center;">ACTION</th>
                                                     </tr>
@@ -177,9 +184,11 @@
         var client_id = {{ $client_id }};
         $('#ad_criteria_id').on('change',function(){
 
+
+            var mag_uid = {{ $transaction_uid[0]->magazine_id }};
             var criteria_id = $(this).val();
             $.ajax({
-                url: "/booking/getPackageName/" + criteria_id,
+                url: "/booking/getPackageName/" + criteria_id + "/" + mag_uid,
                 dataType: 'text',
                 success: function(data)
                 {
@@ -188,11 +197,11 @@
                         return false;
 
                     // $('#ad_package_id').empty();
-                    $('#package_label').empty().append("Package");
+                    $('#package_label').empty().append("Ad Size");
                     $('#ad_package_id').empty().append("<select class='form-control' name = 'ad_package_id' id = 'ad_package_id_select'>");
                     $('#ad_package_id_select').empty().append("<option value = '' disabled selected>select</option>");
                     $(json.list).each(function(g, gl){
-                        $('#ad_package_id_select').append("<option value = "+ gl.id +">"+ gl.package_name +"</option>");
+                        $('#ad_package_id_select').append("<option value = "+ gl.ad_size + ";" + gl.ad_amount +">"+ gl.package_name +"</option>");
                     });
                     $('#ad_package_id').append("</select>");
 
@@ -201,6 +210,12 @@
                     $('#ad_package_id_select').on('change',function()
                     {
                         var i;
+                        var ad_size = $(this).val();
+                        var ad_sizes = ad_size.split(';');
+
+                        $('#amount_label').empty().append("Amount");
+                        $('#amount_box').empty().append('<input type="hidden" value = "'+ ad_sizes[0] +'" name = "ad_p_split"><input type="text" value = "'+ ad_sizes[1] +'" name = "ad_amount" class="form-control" readonly>');
+
                         $('#quarter_issues_label').empty().append("Quarter Issued");
                         $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
                         $('#quarter_issued_select').append("<option value = '' disabled selected>select</option>");
@@ -213,7 +228,7 @@
                         $('#quarter_issued_select').on('change',function()
                         {
                             $('#line_item_qty_label').empty().append("Line Item QTY");
-                            $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control">');
+                            $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
                             $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary" value = "Save">');
                         });
                     });
@@ -244,6 +259,7 @@ function populate_issues_transaction(uid)
 {
 var html_thmb = "";
 var isFirstLoad = true;
+console.log(uid);
 
 $(document).ready( function() {
     $.ajax({
@@ -270,15 +286,17 @@ $(document).ready( function() {
 
             $('#mag_trans_container').empty().prepend('<h3>'+ json.Magazine_Name +' [ <span>'+ json.Mag_Code +'</span> ] | '+ json.Mag_Country +' </h3>');
 
+            var total_with_discount = 0;
             var item_count = 1;
             $(json.Data).each(function(i, tran){
 
                 html_thmb += "<tr>";
                 html_thmb += "<td style='text-align: center;'>"+item_count+"</td>";
-                html_thmb += "<td style='text-align: left;'>"+tran.criteria_name+"</td>";
-                html_thmb += "<td style='text-align: left;'>"+tran.package_name+"</td>";
+                html_thmb += "<td style='text-align: left;'>"+tran.ad_color+"</td>";
+                html_thmb += "<td style='text-align: left;'>"+tran.ad_size+"</td>";
                 html_thmb += "<td style='text-align: center;'> Q"+tran.quarter_issued+"</td>";
                 html_thmb += "<td style='text-align: center;'> "+tran.line_item_qty+"</td>";
+                html_thmb += "<td style='text-align: center;'> "+numeral(tran.total_discount).format('0,0.00')+"</td>";
 
                 var n_status = "Void";
                 var p_status = parseInt(tran.status);
@@ -293,16 +311,18 @@ $(document).ready( function() {
                     n_status = "Declined";
                 }
 
-                html_thmb += "<td style='text-align: right;'>"+ (tran.line_item_qty * tran.amount) +"</td>";
+                html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
                 html_thmb += "<td style='text-align: center;'><a onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a></td>";
                 html_thmb += "</tr>";
 
                 item_count++;
+
+                total_with_discount += parseFloat(tran.total_amount_with_discount);
             });
 
             $('table#issue_reports > tbody').empty().prepend(html_thmb);
 
-            $('#total_result').append('<b style = "font-size: 15px;">Total Amount : ' + json.Total_Amount + '</b>');
+            $('#total_result').append('<b style = "font-size: 15px;">Total Amount : ' + numeral(total_with_discount).format('0,0.00') + '</b>');
             $('#show_button').append(' <a href = "{{ URL('/booking/booking-list') }}" class="btn btn-default">Back</a>');
             $('#show_button').append(' <a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); class = "btn btn-primary">Preview</a>');
         }
