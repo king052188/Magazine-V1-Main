@@ -76,7 +76,7 @@
                                         $url_api = $assembly::get_reports_api();
                                         $logo_uploader_url = 'http://'. $url_api["Url_Logo_Uploader"] .'type=MAGAZINE&uid='. $logo_uid['id_magazine'];
                                     ?>
-                                    <iframe src = "{{ $logo_uploader_url }}" width="400" height="300" frameborder="0" scrolling="no"> </iframe>
+                                    <iframe src = "{{ $logo_uploader_url }}" style="width: 100%;" frameborder="0" scrolling="no"> </iframe>
                                 </div>
                                 <div>
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
@@ -92,7 +92,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_add_company_magazine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_add_company_magazine"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -164,7 +164,7 @@
                                 $url_api = $assembly::get_reports_api();
                                 $logo_uploader_url = 'http://'. $url_api["Url_Logo_Uploader"] .'type=COMPANY&uid='. $logo_uid['id_company'];
                                 ?>
-                                <iframe src = "{{ $logo_uploader_url }}" width="250" height="300" frameborder="0" scrolling="no"> </iframe>
+                                <iframe src = "{{ $logo_uploader_url }}" style="width: 100%;" frameborder="0" scrolling="no"> </iframe>
                             </div>
                         </div>
                     </div>

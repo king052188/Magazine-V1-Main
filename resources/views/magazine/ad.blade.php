@@ -166,11 +166,11 @@
                                             <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['mag_code'] }}</td>
                                             <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['magazine_name'] }}</td>
                                             <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['magazine_country'] }}</td>
-                                            <td style = "padding: 5px; text-align: center;"><a data-toggle="collapse" data-target="#demo_{{ $mag[$i]['Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
+                                            <td style = "padding: 5px; text-align: center;"><a data-toggle="collapse" data-target="#demox_{{ $mag[$i]['Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
                                         </tr>
                                         <tr>
                                             <td colspan = "7" class="p0">
-                                                <div id="demo_{{ $mag[$i]['Id'] }}" class="collapse">
+                                                <div id="demox_{{ $mag[$i]['Id'] }}" class="collapse">
                                                     @if(COUNT($mag[$i]['ad_result']) > 0)
                                                         <b>&raquo; Prices</b>
                                                         <table class="table table-striped table-bordered mb0">
