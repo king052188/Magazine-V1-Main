@@ -53,7 +53,7 @@ class clientController extends Controller
         $client->landline = $request['landline'];
         $client->mobile = $request['mobile'];
         $client->type = 1; //primary
-        $client->status = 1;
+        $client->status = 2;
         $client->save();
 
         return redirect('/client/all')->with('success', 'Successfully Added New Client.');
@@ -135,7 +135,7 @@ class clientController extends Controller
         $client->landline = $request['landline'];
         $client->mobile = $request['mobile'];
         $client->type = 2; //secondary
-        $client->status = 1;
+        $client->status = 2;
         $client->save();
 
         return redirect('/client/all')->with('success', 'Successfully Added New Contact.');

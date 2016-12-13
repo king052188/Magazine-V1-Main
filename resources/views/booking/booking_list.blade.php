@@ -167,7 +167,6 @@
             window.location.href = "/booking/booking-list/" + $(this).val();
         });
 
-
         $("#tbl_booking_lists > tbody  > tr").change(function(){
             var value =  $(this).find('select:first').val();
             var values = value.split(":");
@@ -181,7 +180,7 @@
                             "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
                 }
                 if(str_to_int == -2) {
-                    window.open("http://192.168.1.121:80/?trans="+trans_num,'_blank');
+                    window.open("http://"+ Url_Client_Dashboard + trans_num,'_blank');
 
                 }
             }

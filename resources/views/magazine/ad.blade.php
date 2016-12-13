@@ -280,8 +280,6 @@
                 $('#5x_amount').val(new_amount);
             });
 
-
-
         })
 
     </script>

@@ -7,7 +7,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script>var report_url_api = "{{ $report_api["Url_Port"] }}";</script>
+    <script>
+        var report_url_api          = "{{ $report_api["Url_Port"] }}";
+        var Url_Client_Dashboard    = "{{ $report_api["Url_Client_Dashboard"] }}";
+        var Url_Insertion_Order     = "{{ $report_api["Url_Insertion_Order"] }}";
+        var Url_Logo_Uploader       = "{{ $report_api["Url_Logo_Uploader"] }}";
+    </script>
     <title>Magazine | @yield('title')</title>
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{ asset('font-awesome/css/font-awesome.css')}}" rel="stylesheet">

@@ -194,7 +194,7 @@ class magazineController extends Controller
         $company->email = $request['email'];
         $company->phone = $request['phone'];
         $company->fax = $request['fax'];
-        $company->status = 1;
+        $company->status = 2;
         $company->save();
 
         if($company->id > 0) {

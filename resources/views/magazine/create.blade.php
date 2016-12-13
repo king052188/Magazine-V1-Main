@@ -71,9 +71,12 @@
                                 </div>
                                 <div class = "form-group">
                                     <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
-                                    <iframe src = "http://192.168.1.121:8003/basic-multiple/index.php?type=MAGAZINE&uid={{ $logo_uid['id_magazine'] }}" width="400" height="300" frameborder="0" scrolling="no">
-
-                                    </iframe>
+                                    <?php
+                                        $assembly = new \App\Http\Controllers\AssemblyClass();
+                                        $url_api = $assembly::get_reports_api();
+                                        $logo_uploader_url = 'http://'. $url_api["Url_Logo_Uploader"] .'type=MAGAZINE&uid='. $logo_uid['id_magazine'];
+                                    ?>
+                                    <iframe src = "{{ $logo_uploader_url }}" width="400" height="300" frameborder="0" scrolling="no"> </iframe>
                                 </div>
                                 <div>
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
@@ -156,9 +159,12 @@
                         <div class = "col-lg-4">
                             <div class="form-group">
                                 <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_company'] }}">
-                                <iframe src = "http://192.168.1.121:8003/basic-multiple/index.php?type=COMPANY&uid={{ $logo_uid['id_company'] }}" width="250" height="300" frameborder="0" scrolling="no">
-
-                                </iframe>
+                                <?php
+                                $assembly = new \App\Http\Controllers\AssemblyClass();
+                                $url_api = $assembly::get_reports_api();
+                                $logo_uploader_url = 'http://'. $url_api["Url_Logo_Uploader"] .'type=COMPANY&uid='. $logo_uid['id_company'];
+                                ?>
+                                <iframe src = "{{ $logo_uploader_url }}" width="250" height="300" frameborder="0" scrolling="no"> </iframe>
                             </div>
                         </div>
                     </div>
