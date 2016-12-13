@@ -38,47 +38,44 @@
                 <div class="ibox-content">
                     <div class="row">
                         <div class="col-sm-12">
-                            <form role="form" action="{{ url('/salesperson/store') }}" method="post">
-                                <div class="form-group">
-                                    <label>Salesperson Code</label>
-                                    <input type="Client Code" placeholder="Client Code" class="form-control"  name="srepcode">
-                                </div>
+                            <form role="form" action="{{ url('users/store') }}" method="post">
                                 <div class="form-group">
                                     <label>First Name</label>
-                                    <input type="Agency Code" placeholder="Agency Code" class="form-control"  name="srepfname"></div>
+                                    <input type="Client Code" placeholder="First Name" class="form-control"  name="first_name">
+                                </div>
                                 <div class="form-group">
                                     <label>Middle Name</label>
-                                    <input type="Address" placeholder="Company Name" class="form-control" name="sremname"></div>
+                                    <input type="Agency Code" placeholder="Middle Name" class="form-control"  name="middle_name">
+                                </div>
                                 <div class="form-group">
                                     <label>Last Name</label>
-                                    <input type="text" placeholder="First Name" class="form-control" name="srepsurname"></div>
-                                <div class="form-group">
-                                    <label>Salesperson Address</label>
-                                    <input type="Landline Number" placeholder="Middle Name" class="form-control"  name="srepadd1">
+                                    <input type="Address" placeholder="Last Name" class="form-control" name="last_name">
                                 </div>
                                 <div class="form-group">
-                                    <label>Salesperson Address Line 2</label>
-                                    <input type="text" placeholder="Last Name" class="form-control" name="srepadd2">
+                                    <label>Email</label>
+                                    <input type="text" placeholder="Email" class="form-control" name="email">
                                 </div>
                                 <div class="form-group">
-                                    <label>Salesperson Landline</label>
-                                    <input type="text" placeholder="Address" class="form-control" name="slandline">
+                                    <label>Mobile</label>
+                                    <input type="Landline Number" placeholder="Mobile" class="form-control"  name="mobile">
                                 </div>
                                 <div class="form-group">
-                                    <label>Salesperson Mobile Number</label>
-                                    <input type="text" placeholder="Address Line 2" class="form-control" name ="srepmobile">
+                                    <label>Username</label>
+                                    <input type="Landline Number" placeholder="Username" class="form-control"  name="username">
                                 </div>
                                 <div class="form-group">
-                                    <label>Salesperson Email</label>
-                                    <input type="text" placeholder="Landline" class="form-control" name="srepemail">
+                                    <label>Password</label>
+                                    <input type="Landline Number" placeholder="Password" class="form-control"  name="password">
                                 </div>
                                 <div class="form-group">
-                                    <label>Salesperson Statu</label>
-                                    <input type="text" placeholder="Mobile Number" class="form-control" name="srepstatus">
+                                    <label>Role</label><br />
+                                    <input type="radio" name="role" value="1"><label>&nbsp;Admin</label><br />
+                                    <input type="radio" name="role" value="2"><label>&nbsp;Manager</label><br />
+                                    <input type="radio" name="role" value="3" checked="checked"><label>&nbsp;Salesperson</label>
                                 </div>
                                 <div>
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                    <button class="btn btn-sm btn-primary pull-right" type="submit"><strong>Create New Salesperson</strong></button>
+                                    <button class="btn btn-sm btn-primary pull-right" type="submit"><strong>Create New User</strong></button>
                                 </div>
                             </form>
                         </div>

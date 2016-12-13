@@ -161,7 +161,7 @@ class VMKhelper extends Controller
 
             $n_uid = array("id" => date("Ymdms") ."". strtoupper(uniqid()));
 
-            $data = DB::select("SELECT * FROM contract_table WHERE contract_num = '{$n_uid["id"]}';");
+            $data = DB::select("SELECT * FROM booking_sales_table WHERE trans_num = '{$n_uid["id"]}';");
 
         }while( count($data) > 0 );
 
@@ -199,6 +199,17 @@ class VMKhelper extends Controller
         }
         $result = md5('@BC12abc' . $value);
         return array("new_password" => $value, "hash_password" => $result);
+    }
+
+    public static function get_new_password($value = null) {
+        $password = $value;
+        if($value == null) {
+            $password = "123456";
+        }
+        return array(
+            "Password" => $password,
+            "Hash" => md5("ABC12abc" . $password)
+        );
     }
 
     /*

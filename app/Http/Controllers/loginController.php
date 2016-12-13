@@ -9,17 +9,6 @@ use Illuminate\Support\Facades\Cache;
 
 class loginController extends Controller
 {
-    public static function get_new_password($value = null) {
-        $password = $value;
-        if($value == null) {
-            $password = "123456";
-        }
-        return array(
-            "Password" => $password,
-            "Hash" => md5("ABC12abc" . $password)
-        );
-    }
-
     public function login()
     {
         return view("login.login");
@@ -32,7 +21,7 @@ class loginController extends Controller
             return array("login_status" => 404); //username not found
         }
 
-        $check = $this->get_new_password($password);
+        $check = \App\Http\Controllers\VMKhelper::get_new_password($password);
 
         if($user_info[0]->password != $check['Hash']) {
             return array("login_status" => 403); //password Not Match

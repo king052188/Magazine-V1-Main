@@ -57,11 +57,11 @@
                         <li><a href="/client/all">View All Clients</a></li>
                     </ul>
                 </li>
-                <li class="{{ Request::is('salesperson') || Request::is('salesperson/*') ? 'active' : '' }}">
-                    <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Salesperson</span><span class="fa arrow"></span></a>
+                <li class="{{ Request::is('users') || Request::is('users') ? 'active' : '' }}">
+                    <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Users</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        {{--<li><a href="/salesperson/create">Create New Salesperson</a></li>--}}
-                        <li><a href="/salesperson/all">View All Salesperson</a></li>
+                        <li><a href="/users/create">Create New User</a></li>
+                        <li><a href="/users/all">View All Users</a></li>
                     </ul>
                 </li>
                 {{--<li>--}}

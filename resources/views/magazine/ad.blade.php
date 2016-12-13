@@ -97,7 +97,6 @@
                                         <input id="2x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
                                     </div>
                                 </div>
-
                                 <div class="form-group ">
                                     <div class="col-sm-6">
                                         <label>3x Percent Discount</label>
@@ -108,7 +107,6 @@
                                         <input id="3x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
                                     </div>
                                 </div>
-
                                 <div class="form-group ">
                                     <div class="col-sm-6">
                                         <label>4x Percent Discount</label>
@@ -119,7 +117,6 @@
                                         <input id="4x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
                                     </div>
                                 </div>
-
                                 <div class="form-group ">
                                     <div class="col-sm-6">
                                         <label>5x Percent Discount</label>
