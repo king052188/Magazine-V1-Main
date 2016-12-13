@@ -74,7 +74,7 @@
 
                             <div class="input-group">
                                 <input type="text" class="form-control hidden" name="agency_id" id="agencyIdField" value="">
-                                <input type="text" class="form-control" placeholder="Agency ID"  id="agencyIdFieldView" required>
+                                <input type="text" class="form-control" placeholder="Agency ID"  id="agencyIdFieldView">
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_agency"><i class="fa fa-search"></i></button>
                                 </span>
