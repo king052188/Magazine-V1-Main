@@ -143,9 +143,10 @@ class magazineController extends Controller
             return view('magazine/ad', compact('mag_uid','mag'));
         }
 
-//        dd($mag);
+        $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
+        $ad_s = DB::table('price_package_table')->where('status','=',2)->get();
 
-        return view('magazine/ad', compact('mag_uid','mag'));
+        return view('magazine/ad', compact('mag_uid','mag', 'ad_c', 'ad_s'));
     }
 
     public function add_color_size_discount(Request $request, $mag_uid)

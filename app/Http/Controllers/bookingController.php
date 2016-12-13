@@ -188,18 +188,24 @@ class bookingController extends Controller
         /* END = Additional 11-20-2016 8:54PM | MJT */
     }
 
-    public function getPackageName($criteria_id)
+    public function getPackageName($criteria_id, $mag_uid)
     {
-        $ad_p = DB::SELECT("SELECT * FROM price_package_table WHERE criteria_id = {$criteria_id} AND status = 2");
+        $ad_p = DB::SELECT("
+                SELECT b.package_name, a.*
+                FROM magzine_price_table AS a
+                INNER JOIN price_package_table AS b
+                ON a.ad_size = b.Id
+                WHERE a.mag_id = {$mag_uid} AND a.ad_color = {$criteria_id}
+              ");
 
         if($ad_p != null)
         {
             for($i = 0; $i < COUNT($ad_p); $i++)
             {
                 $result[] = array(
-                    "id" => $ad_p[$i]->Id,
-                    "criteria_id" => $ad_p[$i]->criteria_id,
-                    "package_name" => $ad_p[$i]->package_name
+                    "ad_size" => $ad_p[$i]->ad_size,
+                    "package_name" => $ad_p[$i]->package_name,
+                    "ad_amount" => $ad_p[$i]->ad_amount
                 );
             }
         }
@@ -214,12 +220,23 @@ class bookingController extends Controller
             return redirect("/logout_process");
         }
         
-        $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
+//        $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
         $ad_p = DB::table('price_package_table')->where('status','=',2)->get();
+
         $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
         $booking_trans_num = DB::table('booking_sales_table')->where('Id','=',$transaction_uid[0]->transaction_id)->get();
+        $mag_name = DB::table('magazine_table')->where('Id','=',$transaction_uid[0]->magazine_id)->get();
 
-        return view('booking.add_issue', compact('mag_trans_uid', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num'));
+        $ad_c = DB::SELECT("
+                SELECT b.Id as c_uid, b.name
+                FROM magzine_price_table AS a
+                INNER JOIN price_criteria_table AS b
+                ON a.ad_color = b.Id
+                WHERE a.mag_id = {$transaction_uid[0]->magazine_id}
+                GROUP BY c_uid ASC
+        ");
+
+        return view('booking.add_issue', compact('mag_trans_uid', 'mag_name', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num'));
     }
 
     public function save_issue_v1_backup(Request $request, $mag_trans_uid, $client_id)
@@ -303,10 +320,13 @@ class bookingController extends Controller
         $type = DB::SELECT("SELECT bb.type as client_type FROM client_contacts_table as aa INNER JOIN client_table as bb ON bb.Id = aa.client_id WHERE aa.Id = {$client_id}");
 
         $ad_c = $request['ad_criteria_id'];
-        $ad_p = $request['ad_package_id'];
+        $ad_p = $request['ad_p_split'];
         $quarter_issue = (int)$request['quarter_issue'];
         $line_item_qty = (int)$request['line_item_qty'];
-        $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
+        $ad_amount = $request['ad_amount'];
+//        $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
+
+//        dd($type[0]->client_type);
 
         $check = DB::table('magazine_issue_transaction_table')
             ->where('magazine_trans_id', '=', $mag_trans_uid)
@@ -320,21 +340,21 @@ class bookingController extends Controller
             return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('fail', 'Please delete original data, and insert with additional quantity.');
         }
 
-        if(COUNT($isMoreThanOne) >= 1)
-        {
-            MagIssueTransaction::where('magazine_trans_id', '=', $mag_trans_uid)
-                ->where('ad_criteria_id', '=', $ad_c)
-                ->where('ad_package_id', '=', $ad_p)
-                ->update([
-                    'amount' => $amount[0]->amount_x2_more
-                ]);
-        }
+//        if(COUNT($isMoreThanOne) >= 1)
+//        {
+//            MagIssueTransaction::where('magazine_trans_id', '=', $mag_trans_uid)
+//                ->where('ad_criteria_id', '=', $ad_c)
+//                ->where('ad_package_id', '=', $ad_p)
+//                ->update([
+//                    'amount' => $ad_amount
+//                ]);
+//        }
 
         $mit = new MagIssueTransaction();
         $mit->magazine_trans_id = $mag_trans_uid;
         $mit->ad_criteria_id = $ad_c;
         $mit->ad_package_id = $ad_p;
-        $mit->amount = COUNT($isMoreThanOne) >= 1 ? $amount[0]->amount_x2_more : $amount[0]->amount_x1;
+        $mit->amount = $ad_amount;
         $mit->quarter_issued = $quarter_issue;
         $mit->line_item_qty = $line_item_qty;
         $mit->status = 2;

@@ -69,8 +69,7 @@ Route::any('/booking/magazine-transaction/{trans_uid}/{which_country}/{client_id
 Route::post('/booking/save-magazine-transaction/{trans_id}/{which_country}/{client_id}', 'bookingController@save_magazine_transaction');
 Route::get('/booking/add_issue/{mag_trans_uid}/{client_id}', 'bookingController@add_issue');
 Route::post('/booking/save_issue/{mag_trans_uid}/{client_id}', 'bookingController@save_issue');
-Route::get('/booking/getPackageName/{criteria_id}', 'bookingController@getPackageName');
-Route::get('/booking/getPackageName/{criteria_id}', 'bookingController@getPackageName');
+Route::get('/booking/getPackageName/{criteria_id}/{mag_uid}', 'bookingController@getPackageName');
 Route::get('/booking/delete_issue/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@delete_issue');
 
 

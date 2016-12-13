@@ -42,33 +42,26 @@
                             <div class="col-sm-12">
                                 <form role="form" action="{{ URL('/magazine/add-color-size-discount') . '/' . $mag_uid }}" method="POST">
                                     <div class="form-group">
-                                        <label for="ex2">Color</label>
-                                        <select class="form-control" name="ad_color">
-                                            <option value="0"> -- Select -- </option>
-                                            <option value="1">4 Color</option>
-                                            <option value="2">1 Spot Color</option>
-                                            <option value="3">Black & White</option>
+                                        <label for="ex2">Ad Color</label>
+                                        <select class="form-control" name = "ad_color">
+                                            <option value = "" disabled selected>select</option>
+                                            @for($i = 0; $i < COUNT($ad_c); $i++)
+                                                <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->name }}</option>
+                                            @endfor
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="ex2">Ad Size</label>
-                                        <select class="form-control" name="ad_size">
-                                            <option value="0"> -- Select -- </option>
-                                            <option value="1">Double Page Spread</option>
-                                            <option value="2">Full Page</option>
-                                            <option value="3">1/2 DPS</option>
-                                            <option value="4">1/2 Page Island</option>
-                                            <option value="5">1/2 Page</option>
-                                            <option value="6">1/3 Page</option>
-                                            <option value="7">1/4 Page</option>
-                                            <option value="8">1/6 Page</option>
-                                            <option value="9">1/8 Page</option>
-                                            <option value="10">2/3 Page</option>
+                                        <select class="form-control" name = "ad_size">
+                                            <option value = "" disabled selected>select</option>
+                                            @for($i = 0; $i < COUNT($ad_s); $i++)
+                                                <option value = "{{ $ad_s[$i]->Id }}">{{ $ad_s[$i]->package_name }}</option>
+                                            @endfor
                                         </select>
                                     </div>
 
                                     <div class="form-group">
-                                        <label>Amount</label>
+                                        <label>Ad Amount</label>
                                         <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount" required>
                                     </div>
                             </div>
