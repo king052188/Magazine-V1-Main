@@ -1,7 +1,7 @@
 @extends('layout.magazine_main')
 
 @section('title')
-    Salesperson List
+    Users List
 @endsection
 
 @section('styles')
