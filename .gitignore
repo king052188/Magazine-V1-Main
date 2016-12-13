@@ -14,3 +14,4 @@ composer.lock
 config/database.php
 config/database.php
 .phpintel/index
+public/web.config

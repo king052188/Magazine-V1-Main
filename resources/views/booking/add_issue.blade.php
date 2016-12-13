@@ -148,14 +148,14 @@
                                             <table class="table table-striped table-bordered table-hover dataTables-example" id="issue_reports">
                                                 <thead>
                                                     <tr>
-                                                        <th style="width: 50px; text-align: center;">Item#</th>
-                                                        <th style="text-align: left;">TYPE</th>
-                                                        <th style="text-align: left;">SIZE</th>
-                                                        <th style="width: 100px; text-align: center;">QUARTER / ISSUED</th>
-                                                        <th style="width: 100px; text-align: center;">QTY</th>
-                                                        <th style="width: 100px; text-align: center;">DISCOUNT</th>
-                                                        <th style="width: 100px; text-align: right;">AMOUNT</th>
-                                                        <th style="width: 50px; text-align: center;">ACTION</th>
+                                                        <th style="width: 10%; text-align: center;">Item #</th>
+                                                        <th style="width: 20%; text-align: left;">TYPE</th>
+                                                        <th style="width: 20%; text-align: left;">SIZE</th>
+                                                        <th style="width: 10%; text-align: center;">QUARTER / ISSUED</th>
+                                                        <th style="width: 10%; text-align: center;">QTY</th>
+                                                        <th style="width: 10%; text-align: center;">DISCOUNT</th>
+                                                        <th style="width: 10%; text-align: right;">AMOUNT</th>
+                                                        <th style="width: 10%; text-align: center;">ACTION</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

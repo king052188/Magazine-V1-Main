@@ -58,25 +58,25 @@
                         <input class="form-control" placeholder="Sales Representative Code" id="ex2" type="hidden" value = "{{ $_COOKIE['Id'] }}" name = "sales_rep_code">
 
                         <div class="form-group">
-                            <label>Client ID <i>(UID of client_contacts_table)</i></label>
+                            <label>Company/Client ID <i>(UID of client_contacts_table)</i></label>
 
                             <div class="input-group">
                                 <input type="text" class="form-control hidden" name="client_id" id="clientIdField" value="">
-                                <input type="text" class="form-control" placeholder="Client ID" id="clientIdFieldView" required>
+                                <input type="text" class="form-control" placeholder="Client ID" id="clientIdFieldView" required disabled>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_client"><i class="fa fa-search"></i></button>
+                                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_client">Search <i class="fa fa-search"></i></button>
                                 </span>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="ex2">Agency ID</label>
+                            <label for="ex2">Agency ID <i>(if any)</i></label>
 
                             <div class="input-group">
                                 <input type="text" class="form-control hidden" name="agency_id" id="agencyIdField" value="">
-                                <input type="text" class="form-control" placeholder="Agency ID"  id="agencyIdFieldView">
+                                <input type="text" class="form-control" placeholder="Agency ID"  id="agencyIdFieldView" disabled>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" data-toggle="modal" data-target="#modal_agency"><i class="fa fa-search"></i></button>
+                                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_agency" >Search <i class="fa fa-search"></i></button>
                                 </span>
                             </div>
                         </div>
@@ -90,7 +90,7 @@
                         </div>
                         <div>
                             <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                            <button class="btn btn-sm btn-primary pull-right" type="submit"><strong>Create Booking</strong></button>
+                            <button class="btn btn-md btn-primary pull-right" type="submit"><strong>Create Booking</strong></button>
                         </div>
                     </form>
 
