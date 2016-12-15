@@ -45,9 +45,10 @@
             @else
 
                 <li class="{{ Request::is('sales_report') || Request::is('sales_report/*') ? 'active' : '' }}">
-                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Sales</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a href="/sales_report/view">Sales Report</a></li>
+                        <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">Book an Ad</span></a></li>
+                        <li><a href="/sales_report/view">Sales Reports</a></li>
                     </ul>
                 </li>
                 <li class="{{ Request::is('client') || Request::is('client/*') ? 'active' : '' }}">
@@ -79,9 +80,9 @@
                         <li><a href="/magazine/all">View All Magazine</a></li>
                     </ul>
                 </li>
-                <li class="{{ Request::is('booking') || Request::is('booking/*') ? 'active' : '' }}">
-                    <a href="{{ url('booking/booking-list') }}"><i class="fa fa-credit-card" aria-hidden="true"></i> <span class="nav-label">Booking and Sales</span></a>
-                </li>
+                {{--<li class="{{ Request::is('booking') || Request::is('booking/*') ? 'active' : '' }}">--}}
+
+                {{--</li>--}}
 
             @endif
 
