@@ -46,6 +46,12 @@ return [
 
     'connections' => [
 
+        'kpa' => [
+            'driver' => 'api',
+            'host' => '192.168.43.132',
+            'port' => '80',
+        ],
+
         'sqlite' => [
             'driver' => 'sqlite',
             'database' => env('DB_DATABASE', database_path('database.sqlite')),
