@@ -66,27 +66,6 @@
                                 <th style='text-align: center; width: 20%;'>Status / Action</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <?php
-                                $n = 1;
-                                $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
-                            ?>
-                            @for($i = 0; $i < COUNT($booking); $i++)
-                                <tr>
-                                    <td style='text-align: center;'>{{ $n++ }}</td>
-                                    <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
-                                    <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>
-                                    <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
-                                @if($_COOKIE['role'] > 2)
-                                    <td style='text-align: right; width: 280px;'>
-                                        <form class="form-inline">
-                                            <div class="form-group">
-                                                <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ ($booking[$i]->status == 5 OR $booking[$i]->status == 3)  ? "disabled" : "" }}>
-                                                    <optgroup label="-- Status --"> -- Status -- </optgroup>
-                            </thead>
                             <tbody>
                                 <?php
                                     $n = 1;
@@ -119,59 +98,45 @@
                                                             </optgroup>
                                                         @endif
                                                     </select>
-
                                                     @if($booking[$i]->status == 5)
-                                                        <option value="0">Void</option>
+                                                        <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
                                                     @elseif($booking[$i]->status == 3)
-                                                        <option value="0">Approved</option>
+                                                        <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
                                                     @else
-                                                        <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value="1">Pending</option>
-                                                        <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value="2">For Approval</option>
-                                                        <optgroup label="-- Action --"> -- Action -- </optgroup>
-                                                            <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
-                                                            <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
-                                                        </optgroup>
+                                                        <a class="btn btn-info" id="btn_update" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</a>
                                                     @endif
+                                                   </div>
+                                            </form>
+                                        </td>
+                                    @else
+                                    <td style='text-align: center; width: 280px;'>
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
+                                              ...
+                                              <li role="separator" class="divider"></li>
+                                              ...
+                                            </ul>
+                                                <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                    <optgroup label="-- Status --"> -- Status -- </optgroup>
+                                                    <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
+                                                    <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
+                                                    <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
+                                                    {{--<option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>--}}
+                                                    <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
+                                                    <optgroup label="-- Action --"> -- Action -- </optgroup>
+                                                    <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
+                                                    <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
+                                                    </optgroup>
                                                 </select>
-                                                @if($booking[$i]->status == 5)
-                                                    <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
-                                                @elseif($booking[$i]->status == 3)
-                                                    <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
-                                                @else
-                                                    <a class="btn btn-info" id="btn_update" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</a>
-                                                @endif
-                                               </div>
-                                        </form>
-                                    </td>
-                                @else
-                                <td style='text-align: center; width: 280px;'>
-                                    <div class="form-inline">
-                                        <div class="form-group">
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
-                                          ...
-                                          <li role="separator" class="divider"></li>
-                                          ...
-                                        </ul>
-                                            <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
-                                                <optgroup label="-- Status --"> -- Status -- </optgroup>
-                                                <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
-                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
-                                                <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
-                                                {{--<option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>--}}
-                                                <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
-                                                <optgroup label="-- Action --"> -- Action -- </optgroup>
-                                                <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
-                                                <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
-                                                </optgroup>
-                                            </select>
-                                            <button class="btn btn-primary" id="btn_update" style = "width: 80px;margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
+                                                <button class="btn btn-primary" id="btn_update" style = "width: 80px;margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </td>
-                                @endif
-                                </tr>
-                                @endfor
-                        </tbody>
+                                    </td>
+                                    @endif
+                                    </tr>
+                                    @endfor
+                            </tbody>
                     </table>
                 </div>
             </div>
