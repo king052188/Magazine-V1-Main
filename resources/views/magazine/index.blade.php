@@ -27,7 +27,7 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-10">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Magazine List</h5>
@@ -41,7 +41,7 @@
                     </div>
                     @endif
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover table-responsive" >
+                        <table class="table table-striped table-bordered table-hover table-responsive MagazineListdataTables" >
                             <thead>
                             <tr>
                                 <th style="text-align: center; width: 30%;">Magazine Code</th>
@@ -68,4 +68,20 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+
+<script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
+<script>
+
+    $(document).ready( function() {
+
+        $('.MagazineListdataTables').DataTable({
+        dom: '<"html5buttons"B>lTfgitp',
+        buttons: []
+        });
+
+    });
+</script>
 @endsection

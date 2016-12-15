@@ -187,7 +187,7 @@
 
                     </script>
                     <section class="panel">
-                        <table class="table table-striped table-bordered table-hover dataTables-example" id="issue_reports">
+                        <table class="table table-striped table-bordered table-hover SalesListdataTables" id="issue_reports">
                             <thead>
                             <tr>
                                 <th style='text-align: center;'>#</th>
@@ -216,4 +216,16 @@
 
 @section('scripts')
 
+<script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
+<script>
+
+    $(document).ready( function() {
+
+        $('.SalesListdataTables').DataTable({
+        dom: '<"html5buttons"B>lTfgitp',
+        buttons: []
+        });
+
+    });
+</script>
 @endsection

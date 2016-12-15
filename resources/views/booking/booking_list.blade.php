@@ -54,7 +54,7 @@
                 @endif
 
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover dataTables-example" >
+                    <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                             <tr>
                                 <th style='text-align: center; width: 5%;'>#</th>
