@@ -58,7 +58,6 @@
                         <thead>
                             <tr>
                                 <th style='text-align: center; width: 5%;'>#</th>
-                                <th style='text-align: left; width: 20%;'>Trans #</th>
                                 <th style='text-align: left; width: 10%;'>Magazine Name</th>
                                 <th style='text-align: left; width: 10%;'>Sales Rep</th>
                                 <th style='text-align: left; width: 10%;'>Client</th>
@@ -87,6 +86,40 @@
                                             <div class="form-group">
                                                 <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ ($booking[$i]->status == 5 OR $booking[$i]->status == 3)  ? "disabled" : "" }}>
                                                     <optgroup label="-- Status --"> -- Status -- </optgroup>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    $n = 1;
+                                    $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
+                                ?>
+                                @for($i = 0; $i < COUNT($booking); $i++)
+                                    <tr>
+                                        <td style='text-align: center;'>{{ $n++ }}</td>
+                                        <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->magazine_name }}</a></td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>
+                                        <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
+                                    @if($_COOKIE['role'] > 2)
+                                        <td style='text-align: right; width: 280px;'>
+                                            <form class="form-inline">
+                                                <div class="form-group">
+                                                    <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ ($booking[$i]->status == 5 OR $booking[$i]->status == 3)  ? "disabled" : "" }}>
+                                                        <optgroup label="-- Status --"> -- Status -- </optgroup>
+                                                        @if($booking[$i]->status == 5)
+                                                            <option value="0">Void</option>
+                                                        @elseif($booking[$i]->status == 3)
+                                                            <option value="0">Approved</option>
+                                                        @else
+                                                            <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value="1">Pending</option>
+                                                            <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value="2">For Approval</option>
+                                                            <optgroup label="-- Action --"> -- Action -- </optgroup>
+                                                                <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
+                                                                <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
+                                                            </optgroup>
+                                                        @endif
+                                                    </select>
+
                                                     @if($booking[$i]->status == 5)
                                                         <option value="0">Void</option>
                                                     @elseif($booking[$i]->status == 3)
