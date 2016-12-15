@@ -74,7 +74,7 @@
                                 @for($i = 0; $i < COUNT($booking); $i++)
                                     <tr>
                                         <td style='text-align: center;'>{{ $n++ }}</td>
-                                        <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->magazine_name }}</a></td>
+                                        <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->magazine_name . " ( " . $booking[$i]->magazine_issues . "-" . $booking[$i]->magazine_year . " )" }}</a></td>
                                         <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>

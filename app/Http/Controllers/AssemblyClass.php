@@ -19,7 +19,7 @@ class AssemblyClass extends Controller
 
     public static function get_api_url() {
 //        return "magazine-api.kpa21.com:80";
-        return "192.168.1.121:80";
+        return "192.168.21.155:80";
     }
 
     public static function get_reports_api() {

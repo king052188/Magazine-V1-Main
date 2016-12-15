@@ -296,7 +296,7 @@ $(document).ready( function() {
                 html_thmb += "<td style='text-align: left;'>"+tran.ad_size+"</td>";
                 html_thmb += "<td style='text-align: center;'> Q"+tran.quarter_issued+"</td>";
                 html_thmb += "<td style='text-align: center;'> "+tran.line_item_qty+"</td>";
-                html_thmb += "<td style='text-align: center;'> "+numeral(tran.total_discount).format('0,0.00')+"</td>";
+                html_thmb += "<td style='text-align: center;'> "+numeral(tran.total_discount_by_percent).format('0,0')+"%</td>";
 
                 var n_status = "Void";
                 var p_status = parseInt(tran.status);

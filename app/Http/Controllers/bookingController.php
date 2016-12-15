@@ -52,6 +52,12 @@ class bookingController extends Controller
                                 SELECT magazine_name FROM magazine_table WHERE Id = m_trans.magazine_id 
                             ) AS magazine_name,
                             ( 
+                                SELECT magazine_issues FROM magazine_table WHERE Id = m_trans.magazine_id 
+                            ) AS magazine_issues,
+                            ( 
+                                SELECT magazine_year FROM magazine_table WHERE Id = m_trans.magazine_id 
+                            ) AS magazine_year,
+                            ( 
                                 SELECT 
                                     CASE WHEN magazine_country = 1 THEN 'USA' 
                                     WHEN magazine_country = 2 THEN 'CANADA' 
