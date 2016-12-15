@@ -79,7 +79,6 @@
                     </div>
                     <div class="ibox-content">
                         <div class="row">
-                        
                                 <div class="form-group ">
                                     <div class="col-sm-6">
                                         <label>2x Percent Discount</label>

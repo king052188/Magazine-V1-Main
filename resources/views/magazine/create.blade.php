@@ -69,6 +69,18 @@
                                         <option value="2">Active</option>
                                     </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="ex2">Year Issue</label>
+                                    <select class="form-control" name="year_issue" required>
+                                        @for($i = date("Y"); $i < date("Y") + 10; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ex2">Numbers of Issue</label>
+                                    <input type="number" placeholder="Enter Issue Number" class="form-control" name="number_issue" value = "1" required>
+                                </div>
                                 <div class = "form-group">
                                     <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
                                     <?php

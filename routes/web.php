@@ -62,6 +62,8 @@ Route::get('/transaction/all', 'transactionController@index');
 
 // Booking Routes
 Route::get('/booking/booking-list/{filter?}', 'bookingController@booking_list');
+Route::get('/booking/booking-list_api/{filter?}', 'bookingController@booking_list_api');
+
 Route::get('/booking/add-booking', 'bookingController@add_booking');
 
 Route::post('/booking/magazine-transaction-save-process', 'bookingController@save_booking'); // Process

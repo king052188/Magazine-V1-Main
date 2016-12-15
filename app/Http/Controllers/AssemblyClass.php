@@ -27,7 +27,7 @@ class AssemblyClass extends Controller
             "Url_Port"                      => AssemblyClass::get_api_url(),
             "Url_Client_Dashboard"          => AssemblyClass::get_api_url() ."/kpa-client-dashboard/?trans=", // pass a trans_num
             "Url_Insertion_Order"           => AssemblyClass::get_api_url() ."/kpa/work/transaction/generate/pdf/", // pass a trans_num
-            "Url_Logo_Uploader"             => AssemblyClass::get_api_url() ."/kpa-uploader-a/index.php?", // pass a trans_num
+            "Url_Logo_Uploader"             => AssemblyClass::get_api_url() ."/kpa-uploader/index.php?", // pass a trans_num
         ];
     }
 

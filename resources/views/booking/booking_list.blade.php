@@ -25,8 +25,6 @@
     </div>
 </div>
 
-
-
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
@@ -47,18 +45,19 @@
             </div>
 
             <div class="ibox-content">
+
                 @if(Session::has('success'))
                 <div class="alert alert-success alert-dismissable">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                     {{ Session::get('success') }}
                 </div>
                 @endif
+
                 <div class="table-responsive">
-                        <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover table-responsive dataTables-example" >
-                            <thead>
+                    <table class="table table-striped table-bordered table-hover dataTables-example" >
+                        <thead>
                             <tr>
                                 <th style='text-align: center; width: 5%;'>#</th>
-                                <th style='text-align: left; width: 20%;'>Trans #</th>
                                 <th style='text-align: left; width: 10%;'>Magazine Name</th>
                                 <th style='text-align: left; width: 10%;'>Sales Rep</th>
                                 <th style='text-align: left; width: 10%;'>Client</th>
@@ -66,7 +65,7 @@
                                 <th style='text-align: center; width: 5%;'>Line Item</th>
                                 <th style='text-align: center; width: 20%;'>Status / Action</th>
                             </tr>
-                            </thead>
+                        </thead>
                             <tbody>
                                 <?php
                                     $n = 1;
@@ -75,8 +74,7 @@
                                 @for($i = 0; $i < COUNT($booking); $i++)
                                     <tr>
                                         <td style='text-align: center;'>{{ $n++ }}</td>
-                                        <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
-                                        <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
+                                        <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->magazine_name . " ( " . $booking[$i]->magazine_issues . "-" . $booking[$i]->magazine_year . " )" }}</a></td>
                                         <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>
@@ -139,25 +137,54 @@
                                     </tr>
                                     @endfor
                             </tbody>
-                        </table>
-                   
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+</div>
+
 </div>
 @endsection
 
-<script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
+@section('scripts')
+
+<script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 <script>
+
+$(document).ready(function(){
+    $('.dataTables-example').DataTable({
+        dom: '<"html5buttons"B>lTfgitp',
+        buttons: [
+            {extend: 'copy'},
+            {extend: 'csv'},
+            {extend: 'excel', title: 'ExampleFile'},
+            {extend: 'pdf', title: 'ExampleFile'},
+
+            {extend: 'print',
+             customize: function (win){
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+            }
+            }
+        ]
+
+    });
+
+});
+
+
+
     function open_preview(trans_number)
     {
         window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_number + "?show=preview",
                 "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
     }
-</script>
-<script>
+
 
     $(document).ready( function() {
 
@@ -218,3 +245,4 @@
 
 
 </script>
+@endsection

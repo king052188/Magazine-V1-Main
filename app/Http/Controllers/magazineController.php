@@ -44,6 +44,8 @@ class magazineController extends Controller
         $magazine->magazine_name = $request['magname'];
         $magazine->magazine_country = (int)$request['magcountry'];
         $magazine->status = (int)$request['status'];
+        $magazine->magazine_year = (int)$request['year_issue'];
+        $magazine->magazine_issues = (int)$request['number_issue'];
         $magazine->save();
 
         if($magazine->id > 0) {
