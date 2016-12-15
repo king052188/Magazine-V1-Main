@@ -25,8 +25,6 @@
     </div>
 </div>
 
-
-
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
@@ -47,15 +45,17 @@
             </div>
 
             <div class="ibox-content">
+
                 @if(Session::has('success'))
                 <div class="alert alert-success alert-dismissable">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
                     {{ Session::get('success') }}
                 </div>
                 @endif
+
                 <div class="table-responsive">
-                        <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover table-responsive dataTables-example" >
-                            <thead>
+                    <table class="table table-striped table-bordered table-hover dataTables-example" >
+                        <thead>
                             <tr>
                                 <th style='text-align: center; width: 5%;'>#</th>
                                 <th style='text-align: left; width: 20%;'>Trans #</th>
@@ -66,98 +66,127 @@
                                 <th style='text-align: center; width: 5%;'>Line Item</th>
                                 <th style='text-align: center; width: 20%;'>Status / Action</th>
                             </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                    $n = 1;
-                                    $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
-                                ?>
-                                @for($i = 0; $i < COUNT($booking); $i++)
-                                    <tr>
-                                        <td style='text-align: center;'>{{ $n++ }}</td>
-                                        <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
-                                        <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
-                                        <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
-                                        <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
-                                        <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>
-                                        <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
-                                    @if($_COOKIE['role'] > 2)
-                                        <td style='text-align: right; width: 280px;'>
-                                            <form class="form-inline">
-                                                <div class="form-group">
-                                                    <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ ($booking[$i]->status == 5 OR $booking[$i]->status == 3)  ? "disabled" : "" }}>
-                                                        <optgroup label="-- Status --"> -- Status -- </optgroup>
-                                                        @if($booking[$i]->status == 5)
-                                                            <option value="0">Void</option>
-                                                        @elseif($booking[$i]->status == 3)
-                                                            <option value="0">Approved</option>
-                                                        @else
-                                                            <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value="1">Pending</option>
-                                                            <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value="2">For Approval</option>
-                                                            <optgroup label="-- Action --"> -- Action -- </optgroup>
-                                                                <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
-                                                                <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
-                                                            </optgroup>
-                                                        @endif
-                                                    </select>
-                                                    @if($booking[$i]->status == 5)
-                                                        <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
-                                                    @elseif($booking[$i]->status == 3)
-                                                        <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
-                                                    @else
-                                                        <a class="btn btn-info" id="btn_update" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</a>
-                                                    @endif
-                                                   </div>
-                                            </form>
-                                        </td>
-                                    @else
-                                    <td style='text-align: center; width: 280px;'>
-                                        <div class="form-inline">
+                        </thead>
+                        <tbody>
+                            <?php
+                                $n = 1;
+                                $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
+                            ?>
+                            @for($i = 0; $i < COUNT($booking); $i++)
+                                <tr>
+                                    <td style='text-align: center;'>{{ $n++ }}</td>
+                                    <td style='text-align: left;'><a href = "{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}">{{ $booking[$i]->trans_num }}</a></td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
+                                    <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>
+                                    <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
+                                @if($_COOKIE['role'] > 2)
+                                    <td style='text-align: right; width: 280px;'>
+                                        <form class="form-inline">
                                             <div class="form-group">
-                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
-                                              ...
-                                              <li role="separator" class="divider"></li>
-                                              ...
-                                            </ul>
-                                                <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" {{ ($booking[$i]->status == 5 OR $booking[$i]->status == 3)  ? "disabled" : "" }}>
                                                     <optgroup label="-- Status --"> -- Status -- </optgroup>
-                                                    <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
-                                                    <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
-                                                    <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
-                                                    {{--<option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>--}}
-                                                    <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
-                                                    <optgroup label="-- Action --"> -- Action -- </optgroup>
-                                                    <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
-                                                    <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
-                                                    </optgroup>
+                                                    @if($booking[$i]->status == 5)
+                                                        <option value="0">Void</option>
+                                                    @elseif($booking[$i]->status == 3)
+                                                        <option value="0">Approved</option>
+                                                    @else
+                                                        <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value="1">Pending</option>
+                                                        <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value="2">For Approval</option>
+                                                        <optgroup label="-- Action --"> -- Action -- </optgroup>
+                                                            <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
+                                                            <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
+                                                        </optgroup>
+                                                    @endif
                                                 </select>
-                                                <button class="btn btn-primary" id="btn_update" style = "width: 80px;margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
-                                            </div>
-                                        </div>
+                                                @if($booking[$i]->status == 5)
+                                                    <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
+                                                @elseif($booking[$i]->status == 3)
+                                                    <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
+                                                @else
+                                                    <a class="btn btn-info" id="btn_update" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</a>
+                                                @endif
+                                               </div>
+                                        </form>
                                     </td>
-                                    @endif
-                                    </tr>
-                                    @endfor
-                            </tbody>
-                        </table>
-                   
+                                @else
+                                <td style='text-align: center; width: 280px;'>
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
+                                          ...
+                                          <li role="separator" class="divider"></li>
+                                          ...
+                                        </ul>
+                                            <select style = "width: 150px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                <optgroup label="-- Status --"> -- Status -- </optgroup>
+                                                <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1">Pending</option>
+                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2">For Approval</option>
+                                                <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3">Approved</option>
+                                                {{--<option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>--}}
+                                                <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
+                                                <optgroup label="-- Action --"> -- Action -- </optgroup>
+                                                <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
+                                                <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
+                                                </optgroup>
+                                            </select>
+                                            <button class="btn btn-primary" id="btn_update" style = "width: 80px;margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
+                                        </div>
+                                    </div>
+                                </td>
+                                @endif
+                                </tr>
+                                @endfor
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+</div>
+
 </div>
 @endsection
 
-<script type="text/javascript" src="http://cheappartsguy.com/query/assets/js/jquery-1.9.1.min.js"></script>
+@section('scripts')
+
+<script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 <script>
+
+$(document).ready(function(){
+    $('.dataTables-example').DataTable({
+        dom: '<"html5buttons"B>lTfgitp',
+        buttons: [
+            {extend: 'copy'},
+            {extend: 'csv'},
+            {extend: 'excel', title: 'ExampleFile'},
+            {extend: 'pdf', title: 'ExampleFile'},
+
+            {extend: 'print',
+             customize: function (win){
+                    $(win.document.body).addClass('white-bg');
+                    $(win.document.body).css('font-size', '10px');
+
+                    $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+            }
+            }
+        ]
+
+    });
+
+});
+
+
+
     function open_preview(trans_number)
     {
         window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_number + "?show=preview",
                 "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
     }
-</script>
-<script>
+
 
     $(document).ready( function() {
 
@@ -218,3 +247,4 @@
 
 
 </script>
+@endsection
