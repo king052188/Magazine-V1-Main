@@ -156,7 +156,6 @@ $(document).ready(function(){
     $('.dataTables-example').DataTable({
         dom: '<"html5buttons"B>lTfgitp',
         buttons: []
-
     });
 
 });
