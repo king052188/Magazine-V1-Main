@@ -17,9 +17,20 @@ class AssemblyClass extends Controller
 {
     //
 
+    public static function get_config_api() {
+
+        $data = \Config::get('database.connections');
+
+        $kpa = $data['kpa'];
+
+        return $kpa;
+    }
+
     public static function get_api_url() {
-//        return "magazine-api.kpa21.com:80";
-        return "192.168.43.132:80";
+        
+        $kpa = AssemblyClass::get_config_api();
+
+        return $kpa['host'] .':'. $kpa['port'];
     }
 
     public static function get_reports_api() {
@@ -30,7 +41,6 @@ class AssemblyClass extends Controller
             "Url_Logo_Uploader"             => AssemblyClass::get_api_url() ."/kpa-uploader/index.php?", // pass a trans_num
         ];
     }
-
 
     public static function check_cookies() {
         if(count($_COOKIE) <= 3) {
