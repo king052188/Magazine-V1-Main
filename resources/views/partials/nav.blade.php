@@ -27,6 +27,20 @@
             <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                 <a href="/dashboard"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
             </li>
+            <li class="{{ Request::is('magazine') || Request::is('magazine/*') ? 'active' : '' }}">
+                <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Magazine</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="/magazine/create">Create New Magazine</a></li>
+                    <li><a href="/magazine/all">View All Magazine</a></li>
+                </ul>
+            </li>
+            <li class="{{ Request::is('client') || Request::is('client/*') ? 'active' : '' }}">
+                <a href="#"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="/client/create">Create New Clients</a></li>
+                    <li><a href="/client/all">View All Clients</a></li>
+                </ul>
+            </li>
 
             @if($_COOKIE['role'] > 2)
 
@@ -51,13 +65,10 @@
                         <li><a href="/sales_report/view">Sales Reports</a></li>
                     </ul>
                 </li>
-                <li class="{{ Request::is('client') || Request::is('client/*') ? 'active' : '' }}">
-                    <a href="#"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                        <li><a href="/client/create">Create New Clients</a></li>
-                        <li><a href="/client/all">View All Clients</a></li>
-                    </ul>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
                 </li>
+
                 <li class="{{ Request::is('users') || Request::is('users') ? 'active' : '' }}">
                     <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Users</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
@@ -73,13 +84,7 @@
                 {{--<li><a href="/contract/all">View All Contract</a></li>--}}
                 {{--</ul>--}}
                 {{--</li>--}}
-                <li class="{{ Request::is('magazine') || Request::is('magazine/*') ? 'active' : '' }}">
-                    <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Magazine</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                        <li><a href="/magazine/create">Create New Magazine</a></li>
-                        <li><a href="/magazine/all">View All Magazine</a></li>
-                    </ul>
-                </li>
+
                 {{--<li class="{{ Request::is('booking') || Request::is('booking/*') ? 'active' : '' }}">--}}
 
                 {{--</li>--}}
