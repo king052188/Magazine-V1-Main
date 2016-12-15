@@ -42,6 +42,30 @@
                         <div class="row">
                             <div class="col-lg-12">
 
+                                <div class="col-lg-6">
+                                    <h3 class="m-t-none m-b">Company Details</h3>
+                                    <div class="form-group">
+                                        <label>Client/Company Name</label>
+                                        <input type="text" placeholder="Client / Company Name" class="form-control"  name="company_name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="ex2">Type</label>
+                                        <select class="form-control" name = "type" required>
+                                            @for($i = 0; $i < COUNT($result); $i++)
+                                                <option value = "{{ $result[$i]->Id }}">{{ $result[$i]->name }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="checkbox checkbox-primary">
+                                            <input id="checkbox2" class="styled" type="checkbox" name="is_member" unchecked>
+                                            <label for="checkbox2">
+                                                Member?
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <div class="col-lg-6">
                                     <h3 class="m-t-none m-b">Primary Contact Details</h3>
@@ -87,35 +111,13 @@
                                             <input class="form-control" type="text" name="mobile" placeholder="Mobile Number" required>
                                         </div>
                                     </div>
+                        
                                 </div>
-
-                                <div class="col-lg-6">
-                                    <h3 class="m-t-none m-b">Company Details</h3>
-                                    <div class="form-group">
-                                        <label>Client/Company Name</label>
-                                        <input type="text" placeholder="Client / Company Name" class="form-control"  name="company_name" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="ex2">Type</label>
-                                        <select class="form-control" name = "type" required>
-                                            @for($i = 0; $i < COUNT($result); $i++)
-                                                <option value = "{{ $result[$i]->Id }}">{{ $result[$i]->name }}</option>
-                                            @endfor
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="checkbox checkbox-primary">
-                                            <input id="checkbox2" class="styled" type="checkbox" name="is_member" unchecked>
-                                            <label for="checkbox2">
-                                                Member?
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div class="form-group" >
+                                            <div class="form-group" >
                                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                                         <button class="btn btn-primary pull-right" type="submit">Create new client</button>
                                     </div>
-                                </div>
+
 
                             </div>
                         </div>
