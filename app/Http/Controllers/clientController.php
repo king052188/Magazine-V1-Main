@@ -107,8 +107,14 @@ class clientController extends Controller
         }
 
         $subscribers = DB::table('client_table')->where('type', '=', 1)->get(); //Subscriber
+        $subscribers == null ? null : $subscribers;
+
         $agencies = DB::table('client_table')->where('type', '=', 2)->get(); //Agency
+        $agencies == null ? null : $agencies;
+
         $lead = DB::table('client_table')->where('type', '=', 3)->get(); //Lead
+        $lead == null ? null : $lead;
+
 
         return view('client.index', compact('subscribers', 'agencies', 'lead'));
     }

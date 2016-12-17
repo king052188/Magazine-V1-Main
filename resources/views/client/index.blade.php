@@ -45,12 +45,17 @@
                         {{ Session::get('success') }}
                     </div>
                     @endif
-
+                     <h3>Subscribers</h3>
                     <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th style="width:30px;">#</th>
-                            <th>Subscribers</th>
+                            <th>Company</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>Province/State</th>
+                            <th>Postal/Zip Code</th>
+                            <th>Member</th>
                             <th style="width:30px;">&nbsp;</th>
                         </tr>
                         </thead>
@@ -60,17 +65,27 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td><a href = "{{ URL('/client/client_contacts/' . $subscribers[$i]->Id) }}">{{ $subscribers[$i]->company_name }}</a></td>
+                                <td>{{ $subscribers[$i]->address }}</td>
+                                <td>{{ $subscribers[$i]->city }}</td>
+                                <td>{{ $subscribers[$i]->state }}</td>
+                                <td>{{ $subscribers[$i]->zip_code }}</td>
+                                <td style="text-align: center;">{{ $subscribers[$i]->is_member == 1 ? "Yes" : "No"}}</td>
                                 <td><a href = "{{ URL('/client/update/' . $subscribers[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a></td>
                             </tr>
                         @endfor
                         </tbody>
                     </table>
-
+                    <h3>Agency</h3>
                     <table class="table table-bordered">
                         <thead>
                         <tr>
                             <th style="width:30px;">#</th>
-                            <th>Agency</th>
+                            <th>Company</th>
+                            <th>Address</th>
+                            <th>City</th>
+                            <th>Province/State</th>
+                            <th>Postal/Zip Code</th>
+                            <th>Member</th>
                             <th style="width:30px;">&nbsp;</th>
                         </tr>
                         </thead>
@@ -80,17 +95,27 @@
                             <tr>
                                 <td>{{ $n++ }}</td>
                                 <td><a href = "{{ URL('/client/client_contacts/' . $agencies[$i]->Id) }}">{{ $agencies[$i]->company_name }}</a></td>
+                                <td>{{ $agencies[$i]->address }}</td>
+                                <td>{{ $agencies[$i]->city }}</td>
+                                <td>{{ $agencies[$i]->state }}</td>
+                                <td>{{ $agencies[$i]->zip_code }}</td>
+                                <td style="text-align: center;">{{ $agencies[$i]->is_member == 1 ? "Yes" : "No"}}</td>
                                 <td><a href = "{{ URL('/client/update/' . $agencies[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a></td>
                             </tr>
                         @endfor
                         </tbody>
                     </table>
-
+                        <h3>Lead</h3>
                         <table class="table table-bordered">
                             <thead>
                             <tr>
                                 <th style="width:30px;">#</th>
-                                <th>Lead</th>
+                                <th>Company</th>
+                                <th>Address</th>
+                                <th>City</th>
+                                <th>Province/State</th>
+                                <th>Postal/Zip Code</th>
+                                <th>Member</th>
                                 <th style="width:30px;">&nbsp;</th>
                             </tr>
                             </thead>
@@ -100,6 +125,11 @@
                                 <tr>
                                     <td>{{ $n++ }}</td>
                                     <td><a href = "{{ URL('/client/client_contacts/' . $lead[$i]->Id) }}">{{ $lead[$i]->company_name }}</a></td>
+                                    <td>{{ $lead[$i]->address }}</td>
+                                    <td>{{ $lead[$i]->city }}</td>
+                                    <td>{{ $lead[$i]->state }}</td>
+                                    <td>{{ $lead[$i]->zip_code }}</td>
+                                    <td style="text-align: center;">{{ $lead[$i]->is_member == 1 ? "Yes" : "No"}}</td>
                                     <td><a href = "{{ URL('/client/update/' . $lead[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a></td>
                                 </tr>
                             @endfor

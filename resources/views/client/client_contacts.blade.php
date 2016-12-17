@@ -26,7 +26,7 @@
     </div>
     <div class="col-sm-4">
         <div class="title-action">
-            <a href="{{ url('/client/add_contact') . '/' . $company_uid }}" class="btn btn-primary">Add Another Contact</a>
+            {{--<a href="{{ url('/client/add_contact') . '/' . $company_uid }}" class="btn btn-primary">Add Another Contact</a>--}}
         </div>
     </div>
 </div>
@@ -86,8 +86,8 @@
                                         <td>{{ $result[$i]->email }}</td>
                                         <td>{{ $result[$i]->landline }}</td>
                                         <td>{{ $result[$i]->mobile }}</td>
-                                        <td>{{ $result[$i]->type == 1 ? "Primary" : "Secondary" }}</td>
-                                        <td><a href = "{{ URL('/contact/update') . '/' . $result[$i]->Id }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit </a></td>
+                                        <td>{{ $result[$i]->type == 1 ? "Primary" : ($result[$i]->type == 2 ? "Secondary" : "Bill To") }}</td>
+                                        {{--<td><a href = "{{ URL('/contact/update') . '/' . $result[$i]->Id }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit </a></td>--}}
                                     </tr>
                                 @endfor
                         </tbody>
