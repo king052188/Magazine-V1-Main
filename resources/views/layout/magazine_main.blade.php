@@ -19,6 +19,7 @@
     <link href="{{ asset('css/animate.css')}}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/checkbox.css') }}">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/steps/jquery.steps.css')}}" rel="stylesheet">
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.5.6/numeral.min.js"></script>
     @yield('styles')
@@ -39,6 +40,7 @@
     <script src="{{ asset('js/bootstrap.min.js')}}"></script>
     <script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
     <script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
+    <script src="{{ asset('js/plugins/steps/jquery.steps.min.js') }}"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="{{ asset('js/inspinia.js')}}"></script>
@@ -46,6 +48,7 @@
     <!-- FooTable -->
     <link href="{{ asset('css/plugins/footable/footable.core.css')}}" rel="stylesheet">
     <script src="{{ asset('js/plugins/footable/footable.all.min.js')}}"></script>
+
     <!-- FooTable -- Page-Level Scripts -->
     <script>
         $(document).ready(function() {

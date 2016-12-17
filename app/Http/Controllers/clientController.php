@@ -32,31 +32,48 @@ class clientController extends Controller
 
     public function save_client(Request $request)
     {
-        $clientx = new Client();
-        $clientx->company_name = $request['company_name'];
-        $clientx->type = $request['type'];
-        $clientx->is_member = $request['is_member'] == false ? -1 : 1;
-        $clientx->save();
-        $company_last_uid = $clientx->id;
+        $company = new Client();
+        $company->company_name = $request['c_company_name'];
+        $company->address = $request['c_address'];
+        $company->city = $request['c_city'];
+        $company->state = $request['c_state'];
+        $company->zip_code = $request['c_zip_code'];
+        $company->type = $request['c_type'];
+        $company->is_member = $request['c_is_member'] == false ? -1 : 1;
+        $company->status = 2;
+        $company->save();
+        $company_last_uid = $company->id;
 
         $new_bn = $this->generate_branch_number($company_last_uid);
         $branch_name = $new_bn['new_bn'];
 
-        $client = new ClientContact();
-        $client->client_id = $company_last_uid;
-        $client->branch_name = $branch_name;
-        $client->first_name = $request['first_name'];
-        $client->middle_name = $request['middle_name'];
-        $client->last_name = $request['last_name'];
-        $client->address_1 = $request['address_1'];
-        $client->email = $request['email'];
-        $client->landline = $request['landline'];
-        $client->mobile = $request['mobile'];
-        $client->type = 1; //primary
-        $client->status = 2;
-        $client->save();
+        $field = array('', 'p_', 's_', 'b_');
 
-        return redirect('/client/all')->with('success', 'Successfully Added New Client.');
+        for($i = 1; $i < 4; $i++)
+        {
+            $client = new ClientContact();
+            $client->client_id = $company_last_uid;
+            $client->branch_name = $branch_name;
+            $client->first_name = $request[$field[$i].'first_name'];
+            $client->middle_name = $request[$field[$i].'middle_name'];
+            $client->last_name = $request[$field[$i].'last_name'];
+            $client->address_1 = $request[$field[$i].'address_1'];
+            $client->city = $request[$field[$i].'city'];
+            $client->state = $request[$field[$i].'state'];
+            $client->zip_code = $request[$field[$i].'zip_code'];
+            $client->email = $request[$field[$i].'email'];
+            $client->landline = $request[$field[$i].'landline'];
+            $client->mobile = $request[$field[$i].'mobile'];
+            $client->position = $request[$field[$i].'position'];
+            $client->type_designation = $request[$field[$i].'type_designation'];
+            $client->type = $i;
+            $client->status = 2;
+            $client->synched = 1;
+            $client->save();
+        }
+
+
+        return redirect('client/create')->with('success', 'Successfully Added New Client.');
     }
 
     public function add_contact($company_uid)
@@ -91,8 +108,9 @@ class clientController extends Controller
 
         $subscribers = DB::table('client_table')->where('type', '=', 1)->get(); //Subscriber
         $agencies = DB::table('client_table')->where('type', '=', 2)->get(); //Agency
+        $lead = DB::table('client_table')->where('type', '=', 3)->get(); //Lead
 
-        return view('client.index', compact('subscribers', 'agencies'));
+        return view('client.index', compact('subscribers', 'agencies', 'lead'));
     }
 
     public function store(Request $request)
@@ -148,21 +166,54 @@ class clientController extends Controller
         }
         
         $result = DB::table('client_reference_table')->get();
+        $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
+        $primary = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('type', '=', 1)->get();
+        $secondary = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('type', '=', 2)->get();
+        $bill_to = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('type', '=', 3)->get();
 
-        $result_client = DB::table('client_table')->where('Id', '=', $company_uid)->get();
-        return view('client.client_update', compact('result', 'result_client'));
+        return view('client.client_update', compact('result', 'company', 'primary', 'secondary', 'bill_to'));
     }
 
     public function client_update_save(Request $request, $company_uid)
     {
         Client::where('Id', '=', $company_uid)
             ->update([
-                'company_name' => $request['company_name'],
-                'type' => $request['type'],
-                'is_member' => $request['is_member'] == false ? -1 : 1
+                'company_name' => $request['c_company_name'],
+                'address' => $request['c_address'],
+                'city' => $request['c_city'],
+                'state' => $request['c_state'],
+                'zip_code' => $request['c_zip_code'],
+                'type' => $request['c_type'],
+                'is_member' => $request['c_is_member'] == false ? -1 : 1,
+                'status' => 2
             ]);
 
-        return redirect('client/all')->with('success', 'Successfully Updated.');
+        $field = array('', 'p_', 's_', 'b_');
+
+        for($i = 1; $i < 4; $i++)
+        {
+            ClientContact::where('client_id', '=', $company_uid)
+                ->where('type', '=', $i)
+                ->update([
+                    'first_name' => $request[$field[$i].'first_name'],
+                    'middle_name' => $request[$field[$i].'middle_name'],
+                    'last_name' => $request[$field[$i].'last_name'],
+                    'address_1' => $request[$field[$i].'address_1'],
+                    'city' => $request[$field[$i].'city'],
+                    'state' => $request[$field[$i].'state'],
+                    'zip_code' => $request[$field[$i].'zip_code'],
+                    'email' => $request[$field[$i].'email'],
+                    'landline' => $request[$field[$i].'landline'],
+                    'mobile' => $request[$field[$i].'mobile'],
+                    'position' => $request[$field[$i].'position'],
+                    'type_designation' => $request[$field[$i].'type_designation'],
+                    'type' => $i,
+                    'status' => 2,
+                    'synched' => 1
+                ]);
+        }
+
+        return redirect('client/update/' . $company_uid)->with('success', 'Successfully Updated.');
     }
 
     public function contact_update($contact_uid)

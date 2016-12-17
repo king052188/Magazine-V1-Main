@@ -85,6 +85,26 @@
                         @endfor
                         </tbody>
                     </table>
+
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th style="width:30px;">#</th>
+                                <th>Lead</th>
+                                <th style="width:30px;">&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <?php $n = 1; ?>
+                            @for($i = 0; $i < COUNT($lead); $i++)
+                                <tr>
+                                    <td>{{ $n++ }}</td>
+                                    <td><a href = "{{ URL('/client/client_contacts/' . $lead[$i]->Id) }}">{{ $lead[$i]->company_name }}</a></td>
+                                    <td><a href = "{{ URL('/client/update/' . $lead[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a></td>
+                                </tr>
+                            @endfor
+                            </tbody>
+                        </table>
                 </div>
             </div>
 
