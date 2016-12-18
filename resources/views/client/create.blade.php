@@ -40,7 +40,7 @@
             @if(Session::has('success'))
                 <div class="alert alert-success alert-dismissable">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                    {{ Session::get('success') }}Suuccess
+                    {{ Session::get('success') }}
                 </div>
             @endif
             {{--START COMPANY DETAILS--}}

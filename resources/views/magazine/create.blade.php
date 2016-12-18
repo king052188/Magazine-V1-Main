@@ -58,33 +58,23 @@
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Company Name</label>
-                                    <select class="form-control" name="cid" id = "cid" required>
-                                        <option>--select--</option>
-                                    </select>
+                                    <label id = "cid_show_label"></label>
+                                    <div id = "cid_show"></div>
                                 </div>
                                 <div class="form-group col-lg-4">
-                                    <label for="ex2">Status</label>
-                                    <select class="form-control" name="status" required>
-                                        <option value="1">Inactive</option>
-                                        <option value="2">Active</option>
-                                    </select>
+                                    <label id = "status_show_label"></label>
+                                    <div id = "status_show"></div>
                                 </div>
                                 <div class="form-group col-lg-4">
-                                    <label for="ex2">Year Issue</label>
-                                    <select class="form-control" name="year_issue" required>
-                                        @for($i = date("Y"); $i < date("Y") + 10; $i++)
-                                            <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
-                                    </select>
+                                    <label id = "year_issue_label"></label>
+                                    <div id = "year_issue"></div>
                                 </div>
                                 <div class="form-group col-lg-4">
-                                    <label for="ex2">Numbers of Issue</label>
-                                    <input type="number" placeholder="Enter Issue Number" class="form-control" name="number_issue" value = "1" required>
+                                    <label id = "number_issue_label"></label>
+                                    <div id = "number_issue"></div>
                                 </div>
-                                <div>
-                                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                    <button class="btn btn-sm btn-primary pull-right">Create New Magazine</button>
+                                <div id = "btn_show">
+
                                 </div>
                             </form>
                         </div>
@@ -268,10 +258,28 @@ $(document).ready(function() {
                 if (json.result == 404) {
                     $("#cid").empty().append("<option>--no data--</option>")
                 } else {
+
+                    $("#cid_show_label").empty().append("Company Name");
+                    $("#cid_show").empty().append("<select class='form-control' name='cid' id = 'cid' required>");
                     $(json.result).each(function(i, country) {
-                        $("#cid").empty().append("<option>--select--</option>");
-                        $("#cid").empty().append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
+                        $("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>");
                     });
+                    $("#cid_show").append("</select>");
+
+                    $("#status_show_label").empty().append("Status");
+                    $("#status_show").empty().append("<select class='form-control' name='status' required><option value='1'>Inactive</option><option value='2'>Active</option></select>")
+
+                    $("#year_issue_label").empty().append("Year Issue");
+                    $("#year_issue").empty().append("<select class='form-control' name='year_issue' id = 'year_issue_selected' required>");
+                    $("#year_issue_selected").append("@for($i = date('Y'); $i < date('Y') + 10; $i++)<option value='{{ $i }}'>{{ $i }}</option>@endfor");
+                    $("#year_issue").append("</select>");
+
+                    $("#number_issue_label").empty().append("Numbers of Issue");
+                    $("#number_issue").empty().append("<input type='number' placeholder='Enter Issue Number' class='form-control' name='number_issue' value = '1' required>");
+
+                    $("#btn_show").empty().append("<input type='hidden' name='_token' id='csrf-token' value='{{ Session::token() }}' /><button class='btn btn-sm btn-primary pull-right'>Create New Magazine</button>");
+
+
                 }
             }
         });
