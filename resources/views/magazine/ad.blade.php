@@ -147,12 +147,12 @@
                             <table class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
-                                    <th data-toggle="true">No</th>
-                                    <th>Company ID</th>
-                                    <th>Magazine Code</th>
-                                    <th>Magazine Name</th>
-                                    <th>Magazine Country</th>
-                                    <th data-hide="all"></th>
+                                    <th data-toggle="true" style="width: 50px; text-align: center;">#</th>
+                                    <th style="width: 200px; text-align: center;">MAG Code</th>
+                                    <th style="text-align: center;">Magazine Name</th>
+                                    <th style="text-align: center;">Company Name</th>
+                                    <th style="width: 100px; text-align: center;">Country</th>
+                                    <th style="width: 50px; text-align: center;" data-hide="all"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -160,9 +160,9 @@
                                     @for($i=0; $i < COUNT($mag); $i++)
                                         <tr>
                                             <td style = "padding: 5px; text-align: center;">{{ $n++ }}</td>
-                                            <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['company_id'] }}</td>
                                             <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['mag_code'] }}</td>
                                             <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['magazine_name'] }}</td>
+                                            <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['company_id'] }}</td>
                                             <td style = "padding: 5px; text-align: center;">{{ $mag[$i]['magazine_country'] }}</td>
                                             <td style = "padding: 5px; text-align: center;"><a data-toggle="collapse" data-target="#demox_{{ $mag[$i]['Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
                                         </tr>
@@ -170,40 +170,102 @@
                                             <td colspan = "7" class="p0">
                                                 <div id="demox_{{ $mag[$i]['Id'] }}" class="collapse">
                                                     @if(COUNT($mag[$i]['ad_result']) > 0)
-                                                        <b>&raquo; Prices</b>
+                                                        <div style="width: 100%; text-align: center; background: #133b63; color: #ffffff;">
+                                                            <div style="padding: 5px;">
+                                                                <h3>{{ $mag[$i]['magazine_name'] }} [ Price List ] </h3>
+                                                            </div>
+                                                        </div>
                                                         <table class="table table-striped table-bordered mb0">
                                                             <thead>
-                                                            <tr>
-                                                                <th data-toggle="true" style = "padding: 5px; text-align: center;">Ad Color</th>
-                                                                <th style = "padding: 5px; text-align: center;">Ad Size</th>
-                                                                <th style = "padding: 5px; text-align: center;">Ad Amount</th>
-                                                                <th></th>
-                                                            </tr>
+                                                                <tr>
+                                                                    <th data-toggle="true" style = "width: 250px; padding: 5px; text-align: center; background: #a4a4a4; color: #000000;">Ad Color</th>
+                                                                    <th style = "padding: 5px; text-align: center; background: #a4a4a4; color: #000000;">Ad Size</th>
+                                                                    <th style = "width: 120px; padding: 5px; text-align: right; background: #a4a4a4; color: #000000;">Ad Amount</th>
+                                                                    <th style = "width: 50px; background: #a4a4a4; color: #000000;"></th>
+                                                                </tr>
                                                             </thead>
                                                             <tbody>
                                                             @foreach ($mag[$i]['ad_result'] as $ad)
-                                                                <tr style="background-color: rgba(196, 218, 255, 0.3);">
+                                                                <tr>
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_color'] }}</td>
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_size'] }}</td>
-                                                                    <td style = "padding: 5px; text-align: center;">{{ $ad['ad_amount'] }}</td>
+                                                                    <td style = "padding: 5px; text-align: right;">{{ number_format($ad['ad_amount'], 2, '.', ',') }}</td>
                                                                     <td style = "padding: 5px; text-align: center;"><a data-toggle="collapse" data-target="#demo_{{ $ad['ad_Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan = "6" class="p0">
                                                                         <div id="demo_{{ $ad['ad_Id'] }}" class="collapse">
-                                                                            <b>&raquo Discount</b>
+                                                                            <div style="width: 100%; text-align: center; background: #550c6d; color: #ffffff;">
+                                                                                <div style="padding: 5px;">
+                                                                                    <h3>{{ $mag[$i]['magazine_name'] }} [ Discount List ]</h3>
+                                                                                </div>
+                                                                            </div>
                                                                             <table class="table table-striped table-bordered mb0">
                                                                                 <thead>
                                                                                 <tr>
-                                                                                    <th style = "padding: 5px; text-align: center;">Quantity</th>
-                                                                                    <th data-toggle="true" style = "padding: 5px; text-align: center;">Percent</th>
+                                                                                    <th style = "padding: 5px; text-align: center; background: #a4a4a4; color: #000000;"">Ad Color & Size</th>
+                                                                                    <th style = "padding: 5px; text-align: center; width: 100px; background: #a4a4a4; color: #000000;"">Qty</th>
+                                                                                    <th data-toggle="true" style = "padding: 5px; text-align: right; width: 100px; background: #a4a4a4; color: #000000;"">Percent</th>
+                                                                                    <th data-toggle="true" style = "padding: 5px; text-align: right; width: 120px; background: #a4a4a4; color: #000000;"">Amount</th>
                                                                                 </tr>
                                                                                 </thead>
                                                                                 <tbody>
+                                                                                <?php $percent_cache = 0; ?>
                                                                                 @foreach ($ad['discount_result'] as $dis)
                                                                                     <tr>
+                                                                                        <td style = "padding: 5px; text-align: center;">{{ $ad['ad_color'] .' - '. $ad['ad_size'] }}</td>
                                                                                         <td style = "padding: 5px; text-align: center;">{{ $dis->type }}</td>
-                                                                                        <td style = "padding: 5px; text-align: center;">{{ $dis->percent }}</td>
+                                                                                        <td style = "padding: 5px; text-align: right;">{{ $dis->percent }}</td>
+                                                                                        <?php
+                                                                                            $real_amount = (float)$ad['ad_amount'];
+                                                                                            $qty = (int)$dis->type;
+                                                                                            $percent = (float)$dis->percent;
+                                                                                            if($qty == 2) {
+                                                                                                if($percent > 0) {
+                                                                                                    $percent_cache = $percent;
+                                                                                                    $sub_amount = $real_amount * $qty;
+                                                                                                    $total_amount = $sub_amount - ($sub_amount * (float)$dis->percent);
+                                                                                                }
+                                                                                                else {
+                                                                                                    $sub_amount = $real_amount * $qty;
+                                                                                                    $total_amount = $sub_amount;
+                                                                                                }
+                                                                                            }
+                                                                                            if($qty == 3) {
+                                                                                                if($percent > 0) {
+                                                                                                    $percent_cache = $percent;
+                                                                                                    $sub_amount = $real_amount * $qty;
+                                                                                                    $total_amount = $sub_amount - ($sub_amount * (float)$dis->percent);
+                                                                                                }
+                                                                                                else {
+                                                                                                    $sub_amount = $real_amount * $qty;
+                                                                                                    $total_amount = $sub_amount - ($sub_amount * $percent_cache);
+                                                                                                }
+                                                                                            }
+                                                                                            if($qty == 4) {
+                                                                                                if($percent > 0) {
+                                                                                                    $percent_cache = $percent;
+                                                                                                    $sub_amount = $real_amount * $qty;
+                                                                                                    $total_amount = $sub_amount - ($sub_amount * (float)$dis->percent);
+                                                                                                }
+                                                                                                else {
+                                                                                                    $sub_amount = $real_amount * $qty;
+                                                                                                    $total_amount = $sub_amount - ($sub_amount * $percent_cache);
+                                                                                                }
+                                                                                            }
+                                                                                            if($qty == 5) {
+                                                                                                if($percent > 0) {
+                                                                                                    $percent_cache = $percent;
+                                                                                                    $sub_amount = $real_amount * 5;
+                                                                                                    $total_amount = $sub_amount - ($sub_amount * (float)$dis->percent);
+                                                                                                }
+                                                                                                else {
+                                                                                                    $sub_amount = $real_amount * 5;
+                                                                                                    $total_amount = $sub_amount - ($sub_amount * $percent_cache);
+                                                                                                }
+                                                                                            }
+                                                                                        ?>
+                                                                                        <td style = "padding: 5px; text-align: right;">{{ number_format($total_amount, 2, '.', ',') }}</td>
                                                                                     </tr>
                                                                                 @endforeach
                                                                                 </tbody>
