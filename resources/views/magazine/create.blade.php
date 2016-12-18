@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="form-group col-lg-4" id = "hidden">
                                     <label>Numbers of Issue</label>
-                                    <input type='number' placeholder='Enter Issue Number' class='form-control' name='number_issue' id = "number_issue" value = '1'>
+                                    <input type='number' placeholder='Enter Issue Number' min="1" max="125" class='form-control' name='number_issue' id = "number_issue" value = '1'>
                                 </div>
                                 <div id = "hidden">
                                     <input type='hidden' name='_token' id='csrf-token' value='{{ Session::token() }}' /><button class='btn btn-sm btn-primary pull-right' id='btn_submit'>Create New Magazine</button>
@@ -294,6 +294,14 @@ $(document).ready(function() {
             swal(
                     'Oops...',
                     'Number of Issue is required!',
+                    'warning'
+            )
+            return false;
+        }
+        if(parseInt(number_issue) > 125){
+            swal(
+                    'Oops...',
+                    'Maximum number of Ad Amount is 125!',
                     'warning'
             )
             return false;
