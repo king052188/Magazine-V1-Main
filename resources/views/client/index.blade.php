@@ -22,12 +22,8 @@
         </ol>
     </div>
 </div>
-
-
-
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-
         <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
@@ -54,9 +50,9 @@
                                 <th style = "text-align: center;">Address</th>
                                 <th style = "text-align: center;">City</th>
                                 <th style = "text-align: center;">Province/State</th>
-                                <th style = "text-align: center;">Postal/Zip Code</th>
-                                <th style = "text-align: center;">Member</th>
-                                <th style = "text-align: center;">Type</th>
+                                <th style = "width:50px; text-align: center;">Postal/Zip Code</th>
+                                <th style = "width:100px; text-align: center;">Member</th>
+                                <th style = "width:100px; text-align: center;">Type</th>
                                 <th style="width:30px;">&nbsp;</th>
                             </tr>
                             </thead>
@@ -80,25 +76,19 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('scripts')
-
     <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
     <script>
-
         $(document).ready( function() {
-
             $('.ClientsListdataTables').DataTable({
                 dom: '<"html5buttons"B>lTfgitp',
                 buttons: []
             });
-
         });
     </script>
 @endsection

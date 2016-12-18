@@ -18,19 +18,21 @@
 
 @section('magazine_content')
 
-<div class="row wrapper border-bottom white-bg page-heading"> {{-- breadcrumbs start --}}
-    <div class="col-lg-10">
-        <h2>Client</h2>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-8">
+        <h2>Magazine</h2>
         <ol class="breadcrumb">
-            <li>
-                <a href="index.html">Client</a>
-            </li>
             <li class="active">
-                <strong>Create Client</strong>
+                <strong>Add Magazine</strong>
             </li>
         </ol>
     </div>
-</div> {{-- breadcrumbs end --}}
+    <div class="col-sm-4">
+        <div class="title-action">
+            <a href="#" class="btn btn-primary" id="btnSave">Save</a>
+        </div>
+    </div>
+</div>
 
 <div class="wrapper wrapper-content animated fadeInRight"> {{-- wrapper start --}}
     <form role="form" action="{{ url('/client/save_client') }}" method="post">{{-- form start --}}
@@ -93,7 +95,7 @@
                                 </div>
                                 <div class="form-group" >
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                    <button class="btn btn-primary btn-lg pull-right" type="submit" style = "width: 200px;">Create</button>
+                                    <button id="btnCreate" class="btn btn-primary btn-lg pull-right" type="submit" style = "width: 200px; display: none;">Create</button>
                                 </div>
                             </div>
                         </div>
@@ -377,6 +379,12 @@
             $(".actions.clearfix").hide();
             $("li").removeClass('disabled').addClass('done');
             $("li:first-child").removeClass('done');
+
+
+            $("#btnSave").click(function(){
+                $("#btnCreate").click();
+                return false;
+            });
         });
     </script>
 @endsection
