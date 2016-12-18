@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `db_magazine_v1` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `db_magazine_v1`;
--- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
 --
--- Host: localhost    Database: db_magazine_v1
+-- Host: 127.0.0.1    Database: db_magazine_v1
 -- ------------------------------------------------------
--- Server version	5.7.10-log
+-- Server version	5.5.45-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -34,7 +34,7 @@ CREATE TABLE `booking_sales_table` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=119 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `booking_sales_table` (
 
 LOCK TABLES `booking_sales_table` WRITE;
 /*!40000 ALTER TABLE `booking_sales_table` DISABLE KEYS */;
-INSERT INTO `booking_sales_table` VALUES (116,'2016120212135840E5D99FB16',3,33,0,5,'2016-12-02 03:09:36','2016-12-02 03:09:36'),(117,'20161202122258412FB6C7E6C',1,34,0,1,'2016-12-02 08:24:28','2016-12-02 08:24:28'),(118,'201612101208584BCB202935B',1,34,36,1,'2016-12-10 09:30:25','2016-12-10 09:30:25');
+INSERT INTO `booking_sales_table` VALUES (136,'201612181224585693E4A7881',1,126,0,2,'2016-12-18 13:49:49','2016-12-18 13:49:49');
 /*!40000 ALTER TABLE `booking_sales_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,16 +64,21 @@ CREATE TABLE `client_contacts_table` (
   `address_1` varchar(50) DEFAULT NULL,
   `address_2` varchar(50) DEFAULT NULL,
   `address_3` varchar(50) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  `zip_code` varchar(45) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
   `landline` varchar(15) DEFAULT NULL,
   `mobile` varchar(15) DEFAULT NULL,
+  `position` varchar(45) DEFAULT NULL,
+  `type_designation` varchar(45) DEFAULT NULL,
   `type` tinyint(4) DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL,
   `synched` tinyint(4) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,7 +87,7 @@ CREATE TABLE `client_contacts_table` (
 
 LOCK TABLES `client_contacts_table` WRITE;
 /*!40000 ALTER TABLE `client_contacts_table` DISABLE KEYS */;
-INSERT INTO `client_contacts_table` VALUES (33,105,'0001','king','paulo','aquino','lot 5 block 7 Eucalyptus St. A Gordon Heights','N/A','N/A','kingpauloaquino@gmail.com','2502622','09191234567',2,1,2,'2016-12-08 17:32:37','2016-12-02 03:04:59'),(34,105,'0002','March','Jig','Tala','Olongapo','N/A','N/A','march@yahoo.com','2502622','09191234567',1,1,2,'2016-12-04 08:54:20','2016-12-02 03:08:16'),(36,113,'0001','first_name','middle_name','last_name','address_1','N/A','N/A','email@yahoo.com','landline','123-22234-123',1,1,2,'2016-12-04 07:11:36','2016-12-04 07:11:36'),(37,113,'0002','a','b','c','d','N/A','N/A','e','f','g',2,1,2,'2016-12-04 07:12:25','2016-12-04 07:12:25'),(39,105,'0003','Rody','R','Duterte','Davao, Philippines','N/A','N/A','duterte@yahoo.com','132-5643-3651','123-22234-123',2,1,2,'2016-12-04 08:54:20','2016-12-04 08:53:55');
+INSERT INTO `client_contacts_table` VALUES (49,126,'0001','Marissa','L','Mayer','California, United States',NULL,NULL,'Oaklahoma','California','22091','marissa@yahoo.com','232-1190','09051234567','Software Engineer','Company Representative',1,2,1,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(50,126,'0002','David','O','Oland','Sacramento, United States',NULL,NULL,'Fresno','Los Angeles','22019','david@yahoo.com','292-1204','09072898475','Co-Founder','Company Representative',2,2,1,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(51,126,'Google Main','Larry','L','Page','Anaheim, United States',NULL,NULL,'Irvine','California','22092','larry@yahoo.com','294-2091','09872647582','Owner','Company Representative',3,2,1,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(52,127,'0001','Will','O','Stanford','Sacramento, United States',NULL,NULL,'San Jose','California','22092','will@yahoo.com','292-1092','09829948275','Google Owner in Philippines','Company Chief Officer',1,2,1,'2016-12-18 13:39:15','2016-12-18 13:23:34'),(53,127,'0002','Glenn','P','Obrien','Olongapo City, Philippines',NULL,NULL,'Olongapo','Zambales','2209','glenn@yahoo.com','294-2401','09284775182','Regional Director','Company Representative',2,2,1,'2016-12-18 13:39:15','2016-12-18 13:23:34'),(54,127,'Google Main','Lawrence','T','Page','Palo Alto, California',NULL,NULL,'Palo Alto','Long Beach','22091','lpage@yahoo.com','294-2091','09872647582','Owner','Company Representative',3,2,1,'2016-12-18 13:39:15','2016-12-18 13:23:34'),(55,128,'0001','Guy','T','Kawasaki','Nagoya, kobe Japan',NULL,NULL,'Nagoya','Kobe','2981','kawasaki@yahoo.com','298-1029','09827548917','CEO of Google Japan','Company Head Representative',1,2,1,'2016-12-18 13:50:35','2016-12-18 13:50:35'),(56,128,'0002','Fujima','P','Heroshimo','Sapporo, Japan',NULL,NULL,'Takamatsu','Kitakyushu','2871','fujima@yahoo.com','292-1204','09284992817','Software Engineer','Software Engineer Head',2,2,1,'2016-12-18 13:50:35','2016-12-18 13:50:35'),(57,128,'Google Japan','Kitashie','K','Osaka','Tokyo, Japan',NULL,NULL,'Yokohama','Nara','21234','kitashie@yahoo.com','291-8291','98275821175','Accounting Head','Finance Representative',3,2,1,'2016-12-18 13:50:35','2016-12-18 13:50:35'),(58,129,'0001','Mark','P','Zuckerberg','San Francisco, California',NULL,NULL,'California City','Chicago','2938','markz@yahoo.com','298-2012','98390928154','Founder Of Facebook','Company Representative',1,2,1,'2016-12-18 14:01:54','2016-12-18 14:01:54'),(59,129,'0002','Steve','L','Orlando','Houston, United States',NULL,NULL,'Los Angeles','Austin','29810','steve@yahoo.com','322-9182','98390928175','Co-Founder of Facebook','Lead Software Engineer',2,2,1,'2016-12-18 14:01:54','2016-12-18 14:01:54'),(60,129,'Facebook Company','Shane','I','Brown','New York City, United States',NULL,NULL,'New York City','San Francisco','20981','shanebrown@yahoo.com','298-1293','28971584176','Finance Officer','Finance Representative',3,2,1,'2016-12-18 14:01:54','2016-12-18 14:01:54');
 /*!40000 ALTER TABLE `client_contacts_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -98,7 +103,7 @@ CREATE TABLE `client_reference_table` (
   `name` varchar(50) DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -107,7 +112,7 @@ CREATE TABLE `client_reference_table` (
 
 LOCK TABLES `client_reference_table` WRITE;
 /*!40000 ALTER TABLE `client_reference_table` DISABLE KEYS */;
-INSERT INTO `client_reference_table` VALUES (1,'Subscriber',2),(2,'Agency',2);
+INSERT INTO `client_reference_table` VALUES (1,'Subscriber',2),(2,'Agency',2),(3,'Lead',2);
 /*!40000 ALTER TABLE `client_reference_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,13 +126,17 @@ DROP TABLE IF EXISTS `client_table`;
 CREATE TABLE `client_table` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `company_name` varchar(100) DEFAULT NULL,
+  `address` varchar(45) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `state` varchar(45) DEFAULT NULL,
+  `zip_code` varchar(45) DEFAULT NULL,
   `is_member` tinyint(4) DEFAULT NULL,
   `type` tinyint(4) DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +145,7 @@ CREATE TABLE `client_table` (
 
 LOCK TABLES `client_table` WRITE;
 /*!40000 ALTER TABLE `client_table` DISABLE KEYS */;
-INSERT INTO `client_table` VALUES (105,'Google',1,1,1,'2016-12-02 03:04:21','2016-12-02 03:04:21'),(113,'test 3',-1,2,1,'2016-12-04 07:11:36','2016-12-04 07:11:36');
+INSERT INTO `client_table` VALUES (126,'Google Main','Mountain View, California, United States','Los Angeles','San Jose','22110',1,1,2,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(127,'Google Philippines','Quezon City, Manila','Quezon City','Manila','2209',1,1,2,'2016-12-18 13:39:14','2016-12-18 13:23:33'),(128,'Google Japan','Kyoto Osaka, Japan','Kyoto','Nara','20891',1,1,2,'2016-12-18 13:50:34','2016-12-18 13:50:34'),(129,'Facebook Company','Washington, D.C, United States','Stockton California','Boston','22093',1,2,2,'2016-12-18 14:01:53','2016-12-18 14:01:53');
 /*!40000 ALTER TABLE `client_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -192,7 +201,7 @@ CREATE TABLE `magazine_company_table` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,7 +210,7 @@ CREATE TABLE `magazine_company_table` (
 
 LOCK TABLES `magazine_company_table` WRITE;
 /*!40000 ALTER TABLE `magazine_company_table` DISABLE KEYS */;
-INSERT INTO `magazine_company_table` VALUES (1,'201612121224584E722CBB2D1','Timex Company','California','','Join City','US','1','timex@yahoo.com','123123123','123123123',1,'2016-12-07 05:59:47','2016-12-07 05:59:47'),(2,'201612121224584E722CBB2F1','Solution Company','Manila','','Pasay City','','2','solution@yahoo.com','','',1,'2016-12-12 09:48:44','2016-12-12 09:48:44');
+INSERT INTO `magazine_company_table` VALUES (6,'20161218124758568CB7234AC','Lyceum Publisher','Subic Bay','','Olongapo','Zambales','1','sales@lyceum.com','2521234','2521234',2,'2016-12-18 13:20:38','2016-12-18 13:20:38');
 /*!40000 ALTER TABLE `magazine_company_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -224,7 +233,7 @@ CREATE TABLE `magazine_issue_transaction_table` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=114 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +242,7 @@ CREATE TABLE `magazine_issue_transaction_table` (
 
 LOCK TABLES `magazine_issue_transaction_table` WRITE;
 /*!40000 ALTER TABLE `magazine_issue_transaction_table` DISABLE KEYS */;
-INSERT INTO `magazine_issue_transaction_table` VALUES (113,136,1,1,1,1,2295.46,2,'2016-12-12 05:55:38','2016-12-12 05:55:38');
+INSERT INTO `magazine_issue_transaction_table` VALUES (128,147,1,2,1,1,2500.00,2,'2016-12-18 13:52:43','2016-12-18 13:52:43'),(129,147,1,2,3,2,2500.00,2,'2016-12-18 13:53:23','2016-12-18 13:53:23');
 /*!40000 ALTER TABLE `magazine_issue_transaction_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -250,12 +259,14 @@ CREATE TABLE `magazine_table` (
   `company_id` int(11) DEFAULT NULL,
   `mag_code` varchar(30) DEFAULT NULL,
   `magazine_name` varchar(100) DEFAULT NULL,
+  `magazine_year` int(11) DEFAULT NULL,
+  `magazine_issues` tinyint(4) DEFAULT NULL,
   `magazine_country` tinyint(4) DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -264,7 +275,7 @@ CREATE TABLE `magazine_table` (
 
 LOCK TABLES `magazine_table` WRITE;
 /*!40000 ALTER TABLE `magazine_table` DISABLE KEYS */;
-INSERT INTO `magazine_table` VALUES (1,'201612121245584E727D16112',1,'MAG-FHM','FHM',1,2,'2016-11-11 13:38:18','2016-11-11 13:38:18'),(2,'201612121245584E727D1634D',1,'MAG-TME','TIME',1,2,'2016-11-11 13:38:18','2016-11-11 13:38:18'),(3,'201612121245584E727D1634L',1,'MAG-CDY','CANDY',1,2,'2016-11-11 13:38:18','2016-11-11 13:38:18'),(4,'201612121245584E727D1634P',1,'MAG-LYC','LYCEUM',2,2,'2016-11-11 13:38:18','2016-11-11 13:38:18'),(5,'201612121245584E727D1634X',1,'MAG-VMK','VON, MARCH & KING',2,2,'2016-11-13 08:24:35','2016-11-13 08:24:35'),(16,'201612121245584E727D161B4',2,'Acer Code','Acer Name',2,2,'2016-12-12 09:50:02','2016-12-12 09:50:02'),(17,'201612121231584E7D733A9A5',2,'t2v','test 2 v',2,2,'2016-12-12 10:36:10','2016-12-12 10:36:10');
+INSERT INTO `magazine_table` VALUES (41,'20161218123958568D27B0928',6,'subic-times','Subic Times',2017,4,1,2,'2016-12-18 13:21:35','2016-12-18 13:21:35');
 /*!40000 ALTER TABLE `magazine_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -282,7 +293,7 @@ CREATE TABLE `magazine_transaction_table` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=148 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -291,7 +302,7 @@ CREATE TABLE `magazine_transaction_table` (
 
 LOCK TABLES `magazine_transaction_table` WRITE;
 /*!40000 ALTER TABLE `magazine_transaction_table` DISABLE KEYS */;
-INSERT INTO `magazine_transaction_table` VALUES (136,4,116,'2016-12-02 03:09:42','2016-12-02 03:09:42');
+INSERT INTO `magazine_transaction_table` VALUES (147,41,136,'2016-12-18 13:49:56','2016-12-18 13:49:56');
 /*!40000 ALTER TABLE `magazine_transaction_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,7 +322,7 @@ CREATE TABLE `magzine_discount_table` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,7 +331,7 @@ CREATE TABLE `magzine_discount_table` (
 
 LOCK TABLES `magzine_discount_table` WRITE;
 /*!40000 ALTER TABLE `magzine_discount_table` DISABLE KEYS */;
-INSERT INTO `magzine_discount_table` VALUES (1,1,0.200,2,1,NULL,NULL),(2,1,0.052,3,NULL,NULL,NULL),(5,1,0.023,4,NULL,NULL,NULL),(6,2,0.000,2,2,'2016-12-12 03:29:50','2016-12-12 03:29:50'),(7,2,0.000,3,2,'2016-12-12 03:29:50','2016-12-12 03:29:50'),(8,2,0.000,4,2,'2016-12-12 03:29:50','2016-12-12 03:29:50'),(9,2,0.000,5,2,'2016-12-12 03:29:50','2016-12-12 03:29:50'),(10,3,0.000,2,2,'2016-12-12 03:31:17','2016-12-12 03:31:17'),(11,3,0.000,3,2,'2016-12-12 03:31:17','2016-12-12 03:31:17'),(12,3,0.000,4,2,'2016-12-12 03:31:17','2016-12-12 03:31:17'),(13,3,0.000,5,2,'2016-12-12 03:31:17','2016-12-12 03:31:17'),(14,4,0.200,2,2,'2016-12-12 06:46:51','2016-12-12 06:46:51'),(15,4,0.000,3,2,'2016-12-12 06:46:51','2016-12-12 06:46:51'),(16,4,0.000,4,2,'2016-12-12 06:46:51','2016-12-12 06:46:51'),(17,4,0.000,5,2,'2016-12-12 06:46:51','2016-12-12 06:46:51'),(18,5,0.200,2,2,'2016-12-12 06:47:44','2016-12-12 06:47:44'),(19,5,0.000,3,2,'2016-12-12 06:47:44','2016-12-12 06:47:44'),(20,5,0.000,4,2,'2016-12-12 06:47:44','2016-12-12 06:47:44'),(21,5,0.000,5,2,'2016-12-12 06:47:44','2016-12-12 06:47:44'),(22,6,0.000,2,2,'2016-12-12 06:50:58','2016-12-12 06:50:58'),(23,6,0.000,3,2,'2016-12-12 06:50:58','2016-12-12 06:50:58'),(24,6,0.000,4,2,'2016-12-12 06:50:58','2016-12-12 06:50:58'),(25,6,0.000,5,2,'2016-12-12 06:50:58','2016-12-12 06:50:58'),(30,13,0.000,2,2,'2016-12-12 07:15:21','2016-12-12 07:15:21'),(31,13,0.000,3,2,'2016-12-12 07:15:22','2016-12-12 07:15:22'),(32,13,0.000,4,2,'2016-12-12 07:15:22','2016-12-12 07:15:22'),(33,13,0.000,5,2,'2016-12-12 07:15:22','2016-12-12 07:15:22'),(34,14,0.200,2,2,'2016-12-12 07:15:43','2016-12-12 07:15:43'),(35,14,0.000,3,2,'2016-12-12 07:15:43','2016-12-12 07:15:43'),(36,14,0.000,4,2,'2016-12-12 07:15:43','2016-12-12 07:15:43'),(37,14,0.000,5,2,'2016-12-12 07:15:43','2016-12-12 07:15:43'),(38,15,0.200,2,2,'2016-12-12 09:57:40','2016-12-12 09:57:40'),(39,15,0.000,3,2,'2016-12-12 09:57:40','2016-12-12 09:57:40'),(40,15,0.000,4,2,'2016-12-12 09:57:41','2016-12-12 09:57:41'),(41,15,0.000,5,2,'2016-12-12 09:57:41','2016-12-12 09:57:41');
+INSERT INTO `magzine_discount_table` VALUES (94,29,0.025,2,2,'2016-12-18 13:22:19','2016-12-18 13:22:19'),(95,29,0.015,3,2,'2016-12-18 13:22:19','2016-12-18 13:22:19'),(96,29,0.005,4,2,'2016-12-18 13:22:19','2016-12-18 13:22:19'),(97,29,0.000,5,2,'2016-12-18 13:22:19','2016-12-18 13:22:19'),(98,30,0.025,2,2,'2016-12-18 13:22:59','2016-12-18 13:22:59'),(99,30,0.015,3,2,'2016-12-18 13:22:59','2016-12-18 13:22:59'),(100,30,0.008,4,2,'2016-12-18 13:22:59','2016-12-18 13:22:59'),(101,30,0.000,5,2,'2016-12-18 13:22:59','2016-12-18 13:22:59');
 /*!40000 ALTER TABLE `magzine_discount_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -341,7 +352,7 @@ CREATE TABLE `magzine_price_table` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,7 +361,7 @@ CREATE TABLE `magzine_price_table` (
 
 LOCK TABLES `magzine_price_table` WRITE;
 /*!40000 ALTER TABLE `magzine_price_table` DISABLE KEYS */;
-INSERT INTO `magzine_price_table` VALUES (2,1,'1','2',1234.00,2,'2016-12-12 03:29:50','2016-12-12 03:29:50'),(3,1,'1','2',4200.00,2,'2016-12-12 03:31:17','2016-12-12 03:31:17'),(6,3,'1','2',2000.00,2,'2016-12-12 06:50:58','2016-12-12 06:50:58'),(13,3,'2','3',2370.00,2,'2016-12-12 07:15:21','2016-12-12 07:15:21'),(14,3,'3','2',2300.00,2,'2016-12-12 07:15:43','2016-12-12 07:15:43'),(15,16,'2','4',2370.00,2,'2016-12-12 09:57:40','2016-12-12 09:57:40');
+INSERT INTO `magzine_price_table` VALUES (29,41,'1','2',2500.00,2,'2016-12-18 13:22:18','2016-12-18 13:22:18'),(30,41,'3','5',1800.00,2,'2016-12-18 13:22:58','2016-12-18 13:22:58');
 /*!40000 ALTER TABLE `magzine_price_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -365,8 +376,6 @@ CREATE TABLE `price_criteria_table` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -377,7 +386,7 @@ CREATE TABLE `price_criteria_table` (
 
 LOCK TABLES `price_criteria_table` WRITE;
 /*!40000 ALTER TABLE `price_criteria_table` DISABLE KEYS */;
-INSERT INTO `price_criteria_table` VALUES (1,'4 Color',2,NULL,NULL),(2,'1 Spot Color',2,NULL,NULL),(3,'Black & White',2,NULL,NULL),(4,'Cover Positions',1,NULL,NULL);
+INSERT INTO `price_criteria_table` VALUES (1,'4 Color',2),(2,'1 Spot Color',2),(3,'Black & White',2),(4,'Cover Positions',1);
 /*!40000 ALTER TABLE `price_criteria_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -390,11 +399,8 @@ DROP TABLE IF EXISTS `price_package_table`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `price_package_table` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `criteria_id` varchar(50) DEFAULT NULL,
   `package_name` varchar(50) DEFAULT NULL,
   `status` tinyint(4) DEFAULT NULL,
-  `updated_at` datetime DEFAULT NULL,
-  `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -405,7 +411,7 @@ CREATE TABLE `price_package_table` (
 
 LOCK TABLES `price_package_table` WRITE;
 /*!40000 ALTER TABLE `price_package_table` DISABLE KEYS */;
-INSERT INTO `price_package_table` VALUES (1,'1','Double Page Spread',2,NULL,NULL),(2,'1','1/2 DPS',2,NULL,NULL),(3,'1','Full Page',2,NULL,NULL),(4,'1','2/3 Page',2,NULL,NULL),(5,'1','1/2 Page Island',2,NULL,NULL),(6,'1','1/2 Page',2,NULL,NULL),(7,'1','1/3 Page',2,NULL,NULL),(8,'1','1/4 Page',2,NULL,NULL),(9,'1','1/6 Page',2,NULL,NULL),(10,'1','1/8 Page',2,NULL,NULL),(11,'2','Double Page Spread',2,NULL,NULL),(12,'2','1/2 DPS',2,NULL,NULL),(13,'2','Full Page',2,NULL,NULL),(14,'2','2/3 Page',2,NULL,NULL),(15,'2','1/2 Page Island',2,NULL,NULL),(16,'2','1/2 Page',2,NULL,NULL),(17,'2','1/3 Page',2,NULL,NULL),(18,'2','1/4 Page',2,NULL,NULL),(19,'2','1/6 Page',2,NULL,NULL),(20,'2','1/8 Page',2,NULL,NULL),(21,'3','Double Page Spread',2,NULL,NULL),(22,'3','1/2 DPS',2,NULL,NULL),(23,'3','Full Page',2,NULL,NULL),(24,'3','2/3 Page',2,NULL,NULL),(25,'3','1/2 Page Island',2,NULL,NULL),(26,'3','1/2 Page',2,NULL,NULL),(27,'3','1/3 Page',2,NULL,NULL),(28,'3','1/4 Page',2,NULL,NULL),(29,'3','1/6 Page',2,NULL,NULL),(30,'3','1/8 Page',2,NULL,NULL),(31,'4','2nd',2,NULL,NULL),(32,'4','3rd',2,NULL,NULL),(33,'4','4th',2,NULL,NULL);
+INSERT INTO `price_package_table` VALUES (1,'Double Page Spread',2),(2,'Full Page',2),(3,'1/2 DPS',2),(4,'1/2 Page Island',2),(5,'1/2 Page',2),(6,'1/3 Page',2),(7,'1/4 Page',2),(8,'1/6 Page',2),(9,'1/8 Page',2),(10,'2/3 Page',2);
 /*!40000 ALTER TABLE `price_package_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,7 +505,7 @@ CREATE TABLE `user_account` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -508,9 +514,45 @@ CREATE TABLE `user_account` (
 
 LOCK TABLES `user_account` WRITE;
 /*!40000 ALTER TABLE `user_account` DISABLE KEYS */;
-INSERT INTO `user_account` VALUES (1,'king.a','eb33da6599c0243dc6215ee2891d1277','King','Paulo','Aquino','me@kpa21.info',NULL,1,2,NULL,NULL),(2,'march.t','eb33da6599c0243dc6215ee2891d1277','March','Jig','Tala','march@yahoo.com',NULL,2,2,NULL,NULL),(3,'von.b','eb33da6599c0243dc6215ee2891d1277','Von','Romson','Bayani','von@yahoo.com',NULL,3,2,NULL,NULL);
+INSERT INTO `user_account` VALUES (1,'nikki','eb33da6599c0243dc6215ee2891d1277','Nikki','-','Manalo','me@kpa21.info','1234567891000',1,2,NULL,NULL),(2,'gayl','eb33da6599c0243dc6215ee2891d1277','Gayl','-','Punzalan','march@yahoo.com','1234567891000',2,2,NULL,NULL),(3,'von.b','eb33da6599c0243dc6215ee2891d1277','Von','Romson','Bayani','von@yahoo.com','1234567891000',3,2,NULL,NULL),(4,'louise','eb33da6599c0243dc6215ee2891d1277','Louise','-','Peterson','-','-',3,2,'2016-12-13 13:52:40','2016-12-13 13:52:40'),(5,'quinn','eb33da6599c0243dc6215ee2891d1277','Quinn','-','Peterson','Quinn@yahoo.com','-',3,2,'2016-12-13 13:54:09','2016-12-13 13:54:09'),(6,'darryl','eb33da6599c0243dc6215ee2891d1277','Darryl','-','Sawchuk','darryl@yahoo.com','-',3,2,'2016-12-13 13:54:43','2016-12-13 13:54:43'),(7,'brian','eb33da6599c0243dc6215ee2891d1277','Brian','-','Saunders','brian@yahoo.com','-',3,2,'2016-12-13 13:55:09','2016-12-13 13:55:09');
 /*!40000 ALTER TABLE `user_account` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'db_magazine_v1'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `get_magazine_discount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_magazine_discount`(IN Mid INT(11), IN Qty TINYINT(4), OUT Discount DECIMAL(18, 3))
+BEGIN
+	
+    DECLARE total_type INT;
+    
+    SET total_type = (SELECT COUNT(*) t_type FROM magzine_discount_table WHERE mag_price_id = Mid AND percent != 0);
+    
+    IF Qty > total_type THEN
+		SET Discount = (SELECT percent FROM magzine_discount_table WHERE mag_price_id = Mid AND percent != 0 AND type = (total_type + 1));
+	ELSEIF Qty = 1 THEN
+		SET Discount = 0;
+	ELSE
+		SET Discount = (SELECT * FROM magzine_discount_table WHERE mag_price_id = Mid AND percent != 0 AND type = Qty);
+    END IF;
+
+	SELECT Discount;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -521,4 +563,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-13 11:23:59
+-- Dump completed on 2016-12-18 22:03:22

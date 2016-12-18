@@ -313,7 +313,7 @@ class bookingController extends Controller
                 INNER JOIN price_criteria_table AS b
                 ON a.ad_color = b.Id
                 WHERE a.mag_id = {$transaction_uid[0]->magazine_id}
-                GROUP BY c_uid ASC
+                GROUP BY c_uid, b.name ASC
         ");
 
         return view('booking.add_issue', compact('mag_trans_uid', 'mag_name', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num'));
