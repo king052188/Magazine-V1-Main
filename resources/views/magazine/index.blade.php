@@ -22,9 +22,6 @@
         </ol>
     </div>
 </div>
-
-
-
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-10">
@@ -32,7 +29,6 @@
                 <div class="ibox-title">
                     <h5>Magazine List</h5>
                 </div>
-
                 <div class="ibox-content">
                     @if(Session::has('success'))
                     <div class="alert alert-success alert-dismissable">
@@ -44,10 +40,10 @@
                         <table class="table table-striped table-bordered table-hover table-responsive MagazineListdataTables" >
                             <thead>
                             <tr>
-                                <th style="text-align: center; width: 30%;">Magazine Code</th>
-                                <th style="text-align: center;width: 30%;">Magazine Name</th>
-                                <th style="text-align: center;width: 30%;">Magazine Country</th>
-                                <th style="text-align: center;width: 10%;">Action</th>
+                                <th style="text-align: center; width: 200px;">Code</th>
+                                <th style="text-align: center; ">Magazine Name</th>
+                                <th style="text-align: center; width: 100px;">Country</th>
+                                <th style="text-align: center; width: 50px;">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -55,11 +51,10 @@
                                     <tr>
                                         <td>{{ $magazine->mag_code }}</td>
                                         <td>{{ $magazine->magazine_name }}</td>
-                                        <td>{{ $magazine->magazine_country == 1 ? "US" : "CANADA" }}</td>
+                                        <td style="text-align: center;">{{ $magazine->magazine_country == 1 ? "US" : "CANADA" }}</td>
                                         <td style="text-align: center;"><a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-sm btn-primary"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a></td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
@@ -71,17 +66,13 @@
 @endsection
 
 @section('scripts')
-
 <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 <script>
-
     $(document).ready( function() {
-
         $('.MagazineListdataTables').DataTable({
         dom: '<"html5buttons"B>lTfgitp',
         buttons: []
         });
-
     });
 </script>
 @endsection

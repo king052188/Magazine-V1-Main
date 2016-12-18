@@ -24,7 +24,6 @@
             {{--</div>--}}
         </div>
     </div>
-
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div id="tab_1" class="col-lg-4">
@@ -231,46 +230,42 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script>
+    $(document).ready(function() {
 
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        $('#2x_per').on('keyup', function(){
+            var origin_amount = $('#original_amount').val();
+            var value = $(this).val();
+            var orig_amount = parseFloat(origin_amount) * parseFloat(value);
+            var new_amount = parseFloat(origin_amount) - orig_amount;
+            $('#2x_amount').val(new_amount);
+        });
 
-    <script>
+        $('#3x_per').on('keyup', function(){
+            var origin_amount = $('#original_amount').val();
+            var value = $(this).val();
+            var orig_amount = parseFloat(origin_amount) * parseFloat(value);
+            var new_amount = parseFloat(origin_amount) - orig_amount;
+            $('#3x_amount').val(new_amount);
+        });
 
-        $(document).ready(function() {
+        $('#4x_per').on('keyup', function(){
+            var origin_amount = $('#original_amount').val();
+            var value = $(this).val();
+            var orig_amount = parseFloat(origin_amount) * parseFloat(value);
+            var new_amount = parseFloat(origin_amount) - orig_amount;
+            $('#4x_amount').val(new_amount);
+        });
 
-            $('#2x_per').on('keyup', function(){
-                var origin_amount = $('#original_amount').val();
-                var value = $(this).val();
-                var orig_amount = parseFloat(origin_amount) * parseFloat(value);
-                var new_amount = parseFloat(origin_amount) - orig_amount;
-                $('#2x_amount').val(new_amount);
-            });
+        $('#5x_per').on('keyup', function(){
+            var origin_amount = $('#original_amount').val();
+            var value = $(this).val();
+            var orig_amount = parseFloat(origin_amount) * parseFloat(value);
+            var new_amount = parseFloat(origin_amount) - orig_amount;
+            $('#5x_amount').val(new_amount);
+        });
 
-            $('#3x_per').on('keyup', function(){
-                var origin_amount = $('#original_amount').val();
-                var value = $(this).val();
-                var orig_amount = parseFloat(origin_amount) * parseFloat(value);
-                var new_amount = parseFloat(origin_amount) - orig_amount;
-                $('#3x_amount').val(new_amount);
-            });
-
-            $('#4x_per').on('keyup', function(){
-                var origin_amount = $('#original_amount').val();
-                var value = $(this).val();
-                var orig_amount = parseFloat(origin_amount) * parseFloat(value);
-                var new_amount = parseFloat(origin_amount) - orig_amount;
-                $('#4x_amount').val(new_amount);
-            });
-
-            $('#5x_per').on('keyup', function(){
-                var origin_amount = $('#original_amount').val();
-                var value = $(this).val();
-                var orig_amount = parseFloat(origin_amount) * parseFloat(value);
-                var new_amount = parseFloat(origin_amount) - orig_amount;
-                $('#5x_amount').val(new_amount);
-            });
-
-        })
-
-    </script>
+    })
+</script>
 @endsection

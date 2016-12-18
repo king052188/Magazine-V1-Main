@@ -43,11 +43,11 @@
                             <form role="form" action="/magazine/add-new" method="POST">
                                 <div class="form-group">
                                     <label>Magazine Code</label>
-                                    <input type="text" placeholder="Magazine Code" class="form-control"  name="magcode" required>
+                                    <input type="text" placeholder="Magazine Code" class="form-control" name="magcode" id="magcode" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label>Magazine Name</label>
-                                    <input type="text" placeholder="Magazine Name" class="form-control" name="magname" required>
+                                    <input type="text" placeholder="Magazine Name" class="form-control" name="magname" id="magname" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="ex2">Country</label>
@@ -60,6 +60,7 @@
                                 <div class="form-group">
                                     <label>Company Name</label>
                                     <select class="form-control" name="cid" id = "cid" required>
+                                        <option>--select--</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -88,7 +89,7 @@
                                         $url_api = $assembly::get_reports_api();
                                         $logo_uploader_url = 'http://'. $url_api["Url_Logo_Uploader"] .'type=MAGAZINE&uid='. $logo_uid['id_magazine'];
                                     ?>
-                                    <iframe src = "{{ $logo_uploader_url }}" style="width: 100%;" frameborder="0" scrolling="no"> </iframe>
+                                    <iframe src = "{{ $logo_uploader_url }}" style="width: 100%; height: 360px" frameborder="0" scrolling="no"> </iframe>
                                 </div>
                                 <div>
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
@@ -104,7 +105,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal_add_company_magazine"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_add_company_magazine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -191,7 +192,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('scripts')
@@ -209,6 +209,11 @@ $(document).ready(function() {
 //        }
 //    }
 
+    $('#magname').keyup(function() {
+        var value = $(this).val().replace(/ /g, "-");
+        $('#magcode').val(value.toLowerCase());
+    });
+
     $("#logo").change(function(){
         readURL(this);
     });
@@ -225,7 +230,6 @@ $(document).ready(function() {
         $("#tab_2").hide( 600 );
         $("#tab_1").show("slide", { direction: "right" }, 5000);
     });
-
 
     $('#magcountry').on('change', function() {
         var magc_id = $(this).val();
@@ -246,8 +250,6 @@ $(document).ready(function() {
             }
         });
     });
-
 });
-
 </script>
 @endsection
