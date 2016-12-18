@@ -306,6 +306,14 @@ $(document).ready(function() {
             )
             return false;
         }
+        if(isNaN(number_issue)){
+            swal(
+                    'Oops...',
+                    'Number of issue should be a numbers!',
+                    'warning'
+            )
+            return false;
+        }
     });
 </script>
 @endsection
