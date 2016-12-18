@@ -282,6 +282,7 @@ class bookingController extends Controller
             for($i = 0; $i < COUNT($ad_p); $i++)
             {
                 $result[] = array(
+                    "price_uid" => $ad_p[$i]->Id,
                     "ad_size" => $ad_p[$i]->ad_size,
                     "package_name" => $ad_p[$i]->package_name,
                     "ad_amount" => $ad_p[$i]->ad_amount
@@ -403,6 +404,7 @@ class bookingController extends Controller
         $quarter_issue = (int)$request['quarter_issue'];
         $line_item_qty = (int)$request['line_item_qty'];
         $ad_amount = $request['ad_amount'];
+        $price_uid = $request['price_uid'];
 //        $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
 
 //        dd($type[0]->client_type);
@@ -436,6 +438,7 @@ class bookingController extends Controller
         $mit->amount = $ad_amount;
         $mit->quarter_issued = $quarter_issue;
         $mit->line_item_qty = $line_item_qty;
+        $mit->mag_price_id = $price_uid;
         $mit->status = 2;
         $mit->save();
 

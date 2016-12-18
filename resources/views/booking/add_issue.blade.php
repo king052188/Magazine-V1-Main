@@ -187,6 +187,9 @@
 
             var mag_uid = {{ $transaction_uid[0]->magazine_id }};
             var criteria_id = $(this).val();
+
+            console.log(mag_uid);
+
             $.ajax({
                 url: "/booking/getPackageName/" + criteria_id + "/" + mag_uid,
                 dataType: 'text',
@@ -201,7 +204,7 @@
                     $('#ad_package_id').empty().append("<select class='form-control' name = 'ad_package_id' id = 'ad_package_id_select'>");
                     $('#ad_package_id_select').empty().append("<option value = '' disabled selected>select</option>");
                     $(json.list).each(function(g, gl){
-                        $('#ad_package_id_select').append("<option value = "+ gl.ad_size + ";" + gl.ad_amount +">"+ gl.package_name +"</option>");
+                        $('#ad_package_id_select').append("<option value = "+ gl.ad_size + ";" + gl.ad_amount + ";" + gl.price_uid +">"+ gl.package_name +"</option>");
                     });
                     $('#ad_package_id').append("</select>");
 
@@ -214,7 +217,7 @@
                         var ad_sizes = ad_size.split(';');
 
                         $('#amount_label').empty().append("Amount");
-                        $('#amount_box').empty().append('<input type="hidden" value = "'+ ad_sizes[0] +'" name = "ad_p_split"><input type="text" value = "'+ ad_sizes[1] +'" name = "ad_amount" class="form-control" readonly>');
+                        $('#amount_box').empty().append('<input type="hidden" value = "'+ ad_sizes[2] +'" name = "price_uid"><input type="hidden" value = "'+ ad_sizes[0] +'" name = "ad_p_split"><input type="text" value = "'+ ad_sizes[1] +'" name = "ad_amount" class="form-control" readonly>');
 
                         $('#quarter_issues_label').empty().append("Quarter Issued");
                         $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
