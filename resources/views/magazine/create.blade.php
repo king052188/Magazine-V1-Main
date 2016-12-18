@@ -47,7 +47,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Magazine Name</label>
-                                    <input type="text" placeholder="Magazine Name" class="form-control" name="magname" id="magname" required>
+                                    <input type="text" placeholder="Magazine Name" class="form-control" name="magname" id="magname">
                                 </div>
                                 <div class="form-group">
                                     <label for="ex2">Country</label>
@@ -57,24 +57,29 @@
                                         <option value="2">CANADA</option>
                                     </select>
                                 </div>
-                                <div class="form-group">
-                                    <label id = "cid_show_label"></label>
-                                    <div id = "cid_show"></div>
+                                <div class="form-group" id = "hidden">
+                                    <label>Company Name</label>
+                                    <select class='form-control' name='cid' id = 'cid' required>
+                                    </select>
                                 </div>
-                                <div class="form-group col-lg-4">
-                                    <label id = "status_show_label"></label>
-                                    <div id = "status_show"></div>
+                                <div class="form-group col-lg-4" id = "hidden">
+                                    <label>Status</label>
+                                    <select class='form-control' name='status' required><option value='1'>Inactive</option><option value='2'>Active</option></select>
                                 </div>
-                                <div class="form-group col-lg-4">
-                                    <label id = "year_issue_label"></label>
-                                    <div id = "year_issue"></div>
+                                <div class="form-group col-lg-4" id = "hidden">
+                                    <label>Year Issue</label>
+                                    <select class='form-control' name='year_issue' id = 'year_issue_selected' required>
+                                        @for($i = date('Y'); $i < date('Y') + 10; $i++)
+                                            <option value='{{ $i }}'>{{ $i }}</option>
+                                        @endfor
+                                    </select>
                                 </div>
-                                <div class="form-group col-lg-4">
-                                    <label id = "number_issue_label"></label>
-                                    <div id = "number_issue"></div>
+                                <div class="form-group col-lg-4" id = "hidden">
+                                    <label>Numbers of Issue</label>
+                                    <input type='number' placeholder='Enter Issue Number' class='form-control' name='number_issue' value = '1' required>
                                 </div>
-                                <div id = "btn_show">
-
+                                <div id = "hidden">
+                                    <input type='hidden' name='_token' id='csrf-token' value='{{ Session::token() }}' /><button class='btn btn-sm btn-primary pull-right' id='btn_submit'>Create New Magazine</button>
                                 </div>
                             </form>
                         </div>
@@ -214,6 +219,8 @@
 <script>
 $(document).ready(function() {
 
+    $("div#hidden").hide();
+
 //    function readURL(input) {
 //        if (input.files && input.files[0])
 //        {
@@ -256,34 +263,32 @@ $(document).ready(function() {
                 var json = $.parseJSON(data);
                 if (json == null) return false;
                 if (json.result == 404) {
-                    $("#cid").empty().append("<option>--no data--</option>")
+                    $("div#hidden").hide();
+                    $("#cid").empty().append("<option>--no data--</option>");
                 } else {
-
-                    $("#cid_show_label").empty().append("Company Name");
-                    $("#cid_show").empty().append("<select class='form-control' name='cid' id = 'cid' required>");
+                    $("div#hidden").show();
+                    $("#cid").empty();
                     $(json.result).each(function(i, country) {
-                        $("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>");
+                        $("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
                     });
-                    $("#cid_show").append("</select>");
-
-                    $("#status_show_label").empty().append("Status");
-                    $("#status_show").empty().append("<select class='form-control' name='status' required><option value='1'>Inactive</option><option value='2'>Active</option></select>")
-
-                    $("#year_issue_label").empty().append("Year Issue");
-                    $("#year_issue").empty().append("<select class='form-control' name='year_issue' id = 'year_issue_selected' required>");
-                    $("#year_issue_selected").append("@for($i = date('Y'); $i < date('Y') + 10; $i++)<option value='{{ $i }}'>{{ $i }}</option>@endfor");
-                    $("#year_issue").append("</select>");
-
-                    $("#number_issue_label").empty().append("Numbers of Issue");
-                    $("#number_issue").empty().append("<input type='number' placeholder='Enter Issue Number' class='form-control' name='number_issue' value = '1' required>");
-
-                    $("#btn_show").empty().append("<input type='hidden' name='_token' id='csrf-token' value='{{ Session::token() }}' /><button class='btn btn-sm btn-primary pull-right'>Create New Magazine</button>");
-
-
                 }
             }
         });
     });
 });
+</script>
+
+<script>
+    $('#btn_submit').on('click',function(){
+        var magname = $("#magname").val();
+        if(magname == ""){
+            swal(
+                    'Oops...',
+                    'Magazine Name is required!',
+                    'warning'
+            )
+            return false;
+        }
+    });
 </script>
 @endsection

@@ -83,15 +83,15 @@
 
                         <div class="form-group">
                             <label for="ex2">Select Country</label>
-                            <select class = "form-control" name = "which_country">
-                                <option value = "0">-- Select Country --</option>
+                            <select class = "form-control" name = "which_country" id = "which_country">
+                                <option value = "">-- Select Country --</option>
                                 <option value = "1">USA</option>
                                 <option value = "2">Canada</option>
                             </select>
                         </div>
                         <div>
                             <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                            <button class="btn btn-md btn-primary pull-right" type="submit"><strong>Create Booking</strong></button>
+                            <button class="btn btn-md btn-primary pull-right" id = "btn_submit" type="submit"><strong>Create Booking</strong></button>
                         </div>
                     </form>
 
@@ -224,6 +224,29 @@ $(document).ajaxComplete(function (data) {
         $('.resultheader').addClass('hidden');
     });
 });
+</script>
+<script>
+    $('#btn_submit').on('click',function(){
+        var client_field = $("#clientIdField").val();
+        var which_country = $("#which_country").val();
+        if(client_field == ""){
+            swal(
+                    'Oops...',
+                    'Company Name is required!',
+                    'warning'
+            )
+            return false;
+        }
+
+        if(which_country == ""){
+            swal(
+                    'Oops...',
+                    'Country name is required!',
+                    'warning'
+            )
+            return false;
+        }
+    });
 </script>
 
 @endsection

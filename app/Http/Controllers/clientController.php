@@ -185,7 +185,7 @@ class clientController extends Controller
                 'zip_code' => $request['c_zip_code'],
                 'type' => $request['c_type'],
                 'is_member' => $request['c_is_member'] == false ? -1 : 1,
-                'status' => 2
+                'status' => $request['c_status'] == false ? 1 : 2
             ]);
 
         $field = array('', 'p_', 's_', 'b_');
@@ -210,7 +210,6 @@ class clientController extends Controller
                     'position' => $request[$field[$i].'position'],
                     'type_designation' => $request[$field[$i].'type_designation'],
                     'type' => $i,
-                    'status' => 2,
                     'synched' => 1
                 ]);
         }
