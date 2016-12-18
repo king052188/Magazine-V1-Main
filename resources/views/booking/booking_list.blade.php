@@ -57,15 +57,15 @@
                     <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example" >
                         <thead>
                             <tr>
-                                <th style='text-align: center; width: 5%;'>#</th>
-                                <th style='text-align: left; width: 10%;'>Magazine Name</th>
-                                <th style='text-align: left; width: 10%;'># Issue</th>
-                                <th style='text-align: left; width: 10%;'>Year Issue</th>
-                                <th style='text-align: left; width: 10%;'>Sales Rep</th>
-                                <th style='text-align: left; width: 10%;'>Client</th>
-                                <th style='text-align: left; width: 15%;'>Agency</th>
-                                <th style='text-align: center; width: 5%;'>Line Item</th>
-                                <th style='text-align: center; width: 20%;'>Status / Action</th>
+                                <th style='text-align: center; width: 30px;'>#</th>
+                                <th style='text-align: left;'>Magazine Name</th>
+                                <th style='text-align: left; width: 50px;'># Issue</th>
+                                <th style='text-align: left; width: 50px;'>Year Issue</th>
+                                <th style='text-align: left; width: 150px;'>Sales Rep</th>
+                                <th style='text-align: left; width: 150px;'>Client</th>
+                                <th style='text-align: left; width: 150px;'>Agency</th>
+                                <th style='text-align: center; width: 50px;'>Line Item</th>
+                                <th style='text-align: center; width: 100px;'>Status / Action</th>
                             </tr>
                         </thead>
                             <tbody>
