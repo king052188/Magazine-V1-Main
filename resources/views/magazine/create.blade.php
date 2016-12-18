@@ -43,7 +43,7 @@
                             <form role="form" action="/magazine/add-new" method="POST">
                                 <div class="form-group">
                                     <label>Magazine Code</label>
-                                    <input type="text" placeholder="Magazine Code" class="form-control" name="magcode" id="magcode" disabled>
+                                    <input type="text" placeholder="Magazine Code" class="form-control" name="magcode" id="magcode" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label>Magazine Name</label>
