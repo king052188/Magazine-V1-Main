@@ -58,11 +58,11 @@
                         <input class="form-control" placeholder="Sales Representative Code" id="ex2" type="hidden" value = "{{ $_COOKIE['Id'] }}" name = "sales_rep_code">
 
                         <div class="form-group">
-                            <label>Company/Client ID <i>(UID of client_contacts_table)</i></label>
+                            <label>Company Name</label>
 
                             <div class="input-group">
                                 <input type="text" class="form-control hidden" name="client_id" id="clientIdField" value="">
-                                <input type="text" class="form-control" placeholder="Client ID" id="clientIdFieldView" required disabled>
+                                <input type="text" class="form-control" placeholder="(Company Name) Click Search..." id="clientIdFieldView" required disabled>
                                 <span class="input-group-btn">
                                     <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_client">Search <i class="fa fa-search"></i></button>
                                 </span>
@@ -74,7 +74,7 @@
 
                             <div class="input-group">
                                 <input type="text" class="form-control hidden" name="agency_id" id="agencyIdField" value="">
-                                <input type="text" class="form-control" placeholder="Agency ID"  id="agencyIdFieldView" disabled>
+                                <input type="text" class="form-control" placeholder="(Agency Name) Click Search..."  id="agencyIdFieldView" disabled>
                                 <span class="input-group-btn">
                                     <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_agency" >Search <i class="fa fa-search"></i></button>
                                 </span>
@@ -84,7 +84,8 @@
                         <div class="form-group">
                             <label for="ex2">Select Country</label>
                             <select class = "form-control" name = "which_country">
-                                <option value = "1">US</option>
+                                <option value = "0">-- Select Country --</option>
+                                <option value = "1">USA</option>
                                 <option value = "2">Canada</option>
                             </select>
                         </div>
@@ -98,7 +99,6 @@
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="modal_client" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -179,8 +179,8 @@ $('#executeSearchClient').on('keyup', function(){
     $value = $(this).val();
     $.ajax({
         type    : 'get',
-        url     : '{{ URL::to('executeSearchClient') }}',
-        data    : {'search':$value},
+        url     : '{{ URL::to('/execute/search/booking-and-sales') }}',
+        data    : {'search': $value, 'type': "1"},
         success : function(data){
             if($value.length > 0){
                 $('#searchResultClient').html(data);
@@ -197,8 +197,8 @@ $('#executeSearchAgency').on('keyup', function(){
     $value = $(this).val();
     $.ajax({
         type    : 'get',
-        url     : '{{ URL::to('executeSearchAgency') }}',
-        data    : {'search':$value},
+        url     : '{{ URL::to('/execute/search/booking-and-sales') }}',
+        data    : {'search': $value, 'type': "2"},
         success : function(data){
             if($value.length > 0){
                 $('#searchResultAgency').html(data);

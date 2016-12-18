@@ -26,6 +26,8 @@
         <div class="col-lg-2">
         </div>
     </div>
+
+
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-lg-7">

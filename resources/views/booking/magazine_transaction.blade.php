@@ -23,7 +23,6 @@
     </div>
 </div>
 
-
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="container">
 
@@ -60,26 +59,28 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Magazine Code</th>
-                            <th>Magazine Name</th>
-                            <th>Country</th>
+                            <th style="width: 30px; text-align: center;">#</th>
+                            <th style="width: 250px; text-align: center;">Magazine Code</th>
+                            <th style="text-align: center;">Magazine Name</th>
+                            <th style="width: 100px; text-align: center;">Country</th>
+                            <th style="width: 90px; text-align: center;">Action</th>
                         </tr>
                         </thead>
                         <tbody id="magactive">
                               <?php $n = 1; ?>
                                 @for($i = 0; $i < COUNT($mag_l); $i++)
                                     <tr>
-                                        <td>{{ $n++ }}</td>
-                                        <td><a href = "{{ URL('/booking/add_issue/' . $mag_l[$i]->Id . '/' . $client_id) }}">{{ $mag_l[$i]->mag_code }}</a></td>
+                                        <td style="text-align: center;">{{ $n++ }}</td>
+                                        <td>{{ $mag_l[$i]->mag_code }}</td>
                                         <td>{{ $mag_l[$i]->magazine_name }}</td>
-                                        <td>
+                                        <td style="text-align: center;">
                                             @if($mag_l[$i]->magazine_country == 1)
-                                                US
+                                                USA
                                             @elseif($mag_l[$i]->magazine_country == 2)
                                                 CANADA
                                             @endif
                                         </td>
+                                        <td><button class='btn btn-primary btn-sm list_client' onclick="do_select_row('{{$mag_l[$i]->Id}}', '{{$client_id}}')"><i class='fa fa-check'></i>&nbsp;&nbsp;Select</button></td>
                                     </tr>
                                 @endfor
                         </tbody>
@@ -99,9 +100,6 @@
                             <input type="submit" class="btn btn-primary pull-right" value = "Save" {{ $disabled["set"] }}>
                         </div>
                     </form>
-
-                   
-
                 </div>
             </div>
         </div>
@@ -111,5 +109,12 @@
 @endsection
 
 @section('scripts')
+
+    <script>
+        function do_select_row(id, cid) {
+            var url = "{{ URL('/booking/add_issue/')}}/"+ id + "/" + cid;
+            window.location.href=url;
+        }
+    </script>
 
 @endsection

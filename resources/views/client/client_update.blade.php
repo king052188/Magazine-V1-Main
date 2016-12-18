@@ -18,20 +18,21 @@
 
 @section('magazine_content')
     <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-10">
-            <h2>Client</h2>
+        <div class="col-lg-8">
+            <h2>Client Profile</h2>
             <ol class="breadcrumb">
-                <li>
-                    <a href="index.html">Client</a>
-                </li>
                 <li class="active">
-                    <strong>Create Client</strong>
+                    <strong>Edit Profile</strong>
                 </li>
             </ol>
         </div>
-        <div class="col-lg-2">
+        <div class="col-sm-4">
+            <div class="title-action">
+                <a href="#" class="btn btn-primary" id="btnSave">Update, Client Profile </a>
+            </div>
         </div>
     </div>
+
     <div class="wrapper wrapper-content animated fadeInRight">
         <form role="form" action="{{ url('/client/update/save') .'/'. $company[0]->Id }}" method="post">
 
@@ -92,9 +93,17 @@
                                             </label>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <div class="checkbox checkbox-primary">
+                                            <input id="checkbox3" class="styled" type="checkbox" name="c_status" {{ $company[0]->status == 2 ? "checked" : "" }}>
+                                            <label for="checkbox3">
+                                                Active
+                                            </label>
+                                        </div>
+                                    </div>
                                     <div class="form-group" >
                                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                        <button class="btn btn-primary btn-lg pull-right" type="submit" style = "width: 200px;">Update</button>
+                                        <button id="btnUpdate" class="btn btn-primary btn-lg pull-right" type="submit" style = "width: 200px; display: none;">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -102,8 +111,6 @@
                     </div> {{-- ibox end  --}}
                 </div>
                 {{--END COMPANY DETAILS--}}
-
-
                 <div class="col-lg-8">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
@@ -371,7 +378,6 @@
     </div>
 @endsection
 
-
 @section('scripts')
     <script>
         $(document).ready(function(){
@@ -379,6 +385,11 @@
             $(".actions.clearfix").hide();
             $("li").removeClass('disabled').addClass('done');
             $("li:first-child").removeClass('done');
+
+            $("#btnSave").click(function(){
+                $("#btnUpdate").click();
+                return false;
+            });
         });
     </script>
 @endsection

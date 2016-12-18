@@ -44,28 +44,24 @@
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered table-hover table-responsive ClientsListdataTables" >
                             <thead>
-                            <tr>
-                                <th style="width:30px; text-align: center;">#</th>
-                                <th style = "text-align: center;">Company</th>
-                                <th style = "text-align: center;">Address</th>
-                                <th style = "text-align: center;">City</th>
-                                <th style = "text-align: center;">Province/State</th>
-                                <th style = "width:50px; text-align: center;">Postal/Zip Code</th>
-                                <th style = "width:100px; text-align: center;">Member</th>
-                                <th style = "width:100px; text-align: center;">Type</th>
-                                <th style="width:30px;">&nbsp;</th>
-                            </tr>
+                                <tr>
+                                    <th style="width:30px; text-align: center;">#</th>
+                                    <th style = "text-align: center;">Company</th>
+                                    <th style = "width:200px; text-align: center;">City</th>
+                                    <th style = "width:200px; text-align: center;">State</th>
+                                    <th style = "width:100px; text-align: center;">Member</th>
+                                    <th style = "width:100px; text-align: center;">Type</th>
+                                    <th style="width:30px;">&nbsp;</th>
+                                </tr>
                             </thead>
                             <tbody>
                             <?php $n = 1; ?>
                             @for($i = 0; $i < COUNT($results); $i++)
                                 <tr>
-                                    <td>{{ $n++ }}</td>
-                                    <td><a href = "{{ URL('/client/client_contacts/' . $results[$i]->Id) }}">{{ $results[$i]->company_name }}</a></td>
-                                    <td>{{ $results[$i]->address }}</td>
+                                    <td style = "text-align: center;">{{ $n++ }}</td>
+                                    <td>{{ $results[$i]->company_name }}</td>
                                     <td>{{ $results[$i]->city }}</td>
                                     <td>{{ $results[$i]->state }}</td>
-                                    <td>{{ $results[$i]->zip_code }}</td>
                                     <td style="text-align: center;">{{ $results[$i]->is_member == 1 ? "Yes" : "No"}}</td>
                                     <td style = "text-align: center;">{{ $results[$i]->type == 1 ? "Subscribers" : ($results[$i]->type == 2 ? "Agency" : "Lead")}}</td>
                                     <td><a href = "{{ URL('/client/update/' . $results[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a></td>

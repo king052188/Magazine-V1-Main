@@ -20,16 +20,16 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
-        <h2>Magazine</h2>
+        <h2>Client Profile</h2>
         <ol class="breadcrumb">
             <li class="active">
-                <strong>Add Magazine</strong>
+                <strong>Add Client Profile</strong>
             </li>
         </ol>
     </div>
     <div class="col-sm-4">
         <div class="title-action">
-            <a href="#" class="btn btn-primary" id="btnSave">Save</a>
+            <a href="#" class="btn btn-primary" id="btnSave">Save, Client Profile</a>
         </div>
     </div>
 </div>
@@ -103,8 +103,6 @@
                 </div> {{-- ibox end  --}}
             </div>
             {{--END COMPANY DETAILS--}}
-
-
             <div class="col-lg-8">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
@@ -379,7 +377,6 @@
             $(".actions.clearfix").hide();
             $("li").removeClass('disabled').addClass('done');
             $("li:first-child").removeClass('done');
-
 
             $("#btnSave").click(function(){
                 $("#btnCreate").click();
