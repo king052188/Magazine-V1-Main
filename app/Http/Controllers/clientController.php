@@ -44,10 +44,11 @@ class clientController extends Controller
         $company->save();
         $company_last_uid = $company->id;
 
-        $new_bn = $this->generate_branch_number($company_last_uid);
-        $branch_name = $new_bn['new_bn'];
+//        $new_bn = $this->generate_branch_number($company_last_uid);
+//        $branch_name = $new_bn['new_bn'];
 
         $field = array('', 'p_', 's_', 'b_');
+        $branch_name = array('', '0001', '0002', $request['b_branch_name']);
 
         for($i = 1; $i < 4; $i++)
         {
@@ -106,17 +107,10 @@ class clientController extends Controller
             return redirect("/logout_process");
         }
 
-        $subscribers = DB::table('client_table')->where('type', '=', 1)->get(); //Subscriber
-        $subscribers == null ? null : $subscribers;
+        $results = DB::table('client_table')->get(); //Subscriber
+        $results == null ? null : $results;
 
-        $agencies = DB::table('client_table')->where('type', '=', 2)->get(); //Agency
-        $agencies == null ? null : $agencies;
-
-        $lead = DB::table('client_table')->where('type', '=', 3)->get(); //Lead
-        $lead == null ? null : $lead;
-
-
-        return view('client.index', compact('subscribers', 'agencies', 'lead'));
+        return view('client.index', compact('results'));
     }
 
     public function store(Request $request)
@@ -195,12 +189,14 @@ class clientController extends Controller
             ]);
 
         $field = array('', 'p_', 's_', 'b_');
+        $branch_name = array('', '0001', '0002', $request['b_branch_name']);
 
         for($i = 1; $i < 4; $i++)
         {
             ClientContact::where('client_id', '=', $company_uid)
                 ->where('type', '=', $i)
                 ->update([
+                    'branch_name' => $branch_name[$i],
                     'first_name' => $request[$field[$i].'first_name'],
                     'middle_name' => $request[$field[$i].'middle_name'],
                     'last_name' => $request[$field[$i].'last_name'],

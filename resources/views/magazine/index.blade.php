@@ -27,7 +27,7 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-lg-12">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <h5>Magazine List</h5>
@@ -47,7 +47,7 @@
                                 <th style="text-align: center; width: 30%;">Magazine Code</th>
                                 <th style="text-align: center;width: 30%;">Magazine Name</th>
                                 <th style="text-align: center;width: 30%;">Magazine Country</th>
-                                <th style="text-align: center;width: 10%;">Action</th>
+                                <th style="text-align: center; width: 10%;">Action</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -56,7 +56,7 @@
                                         <td>{{ $magazine->mag_code }}</td>
                                         <td>{{ $magazine->magazine_name }}</td>
                                         <td>{{ $magazine->magazine_country == 1 ? "US" : "CANADA" }}</td>
-                                        <td style="text-align: center;"><a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-sm btn-primary"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a></td>
+                                        <td style="text-align: center;"><a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-xs btn-primary"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a></td>
                                     </tr>
                                 @endforeach
 
