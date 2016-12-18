@@ -40,8 +40,7 @@
         <!-- END Background Pic-->
         <!-- START Background Caption-->
         <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
-          <h2 class="semi-bold text-white">
-                    "A man is but the product of his thoughts. What he thinks, he becomes.</h2>
+          <h2 class="semi-bold text-white"></h2>
           <p class="small">
             Images displayed are solely for representation purposes only, All work copyright of respective owner, otherwise © 2016 VMK Dev.
           </p>
