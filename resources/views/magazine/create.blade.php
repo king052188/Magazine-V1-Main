@@ -76,7 +76,7 @@
                                 </div>
                                 <div class="form-group col-lg-4" id = "hidden">
                                     <label>Numbers of Issue</label>
-                                    <input type='number' placeholder='Enter Issue Number' class='form-control' name='number_issue' value = '1' required>
+                                    <input type='number' placeholder='Enter Issue Number' class='form-control' name='number_issue' id = "number_issue" value = '1'>
                                 </div>
                                 <div id = "hidden">
                                     <input type='hidden' name='_token' id='csrf-token' value='{{ Session::token() }}' /><button class='btn btn-sm btn-primary pull-right' id='btn_submit'>Create New Magazine</button>
@@ -281,10 +281,19 @@ $(document).ready(function() {
 <script>
     $('#btn_submit').on('click',function(){
         var magname = $("#magname").val();
+        var number_issue = $("#number_issue").val();
         if(magname == ""){
             swal(
                     'Oops...',
                     'Magazine Name is required!',
+                    'warning'
+            )
+            return false;
+        }
+        if(number_issue == ""){
+            swal(
+                    'Oops...',
+                    'Number of Issue is required!',
                     'warning'
             )
             return false;
