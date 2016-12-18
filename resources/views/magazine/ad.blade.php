@@ -42,8 +42,8 @@
                                 <form role="form" action="{{ URL('/magazine/add-color-size-discount') . '/' . $mag_uid }}" method="POST">
                                     <div class="form-group">
                                         <label for="ex2">Ad Color</label>
-                                        <select class="form-control" name = "ad_color">
-                                            <option value = "" disabled selected>select</option>
+                                        <select class="form-control" name = "ad_color" id = "ad_color">
+                                            <option value = "" selected>select</option>
                                             @for($i = 0; $i < COUNT($ad_c); $i++)
                                                 <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->name }}</option>
                                             @endfor
@@ -51,8 +51,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="ex2">Ad Size</label>
-                                        <select class="form-control" name = "ad_size">
-                                            <option value = "" disabled selected>select</option>
+                                        <select class="form-control" name = "ad_size" id = "ad_size">
+                                            <option value = "" selected>select</option>
                                             @for($i = 0; $i < COUNT($ad_s); $i++)
                                                 <option value = "{{ $ad_s[$i]->Id }}">{{ $ad_s[$i]->package_name }}</option>
                                             @endfor
@@ -61,7 +61,7 @@
 
                                     <div class="form-group">
                                         <label>Ad Amount</label>
-                                        <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount" required>
+                                        <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount">
                                     </div>
                             </div>
                         </div>
@@ -120,7 +120,7 @@
                                 </div>
                                 <div class="col-sm-12 m-t-sm">
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                    <button class="btn btn-sm btn-primary pull-right">Save</button>
+                                    <button class="btn btn-sm btn-primary pull-right" id = "btn_submit">Save</button>
                                 </div>
                         
                         </div>
@@ -267,5 +267,44 @@
         });
 
     })
+</script>
+<script>
+    $('#btn_submit').on('click',function(){
+        var ad_color = $("#ad_color").val();
+        var ad_size = $("#ad_size").val();
+        var original_amount = $("#original_amount").val();
+        if(ad_color == ""){
+            swal(
+                    'Oops...',
+                    'Ad Color is required!',
+                    'warning'
+            )
+            return false;
+        }
+        if(ad_size == ""){
+            swal(
+                    'Oops...',
+                    'Ad Size is required!',
+                    'warning'
+            )
+            return false;
+        }
+        if(original_amount == ""){
+            swal(
+                    'Oops...',
+                    'Ad Amount is required!',
+                    'warning'
+            )
+            return false;
+        }
+        if(isNaN(original_amount)){
+            swal(
+                    'Oops...',
+                    'Ad Amount should be a numbers!',
+                    'warning'
+            )
+            return false;
+        }
+    });
 </script>
 @endsection
