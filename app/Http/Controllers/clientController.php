@@ -54,7 +54,7 @@ class clientController extends Controller
         {
             $client = new ClientContact();
             $client->client_id = $company_last_uid;
-            $client->branch_name = $branch_name;
+            $client->branch_name = $branch_name[$i];
             $client->first_name = $request[$field[$i].'first_name'];
             $client->middle_name = $request[$field[$i].'middle_name'];
             $client->last_name = $request[$field[$i].'last_name'];
