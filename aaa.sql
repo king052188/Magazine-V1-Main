@@ -78,7 +78,7 @@ CREATE TABLE `client_contacts_table` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,7 +87,7 @@ CREATE TABLE `client_contacts_table` (
 
 LOCK TABLES `client_contacts_table` WRITE;
 /*!40000 ALTER TABLE `client_contacts_table` DISABLE KEYS */;
-INSERT INTO `client_contacts_table` VALUES (49,126,'0001','Marissa','L','Mayer','California, United States',NULL,NULL,'Oaklahoma','California','22091','marissa@yahoo.com','232-1190','09051234567','Software Engineer','Company Representative',1,2,1,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(50,126,'0002','David','O','Oland','Sacramento, United States',NULL,NULL,'Fresno','Los Angeles','22019','david@yahoo.com','292-1204','09072898475','Co-Founder','Company Representative',2,2,1,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(51,126,'Google Main','Larry','L','Page','Anaheim, United States',NULL,NULL,'Irvine','California','22092','larry@yahoo.com','294-2091','09872647582','Owner','Company Representative',3,2,1,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(52,127,'0001','Will','O','Stanford','Sacramento, United States',NULL,NULL,'San Jose','California','22092','will@yahoo.com','292-1092','09829948275','Google Owner in Philippines','Company Chief Officer',1,2,1,'2016-12-18 13:39:15','2016-12-18 13:23:34'),(53,127,'0002','Glenn','P','Obrien','Olongapo City, Philippines',NULL,NULL,'Olongapo','Zambales','2209','glenn@yahoo.com','294-2401','09284775182','Regional Director','Company Representative',2,2,1,'2016-12-18 13:39:15','2016-12-18 13:23:34'),(54,127,'Google Main','Lawrence','T','Page','Palo Alto, California',NULL,NULL,'Palo Alto','Long Beach','22091','lpage@yahoo.com','294-2091','09872647582','Owner','Company Representative',3,2,1,'2016-12-18 13:39:15','2016-12-18 13:23:34'),(55,128,'0001','Guy','T','Kawasaki','Nagoya, kobe Japan',NULL,NULL,'Nagoya','Kobe','2981','kawasaki@yahoo.com','298-1029','09827548917','CEO of Google Japan','Company Head Representative',1,2,1,'2016-12-18 13:50:35','2016-12-18 13:50:35'),(56,128,'0002','Fujima','P','Heroshimo','Sapporo, Japan',NULL,NULL,'Takamatsu','Kitakyushu','2871','fujima@yahoo.com','292-1204','09284992817','Software Engineer','Software Engineer Head',2,2,1,'2016-12-18 13:50:35','2016-12-18 13:50:35'),(57,128,'Google Japan','Kitashie','K','Osaka','Tokyo, Japan',NULL,NULL,'Yokohama','Nara','21234','kitashie@yahoo.com','291-8291','98275821175','Accounting Head','Finance Representative',3,2,1,'2016-12-18 13:50:35','2016-12-18 13:50:35'),(58,129,'0001','Mark','P','Zuckerberg','San Francisco, California',NULL,NULL,'California City','Chicago','2938','markz@yahoo.com','298-2012','98390928154','Founder Of Facebook','Company Representative',1,2,1,'2016-12-18 14:01:54','2016-12-18 14:01:54'),(59,129,'0002','Steve','L','Orlando','Houston, United States',NULL,NULL,'Los Angeles','Austin','29810','steve@yahoo.com','322-9182','98390928175','Co-Founder of Facebook','Lead Software Engineer',2,2,1,'2016-12-18 14:01:54','2016-12-18 14:01:54'),(60,129,'Facebook Company','Shane','I','Brown','New York City, United States',NULL,NULL,'New York City','San Francisco','20981','shanebrown@yahoo.com','298-1293','28971584176','Finance Officer','Finance Representative',3,2,1,'2016-12-18 14:01:54','2016-12-18 14:01:54');
+INSERT INTO `client_contacts_table` VALUES (49,126,'0001','Marissa','L','Mayer','California, United States',NULL,NULL,'Oaklahoma','California','22091','marissa@yahoo.com','232-1190','09051234567','Software Engineer','Company Representative',1,2,1,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(50,126,'0002','David','O','Oland','Sacramento, United States',NULL,NULL,'Fresno','Los Angeles','22019','david@yahoo.com','292-1204','09072898475','Co-Founder','Company Representative',2,2,1,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(51,126,'Google Main','Larry','L','Page','Anaheim, United States',NULL,NULL,'Irvine','California','22092','larry@yahoo.com','294-2091','09872647582','Owner','Company Representative',3,2,1,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(52,127,'0001','Will','O','Stanford','Sacramento, United States',NULL,NULL,'San Jose','California','22092','will@yahoo.com','292-1092','09829948275','Google Owner in Philippines','Company Chief Officer',1,2,1,'2016-12-18 13:39:15','2016-12-18 13:23:34'),(53,127,'0002','Glenn','P','Obrien','Olongapo City, Philippines',NULL,NULL,'Olongapo','Zambales','2209','glenn@yahoo.com','294-2401','09284775182','Regional Director','Company Representative',2,2,1,'2016-12-18 13:39:15','2016-12-18 13:23:34'),(54,127,'Google Main','Lawrence','T','Page','Palo Alto, California',NULL,NULL,'Palo Alto','Long Beach','22091','lpage@yahoo.com','294-2091','09872647582','Owner','Company Representative',3,2,1,'2016-12-18 13:39:15','2016-12-18 13:23:34'),(55,128,'0001','Guy','T','Kawasaki','Nagoya, kobe Japan',NULL,NULL,'Nagoya','Kobe','2981','kawasaki@yahoo.com','298-1029','09827548917','CEO of Google Japan','Company Head Representative',1,2,1,'2016-12-18 13:50:35','2016-12-18 13:50:35'),(56,128,'0002','Fujima','P','Heroshimo','Sapporo, Japan',NULL,NULL,'Takamatsu','Kitakyushu','2871','fujima@yahoo.com','292-1204','09284992817','Software Engineer','Software Engineer Head',2,2,1,'2016-12-18 13:50:35','2016-12-18 13:50:35'),(57,128,'Google Japan','Kitashie','K','Osaka','Tokyo, Japan',NULL,NULL,'Yokohama','Nara','21234','kitashie@yahoo.com','291-8291','98275821175','Accounting Head','Finance Representative',3,2,1,'2016-12-18 13:50:35','2016-12-18 13:50:35'),(58,129,'0001','Mark','P','Zuckerberg','San Francisco, California',NULL,NULL,'California City','Chicago','2938','markz@yahoo.com','298-2012','98390928154','Founder Of Facebook','Company Representative',1,2,1,'2016-12-18 14:01:54','2016-12-18 14:01:54'),(59,129,'0002','Steve','L','Orlando','Houston, United States',NULL,NULL,'Los Angeles','Austin','29810','steve@yahoo.com','322-9182','98390928175','Co-Founder of Facebook','Lead Software Engineer',2,2,1,'2016-12-18 14:01:54','2016-12-18 14:01:54'),(60,129,'Facebook Company','Shane','I','Brown','New York City, United States',NULL,NULL,'New York City','San Francisco','20981','shanebrown@yahoo.com','298-1293','28971584176','Finance Officer','Finance Representative',3,2,1,'2016-12-18 14:01:54','2016-12-18 14:01:54'),(61,130,'0001','In-Jung','K','Jaw-Kwang','Gwangju, Korea',NULL,NULL,'Suwon','Daegu','29018','injung@yahoo.com','298-1029','09287551852','I.T Manager','I.T Head',1,2,1,'2016-12-18 14:41:50','2016-12-18 14:41:50'),(62,130,'0002','Jae-Hwa','L','Jae-Eun','Ulsan Songdo, Korea',NULL,NULL,'Changwon','Daejeon','33093','jae@yahoo.com','298-2018','09289557281','Software Engineer','Company Representative',2,2,1,'2016-12-18 14:41:50','2016-12-18 14:41:50'),(63,130,'Facebook Company','Shane','I','Brown','New York City, United States',NULL,NULL,'New York City','San Francisco','20981','shanebrown@yahoo.com','294-2091','28971584176','Finance Officer','Finance Representative',3,2,1,'2016-12-18 14:41:50','2016-12-18 14:41:50'),(64,131,'0001','Steven','L','Over','Baguio City, Manila',NULL,NULL,'Baguio City','Manila','2981','steven@yahoo.com','297-2081','92087421902','Hardware Engineer','Hardware and Software Head',1,2,1,'2016-12-18 14:45:22','2016-12-18 14:45:22'),(65,131,'0002','Ronald','A','Boston','Olongapo City, Philippines',NULL,NULL,'Olongapo City','Zambales','2291','ronald@yahoo.com','281-2981','29875219857','Scripting Engineer','Javascript head',2,2,1,'2016-12-18 14:45:22','2016-12-18 14:45:22'),(66,131,'Facebook Company','Shane','I','Brown','New York City, United States',NULL,NULL,'New York City','San Francisco','20981','shanebrown@yahoo.com','294-2091','28971584176','Finance Officer','Finance Representative',3,2,1,'2016-12-18 14:45:22','2016-12-18 14:45:22');
 /*!40000 ALTER TABLE `client_contacts_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -136,7 +136,7 @@ CREATE TABLE `client_table` (
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +145,7 @@ CREATE TABLE `client_table` (
 
 LOCK TABLES `client_table` WRITE;
 /*!40000 ALTER TABLE `client_table` DISABLE KEYS */;
-INSERT INTO `client_table` VALUES (126,'Google Main','Mountain View, California, United States','Los Angeles','San Jose','22110',1,1,2,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(127,'Google Philippines','Quezon City, Manila','Quezon City','Manila','2209',1,1,2,'2016-12-18 13:39:14','2016-12-18 13:23:33'),(128,'Google Japan','Kyoto Osaka, Japan','Kyoto','Nara','20891',1,1,2,'2016-12-18 13:50:34','2016-12-18 13:50:34'),(129,'Facebook Company','Washington, D.C, United States','Stockton California','Boston','22093',1,2,2,'2016-12-18 14:01:53','2016-12-18 14:01:53');
+INSERT INTO `client_table` VALUES (126,'Google Main','Mountain View, California, United States','Los Angeles','San Jose','22110',1,1,2,'2016-12-18 13:09:33','2016-12-18 13:09:33'),(127,'Google Philippines','Quezon City, Manila','Quezon City','Manila','2209',1,1,2,'2016-12-18 13:39:14','2016-12-18 13:23:33'),(128,'Google Japan','Kyoto Osaka, Japan','Kyoto','Nara','20891',1,1,2,'2016-12-18 13:50:34','2016-12-18 13:50:34'),(129,'Facebook Company','Washington, D.C, United States','Stockton California','Boston','22093',1,2,2,'2016-12-18 14:01:53','2016-12-18 14:01:53'),(130,'Facebook Korea','Seoul Busan, Korea','Daegu','Ulsan','20982',1,2,2,'2016-12-18 14:41:49','2016-12-18 14:41:49'),(131,'Facebook Philippines','Baguio City, Philippines','Baguio City','Baguio','2109',1,2,2,'2016-12-18 14:45:21','2016-12-18 14:45:21');
 /*!40000 ALTER TABLE `client_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -228,12 +228,13 @@ CREATE TABLE `magazine_issue_transaction_table` (
   `ad_package_id` int(11) DEFAULT NULL,
   `quarter_issued` tinyint(4) DEFAULT NULL,
   `line_item_qty` tinyint(4) DEFAULT NULL,
+  `mag_price_id` int(11) DEFAULT NULL,
   `amount` decimal(18,2) DEFAULT NULL,
   `status` tinyint(11) DEFAULT NULL,
   `updated_at` datetime DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -242,7 +243,7 @@ CREATE TABLE `magazine_issue_transaction_table` (
 
 LOCK TABLES `magazine_issue_transaction_table` WRITE;
 /*!40000 ALTER TABLE `magazine_issue_transaction_table` DISABLE KEYS */;
-INSERT INTO `magazine_issue_transaction_table` VALUES (128,147,1,2,1,1,2500.00,2,'2016-12-18 13:52:43','2016-12-18 13:52:43'),(129,147,1,2,3,2,2500.00,2,'2016-12-18 13:53:23','2016-12-18 13:53:23');
+INSERT INTO `magazine_issue_transaction_table` VALUES (128,147,1,2,1,1,29,2500.00,2,'2016-12-18 13:52:43','2016-12-18 13:52:43'),(129,147,1,2,3,2,30,2500.00,2,'2016-12-18 13:53:23','2016-12-18 13:53:23'),(130,147,3,5,3,3,30,1800.00,2,'2016-12-18 14:39:52','2016-12-18 14:39:52');
 /*!40000 ALTER TABLE `magazine_issue_transaction_table` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -563,4 +564,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-12-18 22:03:22
+-- Dump completed on 2016-12-18 22:53:57

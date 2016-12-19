@@ -33,20 +33,10 @@ class bookingController extends Controller
                                 WHERE Id = book_trans.sales_rep_code 
                             ) AS sales_rep_name,
                             (
-                                SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
-                                FROM client_contacts_table AS a
-                                INNER JOIN client_table AS b
-                                ON a.client_id = b.Id
-                                WHERE a.Id = book_trans.client_id
-                                AND b.type = 1
+                                SELECT company_name FROM client_table WHERE Id = book_trans.client_id AND status = 2 AND type != 2
                             ) AS client_name,
                             (
-                                SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
-                                FROM client_contacts_table AS a
-                                INNER JOIN client_table AS b
-                                ON a.client_id = b.Id
-                                WHERE a.Id = book_trans.agency_id
-                                AND b.type = 2
+                                SELECT company_name FROM client_table WHERE Id = book_trans.agency_id AND status = 2 AND type = 2
                             ) AS agency_name,
                             ( 
                                 SELECT magazine_name FROM magazine_table WHERE Id = m_trans.magazine_id 
@@ -111,12 +101,7 @@ class bookingController extends Controller
                                 WHERE Id = book_trans.sales_rep_code 
                             ) AS sales_rep_name,
                             (
-                                SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
-                                FROM client_contacts_table AS a
-                                INNER JOIN client_table AS b
-                                ON a.client_id = b.Id
-                                WHERE a.Id = book_trans.client_id
-                                AND b.type = 1
+                                SELECT company_name FROM client_table WHERE Id = book_trans.client_id AND status = 2 AND type = 1;
                             ) AS client_name,
                             (
                                 SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name) 
