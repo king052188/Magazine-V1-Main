@@ -155,30 +155,25 @@
 
 <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 <script>
-
-$(document).ready(function(){
-    $('.dataTables-example').DataTable({
-        dom: '<"html5buttons"B>lTfgitp',
-        buttons: []
+    $(document).ready(function(){
+        $('.dataTables-example').DataTable({
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: []
+        });
     });
-
-});
-
-
 
     function open_preview(trans_number)
     {
-        window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_number + "?show=preview",
-                "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
+//        window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_number + "?show=preview",
+//                "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
+        window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
+                "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
     }
 
-
     $(document).ready( function() {
-
         $("#filter").on('change', function(){
             window.location.href = "/booking/booking-list/" + $(this).val();
         });
-
         $("#tbl_booking_lists > tbody  > tr").change(function(){
             var value =  $(this).find('select:first').val();
             var values = value.split(":");
@@ -186,39 +181,33 @@ $(document).ready(function(){
             if(values.length > 1) {
                 var str_to_int = parseInt(values[0]);
                 var trans_num = values[1];
-
                 if(str_to_int == -1) {
-                    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_num + "?show=preview",
-                            "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
+//                    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_num + "?show=preview",
+//                            "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
+                    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_num + "/preview",
+                            "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
                 }
                 if(str_to_int == -2) {
                     window.open("http://"+ Url_Client_Dashboard + trans_num,'_blank');
-
                 }
             }
         });
     } );
 
     update_status = function(control_id, trans_num) {
-
         var selected = $('#ddlStatus_' + control_id).val();
-
         var str_to_int = parseInt(selected);
-
         if(str_to_int > 0)
         {
             var url = "/transaction/update/row/"+ control_id +"/"+ selected;
-
             $(document).ready( function() {
                 $.ajax({
                     url: url,
                     dataType: "text",
                     beforeSend: function () {
-
                     },
                     success: function(data) {
                         var json = $.parseJSON(data);
-
                         if(json.status == 200)
                         {
                             alert("Update was successful");
@@ -229,7 +218,5 @@ $(document).ready(function(){
             } );
         }
     }
-
-
 </script>
 @endsection
