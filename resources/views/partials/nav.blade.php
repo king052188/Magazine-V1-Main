@@ -68,11 +68,11 @@
                 </ul>
             </li>
 
-            <li>
+            <li class="{{ Request::is('payment') || Request::is('payment/*') ? 'active' : '' }}">
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Payment</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="{{ url('payment/payment_list') }}"> <span class="nav-label">Receiving</span></a></li>
-                    <li><a href="/sales_report/view">Reports</a></li>
+                    <li><a href="#">Reports</a></li>
                 </ul>
             </li>
             <li>

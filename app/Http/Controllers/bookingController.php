@@ -146,6 +146,9 @@ class bookingController extends Controller
 
         ");
 
+
+        $bill_to = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 3)->get(); //Subscriber
+
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();
 
 //        return view('booking.booking_list', compact('booking', 'magazine', 'filter'))->with('success', 'Booking details successful added!');

@@ -28,12 +28,14 @@ class searchController extends Controller
                     ORDER BY company_name ASC
     	 ");
 
+
       	if($clients)
       	{
             for($i = 0; $i < count($clients); $i++) {
+                $client_bill_to = DB::table('client_contacts_table')->where('client_id', '=', $clients[$i]->Id)->where('role', '=', 3)->get(); //Subscriber
                 $type = $clients[$i]->status == 2 ? '<span style="color:green;">Active</span>' : '<span style="color:red; text-align: center;">Inactive</span>';
-                $output .= "<tr id='" . $clients[$i]->Id ."' class='".$clients[$i]->company_name. "'>
-                          <td>". $clients[$i]->company_name. "</td>
+                $output .= "<tr id='" . $clients[$i]->Id ."' class='".$clients[$i]->company_name. "' name='".$client_bill_to[$i]->first_name. " " .$client_bill_to[$i]->last_name." (Billing Contact)'>
+                          <td>". $clients[$i]->company_name."</td>
                           <td style='width: 120px; text-align: center;'>".$type."</td>
                           <td style='width: 100px'><button class='btn btn-primary btn-sm list_client' data-dismiss='modal'><i class='fa fa-check'></i>&nbsp;&nbsp;Select</button>
                           </td></tr>";

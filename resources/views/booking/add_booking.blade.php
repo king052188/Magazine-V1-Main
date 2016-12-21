@@ -215,6 +215,9 @@ $(document).ajaxComplete(function (data) {
     $(".list_client").click(function() {
         $('#clientIdField').val($(this).closest('tr').attr('id'));
         $('#clientIdFieldView').val($(this).closest('tr').attr('class'));
+
+        $('#agencyIdFieldView').val($(this).closest('tr').attr('name')); //bill to details
+
         $('.resultheader').addClass('hidden');
     });
 
