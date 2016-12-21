@@ -127,16 +127,18 @@
                         <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example" >
                             <thead>
                                 <tr>
-                                    <th style='text-align: center;'>#</th>
-                                    <th style='text-align: left;'>Proposal ID</th>
-                                    <th style='text-align: left;'>Pub.</th>
-                                    <th style='text-align: left;'>Issue</th>
-                                    <th style='text-align: left;'>Year</th>
-                                    <th style='text-align: left;'>Ad Size</th>
-                                    <th style='text-align: left;'>Colour</th>
-                                    <th style='text-align: center;'>Net</th>
-                                    <th style='text-align: center;'>GST/HST</th>
-                                    <th style='text-align: center;'>Amount</th>
+                                    <th style='text-align: center; width: 30px;'>#</th>
+                                    <th style='text-align: center; width: 30px;'>Proposal ID</th>
+                                    <th style='text-align: center; '>Pub.</th>
+                                    <th style='text-align: center; width: 70px;'>Issue</th>
+                                    <th style='text-align: center; width: 70px;'>Year</th>
+                                    <th style='text-align: center; width: 70px;'>Ad Size</th>
+                                    <th style='text-align: center; width: 70px;'>Colour</th>
+                                    <th style='text-align: right; width: 100px;'>Net</th>
+                                    <th style='text-align: center; width: 70px;'>Qty</th>
+                                    <th style='text-align: right; width: 100px;'>GST/HST</th>
+                                    <th style='text-align: right; width: 100px;'>Amount</th>
+                                    <th style='text-align: center; width: 100px;'>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -151,6 +153,8 @@
                                     <td style='text-align: center;'>Sample</td>
                                     <td style='text-align: left;'>Sample</td>
                                     <td style='text-align: left;'>Sample</td>
+                                    <td style='text-align: left;'>Sample</td>
+                                    <td style='text-align: left;'>Sample</td>
                                 </tr>
                                 <tr>
                                     <td style='text-align: center;'>2</td>
@@ -161,6 +165,8 @@
                                     <td style='text-align: left;'>Sample</td>
                                     <td style='text-align: left;'>Sample</td>
                                     <td style='text-align: center;'>Sample</td>
+                                    <td style='text-align: left;'>Sample</td>
+                                    <td style='text-align: left;'>Sample</td>
                                     <td style='text-align: left;'>Sample</td>
                                     <td style='text-align: left;'>Sample</td>
                                 </tr>

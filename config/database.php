@@ -48,7 +48,7 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => '192.168.20.17',
+            'host' => 'localhost',
             'port' => '80',
         ],
 
@@ -64,7 +64,7 @@ return [
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'db_magazine_v1'), //sd
             'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', 'march123'),
+            'password' => env('DB_PASSWORD', 'ABC12abc'),
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
