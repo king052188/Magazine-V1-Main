@@ -62,14 +62,22 @@
             <li class="{{ Request::is('sales_report') || Request::is('sales_report/*') ? 'active' : '' }}">
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Sales</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">Book an Ad</span></a></li>
+                    <li><a href="{{ url('/booking/add-booking') }}"> <span class="nav-label">Create Book and Ad</span></a></li>
+                    <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">List of Book and Ad</span></a></li>
                     <li><a href="/sales_report/view">Sales Reports</a></li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Payment</span><span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">Receiving</span></a></li>
+                    <li><a href="/sales_report/view">Reports</a></li>
                 </ul>
             </li>
             <li>
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
             </li>
-
             <li class="{{ Request::is('users') || Request::is('users') ? 'active' : '' }}">
                 <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Users</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
