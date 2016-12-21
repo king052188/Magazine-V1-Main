@@ -221,6 +221,7 @@
                                                                 <th style = "width:100px; text-align: center;">Lastname</th>
                                                                 <th style = "width:150px; text-align: center;">Position</th>
                                                                 <th style = "width:50px; text-align: center;">Type</th>
+                                                                <th style = "width:50px; text-align: center;">Status</th>
                                                                 <th style="width:30px;">&nbsp;</th>
                                                             </tr>
                                                             </thead>
@@ -232,7 +233,8 @@
                                                                     <td>{{ $results[$i]->middle_name }}</td>
                                                                     <td>{{ $results[$i]->last_name }}</td>
                                                                     <td>{{ $results[$i]->position }}</td>
-                                                                    <td>{{ $results[$i]->type == 1 ? "Subscriber" : ($results[$i]->type == 2 ? "Agency" : "Lead") }}</td>
+                                                                    <td style = "text-align: center;">{{ $results[$i]->type == 1 ? "Subscriber" : ($results[$i]->type == 2 ? "Agency" : "Lead") }}</td>
+                                                                    <td style = "text-align: center;">{{ $results[$i]->status == 1 ? "In-active" : "Active" }}</td>
                                                                     <td><a href = "" onclick="return edit_contacts({{ $results[$i]->Id }});" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_edit_contacts" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-edit" title = "Edit Contacts"></i> Edit</a></td>
                                                                 </tr>
                                                             @endfor
@@ -385,7 +387,12 @@
                                 $("#contact_company_name_show").hide();
                                 $("#contact_role_handler").removeClass('col-lg-6').addClass('col-lg-12');
                             }
-//
+
+                            if(contact.status == 2){
+                                $('#status').prop('checked', true);
+                            }else{
+                                $('#status').prop('checked', false);
+                            }
 
                             $("#contact_uid").val(contact.Id);
                             $("#client_id").val(contact.client_id);
@@ -520,6 +527,17 @@
                                         @endfor
                                     </select>
                                     {{--<input class="form-control" type="text" name="b_type_designation" placeholder="Enter Type" required>--}}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="ex2">Status</label>
+                                    <div class="checkbox checkbox-primary">
+                                        <input class="styled" type="checkbox" id = "status" name="status">
+                                        <label for="checkbox2">
+                                            Active
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
