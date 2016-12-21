@@ -5,6 +5,7 @@
 @endsection
 
 @section('styles')
+    <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <style>
         .content.clearfix{
             height: 520px;
@@ -20,7 +21,7 @@
 
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
-        <h2>Client Profile</h2>
+        <h2>Create New Clients</h2>
         <ol class="breadcrumb">
             <li class="active">
                 <strong>Add Client Profile</strong>
@@ -35,7 +36,7 @@
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight"> {{-- wrapper start --}}
-    <form role="form" action="{{ url('/client/save_client') }}" method="post">{{-- form start --}}
+    <form role="form" action="{{ url('/client/save_company') }}" method="post">{{-- form start --}}
         <div class="row">{{-- row start --}}
             @if(Session::has('success'))
                 <div class="alert alert-success alert-dismissable">
@@ -78,14 +79,6 @@
                                     <input type="text" placeholder="Enter Postal/Zipcode" class="form-control"  name="c_zip_code" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Type</label><br />
-                                    <div class="radio radio-primary">
-                                        @for($i = 0; $i < COUNT($result); $i++)
-                                            <input type="radio" name="c_type" checked = "checked" value="{{ $result[$i]->Id }}"><label>&nbsp;{{ $result[$i]->name }}</label><br />
-                                        @endfor
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <div class="checkbox checkbox-primary">
                                         <input id="checkbox2" class="styled" type="checkbox" name="c_is_member" checked>
                                         <label for="checkbox2">
@@ -102,263 +95,46 @@
                     </div>
                 </div> {{-- ibox end  --}}
             </div>
-            {{--END COMPANY DETAILS--}}
+
+
             <div class="col-lg-8">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5>Contact Details</h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="ibox-content">
-                        <div id="wizard">
-
-                            {{--START PRIMARY CONTACT DETAILS--}}
-                            <h1>Primary Contact Details</h1>
-                            <div class="step-content">
-                                <h3 class="m-t-none m-b">Primary Contact Details</h3>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">First Name</label>
-                                        <input class="form-control" type="text" name="p_first_name" placeholder="Enter First Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Middle Name</label>
-                                        <input class="form-control" type="text" name="p_middle_name" placeholder="Enter Middle Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Last Name</label>
-                                        <input class="form-control" type="text" name="p_last_name" placeholder="Enter Last Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">Address</label>
-                                        <input class="form-control" type="text" name="p_address_1" placeholder="Enter Complete Address" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">City</label>
-                                        <input class="form-control" type="text" name="p_city" placeholder="Enter City" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Province/State</label>
-                                        <input class="form-control" type="text" name="p_state" placeholder="Enter State" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Postal/Zip Code</label>
-                                        <input class="form-control" type="text" name="p_zip_code" placeholder="Email Postal/Zipcode" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Email</label>
-                                        <input class="form-control" type="text" name="p_email" placeholder="Enter Email" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">Landline</label>
-                                        <input class="form-control" type="text" name="p_landline" placeholder="Enter Landline Number" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">Mobile</label>
-                                        <input class="form-control" type="text" name="p_mobile" placeholder="Enter Mobile Number" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="ex2">Position</label>
-                                        <input class="form-control" type="text" name="p_position" placeholder="Enter Position" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="ex2">Type</label>
-                                        <input class="form-control" type="text" name="p_type_designation" placeholder="Enter Type" required>
-                                    </div>
-                                </div>
+                <div class="tabs-container">
+                    <ul class="nav nav-tabs">
+                        <li id = "list_clients_tab_show" class="active"><a data-toggle="tab" href="#all_contacts"> List of Company</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="all_contacts" class="tab-pane active">
+                            <div class="panel-body">
+                                <table class="table table-striped table-bordered table-hover table-responsive ClientsListdataTables" >
+                                    <thead>
+                                    <tr>
+                                        <th style = "text-align: center;">Company</th>
+                                        <th style = "text-align: center;">City</th>
+                                        <th style = "text-align: center;">State</th>
+                                        <th style = "width:50px; text-align: center;">Member</th>
+                                        <th style="width:25px;">&nbsp;</th>
+                                        <th style="width:25px;">&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php $n = 1; ?>
+                                    @for($i = 0; $i < COUNT($clients); $i++)
+                                        <tr>
+                                            <td>{{ $clients[$i]->company_name }}</td>
+                                            <td>{{ $clients[$i]->city }}</td>
+                                            <td>{{ $clients[$i]->state }}</td>
+                                            <td style="text-align: center;">
+                                                @if($clients[$i]->is_member == 1)
+                                                    <i class="fa fa-check text-navy"></i>
+                                                @endif
+                                            </td>
+                                            <td><a href = "{{ URL('/client/update/' . $clients[$i]->Id) }}" class="btn btn-primary btn-xs" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-edit" title = "Edit Company"></i> Edit</a></td>
+                                            <td><a href = "{{ URL('/client/view_contacts/' . $clients[$i]->Id) }}" class="btn btn-primary btn-xs" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;" title = "View Contacts"><i class="fa fa-eye"></i> View Contacts</a></td>
+                                        </tr>
+                                    @endfor
+                                    </tbody>
+                                </table>
                             </div>
-                            {{--END PRIMARY CONTACT DETAILS--}}
-
-                            {{--START SECONDARY CONTACT DETAILS--}}
-                            <h1>Secondary Contact Details</h1>
-                            <div class="step-content">
-                                <h3 class="m-t-none m-b">Secondary Contact Details</h3>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">First Name</label>
-                                        <input class="form-control" type="text" name="s_first_name" placeholder="Enter First Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Middle Name</label>
-                                        <input class="form-control" type="text" name="s_middle_name" placeholder="Enter Middle Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Last Name</label>
-                                        <input class="form-control" type="text" name="s_last_name" placeholder="Enter Last Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">Address</label>
-                                        <input class="form-control" type="text" name="s_address_1" placeholder="Enter Complete Address" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">City</label>
-                                        <input class="form-control" type="text" name="s_city" placeholder="Enter City" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Province/State</label>
-                                        <input class="form-control" type="text" name="s_state" placeholder="Enter State" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Postal/Zip Code</label>
-                                        <input class="form-control" type="text" name="s_zip_code" placeholder="Email Postal/Zipcode" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Email</label>
-                                        <input class="form-control" type="text" name="s_email" placeholder="Enter Email" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">Landline</label>
-                                        <input class="form-control" type="text" name="s_landline" placeholder="Enter Landline Number" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">Mobile</label>
-                                        <input class="form-control" type="text" name="s_mobile" placeholder="Enter Mobile Number" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="ex2">Position</label>
-                                        <input class="form-control" type="text" name="s_position" placeholder="Enter Position" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="ex2">Type</label>
-                                        <input class="form-control" type="text" name="s_type_designation" placeholder="Enter Type" required>
-                                    </div>
-                                </div>
-                            </div>
-                            {{--END SECONDARY CONTACT DETAILS--}}
-
-                            {{--START BILL TO CONTACT DETAILS--}}
-                            <h1>Bill To Contact Details</h1>
-                            <div class="step-content">
-                                <h3 class="m-t-none m-b">Bill To Contact Details</h3>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="ex2">Company Name</label>
-                                        <input class="form-control" type="text" name="b_branch_name" placeholder="Enter Company Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">First Name</label>
-                                        <input class="form-control" type="text" name="b_first_name" placeholder="Enter First Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Middle Name</label>
-                                        <input class="form-control" type="text" name="b_middle_name" placeholder="Enter Middle Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Last Name</label>
-                                        <input class="form-control" type="text" name="b_last_name" placeholder="Enter Last Name" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12">
-                                    <div class="form-group">
-                                        <label for="ex2">Address</label>
-                                        <input class="form-control" type="text" name="b_address_1" placeholder="Enter Complete Address" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">City</label>
-                                        <input class="form-control" type="text" name="b_city" placeholder="Enter City" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Province/State</label>
-                                        <input class="form-control" type="text" name="b_state" placeholder="Enter State" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Postal/Zip Code</label>
-                                        <input class="form-control" type="text" name="b_zip_code" placeholder="Email Postal/Zipcode" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Email</label>
-                                        <input class="form-control" type="text" name="b_email" placeholder="Enter Email" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Landline</label>
-                                        <input class="form-control" type="text" name="b_landline" placeholder="Enter Landline Number" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="form-group">
-                                        <label for="ex2">Mobile</label>
-                                        <input class="form-control" type="text" name="b_mobile" placeholder="Enter Mobile Number" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">Position</label>
-                                        <input class="form-control" type="text" name="b_position" placeholder="Enter Position" required>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label for="ex2">Type</label>
-                                        <input class="form-control" type="text" name="b_type_designation" placeholder="Enter Type" required>
-                                    </div>
-                                </div>
-                            </div>
-                            {{--START BILL TO CONTACT DETAILS--}}
-
                         </div>
                     </div>
                 </div>
@@ -373,14 +149,19 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
-            $("#wizard").steps();
-            $(".actions.clearfix").hide();
-            $("li").removeClass('disabled').addClass('done');
-            $("li:first-child").removeClass('done');
-
             $("#btnSave").click(function(){
                 $("#btnCreate").click();
                 return false;
+            });
+        });
+    </script>
+    <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
+    <script>
+        $(document).ready( function() {
+            $('.ClientsListdataTables').DataTable({
+                dom: '<"html5buttons"B>lTfgitp',
+                "aaSorting": [0,'asc'],
+                buttons: []
             });
         });
     </script>

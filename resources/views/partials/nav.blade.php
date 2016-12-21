@@ -33,7 +33,7 @@
                     <a href="#"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
                         <li><a href="/client/create">Create New Clients</a></li>
-                        <li><a href="/client/all">View All Clients</a></li>
+                        {{--<li><a href="/client/all">View All Clients</a></li>--}}
                     </ul>
                 </li>
 
@@ -56,7 +56,7 @@
                 <a href="#"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="/client/create">Create New Clients</a></li>
-                    <li><a href="/client/all">View All Clients</a></li>
+                    {{--<li><a href="/client/all">View All Clients</a></li>--}}
                 </ul>
             </li>
             <li class="{{ Request::is('sales_report') || Request::is('sales_report/*') ? 'active' : '' }}">

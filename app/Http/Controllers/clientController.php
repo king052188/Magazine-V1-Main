@@ -16,7 +16,7 @@ class clientController extends Controller
             return redirect("/logout_process");
         }
 
-        $clients = Client::all();
+        $clients = DB::SELECT("SELECT * FROM client_table ORDER BY company_name ASC");
         return view('client/index', compact('clients'));
     }
     
@@ -26,11 +26,13 @@ class clientController extends Controller
             return redirect("/logout_process");
         }
 
+        $clients = Client::all();
+
         $result = DB::table('client_reference_table')->get();
-        return view('client.create', compact('result'));
+        return view('client.create', compact('clients', 'result'));
     }
 
-    public function save_client(Request $request)
+    public function save_company(Request $request)
     {
         $company = new Client();
         $company->company_name = $request['c_company_name'];
@@ -38,7 +40,6 @@ class clientController extends Controller
         $company->city = $request['c_city'];
         $company->state = $request['c_state'];
         $company->zip_code = $request['c_zip_code'];
-        $company->type = $request['c_type'];
         $company->is_member = $request['c_is_member'] == false ? -1 : 1;
         $company->status = 2;
         $company->save();
@@ -47,35 +48,33 @@ class clientController extends Controller
 //        $new_bn = $this->generate_branch_number($company_last_uid);
 //        $branch_name = $new_bn['new_bn'];
 
-        $field = array('', 'p_', 's_', 'b_');
-        $branch_name = array('', '0001', '0002', $request['b_branch_name']);
-
-        for($i = 1; $i < 4; $i++)
-        {
-            $client = new ClientContact();
-            $client->client_id = $company_last_uid;
-            $client->branch_name = $branch_name[$i];
-            $client->first_name = $request[$field[$i].'first_name'];
-            $client->middle_name = $request[$field[$i].'middle_name'];
-            $client->last_name = $request[$field[$i].'last_name'];
-            $client->address_1 = $request[$field[$i].'address_1'];
-            $client->city = $request[$field[$i].'city'];
-            $client->state = $request[$field[$i].'state'];
-            $client->zip_code = $request[$field[$i].'zip_code'];
-            $client->email = $request[$field[$i].'email'];
-            $client->landline = $request[$field[$i].'landline'];
-            $client->mobile = $request[$field[$i].'mobile'];
-            $client->position = $request[$field[$i].'position'];
-            $client->type_designation = $request[$field[$i].'type_designation'];
-            $client->type = $i;
-            $client->status = 2;
-            $client->synched = 1;
-            $client->save();
-        }
+//        $field = array('', 'p_', 's_', 'b_');
+//        $role = array('', '0001', '0002', $request['b_branch_name'], '0004');
+//
+//        $client = new ClientContact();
+//        $client->client_id = $company_last_uid;
+//        $client->branch_name = $role[$request['role']];
+//        $client->first_name = $request['first_name'];
+//        $client->middle_name = $request['middle_name'];
+//        $client->last_name = $request['last_name'];
+//        $client->address_1 = $request['address_1'];
+//        $client->city = $request['city'];
+//        $client->state = $request['state'];
+//        $client->zip_code = $request['zip_code'];
+//        $client->email = $request['email'];
+//        $client->landline = $request['landline'];
+//        $client->mobile = $request['mobile'];
+//        $client->position = $request['position'];
+//        $client->type = $request['type'];
+//        $client->status = 2;
+//        $client->synched = 1;
+//        $client->save();
 
 
         return redirect('client/create')->with('success', 'Successfully Added New Client.');
     }
+
+
 
     public function add_contact($company_uid)
     {
@@ -109,8 +108,33 @@ class clientController extends Controller
 
         $results = DB::table('client_table')->get(); //Subscriber
         $results == null ? null : $results;
-
+    
         return view('client.index', compact('results'));
+    }
+
+    public function view_contacts($company_uid)
+    {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+        
+        $ref = DB::table('client_reference_table')->get();
+        $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
+
+        $results = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->orderBy('first_name', 'asc')->get(); //Subscriber
+        $results == null ? null : $results;
+
+        $p = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 1)->get(); //Subscriber
+//        $p == null ? null : $p;
+
+        $s = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 2)->get(); //Subscriber
+//        $s == null ? null : $s;
+
+        $b = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 3)->get(); //Subscriber
+//        $b == null ? null : $b;
+
+
+        return view('client.client_contacts_view', compact('ref', 'company', 'results', 'p', 's', 'b'));
     }
 
     public function store(Request $request)
@@ -139,24 +163,28 @@ class clientController extends Controller
 
     public function save_contact(Request $request, $company_uid)
     {
-        $new_bn = $this->generate_branch_number($company_uid);
-        $branch_name = $new_bn['new_bn'];
+        $role = array('', '0001', '0002', $request['b_branch_name'], '0004');
 
         $client = new ClientContact();
         $client->client_id = $company_uid;
-        $client->branch_name = $branch_name;
+        $client->branch_name = $role[$request['role']];
         $client->first_name = $request['first_name'];
         $client->middle_name = $request['middle_name'];
         $client->last_name = $request['last_name'];
         $client->address_1 = $request['address_1'];
+        $client->city = $request['city'];
+        $client->state = $request['state'];
+        $client->zip_code = $request['zip_code'];
         $client->email = $request['email'];
         $client->landline = $request['landline'];
         $client->mobile = $request['mobile'];
-        $client->type = 2; //secondary
+        $client->position = $request['position'];
+        $client->type = $request['type'];
         $client->status = 2;
+        $client->synched = 1;
         $client->save();
 
-        return redirect('/client/all')->with('success', 'Successfully Added New Contact.');
+        return redirect('/client/view_contacts/' . $company_uid)->with('success', 'Successfully Added New Contact.');
     }
 
     public function client_update($company_uid)
@@ -164,14 +192,11 @@ class clientController extends Controller
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
-        
-        $result = DB::table('client_reference_table')->get();
-        $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
-        $primary = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('type', '=', 1)->get();
-        $secondary = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('type', '=', 2)->get();
-        $bill_to = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('type', '=', 3)->get();
 
-        return view('client.client_update', compact('result', 'company', 'primary', 'secondary', 'bill_to'));
+        $clients = Client::all();
+        $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
+
+        return view('client.client_update', compact('clients', 'company'));
     }
 
     public function client_update_save(Request $request, $company_uid)

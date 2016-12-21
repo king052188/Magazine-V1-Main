@@ -24,8 +24,9 @@ Route::get('/agency/grab_save/{client_code}/{agency_code}/{agency_uid}', 'Agency
 Route::get('/client/create', 'clientController@create');
 Route::post('/client/store', 'clientController@store');
 Route::get('/client/all', 'clientController@companies');
+Route::get('/client/view_contacts/{company_uid}', 'clientController@view_contacts');
 Route::get('/client/add_contact/{company_uid}', 'clientController@add_contact');
-Route::post('/client/save_client', 'clientController@save_client');
+Route::post('/client/save_company', 'clientController@save_company');
 Route::post('/client/save_contact/{company_uid}', 'clientController@save_contact');
 Route::get('/client/client_contacts/{company_uid}', 'clientController@client_contacts');
 Route::get('/client/update/{company_uid}', 'clientController@client_update');

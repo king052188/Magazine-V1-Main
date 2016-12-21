@@ -52,6 +52,7 @@
                                     <th style = "width:100px; text-align: center;">Member</th>
                                     <th style = "width:100px; text-align: center;">Type</th>
                                     <th style="width:30px;">&nbsp;</th>
+                                    <th style="width:30px;">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -64,7 +65,8 @@
                                     <td>{{ $results[$i]->state }}</td>
                                     <td style="text-align: center;">{{ $results[$i]->is_member == 1 ? "Yes" : "No"}}</td>
                                     <td style = "text-align: center;">{{ $results[$i]->type == 1 ? "Subscribers" : ($results[$i]->type == 2 ? "Agency" : "Lead")}}</td>
-                                    <td><a href = "{{ URL('/client/update/' . $results[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Edit</a></td>
+                                    <td><a href = "{{ URL('/client/update/' . $results[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit" title = "Edit Company"></i> Edit</a></td>
+                                    <td><a href = "{{ URL('/client/view_contacts/' . $results[$i]->Id) }}" class="btn btn-primary btn-sm" title = "Add more client"><i class="fa fa-user-plus"></i> View</a></td>
                                 </tr>
                             @endfor
                             </tbody>
