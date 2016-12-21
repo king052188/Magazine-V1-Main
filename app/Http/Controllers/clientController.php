@@ -42,8 +42,7 @@ class clientController extends Controller
         $company->zip_code = $request['c_zip_code'];
         $company->is_member = $request['c_is_member'] == false ? -1 : 1;
         $company->status = 2;
-        $company->save();
-        $company_last_uid = $company->id;
+        $result = $company->save();
 
 //        $new_bn = $this->generate_branch_number($company_last_uid);
 //        $branch_name = $new_bn['new_bn'];
@@ -70,8 +69,12 @@ class clientController extends Controller
 //        $client->synched = 1;
 //        $client->save();
 
+        if($result) {
+            $company_last_uid = $company->id;
+            return redirect('client/view_contacts/'. $company_last_uid)->with('success', 'Successfully Added New Client, Please add your contact person.');
+        }
 
-        return redirect('client/create')->with('success', 'Successfully Added New Client.');
+        return redirect('client/create')->with('success', 'Oops, Something went wrong.');
     }
 
 

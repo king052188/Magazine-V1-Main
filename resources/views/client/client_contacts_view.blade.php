@@ -107,6 +107,10 @@
                                                                     <div class="col-lg-8">
                                                                         {{ $p[0]->type == 1 ? "Subscribers" : ($p[0]->type == 2 ? "Agency" : "Lead") }}
                                                                     </div>
+                                                                @else
+                                                                    <div class="col-lg-8">
+                                                                        No Record.
+                                                                    </div>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -146,6 +150,10 @@
                                                                     <div class="col-lg-8">
                                                                         {{ $s[0]->type == 1 ? "Subscribers" : ($s[0]->type == 2 ? "Agency" : "Lead") }}
                                                                     </div>
+                                                                @else
+                                                                    <div class="col-lg-8">
+                                                                        No Record.
+                                                                    </div>
                                                                 @endif
                                                             </div>
                                                         </div>
@@ -184,6 +192,10 @@
                                                                     </div>
                                                                     <div class="col-lg-8">
                                                                         {{ $b[0]->type == 1 ? "Subscribers" : ($b[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                    </div>
+                                                                @else
+                                                                    <div class="col-lg-8">
+                                                                        No Record.
                                                                     </div>
                                                                 @endif
                                                             </div>
@@ -351,8 +363,10 @@
     <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function(){
+
             $("#btnSave").hide();
             $("#company_name_show").hide();
+
             $('.ClientsListdataTables').DataTable({
                 dom: '<"html5buttons"B>lTfgitp',
                 "aaSorting": [0,'asc'],

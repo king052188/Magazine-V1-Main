@@ -28,11 +28,11 @@
             </li>
         </ol>
     </div>
-    <div class="col-sm-4">
-        <div class="title-action">
-            <a href="#" class="btn btn-primary" id="btnSave">Save, Client Profile</a>
-        </div>
-    </div>
+    {{--<div class="col-sm-4">--}}
+        {{--<div class="title-action">--}}
+            {{--<a href="#" class="btn btn-primary" id="btnSave">Save, Client Profile</a>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight"> {{-- wrapper start --}}
@@ -41,11 +41,11 @@
             @if(Session::has('success'))
                 <div class="alert alert-success alert-dismissable">
                     <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                    {{ Session::get('success') }}
+                    {!! Session::get('success') !!}
                 </div>
             @endif
             {{--START COMPANY DETAILS--}}
-            <div class="col-lg-4">
+            <div class="col-lg-4" >
                 <div class="ibox float-e-margins"> {{-- ibox start --}}
                     <div class="ibox-title">
                         <h5>Company Details <small> *all fields are required</small></h5>
@@ -88,14 +88,13 @@
                                 </div>
                                 <div class="form-group" >
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                    <button id="btnCreate" class="btn btn-primary btn-lg pull-right" type="submit" style = "width: 200px; display: none;">Create</button>
+                                    <button id="btnCreate" class="btn btn-primary btn-lg pull-right" type="submit">Create</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div> {{-- ibox end  --}}
             </div>
-
 
             <div class="col-lg-8">
                 <div class="tabs-container">
@@ -144,7 +143,6 @@
     </form> {{-- form end --}}
 </div>{{-- wrapper end --}}
 @endsection
-
 
 @section('scripts')
     <script>
