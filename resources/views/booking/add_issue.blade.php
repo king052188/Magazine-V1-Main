@@ -151,7 +151,7 @@
                                                         <th style="width: 10%; text-align: center;">Item #</th>
                                                         <th style="width: 20%; text-align: left;">TYPE</th>
                                                         <th style="width: 20%; text-align: left;">SIZE</th>
-                                                        <th style="width: 10%; text-align: center;">QUARTER / ISSUED</th>
+                                                        <th style="width: 10%; text-align: center;">ISSUE</th>
                                                         <th style="width: 10%; text-align: center;">QTY</th>
                                                         <th style="width: 10%; text-align: center;">DISCOUNT</th>
                                                         <th style="width: 10%; text-align: right;">AMOUNT</th>
@@ -219,10 +219,10 @@
                         $('#amount_label').empty().append("Amount");
                         $('#amount_box').empty().append('<input type="hidden" value = "'+ ad_sizes[2] +'" name = "price_uid"><input type="hidden" value = "'+ ad_sizes[0] +'" name = "ad_p_split"><input type="text" value = "'+ ad_sizes[1] +'" name = "ad_amount" class="form-control" readonly>');
 
-                        $('#quarter_issues_label').empty().append("Quarter Issued");
+                        $('#quarter_issues_label').empty().append("Issue");
                         $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
                         $('#quarter_issued_select').append("<option value = '' disabled selected>select</option>");
-                        for(i = 1; i <= 10; i++) {
+                        for(i = 1; i <= 12; i++) {
                             $('#quarter_issued_select').append("<option value = "+ i +"> " + i + "</option>");
                         }
                         $('#quarter_issued_box').append('</select>');
@@ -243,8 +243,8 @@
 
 function open_preview(trans_number)
 {
-    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_number + "?show=preview",
-            "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
+    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
+            "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
 }
 
 function ConfirmDelete()
@@ -297,7 +297,7 @@ $(document).ready( function() {
                 html_thmb += "<td style='text-align: center;'>"+item_count+"</td>";
                 html_thmb += "<td style='text-align: left;'>"+tran.ad_color+"</td>";
                 html_thmb += "<td style='text-align: left;'>"+tran.ad_size+"</td>";
-                html_thmb += "<td style='text-align: center;'> Q"+tran.quarter_issued+"</td>";
+                html_thmb += "<td style='text-align: center;'> IS"+tran.quarter_issued+"</td>";
                 html_thmb += "<td style='text-align: center;'> "+tran.line_item_qty+"</td>";
                 html_thmb += "<td style='text-align: center;'> "+numeral(tran.total_discount_by_percent).format('0,0')+"%</td>";
 
