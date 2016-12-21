@@ -103,9 +103,9 @@
                                                         @endif
                                                     </select>
                                                     @if($booking[$i]->status == 5)
-                                                        <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
+                                                        <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num }}')" style="margin-bottom: 0;">Preview</a>
                                                     @elseif($booking[$i]->status == 3)
-                                                        <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Preview</a>
+                                                        <a class="btn btn-primary" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num }}')" style="margin-bottom: 0;">Preview</a>
                                                     @else
                                                         <a class="btn btn-info" id="btn_update" style = "width: 80px; margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</a>
                                                     @endif
@@ -129,7 +129,8 @@
                                                     {{--<option {{ $booking[$i]->status == 4 ? "selected=true" : "" }} value = "4">Declined</option>--}}
                                                     <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5">Void</option>
                                                     <optgroup label="-- Action --"> -- Action -- </optgroup>
-                                                    <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview</option>
+                                                    <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview Insertion Order</option>
+                                                    <option value = "-2:{{ $booking[$i]->trans_num  }}">Preview Invoice Order</option>
                                                     <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
                                                     </optgroup>
                                                 </select>

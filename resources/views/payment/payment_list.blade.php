@@ -19,11 +19,6 @@
             </li>
         </ol>
     </div>
-    <div class="col-sm-4">
-        <div class="title-action">
-            <a href="/booking/add-booking" class="btn btn-primary">Add New Booking</a>
-        </div>
-    </div>
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -133,14 +128,15 @@
                             <thead>
                                 <tr>
                                     <th style='text-align: center;'>#</th>
-                                    <th style='text-align: left;'>Magazine Name</th>
-                                    <th style='text-align: left;'># Issue</th>
-                                    <th style='text-align: left;'>Year Issue</th>
-                                    <th style='text-align: left;'>Sales Rep</th>
-                                    <th style='text-align: left;'>Client</th>
-                                    <th style='text-align: left;'>Agency</th>
-                                    <th style='text-align: center;'>Line Item</th>
-                                    <th style='text-align: center;'>Status / Action</th>
+                                    <th style='text-align: left;'>Proposal ID</th>
+                                    <th style='text-align: left;'>Pub.</th>
+                                    <th style='text-align: left;'>Issue</th>
+                                    <th style='text-align: left;'>Year</th>
+                                    <th style='text-align: left;'>Ad Size</th>
+                                    <th style='text-align: left;'>Colour</th>
+                                    <th style='text-align: center;'>Net</th>
+                                    <th style='text-align: center;'>GST/HST</th>
+                                    <th style='text-align: center;'>Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -154,6 +150,7 @@
                                     <td style='text-align: left;'>Sample</td>
                                     <td style='text-align: center;'>Sample</td>
                                     <td style='text-align: left;'>Sample</td>
+                                    <td style='text-align: left;'>Sample</td>
                                 </tr>
                                 <tr>
                                     <td style='text-align: center;'>2</td>
@@ -164,6 +161,7 @@
                                     <td style='text-align: left;'>Sample</td>
                                     <td style='text-align: left;'>Sample</td>
                                     <td style='text-align: center;'>Sample</td>
+                                    <td style='text-align: left;'>Sample</td>
                                     <td style='text-align: left;'>Sample</td>
                                 </tr>
                             </tbody>
@@ -176,7 +174,6 @@
     </div>
 </div>
 @endsection
-
 
 @section('scripts')
 <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
