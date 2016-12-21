@@ -256,6 +256,7 @@ $(document).ready(function() {
 
     $('#magcountry').on('change', function() {
         var magc_id = $(this).val();
+
         $.ajax({
             url: "/magazine/company/get_country/" + magc_id,
             dataType: "text",

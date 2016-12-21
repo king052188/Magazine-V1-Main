@@ -233,7 +233,7 @@
                                                                     <td>{{ $results[$i]->last_name }}</td>
                                                                     <td>{{ $results[$i]->position }}</td>
                                                                     <td>{{ $results[$i]->type == 1 ? "Subscriber" : ($results[$i]->type == 2 ? "Agency" : "Lead") }}</td>
-                                                                    <td><a href = "#" class="btn btn-primary btn-xs" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-edit" title = "Edit Company"></i> Edit</a></td>
+                                                                    <td><a href = "" onclick="return edit_contacts({{ $results[$i]->Id }});" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_edit_contacts" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-edit" title = "Edit Contacts"></i> Edit</a></td>
                                                                 </tr>
                                                             @endfor
                                                             </tbody>
@@ -356,6 +356,184 @@
             </div> {{-- row end --}}
         </form> {{-- form end --}}
     </div>{{-- wrapper end --}}
+
+    <script type="text/javascript">
+        function edit_contacts($contact_uid) {
+            var contact_uid = $contact_uid;
+
+            $.ajax({
+                url: "/contact/update/" + contact_uid,
+                dataType: "text",
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if (json == null) return false;
+                    if (json.result == 404) {
+                        console.log("error " . contact_uid);
+                    } else {
+
+
+
+                        $(json.result).each(function(i, contact) {
+                            console.log(contact.first_name);
+
+//                            $("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
+                            if(contact.role == 3){
+
+                                $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
+                                $("#contact_company_name_show").show();
+                            }else{
+                                $("#contact_company_name_show").hide();
+                                $("#contact_role_handler").removeClass('col-lg-6').addClass('col-lg-12');
+                            }
+//
+
+                            $("#contact_uid").val(contact.Id);
+                            $("#client_id").val(contact.client_id);
+                            $("#contact_role").val(contact.role);
+                            $("#branch_name").val(contact.branch_name);
+                            $("#first_name").val(contact.first_name);
+                            $("#middle_name").val(contact.middle_name);
+                            $("#last_name").val(contact.last_name);
+                            $("#address_1").val(contact.address_1);
+                            $("#city").val(contact.city);
+                            $("#state").val(contact.state);
+                            $("#zip_code").val(contact.zip_code);
+                            $("#email").val(contact.email);
+                            $("#landline").val(contact.landline);
+                            $("#mobile").val(contact.mobile);
+                            $("#position").val(contact.position);
+                            $("#type").val(contact.type);
+
+                        });
+                    }
+                }
+            });
+        }
+    </script>
+
+    <div class="modal fade" id="modal_edit_contacts" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Edit Contacts</h4>
+                </div>
+                <form role="form" action="{{ url('/client/save_update_contact') }}" method="post">
+
+                    <div class="col-lg-12">
+                        <div class="modal-body form group">
+                            <input type = "hidden" name = "contact_uid" id = "contact_uid">
+                            <input type = "hidden" name = "client_id" id = "client_id">
+                            <div class="col-lg-12" id = "contact_role_handler">
+                                <div class="form-group">
+                                    <label for="ex2">Role</label>
+                                    <select class="form-control" name = "role" id = "contact_role" required>
+                                        <option value="">--select--</option>
+                                        <option value="1" {{ COUNT($p) != 0 ? 'hidden' : '' }}>Primary Contact</option>
+                                        <option value="2" {{ COUNT($s) != 0 ? 'hidden' : '' }}>Secondary Contact</option>
+                                        <option value="3" {{ COUNT($b) != 0 ? 'hidden' : '' }}>Bill To Contact</option>
+                                        <option value="4">Other Contact</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6" id = "contact_company_name_show">
+                                <div class="form-group">
+                                    <label for="ex2">Company Name</label>
+                                    <input class="form-control" type="text" id ="branch_name" name="branch_name" placeholder="Enter Company Name">
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="ex2">First Name</label>
+                                    <input class="form-control" type="text" id = "first_name" name="first_name" placeholder="Enter First Name" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="ex2">Middle Name</label>
+                                    <input class="form-control" type="text" id = "middle_name" name="middle_name" placeholder="Enter Middle Name" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label for="ex2">Last Name</label>
+                                    <input class="form-control" type="text" id = "last_name" name="last_name" placeholder="Enter Last Name" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="ex2">Address</label>
+                                    <input class="form-control" type="text" id = "address_1" name="address_1" placeholder="Enter Complete Address" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="ex2">City</label>
+                                    <input class="form-control" type="text" id = "city" name="city" placeholder="Enter City" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="ex2">Province/State</label>
+                                    <input class="form-control" type="text" id = "state" name="state" placeholder="Enter State" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="ex2">Postal/Zip Code</label>
+                                    <input class="form-control" type="text" id = "zip_code" name="zip_code" placeholder="Email Postal/Zipcode" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="ex2">Email</label>
+                                    <input class="form-control" type="text" id="email" name="email" placeholder="Enter Email" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="ex2">Landline</label>
+                                    <input class="form-control" type="text" id = "landline" name="landline" placeholder="Enter Landline Number" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="ex2">Mobile</label>
+                                    <input class="form-control" type="text" id = "mobile" name="mobile" placeholder="Enter Mobile Number" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="ex2">Position</label>
+                                    <input class="form-control" type="text" id = "position" name="position" placeholder="Enter Position" required>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label for="ex2">Type</label>
+                                    <select class="form-control" name = "type" id = "type" required>
+                                        <option value="">--select--</option>
+                                        @for($i = 0; $i < COUNT($ref); $i++)
+                                            <option value="{{ $ref[$i]->Id }}">{{ $ref[$i]->name }}</option>
+                                        @endfor
+                                    </select>
+                                    {{--<input class="form-control" type="text" name="b_type_designation" placeholder="Enter Type" required>--}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -395,6 +573,16 @@
             $("#btnSave").click(function(){
                 $("#btnUpdate").click();
                 return false;
+            });
+
+            $("#contact_role").change(function(){
+                if($(this).val() == 3){
+                    $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
+                    $("#contact_company_name_show").show();
+                }else{
+                    $("#contact_role_handler").removeClass('col-lg-6').addClass('col-lg-12');
+                    $("#contact_company_name_show").hide();
+                }
             });
         });
     </script>
