@@ -28,17 +28,17 @@
             <div class="ibox float-e-margins">
             <div class="ibox-title">
                 <h5>Receiving</h5>
-                <div class = "pull-right">
-                    <select class="form-control" id = "filter" style = "margin-top: -7px;">
-                        <option disabled>--select--</option>
-                        <option value = "" {{ $filter == "" ? "selected" : "" }}>All</option>
-                        <option value = "1" {{ $filter == 1 ? "selected" : "" }}>Pending</option>
-                        <option value = "2" {{ $filter == 2 ? "selected" : "" }}>For Approval</option>
-                        <option value = "3" {{ $filter == 3 ? "selected" : "" }}>Approved</option>
-                        <option value = "5" {{ $filter == 5 ? "selected" : "" }}>Void</option>
-                    </select>
-                </div>
-                <div style = "float: right; margin-right: 5px; font-size: 15px;"><label>Sort by:</label></div>               
+                {{--<div class = "pull-right">--}}
+                    {{--<select class="form-control" id = "filter" style = "margin-top: -7px;">--}}
+                        {{--<option disabled>--select--</option>--}}
+                        {{--<option value = "" {{ $filter == "" ? "selected" : "" }}>All</option>--}}
+                        {{--<option value = "1" {{ $filter == 1 ? "selected" : "" }}>Pending</option>--}}
+                        {{--<option value = "2" {{ $filter == 2 ? "selected" : "" }}>For Approval</option>--}}
+                        {{--<option value = "3" {{ $filter == 3 ? "selected" : "" }}>Approved</option>--}}
+                        {{--<option value = "5" {{ $filter == 5 ? "selected" : "" }}>Void</option>--}}
+                    {{--</select>--}}
+                {{--</div>--}}
+                {{--<div style = "float: right; margin-right: 5px; font-size: 15px;"><label>Sort by:</label></div>               --}}
             </div>
 
             <div class="ibox-content">
@@ -54,18 +54,18 @@
                 <div id="filter-panel" class="filter-panel collapse">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 form-inline">
 
-                                <form class="form-inline" role="form">
+                                {{--<form class="form-inline" role="form">--}}
                                     <div class="">
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Find by Invoice Number:</label><br/>
-                                            <input type="text" class="form-control" id="" placeholder="Input Invoice Number">
+                                            <input type="text" class="form-control" id="invoice_number" name = "invoice_number" placeholder="Input Invoice Number">
                                         </div>
                                         <div class="form-group">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">&nbsp;</label><br/>
-                                            <button type="submit" class="btn btn-primary filter-col " style="margin-bottom: 0px;">
-                                                <i class="fa fa-searh"></i> Search
+                                            <button type="submit" class="btn btn-primary filter-col " id = "btn_search" style="margin-bottom: 0px;">
+                                                <i class="fa fa-search"></i> Search
                                             </button> 
                                         </div>
 
@@ -75,7 +75,8 @@
                                         <div class="form-group" id="data_1">
                                         <label class="filter-col" style="margin-right:0;" for="pref-perpage">Date of Payment:</label><br/>
                                             <div class="input-group date">
-                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span><input type="text" class="form-control" value="03/04/2014">
+                                                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                <input type="text" id = "date_of_payment" name = "date_of_payment" class="form-control" value="03/04/2014" required>
                                             </div>
                                         </div>
                                     </div><br/>
@@ -84,7 +85,7 @@
                                     <div class="">
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-perpage">Payment Method:</label><br/>
-                                            <select id="pref-perpage" class="form-control">
+                                            <select class="form-control" id = "payment_method" name = "payment_method" required>
                                                 <option value="1">Cash</option>
                                                 <option value="2">Credit Card</option>
                                                 <option value="3">Checked</option>
@@ -93,26 +94,26 @@
                                         </div> 
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Reference Number:</label><br/>
-                                            <input type="text" class="form-control" id="pref-search">
+                                            <input type="text" class="form-control" id="ref_number" name = "ref_number" required>
                                         </div> 
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Which Line Item:</label><br/>
-                                            <input type="text" class="form-control" id="pref-search">
+                                            <input type="text" class="form-control" id="line_item" name = "line_item" required>
                                         </div>
 
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Amount to be paid:</label><br/>
-                                            <input class="form-control" type='number' step='0.01' value='0.00' placeholder='0.00' />
+                                            <input class="form-control" type='number' step='0.01' value='0.00' id = "amount" name = "amount" placeholder='0.00' required/>
                                         </div>
                                         <div class="form-group pull-right">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">&nbsp;</label><br/>
-                                            <button type="submit" class="btn btn-primary filter-col " style="margin-bottom: 0px;">
+                                            <button type="submit" class="btn btn-primary filter-col " id = "btn_save" style="margin-bottom: 0px;">
                                                 <span class="glyphicon glyphicon-record"></span> Save
                                             </button> 
                                         </div>
                                     </div>
 
-                                </form>
+                                {{--</form>--}}
 
                             </div>
                         </div>
@@ -186,6 +187,80 @@
 <script src="{{ asset('js/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
 <script>
     $(document).ready(function(){
+
+        $("#btn_save").prop('disabled', true);
+
+        $("#btn_search").click(function(){
+
+            var inv_num = $("#invoice_number").val();
+            if(inv_num == "")
+            {
+                swal(
+                        'Oops...',
+                        'Invoice Number Required!',
+                        'error'
+                )
+                return false;
+            }
+
+            $.ajax({
+                url: "/payment/search_invoice_number_api/" + inv_num,
+                dataType: "text",
+                beforeSend: function () {
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json.result == 200)
+                    {
+                        $("#btn_save").prop('disabled', false);
+
+                        swal(
+                                '',
+                                'Invoice Number is available!',
+                                'success'
+                        )
+                        return false;
+                    }else{
+                        swal(
+                                '',
+                                'Invoice Number is not available!',
+                                'error'
+                        )
+                        return false;
+                    }
+                }
+            });
+        });
+
+        $("#btn_save").click(function(){
+            var inv_num = $("#invoice_number").val();
+            var date_of_payment = Date.parse($("#date_of_payment").val()) / 1000;
+            var payment_method = $("#payment_method").val();
+            var ref_number = $("#ref_number").val();
+            var line_item = $("#line_item").val();
+            var amount = $("#amount").val();
+
+            $.ajax({
+                url: "/payment/save_payment_transaction/" + inv_num + "/" + line_item + "/" + ref_number + "/" + payment_method + "/" + date_of_payment + "/" + amount,
+                dataType: "text",
+                beforeSend: function () {
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json.result == 200)
+                    {
+                        swal(
+                                '',
+                                'Successfully Saved!',
+                                'success'
+                        )
+                        window.location.href = "/payment/payment_list";
+
+                    }
+                }
+            });
+        });
+
         $('.dataTables-example').DataTable({
             dom: '<"html5buttons"B>lTfgitp',
             buttons: []

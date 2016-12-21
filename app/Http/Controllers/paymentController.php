@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Contracts;
 use App\Invoice;
+use App\PaymentTransaction;
 use Carbon\Carbon;
 
 
@@ -81,6 +82,33 @@ class paymentController extends Controller
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();
 
         return view('payment.payment_list', compact('booking', 'magazine', 'filter'))->with('success', 'Booking details successful added!');
+    }
+
+    public function search_invoice_number_api($inv_num)
+    {
+        $result = DB::SELECT("SELECT * FROM invoice_table WHERE invoice_num = '{$inv_num}'");
+        if($result != null)
+        {
+            return array("result" => 200, "description" => "Invoice Number is available");
+        }
+
+        return array("result" => 404, "description" => "Invoice Number is not available");
+    }
+
+    public function save_payment_transaction($inv_num, $line_item, $ref_number, $method_payment, $date_payment, $amount)
+    {
+        $r = new PaymentTransaction();
+        $r->invoice_num = $inv_num;
+        $r->line_item_id = $line_item;
+        $r->reference_number = $ref_number;
+        $r->method_payment = $method_payment;
+        $r->date_payment = date('Y-m-d H:i:s', $date_payment);
+        $r->amount = $amount;
+        $r->type = 2;
+        $r->status = 2;
+        $r->save();
+
+        return array("result" => 200);
     }
 
     public function invoice_create_api($trans_num)
