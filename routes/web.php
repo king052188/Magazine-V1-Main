@@ -75,8 +75,10 @@ Route::post('/booking/save_issue/{mag_trans_uid}/{client_id}', 'bookingControlle
 Route::get('/booking/getPackageName/{criteria_id}/{mag_uid}', 'bookingController@getPackageName');
 Route::get('/booking/delete_issue/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@delete_issue');
 
-
 Route::get('/transaction/update/row/{trans_id}/{trans_status}', 'bookingController@trans_selected_row_update');
+
+// Payment Routes
+Route::get('/payment/payment_list', 'paymentController@payment_list');
 
 // Search Routes
 Route::get('/execute/search/booking-and-sales', 'searchController@search_function');

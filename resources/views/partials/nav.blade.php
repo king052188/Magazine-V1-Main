@@ -71,7 +71,7 @@
             <li>
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Payment</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">Receiving</span></a></li>
+                    <li><a href="{{ url('payment/payment_list') }}"> <span class="nav-label">Receiving</span></a></li>
                     <li><a href="/sales_report/view">Reports</a></li>
                 </ul>
             </li>
