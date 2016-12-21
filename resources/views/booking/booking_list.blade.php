@@ -131,7 +131,7 @@
                                                     <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                     <option value = "-1:{{ $booking[$i]->trans_num  }}">Preview Insertion Order</option>
                                                     <option value = "-2:{{ $booking[$i]->trans_num  }}">Preview Invoice Order</option>
-                                                    <option value = "-2:{{ $booking[$i]->trans_num  }}">View As Client</option>
+                                                    <option value = "-3:{{ $booking[$i]->trans_num  }}">View As Client</option>
                                                     </optgroup>
                                                 </select>
                                                 <button class="btn btn-primary" id="btn_update" style = "width: 80px;margin-bottom: 0px;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
@@ -183,12 +183,39 @@
                 var str_to_int = parseInt(values[0]);
                 var trans_num = values[1];
                 if(str_to_int == -1) {
+
+
 //                    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_num + "?show=preview",
 //                            "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
                     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_num + "/preview",
                             "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
                 }
+
                 if(str_to_int == -2) {
+
+                    $(document).ready( function() {
+                        $.ajax({
+                            url: "/payment/invoice_create_api/"+ trans_num,
+                            dataType: "text",
+                            beforeSend: function () {
+                            },
+                            success: function(data) {
+                                var json = $.parseJSON(data);
+                                if(json.result == 200)
+                                {
+                                    alert("Invoice successfully save.");
+                                    location.reload();
+                                }else{
+                                    alert("Invoice already exists!");
+                                    location.reload();
+                                }
+                            }
+                        });
+                    } );
+                }
+
+                if(str_to_int == -3) {
+
                     window.open("http://"+ Url_Client_Dashboard + trans_num,'_blank');
                 }
             }

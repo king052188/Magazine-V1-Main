@@ -79,6 +79,7 @@ Route::get('/transaction/update/row/{trans_id}/{trans_status}', 'bookingControll
 
 // Payment Routes
 Route::get('/payment/payment_list', 'paymentController@payment_list');
+Route::get('/payment/invoice_create_api/{trans_num}', 'paymentController@invoice_create_api');
 
 // Search Routes
 Route::get('/execute/search/booking-and-sales', 'searchController@search_function');

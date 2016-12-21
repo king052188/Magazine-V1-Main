@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\Contracts;
-use App\Booking;
-use App\MagazineTransaction;
-use App\MagIssueTransaction;
+use App\Invoice;
+use Carbon\Carbon;
 
 
 class paymentController extends Controller
@@ -82,5 +81,32 @@ class paymentController extends Controller
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();
 
         return view('payment.payment_list', compact('booking', 'magazine', 'filter'))->with('success', 'Booking details successful added!');
+    }
+
+    public function invoice_create_api($trans_num)
+    {
+        $result = DB::SELECT("SELECT * FROM invoice_table WHERE booking_trans = '{$trans_num}'");
+        if($result == null)
+        {
+            $current = Carbon::now();
+            $due_date = $current->addDays(30);
+
+            $a = 0;
+            for ($i = 0; $i<4; $i++){
+                $a .= mt_rand(0,9);
+            }
+
+            $invoice = new Invoice();
+            $invoice->invoice_num = date('Y') . '-' . $a;
+            $invoice->booking_trans = $trans_num;
+            $invoice->due_date = $due_date;
+            $invoice->account_executive = '#N/A';
+            $invoice->status = 2;
+            $invoice->save();
+
+            return array("result" => 200);
+        }
+
+        return array("result" => 404);
     }
 }
