@@ -103,7 +103,7 @@
                                                 </div>
                                                 <br />
                                                 <div class="row">
-                                                    <div class="col-xs-12" id = "btn_save_box">
+                                                    <div class="col-xs-12 " id = "btn_save_box">
                                                         <div id = "btn_save_box"></div>
                                                     </div>
                                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
@@ -232,7 +232,7 @@
                         {
                             $('#line_item_qty_label').empty().append("Line Item QTY");
                             $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
-                            $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary" value = "Save">');
+                            $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary pull-right" value = "Save">');
                         });
                     });
                 }

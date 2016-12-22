@@ -6,15 +6,6 @@
 
 @section('styles')
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
-    <style>
-        .content.clearfix{
-            height: 520px;
-        }
-
-        .ibox-content{
-            height: 610px;
-        }
-    </style>
 @endsection
 
 @section('magazine_content')
@@ -24,13 +15,13 @@
             <h2>Client Profile</h2>
             <ol class="breadcrumb">
                 <li class="active">
-                    <strong>Add Client Profile</strong>
+                    <strong>Update Client Profile</strong>
                 </li>
             </ol>
         </div>
         <div class="col-sm-4">
             <div class="title-action">
-                <a href="#" class="btn btn-primary" id="btnSave">Save, Client Profile</a>
+                
             </div>
         </div>
     </div>
@@ -88,7 +79,7 @@
                                     </div>
                                     <div class="form-group" >
                                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                        <button id="btnUpdate" class="btn btn-primary btn-lg pull-right" type="submit" style = "width: 200px; display: none;">Update</button>
+                                        <button id="btnUpdate" class="btn btn-primary pull-right" type="submit">Update</button>
                                     </div>
                                 </div>
                             </div>
@@ -120,16 +111,18 @@
                                         <?php $n = 1; ?>
                                         @for($i = 0; $i < COUNT($clients); $i++)
                                             <tr>
-                                                <td>{{ $clients[$i]->company_name }}</td>
-                                                <td>{{ $clients[$i]->city }}</td>
-                                                <td>{{ $clients[$i]->state }}</td>
-                                                <td style="text-align: center;">
+                                                <td style="padding-top: 15px;">{{ $clients[$i]->company_name }}</td>
+                                                <td style="padding-top: 15px;">{{ $clients[$i]->city }}</td>
+                                                <td style="padding-top: 15px;">{{ $clients[$i]->state }}</td>
+                                                <td style="text-align: center;padding-top: 15px;">
                                                     @if($clients[$i]->is_member == 1)
                                                         <i class="fa fa-check text-navy"></i>
+                                                    @else
+                                                        <i class="fa fa-close text-red"></i>
                                                     @endif
                                                 </td>
-                                                <td><a href = "{{ URL('/client/update/' . $clients[$i]->Id) }}" class="btn btn-primary btn-xs" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-edit" title = "Edit Company"></i> Edit</a></td>
-                                                <td><a href = "{{ URL('/client/view_contacts/' . $clients[$i]->Id) }}" class="btn btn-primary btn-xs" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;" title = "View Contacts"><i class="fa fa-eye"></i> View Contacts</a></td>
+                                                <td><a href = "{{ URL('/client/update/' . $clients[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit" title = "Edit Company"></i>&nbsp;&nbsp;Edit</a></td>
+                                                <td><a href = "{{ URL('/client/view_contacts/' . $clients[$i]->Id) }}" class="btn btn-primary btn-sm" title="View Contacts"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Contacts</a></td>
                                             </tr>
                                         @endfor
                                         </tbody>

@@ -29,16 +29,16 @@
     <div class="container">
         <div class="row form-group mb0">
             <div class="col-xs-12">
-                <ul class="nav nav-pills nav-justified thumbnail setup-panel">
-                    <li class="active"><a href="#step-1">
+                <ul class="nav nav-pills nav-justified thumbnail setup-panel" style="margin-bottom: 5px;">
+                    <li class="active" style="background: #337ab7;"><a href="#step-1" style="padding: 0px 20px 0px 25px;">
                         <h4 class="list-group-item-heading">Step 1</h4>
                         <p class="list-group-item-text">Add Booking Details</p>
                     </a></li>
-                    <li class="disabled"><a href="#step-2">
+                    <li class="disabled"><a href="#step-2" style="padding: 0px 20px 0px 25px;>
                         <h4 class="list-group-item-heading">Step 2</h4>
                         <p class="list-group-item-text">Select Magazine</p>
                     </a></li>
-                    <li class="disabled"><a href="#step-3">
+                    <li class="disabled"><a href="#step-3" style="padding: 0px 20px 0px 25px;>
                         <h4 class="list-group-item-heading">Step 3</h4>
                         <p class="list-group-item-text">Add Issue</p>
                     </a></li>
@@ -91,7 +91,7 @@
                         </div>
                         <div>
                             <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                            <button class="btn btn-md btn-primary pull-right" id = "btn_submit" type="submit"><strong>Create Booking</strong></button>
+                            <button class="btn btn-md btn-primary pull-right" id="btn_submit" type="submit">Create</button>
                         </div>
                     </form>
 

@@ -30,11 +30,7 @@
             @if($_COOKIE['role'] > 2)
 
                 <li class="{{ Request::is('client') || Request::is('client/*') ? 'active' : '' }}">
-                    <a href="#"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span><span class="fa arrow"></span></a>
-                    <ul class="nav nav-second-level collapse">
-                        <li><a href="/client/create">Create New Clients</a></li>
-                        {{--<li><a href="/client/all">View All Clients</a></li>--}}
-                    </ul>
+                    <a href="/client/create"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span></a>
                 </li>
 
                 <li class="{{ Request::is('sales_report') || Request::is('sales_report/*') ? 'active' : '' }}">
@@ -53,11 +49,7 @@
                 </ul>
             </li>
             <li class="{{ Request::is('client') || Request::is('client/*') ? 'active' : '' }}">
-                <a href="#"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="/client/create">Create New Clients</a></li>
-                    {{--<li><a href="/client/all">View All Clients</a></li>--}}
-                </ul>
+                <a href="/client/create"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span></a>
             </li>
             <li class="{{ Request::is('sales_report') || Request::is('sales_report/*') ? 'active' : '' }}">
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Sales</span><span class="fa arrow"></span></a>

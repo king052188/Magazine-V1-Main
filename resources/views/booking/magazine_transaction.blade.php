@@ -97,7 +97,7 @@
                         </div>
                         <div>
                             <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                            <input type="submit" class="btn btn-primary pull-right" value = "Save" {{ $disabled["set"] }}>
+                            <input type="submit" class="btn btn-primary pull-right" value="Save" {{ $disabled["set"] }} style="background-color: #1976d2; border-color: #1976d2;">
                         </div>
                     </form>
                 </div>
