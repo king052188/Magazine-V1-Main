@@ -166,7 +166,7 @@
                                             <div id="show_button" style="margin-top: 35px;" class="pull-right"></div>
                                         </section>
                                     </div>
-                                </div>
+                                 </div>
                             </div>
                         </div>
                     </div>
@@ -174,6 +174,43 @@
         </div>
     </div>
 </div>
+
+<div class="bd-example">
+  <div class="modal fade" id="discount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="exampleModalLabel">Discount</h4>
+        </div>
+        <div class="modal-body">
+
+          <form>
+
+            <div class="form-group">
+                <label for="recipient-name" class="form-control-label">Total Amount:</label>
+                <input type="text" class="form-control" id="" disabled>
+            </div>
+            <div class="form-group">
+                <label for="recipient-name" class="form-control-label">Total Discount:</label>
+                <input type="text" class="form-control" id="" disabled>
+            </div>
+
+          </form>
+
+        </div>
+        <div class="modal-footer">
+          <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+          <a type="button" class="btn btn-primary">Save</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 @endsection
 
@@ -326,8 +363,12 @@ $(document).ready( function() {
             $('table#issue_reports > tbody').empty().prepend(html_thmb);
 
             $('#total_result').append('<b style = "font-size: 15px;">Total Amount : ' + numeral(total_with_discount).format('0,0.00') + '</b>');
+
+            $('#show_button').append(' <a href = "#" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
+
             $('#show_button').append(' <a href = "{{ URL('/booking/booking-list') }}" class="btn btn-default">Back</a>');
-            $('#show_button').append(' <a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); class = "btn btn-primary">Preview</a>');
+            $('#show_button').append(' <a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); class = "btn btn-info">Preview</a>');
+            $('#show_button').append(' <a href = "#" class="btn btn-primary">Done</a>');
         }
     });
 })
