@@ -183,40 +183,41 @@
                 var str_to_int = parseInt(values[0]);
                 var trans_num = values[1];
                 if(str_to_int == -1) {
-
-
-//                    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_num + "?show=preview",
-//                            "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
                     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_num + "/preview",
                             "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
                 }
 
                 if(str_to_int == -2) {
 
-                    $(document).ready( function() {
-                        $.ajax({
-                            url: "/payment/invoice_create_api/"+ trans_num,
-                            dataType: "text",
-                            beforeSend: function () {
-                            },
-                            success: function(data) {
-                                var json = $.parseJSON(data);
-                                if(json.result == 200)
-                                {
-                                    alert("Invoice successfully save.");
-                                    location.reload();
-                                }else{
-                                    alert("Invoice already exists!");
-                                    location.reload();
-                                }
-                            }
-                        });
-                    } );
+                    window.open("http://"+ report_url_api +"/kpa/work/transaction/invoice-order/1234567",
+                            "mywindow","location=1,status=1,scrollbars=1,width=795,height=760");
+
+//                    $(document).ready( function() {
+//                        $.ajax({
+//                            url: "/payment/invoice_create_api/"+ trans_num,
+//                            dataType: "text",
+//                            beforeSend: function () {
+//                            },
+//                            success: function(data) {
+//                                var json = $.parseJSON(data);
+//                                if(json.result == 200)
+//                                {
+//                                    alert("Invoice successfully save.");
+//                                    location.reload();
+//                                }else{
+//                                    alert("Invoice already exists!");
+//                                    location.reload();
+//                                }
+//                            }
+//                        });
+//                    } );
                 }
 
                 if(str_to_int == -3) {
 
                     window.open("http://"+ Url_Client_Dashboard + trans_num,'_blank');
+
+
                 }
             }
         });
