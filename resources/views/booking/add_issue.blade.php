@@ -361,12 +361,11 @@ $(document).ready( function() {
             });
 
             $('table#issue_reports > tbody').empty().prepend(html_thmb);
-
             $('#total_result').append('<b style = "font-size: 15px;">Total Amount : ' + numeral(total_with_discount).format('0,0.00') + '</b>');
 
-            $('#show_button').append(' <a href = "#" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
+            $('#show_button').append(' <a href = "{{ URL('/booking/booking-list') }}" class="btn btn-default" style="margin-right: 390px;">Back</a>');
 
-            $('#show_button').append(' <a href = "{{ URL('/booking/booking-list') }}" class="btn btn-default">Back</a>');
+            $('#show_button').append(' <a href = "#" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
             $('#show_button').append(' <a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); class = "btn btn-info">Preview</a>');
             $('#show_button').append(' <a href = "#" class="btn btn-primary">Done</a>');
         }
