@@ -173,7 +173,7 @@ class magazineController extends Controller
 
             $md = new MagazineDiscount();
             $md->mag_price_id = (int)$mp_last_id;
-            $md->percent = trim($dis) == "" ? 0 : $dis;
+            $md->percent = trim($dis) == "" ? 0 : ($dis / 100);
             $md->type = $type++;
             $md->status = 2;
             $md->save();
@@ -220,6 +220,32 @@ class magazineController extends Controller
             "result" => 404
         );
 
+    }
+
+    public function magazine_update($magazine_uid)
+    {
+        $magazine = DB::table('magazine_table')->where('Id', '=', $magazine_uid)->get();
+        if($magazine != null){
+            return array("result" => $magazine);
+        }
+
+        return array("result" => 404);
+    }
+
+    public function magazine_update_save(Request $request)
+    {
+        Magazine::where('Id', '=', $request['magazine_uid'])
+            ->update([
+                'company_id' => $request['cid'],
+                'mag_code' => $request['magcode'],
+                'magazine_name' => $request['magname'],
+                'magazine_year' => $request['year_issue'],
+                'magazine_issues' => $request['number_issue'],
+                'magazine_country' => $request['magcountry'],
+                'status' => $request['status']
+            ]);
+
+        return redirect('/magazine/all')->with('success', 'Successfully Updated.');
     }
 
 }

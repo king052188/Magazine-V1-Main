@@ -54,6 +54,8 @@ Route::get('/magazine/all', 'magazineController@index');
 Route::post('/magazine/company/save', 'magazineController@save_company');
 Route::get('/magazine/company/get_country/{magc_id}', 'magazineController@get_country');
 Route::post('/magazine/add-color-size-discount/{mag_uid}', 'magazineController@add_color_size_discount');
+Route::get('/magazine/update/{magazine_uid}', 'magazineController@magazine_update');
+Route::post('/magazine/update/save', 'magazineController@magazine_update_save');
 
 // Transaction Routes
 Route::get('/transaction/create', 'transactionController@create');

@@ -81,7 +81,7 @@
                                 <div class="form-group ">
                                     <div class="col-sm-6">
                                         <label>2x Percent Discount</label>
-                                        <input id="2x_per" type="text" placeholder="Enter Discount (0.000)" class="form-control" name="discount[]">
+                                        <input id="2x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
                                     </div>
                                     <div class="col-sm-6">
                                         <label>2x Amount</label>
@@ -91,7 +91,7 @@
                                 <div class="form-group ">
                                     <div class="col-sm-6">
                                         <label>3x Percent Discount</label>
-                                        <input id="3x_per" type="text" placeholder="Enter Discount (0.000)" class="form-control" name="discount[]">
+                                        <input id="3x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
                                     </div>
                                     <div class="col-sm-6">
                                         <label>3x Amount</label>
@@ -101,7 +101,7 @@
                                 <div class="form-group ">
                                     <div class="col-sm-6">
                                         <label>4x Percent Discount</label>
-                                        <input id="4x_per" type="text" placeholder="Enter Discount (0.000)" class="form-control" name="discount[]">
+                                        <input id="4x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
                                     </div>
                                     <div class="col-sm-6">
                                         <label>4x Amount</label>
@@ -111,7 +111,7 @@
                                 <div class="form-group ">
                                     <div class="col-sm-6">
                                         <label>5x Percent Discount</label>
-                                        <input id="5x_per" type="text" placeholder="Enter Discount (0.000)" class="form-control" name="discount[]">
+                                        <input id="5x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
                                     </div>
                                     <div class="col-sm-6">
                                         <label>5x Amount</label>
@@ -215,7 +215,7 @@
                                                                                     <tr>
                                                                                         <td style = "padding: 5px; text-align: center;">{{ $ad['ad_color'] .' - '. $ad['ad_size'] }}</td>
                                                                                         <td style = "padding: 5px; text-align: center;">{{ $dis->type }}</td>
-                                                                                        <td style = "padding: 5px; text-align: right;">{{ $dis->percent }}</td>
+                                                                                        <td style = "padding: 5px; text-align: center;">{{ ($dis->percent * 100) }}%</td>
                                                                                         <?php
                                                                                             $real_amount = (float)$ad['ad_amount'];
                                                                                             $qty = (int)$dis->type;
@@ -299,7 +299,7 @@
         $('#2x_per').on('keyup', function(){
             var origin_amount = $('#original_amount').val();
             var value = $(this).val();
-            var orig_amount = parseFloat(origin_amount) * parseFloat(value);
+            var orig_amount = (parseFloat(origin_amount) * parseFloat(value))/100;
             var new_amount = parseFloat(origin_amount) - orig_amount;
             $('#2x_amount').val(new_amount);
         });
@@ -307,7 +307,7 @@
         $('#3x_per').on('keyup', function(){
             var origin_amount = $('#original_amount').val();
             var value = $(this).val();
-            var orig_amount = parseFloat(origin_amount) * parseFloat(value);
+            var orig_amount = (parseFloat(origin_amount) * parseFloat(value))/100;
             var new_amount = parseFloat(origin_amount) - orig_amount;
             $('#3x_amount').val(new_amount);
         });
@@ -315,7 +315,7 @@
         $('#4x_per').on('keyup', function(){
             var origin_amount = $('#original_amount').val();
             var value = $(this).val();
-            var orig_amount = parseFloat(origin_amount) * parseFloat(value);
+            var orig_amount = (parseFloat(origin_amount) * parseFloat(value))/100;
             var new_amount = parseFloat(origin_amount) - orig_amount;
             $('#4x_amount').val(new_amount);
         });
@@ -323,7 +323,7 @@
         $('#5x_per').on('keyup', function(){
             var origin_amount = $('#original_amount').val();
             var value = $(this).val();
-            var orig_amount = parseFloat(origin_amount) * parseFloat(value);
+            var orig_amount = (parseFloat(origin_amount) * parseFloat(value))/100;
             var new_amount = parseFloat(origin_amount) - orig_amount;
             $('#5x_amount').val(new_amount);
         });
