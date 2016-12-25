@@ -190,7 +190,10 @@
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_color'] }}</td>
                                                                     <td style = "padding: 5px; text-align: center;">{{ $ad['ad_size'] }}</td>
                                                                     <td style = "padding: 5px; text-align: right;">{{ number_format($ad['ad_amount'], 2, '.', ',') }}</td>
-                                                                    <td style = "padding: 5px; text-align: center;"><a data-toggle="collapse" data-target="#demo_{{ $ad['ad_Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a></td>
+                                                                    <td style = "padding: 5px; text-align: center;">
+                                                                        <a data-toggle="collapse" data-target="#demo_{{ $ad['ad_Id'] }}"><i class="fa fa-plus" aria-hidden="true"></i></a>  |
+                                                                        <a class = "delete_ad" data-target = "{{ $ad['ad_Id'] }}"><i class="fa fa-trash-o"></i></a>
+                                                                    </td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan = "6" class="p0">
@@ -203,10 +206,10 @@
                                                                             <table class="table table-striped table-bordered mb0">
                                                                                 <thead>
                                                                                 <tr>
-                                                                                    <th style = "padding: 5px; text-align: center; background: #a4a4a4; color: #000000;"">Ad Color & Size</th>
-                                                                                    <th style = "padding: 5px; text-align: center; width: 100px; background: #a4a4a4; color: #000000;"">Qty</th>
-                                                                                    <th data-toggle="true" style = "padding: 5px; text-align: right; width: 100px; background: #a4a4a4; color: #000000;"">Percent</th>
-                                                                                    <th data-toggle="true" style = "padding: 5px; text-align: right; width: 120px; background: #a4a4a4; color: #000000;"">Amount</th>
+                                                                                    <th style = "padding: 5px; text-align: center; background: #a4a4a4; color: #000000;">Ad Color & Size</th>
+                                                                                    <th style = "padding: 5px; text-align: center; width: 100px; background: #a4a4a4; color: #000000;">Qty</th>
+                                                                                    <th data-toggle="true" style = "padding: 5px; text-align: right; width: 100px; background: #a4a4a4; color: #000000;">Percent</th>
+                                                                                    <th data-toggle="true" style = "padding: 5px; text-align: right; width: 120px; background: #a4a4a4; color: #000000;">Amount</th>
                                                                                 </tr>
                                                                                 </thead>
                                                                                 <tbody>
@@ -328,7 +331,32 @@
             $('#5x_amount').val(new_amount);
         });
 
-    })
+        $('.delete_ad').on('click', function() {
+            var ad_uid = $(this).attr("data-target");
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function () {
+                swal(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                )
+            })
+
+            delete_ad_confirm(ad_uid);
+
+        });
+    });
+
+    function delete_ad_confirm(ad_uid){
+        console.log("Delete This: " + ad_uid);
+    }
 </script>
 <script>
     $('#btn_submit').on('click',function(){
@@ -368,5 +396,6 @@
             return false;
         }
     });
+
 </script>
 @endsection

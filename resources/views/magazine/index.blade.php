@@ -138,7 +138,7 @@
                     } else {
                         $("div#hidden").show();
 
-                        $(".comp_name").append("<select class='form-control' name='cid' id = 'cid' required>");
+//                        $(".comp_name").empty().append("<select class='form-control' name='cid' id = 'cid' required>");
                         $(json.result).each(function(i, country) {
                             var sel = "";
                             if(country.Id == magc_id)
@@ -146,9 +146,9 @@
                                 sel = "selected";
                             }
 
-                            $("#cid").append("<option value = '" + country.Id + "' selected = '"+ sel +"'>" + country.company_name +"-"+ country.Id + "</option>")
+                            $("#cid").empty().append("<option value = '" + country.Id + "' selected = '"+ sel +"'>" + country.company_name +"-"+ country.Id + "</option>")
                         });
-                        $(".comp_name").append("</select>");
+//                        $(".comp_name").append("</select>");
                     }
                 }
             });
@@ -189,9 +189,9 @@
                             <div class="form-group comp_name" id = "hidden">
                                 <label>Company Name</label>
 
-                                {{--<select class='form-control' name='cid' id = 'cid' required>--}}
+                                <select class='form-control' name='cid' id = 'cid' required>
 
-                                {{--</select>--}}
+                                </select>
                             </div>
                             <div class="form-group col-lg-4" id = "hidden">
                                 <label>Status</label>

@@ -274,7 +274,7 @@ class clientController extends Controller
                 'mobile' => $request['mobile'],
                 'position' => $request['position'],
                 'type' => $request['type'],
-                'role' => $request['role'],
+                'role' => $request['status'] == false ? 4 : $request['role'],
                 'status' => $request['status'] == false ? 1 : 2,
                 'synched' => 1
             ]);

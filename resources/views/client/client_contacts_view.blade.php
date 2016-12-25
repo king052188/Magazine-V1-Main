@@ -221,6 +221,7 @@
                                                                 <th style = "width:100px; text-align: center;">Lastname</th>
                                                                 <th style = "width:150px; text-align: center;">Position</th>
                                                                 <th style = "width:50px; text-align: center;">Type</th>
+                                                                <th style = "width:50px; text-align: center;">Role</th>
                                                                 <th style = "width:50px; text-align: center;">Status</th>
                                                                 <th style="width:30px;">&nbsp;</th>
                                                             </tr>
@@ -234,6 +235,17 @@
                                                                     <td>{{ $results[$i]->last_name }}</td>
                                                                     <td>{{ $results[$i]->position }}</td>
                                                                     <td style = "text-align: center;">{{ $results[$i]->type == 1 ? "Subscriber" : ($results[$i]->type == 2 ? "Agency" : "Lead") }}</td>
+                                                                    <td style = "text-align: center;">
+                                                                        @if($results[$i]->role == 1)
+                                                                            Primary
+                                                                        @elseif($results[$i]->role == 2)
+                                                                            Secondary
+                                                                        @elseif($results[$i]->role == 3)
+                                                                            Bill To
+                                                                        @else
+                                                                            Others
+                                                                        @endif
+                                                                    </td>
                                                                     <td style = "text-align: center;">{{ $results[$i]->status == 1 ? "In-active" : "Active" }}</td>
                                                                     <td><a href = "" onclick="return edit_contacts({{ $results[$i]->Id }});" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_edit_contacts" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-edit" title = "Edit Contacts"></i> Edit</a></td>
                                                                 </tr>
