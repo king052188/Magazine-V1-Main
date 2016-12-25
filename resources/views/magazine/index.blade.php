@@ -169,46 +169,57 @@
 
                 <div class="col-lg-12">
                     <div class="modal-body form group">
-                            <div class="form-group">
-                                <label>Magazine Code</label>
-                                <input type="hidden" placeholder="Magazine Code" name="magazine_uid" id="magazine_uid">
-                                <input type="text" placeholder="Magazine Code" class="form-control" name="magcode" id="magcode" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label>Magazine Name</label>
-                                <input type="text" placeholder="Magazine Name" class="form-control" name="magname" id="magname">
-                            </div>
-                            <div class="form-group">
-                                <label for="ex2">Country</label>
-                                <select class="form-control" name="magcountry" id = "magcountry" required>
-                                    <option>--select--</option>
-                                    <option value="1">USA</option>
-                                    <option value="2">CANADA</option>
-                                </select>
-                            </div>
-                            <div class="form-group comp_name" id = "hidden">
-                                <label>Company Name</label>
+                        <div class="form-group">
+                            <label>Magazine Code</label>
+                            <input type="hidden" placeholder="Magazine Code" name="magazine_uid" id="magazine_uid">
+                            <input type="text" placeholder="Magazine Code" class="form-control" name="magcode" id="magcode" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Magazine Name</label>
+                            <input type="text" placeholder="Magazine Name" class="form-control" name="magname" id="magname">
+                        </div>
+                        <div class="form-group">
+                            <label for="ex2">Country</label>
+                            <select class="form-control" name="magcountry" id = "magcountry" required>
+                                <option>--select--</option>
+                                <option value="1">USA</option>
+                                <option value="2">CANADA</option>
+                            </select>
+                        </div>
+                        <div class="form-group comp_name" id = "hidden">
+                            <label>Company Name</label>
 
-                                <select class='form-control' name='cid' id = 'cid' required>
+                            <select class='form-control' name='cid' id = 'cid' required>
 
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-4" id = "hidden">
-                                <label>Status</label>
-                                <select class='form-control' id = "status" name='status' required><option value='1'>Inactive</option><option value='2'>Active</option></select>
-                            </div>
-                            <div class="form-group col-lg-4" id = "hidden">
-                                <label>Year Issue</label>
-                                <select class='form-control' name='year_issue' id = 'year_issue_selected' required>
-                                    @for($i = date('Y'); $i < date('Y') + 10; $i++)
-                                        <option value='{{ $i }}'>{{ $i }}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                            <div class="form-group col-lg-4" id = "hidden">
-                                <label>Numbers of Issue</label>
-                                <input type='number' placeholder='Enter Issue Number' min="1" max="125" class='form-control' name='number_issue' id = "number_issue" value = '1'>
-                            </div>
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-4" id = "hidden">
+                            <label>Status</label>
+                            <select class='form-control' id = "status" name='status' required><option value='1'>Inactive</option><option value='2'>Active</option></select>
+                        </div>
+                        <div class="form-group col-lg-4" id = "hidden">
+                            <label>Year Issue</label>
+                            <select class='form-control' name='year_issue' id = 'year_issue_selected' required>
+                                @for($i = date('Y'); $i < date('Y') + 10; $i++)
+                                    <option value='{{ $i }}'>{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class="form-group col-lg-4" id = "hidden">
+                            <label>Numbers of Issue</label>
+                            <input type='number' placeholder='Enter Issue Number' min="1" max="125" class='form-control' name='number_issue' id = "number_issue" value = '1'>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class = "form-group">
+                        <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
+                        <?php
+                        $assembly = new \App\Http\Controllers\AssemblyClass();
+                        $url_api = $assembly::get_reports_api();
+                        $logo_uploader_url = 'http://'. $url_api["Url_Logo_Uploader"] .'type=MAGAZINE&uid='. $logo_uid['id_magazine'];
+                        ?>
+                        <iframe src = "{{ $logo_uploader_url }}" style="width: 100%; height: 375px" frameborder="0" scrolling="no"> </iframe>
                     </div>
                 </div>
 

@@ -18,8 +18,10 @@ class magazineController extends Controller
             return redirect("/logout_process");
         }
 
+        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
+
         $magazines = Magazine::all();
-        return view('magazine/index', compact('magazines'));
+        return view('magazine/index', compact('magazines', 'logo_uid'));
     }
 
     public function create()
@@ -236,6 +238,7 @@ class magazineController extends Controller
     {
         Magazine::where('Id', '=', $request['magazine_uid'])
             ->update([
+                'logo_uid' => $request['logo_uid'],
                 'company_id' => $request['cid'],
                 'mag_code' => $request['magcode'],
                 'magazine_name' => $request['magname'],
