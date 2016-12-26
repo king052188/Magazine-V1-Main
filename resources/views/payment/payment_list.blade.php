@@ -51,7 +51,7 @@
                 @endif
 
 
-                <div id="filter-panel" class="filter-panel collapse">
+
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="col-sm-12 form-inline">
@@ -71,7 +71,8 @@
 
                                     </div><br/>
 
-                                    <div>
+
+                                    <div class="group-payment">
                                         <div class="form-group" id="data_1">
                                         <label class="filter-col" style="margin-right:0;" for="pref-perpage">Date of Payment:</label><br/>
                                             <div class="input-group date">
@@ -79,10 +80,6 @@
                                                 <input type="text" id = "date_of_payment" name = "date_of_payment" class="form-control" value="03/04/2014" required>
                                             </div>
                                         </div>
-                                    </div><br/>
-
-
-                                    <div class="">
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-perpage">Payment Method:</label><br/>
                                             <select class="form-control" id = "payment_method" name = "payment_method" required>
@@ -118,23 +115,17 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                
-                <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#filter-panel" style="margin-bottom: 10px;">
-                    <span class="glyphicon glyphicon-cog"></span> Filter/Search
-                </button>
 
                      <div class="table-responsive">
                         <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example" >
                             <thead>
                                 <tr>
-                                    <th style='text-align: center; width: 30px;'>#</th>
                                     <th style='text-align: center; width: 30px;'>Proposal ID</th>
                                     <th style='text-align: center; '>Pub.</th>
                                     <th style='text-align: center; width: 70px;'>Issue</th>
                                     <th style='text-align: center; width: 70px;'>Year</th>
                                     <th style='text-align: center; width: 70px;'>Ad Size</th>
-                                    <th style='text-align: center; width: 70px;'>Colour</th>
+                                    <th style='text-align: center; width: 70px;'>Ad Color</th>
                                     <th style='text-align: right; width: 100px;'>Net</th>
                                     <th style='text-align: center; width: 70px;'>Qty</th>
                                     <th style='text-align: right; width: 100px;'>GST/HST</th>
@@ -143,34 +134,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td style='text-align: center;'>1</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: center;'>Sample</td>
-                                    <td style='text-align: center;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: center;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                </tr>
-                                <tr>
-                                    <td style='text-align: center;'>2</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: center;'>Sample</td>
-                                    <td style='text-align: center;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: center;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                    <td style='text-align: left;'>Sample</td>
-                                </tr>
+
                             </tbody>
                         </table>
                     </div>
@@ -188,7 +152,7 @@
 <script>
     $(document).ready(function(){
 
-        $("#btn_save").prop('disabled', true);
+        $(".group-payment").hide();
 
         $("#btn_search").click(function(){
 
@@ -212,14 +176,14 @@
                     var json = $.parseJSON(data);
                     if(json.result == 200)
                     {
-                        $("#btn_save").prop('disabled', false);
-
                         swal(
                                 '',
                                 'Invoice Number is available!',
                                 'success'
                         )
-                        return false;
+
+                        populate_inv_num(inv_num);
+
                     }else{
                         swal(
                                 '',
@@ -227,9 +191,66 @@
                                 'error'
                         )
                         return false;
+
                     }
                 }
             });
+        });
+
+        function populate_inv_num(inv_num)
+        {
+            console.log(inv_num);
+
+            var html_thmb;
+
+            $.ajax({
+                url: "http://magazine-api.kpa21.com/kpa/work/invoice-transaction-list/" + inv_num,
+                dataType: "text",
+                beforeSend: function () {
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json == null)
+                        return false;
+
+                    $(json.Data).each(function(i, tran){
+
+                        $(json.Company_Information).each(function(i, info){
+
+                            html_thmb += "<tr>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.id +"</td>";
+                            html_thmb += "<td style='text-align: left;'>"+ info.company_name +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.quarter_issued +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ json.Magazine_Year +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.ad_size +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.ad_color +"</td>";
+                            html_thmb += "<td style='text-align: right;'>"+ numeral(tran.sub_total_amount).format('0,0.00') +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.line_item_qty +"</td>";
+                            html_thmb += "<td style='text-align: left;'></td>";
+                            html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
+                            html_thmb += "<td style='text-align: left;'><a href = '#' class='btn btn-primary btn-sm view-clicked' get-val = '"+ tran.id + ":" + tran.total_amount_with_discount +"' title='View Transactions'><i class='fa fa-eye'></i> View</a></td>";
+                            html_thmb += "</tr>";
+
+                        });
+                    });
+
+                    $('table#tbl_booking_lists > tbody').empty().prepend(html_thmb);
+
+                }
+            });
+        }
+
+
+
+        $(document).on("click",".view-clicked",function() {
+
+            $(".group-payment").show();
+
+            var value =  $(this).attr('get-val');
+            var values = value.split(":");
+
+            $('#line_item').val(values[0]);
+            $('#amount').val(values[1]);
         });
 
         $("#btn_save").click(function(){
