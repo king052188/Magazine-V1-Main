@@ -66,7 +66,7 @@
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">&nbsp;</label><br/>
                                             <button type="submit" class="btn btn-primary filter-col " id = "btn_search" style="margin-bottom: 0px;">
                                                 <i class="fa fa-search"></i> Search
-                                            </button> 
+                                            </button>
                                         </div>
 
                                     </div><br/>
@@ -106,7 +106,10 @@
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">&nbsp;</label><br/>
                                             <button type="submit" class="btn btn-primary filter-col " id = "btn_save" style="margin-bottom: 0px;">
                                                 <span class="glyphicon glyphicon-record"></span> Save
-                                            </button> 
+                                            </button>
+                                            <button type="submit" class="btn btn-danger filter-col " id = "btn_cancel" style="margin-bottom: 0px;">
+                                                Cancel
+                                            </button>
                                         </div>
                                     </div>
 
@@ -117,7 +120,7 @@
                     </div>
 
                      <div class="table-responsive">
-                        <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example" >
+                        <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example-main" >
                             <thead>
                                 <tr>
                                     <th style='text-align: center; width: 30px;'>Proposal ID</th>
@@ -138,8 +141,58 @@
                             </tbody>
                         </table>
                     </div>
-
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_transaction" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">View Transaction</h4>
+            </div>
+
+            <div class="modal-body">
+                Invoice Number: <label id = "invoice_number_result"></label> <br />
+                Proposal ID: <label id = "line_item_result"></label>
+                <br /><br />
+                <table class="table table-striped table-bordered table-hover dataTables-example" id="view_transaction_results">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%; text-align: center;">Ref #</th>
+                        <th style="width: 20%; text-align: center;">METHOD PAYMENT</th>
+                        <th style="width: 20%; text-align: center;">DATE PAYMENT</th>
+                        <th style="width: 10%; text-align: center;">AMOUNT</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+                <div id = "sum_group">
+                    <div class="col-sm-7"></div>
+                    <div class="col-sm-3"><b>Total Payment:</b></div>
+                    <div class="col-sm-2" style = "text-align: right"><label id = "total_payment"></label></div>
+
+                    <div class="col-sm-7"></div>
+                    <div class="col-sm-3"><b>Total Balance:</b></div>
+                    <div class="col-sm-2" style = "text-align: right"><label id = "total_balance"></label></div>
+
+                    <div class="col-sm-7"></div>
+                    <div class="col-sm-3"><b>Available Balance:</b></div>
+                    <div class="col-sm-2" style = "text-align: right"><label id = "available_balance"></label></div>
+                </div>
+                <div style = "clear: both;"></div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -152,7 +205,18 @@
 <script>
     $(document).ready(function(){
 
+        $('#tbl_booking_lists').DataTable({
+            dom: '<"html5buttons"B>lTfgitp',
+            "aaSorting": [0,'asc'],
+            buttons: []
+        });
+
         $(".group-payment").hide();
+
+        $("#btn_cancel").click(function(){
+            $("#invoice_number").val('');
+            $(".group-payment").hide();
+        });
 
         $("#btn_search").click(function(){
 
@@ -199,9 +263,7 @@
 
         function populate_inv_num(inv_num)
         {
-            console.log(inv_num);
-
-            var html_thmb;
+            var html_thmb = "";
 
             $.ajax({
                 url: "http://magazine-api.kpa21.com/kpa/work/invoice-transaction-list/" + inv_num,
@@ -228,7 +290,10 @@
                             html_thmb += "<td style='text-align: center;'>"+ tran.line_item_qty +"</td>";
                             html_thmb += "<td style='text-align: left;'></td>";
                             html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
-                            html_thmb += "<td style='text-align: left;'><a href = '#' class='btn btn-primary btn-sm view-clicked' get-val = '"+ tran.id + ":" + tran.total_amount_with_discount +"' title='View Transactions'><i class='fa fa-eye'></i> View</a></td>";
+                            html_thmb += "<td style='text-align: left;'>" +
+                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;' class='btn btn-primary btn-xs view-clicked' get-val = '"+ tran.id + ":" + tran.total_amount_with_discount +"' title='Select Payments'><i class='fa fa-credit-card'></i> Select</a> " +
+                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px 5px;' class='btn btn-primary btn-xs view-transaction' get-val = '"+ tran.id + ":" + inv_num + ":" + tran.total_amount_with_discount +"' data-toggle='modal' data-target='#modal_transaction' title='View Transactions'><i class='fa fa-eye'></i> View</a>" +
+                                    "</td>";
                             html_thmb += "</tr>";
 
                         });
@@ -240,8 +305,6 @@
             });
         }
 
-
-
         $(document).on("click",".view-clicked",function() {
 
             $(".group-payment").show();
@@ -251,6 +314,56 @@
 
             $('#line_item').val(values[0]);
             $('#amount').val(values[1]);
+        });
+
+        $(document).on("click",".view-transaction",function() {
+
+            var value =  $(this).attr('get-val');
+            var values = value.split(":");
+            var line_item = values[0];
+            var inv_num = values[1];
+            var total_balance = values[2];
+
+            $.ajax({
+                url: "/payment/view/transaction/" + inv_num + "/" + line_item,
+                dataType: "text",
+                beforeSend: function () {
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json == null)
+                        return false;
+
+                    if(json.status == 200)
+                    {
+                        var html_thmb = "";
+                        var total_payment = 0;
+                        var available_balance = 0;
+
+                        $(json.result).each(function(i, info){
+
+                            total_payment += Number(info.amount);
+                            available_balance = (total_balance - total_payment);
+
+                            $("#invoice_number_result").empty().append(json.invoice_num_result);
+                            $("#line_item_result").empty().append(json.line_item_id_result);
+
+                            html_thmb += "<tr>";
+                            html_thmb += "<td style='text-align: center;'>"+ info.reference_number +"</td>";
+                            html_thmb += "<td style='text-align: left;'>"+ info.method_payment +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ info.date_payment +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ info.amount +"</td>";
+                            html_thmb += "</tr>";
+
+                        });
+
+                        $('table#view_transaction_results > tbody').empty().prepend(html_thmb);
+                        $('#total_payment').empty().append(numeral(total_payment).format('0,0.00'));
+                        $('#total_balance').empty().append(numeral(total_balance).format('0,0.00'));
+                        $('#available_balance').empty().append(numeral(available_balance).format('0,0.00'));
+                    }
+                }
+            });
         });
 
         $("#btn_save").click(function(){
@@ -275,17 +388,15 @@
                                 'Successfully Saved!',
                                 'success'
                         )
-                        window.location.href = "/payment/payment_list";
 
+                        $(".group-payment").hide();
+//                        window.location.href = "/payment/payment_list";
                     }
                 }
             });
         });
 
-        $('.dataTables-example').DataTable({
-            dom: '<"html5buttons"B>lTfgitp',
-            buttons: []
-        });
+
 
         $('#data_1 .input-group.date').datepicker({
             todayBtn: "linked",

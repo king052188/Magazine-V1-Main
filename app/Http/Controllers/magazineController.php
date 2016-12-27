@@ -238,7 +238,7 @@ class magazineController extends Controller
     {
         Magazine::where('Id', '=', $request['magazine_uid'])
             ->update([
-                'logo_uid' => $request['logo_uid'],
+//                'logo_uid' => $request['logo_uid'],
                 'company_id' => $request['cid'],
                 'mag_code' => $request['magcode'],
                 'magazine_name' => $request['magname'],

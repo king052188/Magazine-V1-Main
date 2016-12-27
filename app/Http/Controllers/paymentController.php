@@ -137,4 +137,23 @@ class paymentController extends Controller
 
         return array("result" => 404);
     }
+
+    public function view_payment_transaction($inv_num, $line_item)
+    {
+        $line_item = (int)$line_item;
+
+        $result = DB::SELECT("SELECT * FROM payment_transaction_table WHERE invoice_num = '{$inv_num}' AND line_item_id = {$line_item}");
+        if($result != null)
+        {
+            return array(
+                "status" => 200,
+                "description" => "Available",
+                "invoice_num_result" => $result[0]->invoice_num,
+                "line_item_id_result" => $result[0]->line_item_id,
+                "result" => $result
+                );
+        }
+
+        return array("result" => 404, "description" => "No Result Found!");
+    }
 }

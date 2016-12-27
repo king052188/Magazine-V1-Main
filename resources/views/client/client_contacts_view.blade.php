@@ -385,8 +385,6 @@
                         console.log("error " . contact_uid);
                     } else {
 
-
-
                         $(json.result).each(function(i, contact) {
                             console.log(contact.first_name);
 
