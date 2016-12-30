@@ -308,6 +308,7 @@
         $(document).on("click",".view-clicked",function() {
 
             $(".group-payment").show();
+            $("#ref_number").val('');
 
             var value =  $(this).attr('get-val');
             var values = value.split(":");
