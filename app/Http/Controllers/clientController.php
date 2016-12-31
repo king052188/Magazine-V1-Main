@@ -77,8 +77,6 @@ class clientController extends Controller
         return redirect('client/create')->with('success', 'Oops, Something went wrong.');
     }
 
-
-
     public function add_contact($company_uid)
     {
         if(!AssemblyClass::check_cookies()) {
@@ -166,11 +164,11 @@ class clientController extends Controller
 
     public function save_contact(Request $request, $company_uid)
     {
-        $role = array('', '0001', '0002', $request['b_branch_name'], '0004');
+        //$role = array('', '0001', '0002', $request['branch_name'], '0004');
 
         $client = new ClientContact();
         $client->client_id = $company_uid;
-        $client->branch_name = $role[$request['role']];
+        //$client->branch_name = $role[$request['role']];
         $client->first_name = $request['first_name'];
         $client->middle_name = $request['middle_name'];
         $client->last_name = $request['last_name'];
@@ -183,6 +181,7 @@ class clientController extends Controller
         $client->mobile = $request['mobile'];
         $client->position = $request['position'];
         $client->type = $request['type'];
+        $client->role = 4;
         $client->status = 2;
         $client->synched = 1;
         $client->save();
@@ -257,10 +256,10 @@ class clientController extends Controller
 
     public function contact_update_save(Request $request)
     {
-        $role = array('', '0001', '0002', $request['b_branch_name'], '0004');
+        $role = array('', '0001', '0002', $request['branch_name'], $request['other_name']);
         ClientContact::where('Id', '=', $request['contact_uid'])
             ->update([
-                'branch_name' => $role[$request['role']],
+                'branch_name' => $request['status'] == false ? '' : $role[$request['role']],
                 'first_name' => $request['first_name'],
                 'middle_name' => $request['middle_name'],
                 'last_name' => $request['last_name'],

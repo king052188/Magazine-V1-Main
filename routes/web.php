@@ -47,12 +47,14 @@ Route::get('/contract/all', 'contractController@index');
 
 // Magazine Routes
 Route::get('/magazine/create', 'magazineController@create');
+Route::get('/magazine/create/company', 'magazineController@magazine_add_company');
 Route::post('/magazine/add-new', 'magazineController@magazine_add_new');
 Route::get('/magazine/add-ad-color-and-size/{mag_uid}', 'magazineController@magazine_add_color_size');
 Route::get('/magazine/add-ad-color-and-size-api', 'magazineController@magazine_add_color_size_api');
 Route::get('/magazine/all', 'magazineController@index');
 Route::post('/magazine/company/save', 'magazineController@save_company');
-Route::get('/magazine/company/get_country/{magc_id}', 'magazineController@get_country');
+Route::get('/magazine/company/get_company', 'magazineController@get_company');
+Route::get('/magazine/company/get_country/{company_uid}', 'magazineController@get_country');
 Route::post('/magazine/add-color-size-discount/{mag_uid}', 'magazineController@add_color_size_discount');
 Route::get('/magazine/update/{magazine_uid}', 'magazineController@magazine_update');
 Route::post('/magazine/update/save', 'magazineController@magazine_update_save');

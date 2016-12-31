@@ -40,7 +40,7 @@
         </div>
         <div class="col-sm-4">
             <div class="title-action">
-                <a href="#" class="btn btn-primary" id="btnSave">Save, Client Profile</a>
+                <a href="#" class="btn btn-primary" id="btnSave">Save</a>
             </div>
         </div>
     </div>
@@ -105,7 +105,7 @@
                                                                         <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
                                                                     </div>
                                                                     <div class="col-lg-8">
-                                                                        {{ $p[0]->type == 1 ? "Subscribers" : ($p[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                        {{ $p[0]->type == 1 ? "Advertiser" : ($p[0]->type == 2 ? "Agency" : "Lead") }}
                                                                     </div>
                                                                 @else
                                                                     <div class="col-lg-8">
@@ -148,7 +148,7 @@
                                                                         <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
                                                                     </div>
                                                                     <div class="col-lg-8">
-                                                                        {{ $s[0]->type == 1 ? "Subscribers" : ($s[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                        {{ $s[0]->type == 1 ? "Advertiser" : ($s[0]->type == 2 ? "Agency" : "Lead") }}
                                                                     </div>
                                                                 @else
                                                                     <div class="col-lg-8">
@@ -191,7 +191,7 @@
                                                                         <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
                                                                     </div>
                                                                     <div class="col-lg-8">
-                                                                        {{ $b[0]->type == 1 ? "Subscribers" : ($b[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                        {{ $b[0]->type == 1 ? "Advertiser" : ($b[0]->type == 2 ? "Agency" : "Lead") }}
                                                                     </div>
                                                                 @else
                                                                     <div class="col-lg-8">
@@ -217,7 +217,6 @@
                                                             <thead>
                                                             <tr>
                                                                 <th style = "width:100px; text-align: center;">Firstname</th>
-                                                                <th style = "width:30px; text-align: center;">Middlename</th>
                                                                 <th style = "width:100px; text-align: center;">Lastname</th>
                                                                 <th style = "width:150px; text-align: center;">Position</th>
                                                                 <th style = "width:50px; text-align: center;">Type</th>
@@ -231,10 +230,9 @@
                                                             @for($i = 0; $i < COUNT($results); $i++)
                                                                 <tr>
                                                                     <td>{{ $results[$i]->first_name }}</td>
-                                                                    <td>{{ $results[$i]->middle_name }}</td>
                                                                     <td>{{ $results[$i]->last_name }}</td>
                                                                     <td>{{ $results[$i]->position }}</td>
-                                                                    <td style = "text-align: center;">{{ $results[$i]->type == 1 ? "Subscriber" : ($results[$i]->type == 2 ? "Agency" : "Lead") }}</td>
+                                                                    <td style = "text-align: center;">{{ $results[$i]->type == 1 ? "Advertiser" : ($results[$i]->type == 2 ? "Agency" : "Lead") }}</td>
                                                                     <td style = "text-align: center;">
                                                                         @if($results[$i]->role == 1)
                                                                             Primary
@@ -243,7 +241,7 @@
                                                                         @elseif($results[$i]->role == 3)
                                                                             Bill To
                                                                         @else
-                                                                            Others
+                                                                            {{ $results[$i]->branch_name }}
                                                                         @endif
                                                                     </td>
                                                                     <td style = "text-align: center;">{{ $results[$i]->status == 1 ? "In-active" : "Active" }}</td>
@@ -261,37 +259,31 @@
                             </div>
                             <div id="add_more_contacts" class="tab-pane">
                                 <div class="panel-body">
-                                    <div class="col-lg-12" id = "role_handler">
-                                        <div class="form-group">
-                                            <label for="ex2">Role</label>
-                                            <select class="form-control" name = "role" id = "role" required>
-                                                <option value="">--select--</option>
-                                                <option value="1" {{ COUNT($p) != 0 ? 'hidden' : '' }}>Primary Contact</option>
-                                                <option value="2" {{ COUNT($s) != 0 ? 'hidden' : '' }}>Secondary Contact</option>
-                                                <option value="3" {{ COUNT($b) != 0 ? 'hidden' : '' }}>Bill To Contact</option>
-                                                <option value="4">Other Contact</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6" id = "company_name_show">
-                                        <div class="form-group">
-                                            <label for="ex2">Company Name</label>
-                                            <input class="form-control" type="text" name="branch_name" placeholder="Enter Company Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
+                                    {{--<div class="col-lg-12" id = "role_handler">--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<label for="ex2">Role</label>--}}
+                                            {{--<select class="form-control" name = "role" id = "role" required>--}}
+                                                {{--<option value="">--select--</option>--}}
+                                                {{--<option value="1" {{ COUNT($p) != 0 ? 'hidden' : '' }}>Primary Contact</option>--}}
+                                                {{--<option value="2" {{ COUNT($s) != 0 ? 'hidden' : '' }}>Secondary Contact</option>--}}
+                                                {{--<option value="3" {{ COUNT($b) != 0 ? 'hidden' : '' }}>Bill To Contact</option>--}}
+                                                {{--<option value="4">Other Contact</option>--}}
+                                            {{--</select>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                    {{--<div class="col-lg-6" id = "company_name_show">--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<label for="ex2">Company Name</label>--}}
+                                            {{--<input class="form-control" type="text" name="branch_name" placeholder="Enter Company Name">--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="ex2">First Name</label>
                                             <input class="form-control" type="text" name="first_name" placeholder="Enter First Name" required>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
-                                        <div class="form-group">
-                                            <label for="ex2">Middle Name</label>
-                                            <input class="form-control" type="text" name="middle_name" placeholder="Enter Middle Name" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="ex2">Last Name</label>
                                             <input class="form-control" type="text" name="last_name" placeholder="Enter Last Name" required>
@@ -386,15 +378,25 @@
                     } else {
 
                         $(json.result).each(function(i, contact) {
-                            console.log(contact.first_name);
+                            console.log(contact.role);
 
 //                            $("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
                             if(contact.role == 3){
 
                                 $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                                 $("#contact_company_name_show").show();
+                                $("#contact_other_name_show").hide();
+                                $("#branch_name").val(contact.branch_name);
+
+                            }else if(contact.role == 4){
+                                $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
+                                $("#contact_other_name_show").show();
+                                $("#contact_company_name_show").hide();
+                                $("#other_name").val(contact.branch_name);
+
                             }else{
                                 $("#contact_company_name_show").hide();
+                                $("#contact_other_name_show").hide();
                                 $("#contact_role_handler").removeClass('col-lg-6').addClass('col-lg-12');
                             }
 
@@ -407,7 +409,6 @@
                             $("#contact_uid").val(contact.Id);
                             $("#client_id").val(contact.client_id);
                             $("#contact_role").val(contact.role);
-                            $("#branch_name").val(contact.branch_name);
                             $("#first_name").val(contact.first_name);
                             $("#middle_name").val(contact.middle_name);
                             $("#last_name").val(contact.last_name);
@@ -461,19 +462,19 @@
                                     <input class="form-control" type="text" id ="branch_name" name="branch_name" placeholder="Enter Company Name">
                                 </div>
                             </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6" id = "contact_other_name_show">
+                                <div class="form-group">
+                                    <label for="ex2">Specify Name</label>
+                                    <input class="form-control" type="text" id ="other_name" name="other_name" placeholder="Enter Others Name">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">First Name</label>
                                     <input class="form-control" type="text" id = "first_name" name="first_name" placeholder="Enter First Name" required>
                                 </div>
                             </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label for="ex2">Middle Name</label>
-                                    <input class="form-control" type="text" id = "middle_name" name="middle_name" placeholder="Enter Middle Name" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
+                            <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">Last Name</label>
                                     <input class="form-control" type="text" id = "last_name" name="last_name" placeholder="Enter Last Name" required>
@@ -539,7 +540,7 @@
                                     {{--<input class="form-control" type="text" name="b_type_designation" placeholder="Enter Type" required>--}}
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-2">
                                 <div class="form-group">
                                     <label for="ex2">Status</label>
                                     <div class="checkbox checkbox-primary">
@@ -550,13 +551,24 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-lg-6" id = "contact_same_as_show">
+                                <div class="form-group">
+                                    <label for="ex2">Bill To Contact</label>
+                                    <div class="checkbox checkbox-primary">
+                                        <input class="styled" type="checkbox" id = "same_as" name="same_as">
+                                        <label for="checkbox2">
+                                            Same As Bill To Contact?
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button class="btn btn-primary" type="submit">Update</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Save</button>
                     </div>
                 </form>
             </div>
@@ -572,6 +584,7 @@
 
             $("#btnSave").hide();
             $("#company_name_show").hide();
+//            $("#other_name_show").hide();
 
             $('.ClientsListdataTables').DataTable({
                 dom: '<"html5buttons"B>lTfgitp',
@@ -604,12 +617,20 @@
             });
 
             $("#contact_role").change(function(){
-                if($(this).val() == 3){
+                if($(this).val() == 3) {
                     $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                     $("#contact_company_name_show").show();
+                    $("#contact_other_name_show").hide();
+
+                }else if($(this).val() == 4){
+                    $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
+                    $("#contact_other_name_show").show();
+                    $("#contact_company_name_show").hide();
+
                 }else{
                     $("#contact_role_handler").removeClass('col-lg-6').addClass('col-lg-12');
                     $("#contact_company_name_show").hide();
+                    $("#contact_other_name_show").hide();
                 }
             });
         });

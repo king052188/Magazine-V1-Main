@@ -17,30 +17,29 @@
             </li>
         </ol>
     </div>
-    <div class="col-sm-4">
-        <div class="title-action">
-            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_company_magazine">Add New Company</a>
-        </div>
-    </div>
+    {{--<div class="col-sm-4">--}}
+        {{--<div class="title-action">--}}
+            {{--<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#modal_add_company_magazine">Add New Company</a>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 </div>
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
-
-        <div id="tab_1" class="col-lg-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Create New Magazine<small> *all fields are required</small></h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
+        <form role="form" action="/magazine/add-new" method="POST">
+            <div id="tab_1" class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Create New Magazine<small> *all fields are required</small></h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <form role="form" action="/magazine/add-new" method="POST">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Magazine Code</label>
                                     <input type="text" placeholder="Magazine Code" class="form-control" name="magcode" id="magcode" readonly>
@@ -50,17 +49,19 @@
                                     <input type="text" placeholder="Magazine Name" class="form-control" name="magname" id="magname">
                                 </div>
                                 <div class="form-group">
-                                    <label for="ex2">Country</label>
-                                    <select class="form-control" name="magcountry" id = "magcountry" required>
-                                        <option>--select--</option>
-                                        <option value="1">USA</option>
-                                        <option value="2">CANADA</option>
-                                    </select>
-                                </div>
-                                <div class="form-group" id = "hidden">
                                     <label>Company Name</label>
                                     <select class='form-control' name='cid' id = 'cid' required>
                                     </select>
+                                </div>
+                                <div class="form-group" id = "hidden">
+                                    <label for="ex2">Country</label>
+                                    <input type = "hidden" class="form-control" name="magcountryID" id = "magcountryID" readonly>
+                                    <input type = "text" class="form-control" name="magcountry" id = "magcountry" readonly>
+                                    {{--<select class="form-control" name="magcountry" id = "magcountry" required>--}}
+                                        {{--<option>--select--</option>--}}
+                                        {{--<option value="1">USA</option>--}}
+                                        {{--<option value="2">CANADA</option>--}}
+                                    {{--</select>--}}
                                 </div>
                                 <div class="form-group col-lg-4" id = "hidden">
                                     <label>Status</label>
@@ -78,47 +79,48 @@
                                     <label>Numbers of Issue</label>
                                     <input type='number' placeholder='Enter Issue Number' min="1" max="125" class='form-control' name='number_issue' id = "number_issue" value = '1'>
                                 </div>
-                                <div id = "hidden">
-                                    <input type='hidden' name='_token' id='csrf-token' value='{{ Session::token() }}' /><button class='btn btn-sm btn-primary pull-right' id='btn_submit'>Create New Magazine</button>
+                                <div id = "hidden_submit">
+                                    <input type='hidden' name='_token' id='csrf-token' value='{{ Session::token() }}' />
+                                    <button class='btn btn-sm btn-primary pull-right' id='btn_submit'>Create New Magazine</button>
                                 </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="tab_1" class="col-lg-6">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>Create New Magazine<small> *all fields are required</small></h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class = "form-group">
-                                <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
-                                <?php
-                                $assembly = new \App\Http\Controllers\AssemblyClass();
-                                $url_api = $assembly::get_reports_api();
-                                $logo_uploader_url = 'http://'. $url_api["Url_Logo_Uploader"] .'type=MAGAZINE&uid='. $logo_uid['id_magazine'];
-                                ?>
-                                <iframe src = "{{ $logo_uploader_url }}" style="width: 100%; height: 375px" frameborder="0" scrolling="no"> </iframe>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div id="tab_1" class="col-lg-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>Create New Magazine<small> *all fields are required</small></h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class = "form-group">
+                                    <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
+                                    <?php
+                                    $assembly = new \App\Http\Controllers\AssemblyClass();
+                                    $url_api = $assembly::get_reports_api();
+                                    $logo_uploader_url = 'http://'. $url_api["Url_Logo_Uploader"] .'type=MAGAZINE&uid='. $logo_uid['id_magazine'];
+                                    ?>
+                                    <iframe src = "{{ $logo_uploader_url }}" style="width: 100%; height: 375px" frameborder="0" scrolling="no"> </iframe>
+                                </div>
+                                <a href="#" class="btn btn-primary pull-right" id="btnSave">SAVE</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
 
     </div>
 </div>
-
+<!--
 <div class="modal fade" id="modal_add_company_magazine" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -213,6 +215,7 @@
         </div>
     </div>
 </div>
+-->
 @endsection
 
 @section('scripts')
@@ -220,6 +223,8 @@
 $(document).ready(function() {
 
     $("div#hidden").hide();
+    $("#hidden_submit").hide();
+
 
 //    function readURL(input) {
 //        if (input.files && input.files[0])
@@ -254,29 +259,68 @@ $(document).ready(function() {
         $("#tab_1").show("slide", { direction: "right" }, 5000);
     });
 
-    $('#magcountry').on('change', function() {
-        var magc_id = $(this).val();
-
+    $("#cid").ready(function() {
         $.ajax({
-            url: "/magazine/company/get_country/" + magc_id,
+            url: "/magazine/company/get_company",
             dataType: "text",
             success: function(data) {
                 var json = $.parseJSON(data);
                 if (json == null) return false;
                 if (json.result == 404) {
                     $("div#hidden").hide();
-                    $("#cid").empty().append("<option>--no data--</option>");
+                    $("#cid").empty().append("<option>--No Company Available--</option>");
                 } else {
-                    $("div#hidden").show();
-                    $("#cid").empty();
-                    $(json.result).each(function(i, country) {
-                        $("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
+                    //$("div#hidden").show();
+                    //$("#cid").empty();
+                    $("#cid").empty().append("<option>--Select--</option>");
+                    $(json.result).each(function(i, company) {
+                        $("#cid").append("<option value = '" + company.Id + "'>" + company.company_name + "</option>")
                     });
                 }
             }
         });
     });
+
+    $('#cid').on('change', function() {
+        var company_uid = $(this).val();
+
+        $.ajax({
+            url: "/magazine/company/get_country/" + company_uid,
+            dataType: "text",
+            success: function(data) {
+                var json = $.parseJSON(data);
+                if (json == null) return false;
+                if (json.result == 404) {
+                    $("div#hidden").hide();
+//                    $("#cid").empty().append("<option>--no data--</option>");
+                } else {
+                    $("div#hidden").show();
+//                    $("#cid").empty();
+                    $(json.result).each(function(i, c) {
+                        if(c.country == 1){
+                            country_id = 1;
+                            country_name = "USA";
+                        }else{
+                            country_id = 2;
+                            country_name = "CANADA";
+                        }
+
+                        $("#magcountryID").val(country_id);
+                        $("#magcountry").val(country_name);
+                        //$("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
+                    });
+                }
+            }
+        });
+    });
+
+    $("#btnSave").click(function(){
+        $("#btn_submit").click();
+        return false;
+    });
 });
+
+
 </script>
 
 <script>

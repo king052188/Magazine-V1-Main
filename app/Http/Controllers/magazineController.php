@@ -35,6 +35,18 @@ class magazineController extends Controller
         return view('magazine/create', compact('logo_uid'));
     }
 
+    public function magazine_add_company()
+    {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
+
+        return view('magazine/create_company', compact('logo_uid'));
+
+    }
+
     public function magazine_add_new(Request $request)
     {
 //        $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
@@ -44,7 +56,7 @@ class magazineController extends Controller
         $magazine->company_id = (int)$request['cid'];
         $magazine->mag_code = $request['magcode'];
         $magazine->magazine_name = $request['magname'];
-        $magazine->magazine_country = (int)$request['magcountry'];
+        $magazine->magazine_country = (int)$request['magcountryID'];
         $magazine->status = (int)$request['status'];
         $magazine->magazine_year = (int)$request['year_issue'];
         $magazine->magazine_issues = (int)$request['number_issue'];
@@ -208,10 +220,32 @@ class magazineController extends Controller
         return redirect('magazine/create')->with('success', 'Oops, Something went wrong.');
     }
 
-    public function get_country($magc_id)
+    public function get_company()
     {
-        $magc_id = (int)$magc_id;
-        $result = DB::table('magazine_company_table')->where('country','=',$magc_id)->get();
+        //$magc_id = (int)$magc_id;
+
+        //version 1.0
+        //$result = DB::table('magazine_company_table')->where('country','=',$magc_id)->get();
+
+        //version 1.1
+        $result = DB::table('magazine_company_table')->get();
+        if(COUNT($result) != 0){
+            return array(
+                "result" => $result
+            );
+        }
+
+        return array(
+            "result" => 404
+        );
+
+    }
+
+    public function get_country($company_uid)
+    {
+        $company_uid = (int)$company_uid;
+
+        $result = DB::table('magazine_company_table')->where('Id','=',$company_uid)->get();
         if(COUNT($result) != 0){
             return array(
                 "result" => $result
