@@ -56,13 +56,27 @@
             $('.footable2').footable();
         });
 
+        function notif_read(notif_uid) {
+            $.ajax({
+                url: "http://" + report_url_api + "/kpa/work/notification-read/" + notif_uid,
+                dataType: "text",
+                beforeSend: function () { },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json.Code == 200)
+                    {
+                        console.log("Read Success");
+                    }
+                }
+            });
+        }
         // Notification
         general_notification();
         function general_notification() {
             var url = "http://" + report_url_api + "/kpa/work/notification-list";
             $(document).ready( function() {
 
-                var html_notif = null;
+                var html_notif = "";
 
                 $.ajax({
                     url: url,
@@ -77,16 +91,17 @@
                                 $("#gen_notification").show();
                                 $("#gen_notification_count").text(json.Total_Unread);
 
-                                $(json.Date).each(function(n, notif){
+                                $(json.Data).each(function(n, notif){
 
-                                    html_notif += "<li>";
+                                    html_notif += "<li onclick=notif_read(" + notif.Id + ")>";
                                     html_notif += "<div class='dropdown-messages-box'>";
-                                    html_notif += "<a>";
-                                    html_notif += "<div class='media-body'>";
-                                    html_notif += "<small class='pull-right'>46h ago</small>";
-                                    html_notif += "<strong><i class='fa fa-exclamation'></i> " + notif.noti_subject + "<br /></strong>";
+                                    html_notif += "<a href = "+  notif.noti_url +"  class='pull-left'>";
+                                    html_notif += "<i class='fa fa-flag' style='font-size:30px;'></i>";
+                                    html_notif += "</a>";
+                                    html_notif += "<a href = "+  notif.noti_url +" class='media-body'>";
+                                    html_notif += "<small class='pull-right'>10 mins ago</small> ";
+                                    html_notif += "<strong> " + notif.noti_subject + "<br /></strong>";
                                     html_notif += "<small class='text-muted'>" + notif.noti_desc + "</small>";
-                                    html_notif += "</div>";
                                     html_notif += "</a>";
                                     html_notif += "</div>";
                                     html_notif += "</li>";
@@ -96,8 +111,8 @@
 
                                     html_notif += "<li>";
                                     html_notif += "<div class='text-center link-block'>";
-                                    html_notif += "<a href='notifications.html'>";
-                                    html_notif += "<strong>See All Alerts</strong>";
+                                    html_notif += "<a href='#'>";
+                                    html_notif += "<strong>See All Alerts</strong> ";
                                     html_notif += "<i class='fa fa-angle-right'></i>";
                                     html_notif += "</a>";
                                     html_notif += "</div>";
@@ -110,6 +125,8 @@
                             }
                         }
                         $("#gen_notification").hide();
+
+
                     }
                 });
             } );
