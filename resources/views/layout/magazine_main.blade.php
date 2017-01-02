@@ -55,8 +55,36 @@
             $('.footable').footable();
             $('.footable2').footable();
         });
-    </script>
 
+        // Notification
+        general_notification();
+        function general_notification() {
+            var url = "http://" + report_url_api + "/kpa/work/notification-list";
+            $(document).ready( function() {
+                $.ajax({
+                    url: url,
+                    dataType: "text",
+                    beforeSend: function () { },
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        if(json.Code == 200)
+                        {
+                            if(json.Total_Unread > 0) {
+//                                console.log(json);
+                                $("#gen_notification").show();
+                                $("#gen_notification_count").text(json.Total_Unread);
+                                return true;
+                            }
+                        }
+                        $("#gen_notification").hide();
+                    }
+                });
+            } );
+        }
+        setInterval(general_notification, 1000);
+        // End Notification
+        
+    </script>
     <script src = "https://cdn.jsdelivr.net/sweetalert2/6.2.1/sweetalert2.min.js"></script>
     <link href = "https://cdn.jsdelivr.net/sweetalert2/6.2.1/sweetalert2.min.css" rel="stylesheet">
     <link href = "https://cdn.jsdelivr.net/sweetalert2/6.2.1/sweetalert2.css" rel="stylesheet">
