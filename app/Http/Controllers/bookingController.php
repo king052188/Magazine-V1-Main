@@ -9,6 +9,7 @@ use App\Contracts;
 use App\Booking;
 use App\MagazineTransaction;
 use App\MagIssueTransaction;
+use App\DiscountTransaction;
 
 class bookingController extends Controller
 {
@@ -460,6 +461,19 @@ class bookingController extends Controller
         MagIssueTransaction::where('id', $tran_issue_uid)->delete();
 
         return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id);
+    }
+
+    public function save_discount(Request $request, $booking_trans_num, $mag_trans_uid, $client_id)
+    {
+        $discount = new DiscountTransaction();
+        $discount->trans_id = $booking_trans_num;
+        $discount->sales_rep_id = $_COOKIE['Id'];
+        $discount->amount = $request['txtBaseAmountHidden'];
+        $discount->discount_percent = $request['txtDiscount'];
+        $discount->status = 1;
+        $discount->save();
+
+        return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Add Successful');
     }
 
 }

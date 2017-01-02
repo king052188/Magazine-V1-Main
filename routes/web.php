@@ -78,6 +78,7 @@ Route::get('/booking/add_issue/{mag_trans_uid}/{client_id}', 'bookingController@
 Route::post('/booking/save_issue/{mag_trans_uid}/{client_id}', 'bookingController@save_issue');
 Route::get('/booking/getPackageName/{criteria_id}/{mag_uid}', 'bookingController@getPackageName');
 Route::get('/booking/delete_issue/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@delete_issue');
+Route::post('/booking/save/discount/{booking_trans_num}/{mag_trans_uid}/{client_id}', 'bookingController@save_discount');
 
 Route::get('/transaction/update/row/{trans_id}/{trans_status}', 'bookingController@trans_selected_row_update');
 

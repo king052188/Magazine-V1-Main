@@ -191,38 +191,40 @@
 </div>
 
 <div class="bd-example">
-  <div class="modal fade" id="discount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-          <h4 class="modal-title" id="exampleModalLabel">Discretionary Discount</h4>
+    <div class="modal fade" id="discount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="post" action = "{{ url('/booking/save/discount') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLabel">Discretionary Discount</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Base Amount:</label>
+                            <input type="text" class="form-control" id="txtBaseAmount" name = "txtBaseAmount" readonly>
+                            <input type="hidden" class="form-control" id="txtBaseAmountHidden" name = "txtBaseAmountHidden" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Discount: <i>by percentage</i></label>
+                            <input type="number" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Total Amount:</label>
+                            <input type="text" class="form-control" id="txtAmount" disabled>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div class="modal-body">
-          <form>
-            <div class="form-group">
-                <label for="recipient-name" class="form-control-label">Base Amount:</label>
-                <input type="text" class="form-control" id="txtBaseAmount" disabled>
-            </div>
-            <div class="form-group">
-                <label for="recipient-name" class="form-control-label">Discount: <i>by percentage</i></label>
-                <input type="number" class="form-control" id="txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
-            </div>
-              <div class="form-group">
-                  <label for="recipient-name" class="form-control-label">Total Amount:</label>
-                  <input type="text" class="form-control" id="txtAmount" disabled>
-              </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
-          <a type="button" class="btn btn-primary">Save</a>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
 
 @endsection
@@ -234,8 +236,11 @@ $(document).ready(function(){
         var client_id = {{ $client_id }};
         $('#ad_criteria_id').on('change',function(){
             var mag_uid = {{ $transaction_uid[0]->magazine_id }};
+
+//            console.log(mag_uid);
+
             var criteria_id = $(this).val();
-            console.log(mag_uid);
+//            console.log(mag_uid);
 
             $.ajax({
                 url: "/booking/getPackageName/" + criteria_id + "/" + mag_uid,
@@ -381,6 +386,7 @@ function populate_issues_transaction(uid) {
 
                 BaseTotalAmount = total_with_discount;
                 $('#txtBaseAmount').val(numeral(BaseTotalAmount).format('0,0.00'));
+                $('#txtBaseAmountHidden').val(BaseTotalAmount);
                 $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
                 $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-info">Preview</a>');
                 $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
