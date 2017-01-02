@@ -61,6 +61,9 @@
         function general_notification() {
             var url = "http://" + report_url_api + "/kpa/work/notification-list";
             $(document).ready( function() {
+
+                var html_notif = null;
+
                 $.ajax({
                     url: url,
                     dataType: "text",
@@ -73,7 +76,37 @@
 //                                console.log(json);
                                 $("#gen_notification").show();
                                 $("#gen_notification_count").text(json.Total_Unread);
+
+                                $(json.Date).each(function(n, notif){
+
+                                    html_notif += "<li>";
+                                    html_notif += "<div class='dropdown-messages-box'>";
+                                    html_notif += "<a>";
+                                    html_notif += "<div class='media-body'>";
+                                    html_notif += "<small class='pull-right'>46h ago</small>";
+                                    html_notif += "<strong><i class='fa fa-exclamation'></i> " + notif.noti_subject + "<br /></strong>";
+                                    html_notif += "<small class='text-muted'>" + notif.noti_desc + "</small>";
+                                    html_notif += "</div>";
+                                    html_notif += "</a>";
+                                    html_notif += "</div>";
+                                    html_notif += "</li>";
+                                    html_notif += "<li class='divider'></li>";
+
+                                });
+
+                                    html_notif += "<li>";
+                                    html_notif += "<div class='text-center link-block'>";
+                                    html_notif += "<a href='notifications.html'>";
+                                    html_notif += "<strong>See All Alerts</strong>";
+                                    html_notif += "<i class='fa fa-angle-right'></i>";
+                                    html_notif += "</a>";
+                                    html_notif += "</div>";
+                                    html_notif += "</li>";
+
+
+                                $('#notif_lists').empty().prepend(html_notif);
                                 return true;
+
                             }
                         }
                         $("#gen_notification").hide();
