@@ -125,17 +125,19 @@ class clientController extends Controller
         $results = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->orderBy('first_name', 'asc')->get(); //Subscriber
         $results == null ? null : $results;
 
-        $p = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 1)->get(); //Subscriber
+        $p = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 1)->get(); //Primary
 //        $p == null ? null : $p;
 
-        $s = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 2)->get(); //Subscriber
+        $s = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 2)->get(); //Secondary
 //        $s == null ? null : $s;
 
-        $b = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 3)->get(); //Subscriber
+        $b = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 3)->get(); //Bill To
 //        $b == null ? null : $b;
 
+        $same = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 5)->get(); //Primary and Bill To
+        $same == null ? null : $same;
 
-        return view('client.client_contacts_view', compact('ref', 'company', 'results', 'p', 's', 'b'));
+        return view('client.client_contacts_view', compact('ref', 'company', 'results', 'p', 's', 'b', 'same'));
     }
 
     public function store(Request $request)
@@ -256,7 +258,15 @@ class clientController extends Controller
 
     public function contact_update_save(Request $request)
     {
-        $role = array('', '0001', '0002', $request['branch_name'], $request['other_name']);
+        if($request['role'] == 1){
+            ClientContact::where('role', '=', 5)->where('client_id', '=', $request['client_id'])->update(['role' => 3]);
+        }elseif($request['role'] == 3){
+            ClientContact::where('role', '=', 5)->where('client_id', '=', $request['client_id'])->update(['role' => 1]);
+        }elseif($request['role'] == 5){
+            ClientContact::where('role', '=', 1)->orWhere('role', '=', 3)->where('client_id', '=', $request['client_id'])->update(['role' => 4]);
+        }
+
+        $role = array('', '0001', '0002', $request['branch_name'], $request['other_name'], $request['branch_name']);
         ClientContact::where('Id', '=', $request['contact_uid'])
             ->update([
                 'branch_name' => $request['status'] == false ? '' : $role[$request['role']],

@@ -107,6 +107,34 @@
                                                                     <div class="col-lg-8">
                                                                         {{ $p[0]->type == 1 ? "Advertiser" : ($p[0]->type == 2 ? "Agency" : "Lead") }}
                                                                     </div>
+                                                                @elseif(COUNT($same) != 0)
+                                                                    <h3 style = "text-align: left; margin-left: 15px;"><strong>{{ $same[0]->first_name . " " . $same[0]->middle_name . " " . $same[0]->last_name}}</strong> ({{ $same[0]->position }})</h3>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-envelope" aria-hidden="true"></i> <strong> Email: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->email }}
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-mobile" aria-hidden="true"></i> <strong> Mobile: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->mobile }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-phone" aria-hidden="true"></i> <strong>Landline: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->landline }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->type == 1 ? "Advertiser" : ($same[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                    </div>
                                                                 @else
                                                                     <div class="col-lg-8">
                                                                         No Record.
@@ -193,6 +221,34 @@
                                                                     <div class="col-lg-8">
                                                                         {{ $b[0]->type == 1 ? "Advertiser" : ($b[0]->type == 2 ? "Agency" : "Lead") }}
                                                                     </div>
+                                                                @elseif(COUNT($same) != 0)
+                                                                    <h3 style = "text-align: left; margin-left: 15px;"><strong>{{ $same[0]->first_name . " " . $same[0]->middle_name . " " . $same[0]->last_name}}</strong> ({{ $same[0]->position }})</h3>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-envelope" aria-hidden="true"></i> <strong> Email: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->email }}
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-mobile" aria-hidden="true"></i> <strong> Mobile: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->mobile }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-phone" aria-hidden="true"></i> <strong>Landline: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->landline }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->type == 1 ? "Advertiser" : ($same[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                    </div>
                                                                 @else
                                                                     <div class="col-lg-8">
                                                                         No Record.
@@ -233,13 +289,27 @@
                                                                     <td>{{ $results[$i]->last_name }}</td>
                                                                     <td>{{ $results[$i]->position }}</td>
                                                                     <td style = "text-align: center;">{{ $results[$i]->type == 1 ? "Advertiser" : ($results[$i]->type == 2 ? "Agency" : "Lead") }}</td>
-                                                                    <td style = "text-align: center;">
+                                                                    <td style = "text-align: center;
+                                                                        @if($results[$i]->role == 1)
+                                                                            background-color: #1976D2; color: #ffffff;
+                                                                        @elseif($results[$i]->role == 2)
+                                                                            background-color: #f8ac59; color: #ffffff;
+                                                                        @elseif($results[$i]->role == 3)
+                                                                            background-color: #23c6c8; color: #ffffff;
+                                                                        @elseif($results[$i]->role == 5)
+                                                                            background-color: #af1c1e; color: #ffffff;
+                                                                        @else
+                                                                        {{ $results[$i]->branch_name }}
+                                                                        @endif
+                                                                    ">
                                                                         @if($results[$i]->role == 1)
                                                                             Primary
                                                                         @elseif($results[$i]->role == 2)
                                                                             Secondary
                                                                         @elseif($results[$i]->role == 3)
                                                                             Bill To
+                                                                        @elseif($results[$i]->role == 5)
+                                                                            Primary and Bill To
                                                                         @else
                                                                             {{ $results[$i]->branch_name }}
                                                                         @endif
@@ -378,10 +448,10 @@
                     } else {
 
                         $(json.result).each(function(i, contact) {
-                            console.log(contact.role);
+//                            console.log(contact.role);
 
 //                            $("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
-                            if(contact.role == 3){
+                            if(contact.role == 3 || contact.role == 5){
 
                                 $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                                 $("#contact_company_name_show").show();
@@ -453,6 +523,7 @@
                                         <option value="2" {{ COUNT($s) != 0 ? 'hidden' : '' }}>Secondary Contact</option>
                                         <option value="3" {{ COUNT($b) != 0 ? 'hidden' : '' }}>Bill To Contact</option>
                                         <option value="4">Other Contact</option>
+                                        <option value="5" {{ COUNT($same) != 0 ? 'hidden' : '' }}>Same as to Bill To Contact</option>
                                     </select>
                                 </div>
                             </div>
@@ -551,17 +622,17 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6" id = "contact_same_as_show">
-                                <div class="form-group">
-                                    <label for="ex2">Bill To Contact</label>
-                                    <div class="checkbox checkbox-primary">
-                                        <input class="styled" type="checkbox" id = "same_as" name="same_as">
-                                        <label for="checkbox2">
-                                            Same As Bill To Contact?
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                            {{--<div class="col-lg-6" id = "contact_same_as_show">--}}
+                                {{--<div class="form-group">--}}
+                                    {{--<label for="ex2">Bill To Contact</label>--}}
+                                    {{--<div class="checkbox checkbox-primary">--}}
+                                        {{--<input class="styled" type="checkbox" id = "same_as" name="same_as">--}}
+                                        {{--<label for="checkbox2">--}}
+                                            {{--Same As Bill To Contact?--}}
+                                        {{--</label>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
                         </div>
                     </div>
 
@@ -593,7 +664,6 @@
             });
 
             $("#role").change(function(){
-
                 if($(this).val() == 3){
                     $("#role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                     $("#company_name_show").show();
@@ -617,7 +687,7 @@
             });
 
             $("#contact_role").change(function(){
-                if($(this).val() == 3) {
+                if($(this).val() == 3 || $(this).val() == 5) {
                     $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                     $("#contact_company_name_show").show();
                     $("#contact_other_name_show").hide();
