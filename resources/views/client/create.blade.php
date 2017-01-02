@@ -121,7 +121,7 @@
                                                 @endif
                                             </td>
                                             <td><a href = "{{ URL('/client/update/' . $clients[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit" title = "Edit Company"></i>&nbsp;&nbsp;Edit</a></td>
-                                            <td><a href = "{{ URL('/client/view_contacts/' . $clients[$i]->Id) }}" class="btn btn-primary btn-sm" title="View Contacts"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Contacts</a></td>
+                                            <td><a href = "{{ URL('/client/view_contacts/' . $clients[$i]->Id) }}" class="btn btn-info btn-sm" title="View Contacts"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Contacts</a></td>
                                         </tr>
                                     @endfor
                                     </tbody>

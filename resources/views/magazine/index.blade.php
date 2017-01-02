@@ -53,7 +53,7 @@
                                         <td>{{ $magazine->magazine_name }}</td>
                                         <td style="text-align: center;">{{ $magazine->magazine_country == 1 ? "US" : "CANADA" }}</td>
                                         <td style="text-align: center;">
-                                            <a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-xs btn-primary" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a>
+                                            <a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-xs btn-info" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a>
                                             &nbsp;
                                             <a href = "" onclick="return edit_magazine({{ $magazine->Id }});" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_edit_magazine" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px 2px;"><i class="fa fa-edit" title = "Edit Magazine"></i> Edit</a>
                                         </td>
@@ -276,7 +276,7 @@
                 <div class="modal-footer">
                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" type="submit">Update</button>
+                    <button class="btn btn-primary" type="submit">Save</button>
                 </div>
             </div>
         </form>
