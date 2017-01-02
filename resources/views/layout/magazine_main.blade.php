@@ -77,7 +77,6 @@
             $(document).ready( function() {
 
                 var html_notif = "";
-
                 $.ajax({
                     url: url,
                     dataType: "text",
@@ -86,52 +85,43 @@
                         var json = $.parseJSON(data);
                         if(json.Code == 200)
                         {
+                            $("#gen_notification").show();
                             if(json.Total_Unread > 0) {
-//                                console.log(json);
-                                $("#gen_notification").show();
                                 $("#gen_notification_count").text(json.Total_Unread);
-
-                                $(json.Data).each(function(n, notif){
-
-                                    html_notif += "<li onclick=notif_read(" + notif.Id + ")>";
-                                    html_notif += "<div class='dropdown-messages-box'>";
-                                    html_notif += "<a href = "+  notif.noti_url +"  class='pull-left'>";
-                                    html_notif += "<i class='fa fa-flag' style='font-size:30px;'></i>";
-                                    html_notif += "</a>";
-                                    html_notif += "<a href = "+  notif.noti_url +" class='media-body'>";
-                                    html_notif += "<small class='pull-right'>10 mins ago</small> ";
-                                    html_notif += "<strong> " + notif.noti_subject + "<br /></strong>";
-                                    html_notif += "<small class='text-muted'>" + notif.noti_desc + "</small>";
-                                    html_notif += "</a>";
-                                    html_notif += "</div>";
-                                    html_notif += "</li>";
-                                    html_notif += "<li class='divider'></li>";
-
-                                });
-
-                                    html_notif += "<li>";
-                                    html_notif += "<div class='text-center link-block'>";
-                                    html_notif += "<a href='#'>";
-                                    html_notif += "<strong>See All Alerts</strong> ";
-                                    html_notif += "<i class='fa fa-angle-right'></i>";
-                                    html_notif += "</a>";
-                                    html_notif += "</div>";
-                                    html_notif += "</li>";
-
-
-                                $('#notif_lists').empty().prepend(html_notif);
-                                return true;
-
                             }
+
+                            $(json.Data).each(function(n, notif){
+                                var unread = notif.noti_flag == 1 ? "class='unread'" : "class='read'";
+                                html_notif += "<li "+ unread +" onclick=notif_read(" + notif.Id + ")>";
+                                html_notif += "<div class='dropdown-messages-box' style='background: red;'>";
+                                html_notif += "<div style='float: left; margin-left: -15px;'><a href = "+  notif.noti_url +">";
+                                html_notif += "<i class='fa fa-flag' style='font-size:30px;'></i>";
+                                html_notif += "</a> </div>";
+                                html_notif += "<div style='float: left; width: 220px;'><a href = "+  notif.noti_url +">";
+                                html_notif += "<div style='float: left;'><strong> " + notif.noti_subject + "</strong><br />";
+                                html_notif += "<small>" + notif.noti_desc + "</small></div>";
+                                html_notif += "<div style='float: right; padding-right: 0px'><small>10 mins ago</small></div>";
+                                html_notif += "</a></div>";
+                                html_notif += "</div>";
+                                html_notif += "</li>";
+                                html_notif += "<li class='divider'></li>";
+                            });
+
+                            html_notif += "<li>";
+                            html_notif += "<div class='text-center link-block'>";
+                            html_notif += "<a href='#'>";
+                            html_notif += "<strong>See All Alerts</strong> ";
+                            html_notif += "<i class='fa fa-angle-right'></i>";
+                            html_notif += "</a>";
+                            html_notif += "</div>";
+                            html_notif += "</li>";
+                            $('#notif_lists').empty().prepend(html_notif);
                         }
-                        $("#gen_notification").hide();
-
-
                     }
                 });
             } );
         }
-        setInterval(general_notification, 1000);
+//        setInterval(general_notification, 1000);
         // End Notification
         
     </script>

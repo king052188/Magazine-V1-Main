@@ -13,16 +13,37 @@
                 padding: 0px 5px 0px 5px;
                 margin:  0 1px 0 0;
             }
+            .unread {
+                color: #FFFFFF;
+                background: #337ab7;
+                padding: 5px;
+                height: 45px;
+            }
+            .unread:hover {
+                background: #135186;
+            }
+            .unread div a, .unread div a strong, .unread div a small {
+                color: #FFFFFF;
+            }
+            .read {
+                padding: 5px;
+                height: 45px;
+            }
+
+            li.read:hover {
+                background: #efefef;
+                padding: 5px;
+                height: 45px;
+            }
+
         </style>
 
         <ul class="nav navbar-top-links navbar-right">
-            <li class="dropdown" id="gen_notification" style="display: none;">
+            <li class="dropdown" id="gen_notification">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                     <i class="fa fa-bell"></i>  <span id="gen_notification_count" class="label label-primary noti_count"></span>
                 </a>
-                <ul class="dropdown-menu dropdown-alerts" id = "notif_lists">
-
-                </ul>
+                <ul style="margin-top: -5px; position: absolute; right: -115px;" class="dropdown-menu dropdown-alerts" id = "notif_lists"> </ul>
             </li>
             <li>
                 <a href="{{ URL('/logout_process') }}">
