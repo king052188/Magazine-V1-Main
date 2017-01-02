@@ -16,16 +16,10 @@
         </style>
 
         <ul class="nav navbar-top-links navbar-right">
-            {{--<li id="gen_notification" style="display: none;">--}}
-                {{--<a href="{{ URL('/logout_process') }}">--}}
-                    {{--<span id="gen_notification_count" class="noti_count"></span>--}}
-                    {{--Notification--}}
-                {{--</a>--}}
-            {{--</li>--}}
             <li class="dropdown" id="gen_notification" style="display: none;">
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                     <i class="fa fa-bell"></i>  <span id="gen_notification_count" class="label label-primary noti_count"></span>
-                </a>
+
                 <ul class="dropdown-menu dropdown-alerts" id = "notif_lists">
 
                 </ul>
