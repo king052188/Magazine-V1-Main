@@ -10,6 +10,7 @@ use App\Booking;
 use App\MagazineTransaction;
 use App\MagIssueTransaction;
 use App\DiscountTransaction;
+use App\Notification;
 
 class bookingController extends Controller
 {
@@ -472,6 +473,14 @@ class bookingController extends Controller
         $discount->discount_percent = $request['txtDiscount'];
         $discount->status = 1;
         $discount->save();
+
+        $notif = new Notification();
+        $notif->user_uid = $_COOKIE['Id'];
+        $notif->noti_subject = "Discretionary Discount";
+        $notif->noti_desc = "Add Discretionary Discount";
+        $notif->noti_url = "/booking/add_issue/" . $mag_trans_uid . "/" . $client_id;
+        $notif->noti_flag = 1;
+        $notif->save();
 
         return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Add Successful');
     }
