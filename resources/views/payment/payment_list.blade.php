@@ -240,12 +240,6 @@
                     var json = $.parseJSON(data);
                     if(json.result == 200)
                     {
-                        swal(
-                                '',
-                                'Invoice Number is available!',
-                                'success'
-                        )
-
                         populate_inv_num(inv_num);
 
                     }else{

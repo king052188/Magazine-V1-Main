@@ -106,51 +106,106 @@
                         $("#magazine_uid").val(magazine.Id);
                         $("#magcode").val(magazine.mag_code);
                         $("#magname").val(magazine.magazine_name);
-                        $("#magcountry").val(magazine.magazine_country);
-                        $("#cid").val(magazine.company_id);
+//                        $("#magcountry").val(magazine.magazine_country);
+//                        $("#cid").val(magazine.company_id);
                         $("#status").val(magazine.status);
                         $("#year_issue_selected").val(magazine.magazine_year);
                         $("#number_issue").val(magazine.magazine_issues);
 
 
 
-                        populate_cid(magazine.company_id, magazine.magazine_country);
+                        populate_cid(magazine.company_id);
 
                     });
                 }
             }
         });
 
-        function populate_cid(magc_id, mag_country)
+        function populate_cid(magc_id)
         {
-            console.log("Company ID: " + magc_id);
-            console.log("Mag Country: " + mag_country);
+            $("#cid").ready(function() {
+                $.ajax({
+                    url: "/magazine/company/get_company",
+                    dataType: "text",
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        if (json == null) return false;
+                        if (json.result == 404) {
+                            $("div#hidden").hide();
+//                            $("#cid").empty().append("<option>--No Company Available--</option>");
+                        } else {
+//                            $("#cid").empty().append("<option>--Select--</option>");
 
-            $.ajax({
-                url: "/magazine/company/get_country/" + mag_country,
-                dataType: "text",
-                success: function(data) {
-                    var json = $.parseJSON(data);
-                    if (json == null) return false;
-                    if (json.result == 404) {
-//                        $("div#hidden").hide();
-                        $("#cid").empty().append("<option>--no data--</option>");
-                    } else {
-                        $("div#hidden").show();
+                            $(json.result).each(function(i, company) {
 
-//                        $(".comp_name").empty().append("<select class='form-control' name='cid' id = 'cid' required>");
-                        $(json.result).each(function(i, country) {
-                            var sel = "";
-                            if(country.Id == magc_id)
-                            {
-                                sel = "selected";
-                            }
-
-                            $("#cid").empty().append("<option value = '" + country.Id + "' selected = '"+ sel +"'>" + country.company_name +"-"+ country.Id + "</option>")
-                        });
-//                        $(".comp_name").append("</select>");
+                                $("#cid option[value='" + magc_id + "']").attr("selected","selected");
+                                $("#cid").append("<option value = '" + company.Id + "'>" + company.company_name + "</option>")
+                            });
+                        }
                     }
-                }
+                });
+
+                $.ajax({
+                    url: "/magazine/company/get_country/" + magc_id,
+                    dataType: "text",
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        if (json == null) return false;
+                        if (json.result == 404) {
+                            $("div#hidden").hide();
+//                    $("#cid").empty().append("<option>--no data--</option>");
+                        } else {
+                            $("div#hidden").show();
+//                    $("#cid").empty();
+                            $(json.result).each(function(i, c) {
+                                if(c.country == 1){
+                                    country_id = 1;
+                                    country_name = "USA";
+                                }else{
+                                    country_id = 2;
+                                    country_name = "CANADA";
+                                }
+
+                                $("#magcountryID").val(country_id);
+                                $("#magcountry").val(country_name);
+                                //$("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
+                            });
+                        }
+                    }
+                });
+            });
+
+            $('#cid').on('change', function() {
+                var company_uid = $(this).val();
+
+                $.ajax({
+                    url: "/magazine/company/get_country/" + company_uid,
+                    dataType: "text",
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        if (json == null) return false;
+                        if (json.result == 404) {
+                            $("div#hidden").hide();
+//                    $("#cid").empty().append("<option>--no data--</option>");
+                        } else {
+                            $("div#hidden").show();
+//                    $("#cid").empty();
+                            $(json.result).each(function(i, c) {
+                                if(c.country == 1){
+                                    country_id = 1;
+                                    country_name = "USA";
+                                }else{
+                                    country_id = 2;
+                                    country_name = "CANADA";
+                                }
+
+                                $("#magcountryID").val(country_id);
+                                $("#magcountry").val(country_name);
+                                //$("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
+                            });
+                        }
+                    }
+                });
             });
         }
     }
@@ -179,19 +234,14 @@
                             <input type="text" placeholder="Magazine Name" class="form-control" name="magname" id="magname">
                         </div>
                         <div class="form-group">
-                            <label for="ex2">Country</label>
-                            <select class="form-control" name="magcountry" id = "magcountry" required>
-                                <option>--select--</option>
-                                <option value="1">USA</option>
-                                <option value="2">CANADA</option>
+                            <label>Company Name</label>
+                            <select class='form-control' name='cid' id = 'cid' required>
                             </select>
                         </div>
-                        <div class="form-group comp_name" id = "hidden">
-                            <label>Company Name</label>
-
-                            <select class='form-control' name='cid' id = 'cid' required>
-
-                            </select>
+                        <div class="form-group" id = "hidden">
+                            <label for="ex2">Country</label>
+                            <input type = "hidden" class="form-control" name="magcountryID" id = "magcountryID" readonly>
+                            <input type = "text" class="form-control" name="magcountry" id = "magcountry" readonly>
                         </div>
                         <div class="form-group col-lg-4" id = "hidden">
                             <label>Status</label>
@@ -268,28 +318,7 @@
             $("#tab_1").show("slide", { direction: "right" }, 5000);
         });
 
-        $('#magcountry').on('change', function() {
-            var magc_id = $(this).val();
 
-            $.ajax({
-                url: "/magazine/company/get_country/" + magc_id,
-                dataType: "text",
-                success: function(data) {
-                    var json = $.parseJSON(data);
-                    if (json == null) return false;
-                    if (json.result == 404) {
-                        $("div#hidden").hide();
-                        $("#cid").empty().append("<option>--no data--</option>");
-                    } else {
-                        $("div#hidden").show();
-                        $("#cid").empty();
-                        $(json.result).each(function(i, country) {
-                            $("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
-                        });
-                    }
-                }
-            });
-        });
     });
 </script>
 @endsection

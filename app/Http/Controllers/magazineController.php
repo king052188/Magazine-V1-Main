@@ -273,12 +273,12 @@ class magazineController extends Controller
         Magazine::where('Id', '=', $request['magazine_uid'])
             ->update([
 //                'logo_uid' => $request['logo_uid'],
-                'company_id' => $request['cid'],
+                'company_id' => (int)$request['cid'],
                 'mag_code' => $request['magcode'],
                 'magazine_name' => $request['magname'],
                 'magazine_year' => $request['year_issue'],
                 'magazine_issues' => $request['number_issue'],
-                'magazine_country' => $request['magcountry'],
+                'magazine_country' => (int)$request['magcountryID'],
                 'status' => $request['status']
             ]);
 
