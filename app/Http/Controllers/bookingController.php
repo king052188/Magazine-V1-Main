@@ -228,9 +228,11 @@ class bookingController extends Controller
                     ON mag_t.magazine_id = mag.Id
                     WHERE mag_t.transaction_id = {$booking_uid}
                     ");
+        if(count($mag_l) > 0) {
+            return redirect("/booking/add_issue/" . $mag_l[0]->Id . "/" . $client_id);
+        }
 
         $mag_list = DB::table('magazine_table')->where('magazine_country', '=', $w_country)->where('status', '=', 2)->get();
-
         if(count($mag_l) > 0) {
             $disabled = ["set" => "disabled"];
         }

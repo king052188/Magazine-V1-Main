@@ -27,8 +27,7 @@
             <li class="{{ Request::is('dashboard') ? 'active' : '' }}">
                 <a href="/dashboard"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboard</span></a>
             </li>
-            @if($_COOKIE['role'] > 2)
-
+            @if((int)$_COOKIE['role'] > 2)
                 <li class="{{ Request::is('client') || Request::is('client/*') ? 'active' : '' }}">
                     <a href="/client/create"><i class="fa fa-address-card"></i> <span class="nav-label">Clients</span></a>
                 </li>
@@ -36,7 +35,8 @@
                 <li class="{{ Request::is('sales_report') || Request::is('sales_report/*') ? 'active' : '' }}">
                     <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Sales</span><span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">Book an Ad</span></a></li>
+                        <li><a href="{{ url('/booking/add-booking') }}"> <span class="nav-label">Create Book an Ad</span></a></li>
+                        <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">List of Book an Ad</span></a></li>
                         <li><a href="/sales_report/view">Sales Reports</a></li>
                     </ul>
                 </li>
@@ -60,8 +60,8 @@
             <li class="{{ Request::is('sales_report') || Request::is('sales_report/*') ? 'active' : '' }}">
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Sales</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="{{ url('/booking/add-booking') }}"> <span class="nav-label">Create Book and Ad</span></a></li>
-                    <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">List of Book and Ad</span></a></li>
+                    <li><a href="{{ url('/booking/add-booking') }}"> <span class="nav-label">Create Book an Ad</span></a></li>
+                    <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">List of Book an Ad</span></a></li>
                     <li><a href="/sales_report/view">Sales Reports</a></li>
                 </ul>
             </li>
