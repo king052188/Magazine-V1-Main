@@ -169,7 +169,7 @@
                                                         <td><span id="issues_sub_total"></span></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Discount:</td>
+                                                        <td><span id = "issues_discount_label">Less 0% Discount:</span></td>
                                                         <td><span id="issues_discount"></span></td>
                                                     </tr>
                                                     <tr>
@@ -313,7 +313,10 @@ function populate_issues_transaction(uid) {
     var html_thmb = "";
     var isFirstLoad = true;
 
+    console.log(uid);
+
     $(document).ready( function() {
+
         var hasDiscount = 0;
         var BaseTotalAmount = 0;
 
@@ -341,6 +344,10 @@ function populate_issues_transaction(uid) {
 
                 var total_with_discount = 0;
                 var item_count = 1;
+                var i_sub_total = 0;
+                var i_discount = 0;
+                var i_total_less_discount = 0;
+
                 $(json.Data).each(function(i, tran){
 
                     html_thmb += "<tr>";
@@ -372,6 +379,30 @@ function populate_issues_transaction(uid) {
                 });
 
                 $('table#issue_reports > tbody').empty().prepend(html_thmb);
+
+                $.ajax({
+                    url: "/booking/get_discount_transaction/" + '{{ $booking_trans_num[0]->trans_num }}',
+                    dataType: "text",
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        if (json == null) return false;
+                        if (json.result == 404) {
+                            console.log("error");
+                        } else {
+                            $(json.result).each(function(i, discount) {
+
+                                i_sub_total = discount.amount;
+                                i_discount = discount.discount_percent;
+                                i_total_less_discount = (i_sub_total * i_discount) / 100;
+
+                                $("#issues_discount_label").text("Less " + numeral(i_discount).format('0,0') + "% Discount:");
+                                $("#issues_discount").text(numeral(i_total_less_discount).format('0,0.00'));
+                                $("#issues_total_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0.00'));
+
+                            });
+                        }
+                    }
+                });
 
                 if(hasDiscount > 0) {
                     $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));

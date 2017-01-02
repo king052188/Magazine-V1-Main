@@ -476,4 +476,14 @@ class bookingController extends Controller
         return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Add Successful');
     }
 
+    public function get_discount_transaction($booking_trans_num)
+    {
+        $result = DB::table('discount_transaction_table')->where('trans_id','=',$booking_trans_num)->get();
+        if(COUNT($result) != 0){
+            return array("status" => 202, "result" => $result);
+        }
+
+        return array("status" => 404);
+    }
+
 }

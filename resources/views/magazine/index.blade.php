@@ -72,7 +72,7 @@
     function edit_magazine($magazine_uid) {
         var magazine_uid = $magazine_uid;
 
-        console.log(magazine_uid);
+//        console.log(magazine_uid);
 
         $.ajax({
             url: "/magazine/update/" + magazine_uid,
