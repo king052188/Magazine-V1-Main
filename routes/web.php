@@ -94,3 +94,6 @@ Route::get('/payment/view/transaction/{inv_num}/{line_item}', 'paymentController
 // Search Routes
 Route::get('/execute/search/booking-and-sales', 'searchController@search_function');
 
+
+Route::get('/ph/developers', 'DeveloperClass@index');
+

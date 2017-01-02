@@ -36,13 +36,13 @@
       <!-- START Login Background Pic Wrapper-->
       <div class="bg-pic">
         <!-- START Background Pic-->
-        <img src="{{ asset('img/democanada.jpg') }}" data-src="{{ asset('img/democanada.jpg') }}" data-src-retina="{{ asset('img/democanada.jpg') }}" alt="" class="lazy">
+        <img src="{{ asset('img/Fall-Beautiful-HD-Wallpaper.png') }}" data-src="{{ asset('img/Fall-Beautiful-HD-Wallpaper.png') }}" data-src-retina="{{ asset('img/Fall-Beautiful-HD-Wallpaper.png') }}" alt="" class="lazy">
         <!-- END Background Pic-->
         <!-- START Background Caption-->
         <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
           <h2 class="semi-bold text-white"></h2>
           <p class="small">
-            Images displayed are solely for representation purposes only, All work copyright of respective owner, otherwise © 2016 VMK Dev.
+            Lester Digital &copy {{ date("Y") }} | <a href="/ph/developers">Developer</a>
           </p>
         </div>
         <!-- END Background Caption-->
@@ -51,7 +51,7 @@
       <!-- START Login Right Container-->
       <div class="login-container bg-white">
         <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
-          <img src="{{ asset('img/logo.png') }}" alt="logo" data-src="{{ asset('img/logo.png') }}" data-src-retina="{{ asset('img/logo.png') }}" width="78" height="22">
+          <img src="{{ asset('img/lester_logo.png') }}" alt="logo" data-src="{{ asset('img/lester_logo.png') }}" data-src-retina="{{ asset('img/lester_logo.png') }}">
           <p class="p-t-35">Sign into your account</p>
           <!-- START Login Form -->
           <form id="form-login" class="p-t-15" role="form" action="index.html">
@@ -59,7 +59,7 @@
             <div class="form-group form-group-default">
               <label>Login</label>
               <div class="controls">
-                <input type="text" name="username" id="username" placeholder="User Name" class="form-control" required>
+                <input type="text" name="username" id="username" placeholder="Enter your username" class="form-control" required>
               </div>
             </div>
             <!-- END Form Control-->
@@ -67,23 +67,24 @@
             <div class="form-group form-group-default">
               <label>Password</label>
               <div class="controls">
-                <input type="password" class="form-control" name="password" id="password" placeholder="Credentials" required>
+                <input type="password" class="form-control" name="password" id="password" placeholder="Enter your password." required>
               </div>
             </div>
             <!-- START Form Control-->
             <div class="row">
               <div class="col-md-6 no-padding">
                 <div class="checkbox ">
-                  <!-- <input type="checkbox" value="1" id="checkbox1">
-                  <label for="checkbox1">Keep Me Signed in</label> -->
+                  {{--<input type="checkbox" value="1" id="checkbox1">--}}
+                  {{--<label for="checkbox1">Keep Me Signed in</label>--}}
+                  <a href="#" class="text-info small">Forgot Password?</a>
                 </div>
               </div>
               <div class="col-md-6 text-right">
-                <a href="#" class="text-info small">Forgot Password?</a>
+                <input type="submit" class="btn btn-primary btn-cons m-t-10" name="login" value="Login" id="login_button" tabindex="3" >
               </div>
             </div> 
             <!-- END Form Control-->
-            <input type="submit" class="btn btn-primary btn-cons m-t-10" name="login" value="Log In" id="login_button" tabindex="3" >
+
           </form>
           <!--END Login Form-->
           

@@ -739,7 +739,10 @@ Alternate buttons
 .btn-primary,
 .btn-primary:focus {
   color: #ffffff;
-  background-color: #6d5cae;
+  /*background-color: #6d5cae;*/
+  /*border-color: #6d5cae;*/
+
+  background-color: #62055c;
   border-color: #6d5cae;
 }
 .btn-primary.active,
@@ -755,12 +758,14 @@ Alternate buttons
 .btn-primary.hover,
 .btn-primary:hover,
 .open .dropdown-toggle.btn-primary {
-  background-color: #8a7dbe;
-  border-color: #8a7dbe;
+  /*background-color: #8a7dbe;*/
+  background: #8b0882;
+  border-color: #8b0882;
   color: #ffffff;
 }
 .btn-primary.active:hover {
   background: #5e4f96;
+
   border-color: #5e4f96;
 }
 .btn-primary.disabled,
@@ -7441,7 +7446,8 @@ Responsive Util
 */
 .login-wrapper {
   height: 100%;
-  background-color: #6d5cae;
+  /*background-color: #6d5cae;*/
+  background-color: #62055c;
 }
 .login-wrapper > * {
   height: 100%;
