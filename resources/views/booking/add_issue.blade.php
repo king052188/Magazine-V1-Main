@@ -180,8 +180,10 @@
                                             </div>
                                             <div id="show_button" style="margin-top: 45px;" class="pull-left"></div>
                                         </section>
+
                                     </div>
                                  </div>
+                                <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px; display: none;"> </div>
                             </div>
                         </div>
                     </div>
@@ -377,50 +379,56 @@ function populate_issues_transaction(uid) {
                     item_count++;
                     total_with_discount += parseFloat(tran.total_amount_with_discount);
                 });
-
                 $('table#issue_reports > tbody').empty().prepend(html_thmb);
 
+                $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));
                 $.ajax({
                     url: "/booking/get_discount_transaction/" + '{{ $booking_trans_num[0]->trans_num }}',
                     dataType: "text",
                     success: function(data) {
                         var json = $.parseJSON(data);
-                        if (json == null) return false;
-                        if (json.result == 404) {
-                            console.log("error");
-                        } else {
+                        if (json.status == 202) {
                             $(json.result).each(function(i, discount) {
-
                                 i_sub_total = discount.amount;
                                 i_discount = discount.discount_percent;
                                 i_total_less_discount = (i_sub_total * i_discount) / 100;
 
-                                $("#issues_discount_label").text("Less " + numeral(i_discount).format('0,0') + "% Discount:");
-                                $("#issues_discount").text(numeral(i_total_less_discount).format('0,0.00'));
+                                $("#issues_discount_label").text(numeral(i_discount).format('0,0') + "% Discount:");
+                                $("#issues_discount").text( "(" + numeral(i_total_less_discount).format('0,0.00') + ")");
                                 $("#issues_total_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0.00'));
 
+                                if(parseInt( discount.status ) > 1) {
+                                    $('#status_discretionary_discount').show();
+                                    var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid green; padding: 5px; border-radius: 5px;'>";
+                                    x_wrapper += "<h3 style='color: green;'>Discretionary Discount has been Approved</h3>";
+                                    x_wrapper += "</div>";
+                                    $('#status_discretionary_discount').empty().append(x_wrapper);
+                                }
+                                else {
+                                    $('#status_discretionary_discount').show();
+                                    var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid red; padding: 5px; border-radius: 5px;'>";
+                                    x_wrapper += "<h3 style='color: red;'>Discretionary Discount is not yet Approved</h3>";
+                                    x_wrapper += "</div>";
+                                    $('#status_discretionary_discount').empty().append(x_wrapper);
+                                }
                             });
+
+                            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-info">Preview</a>');
+                            $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+                        }
+                        else {
+                            $('#issues_discount').text("(" + numeral("0").format('0,0.00') + ")");
+                            $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
+
+                            $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
+                            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-info">Preview</a>');
+                            $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
                         }
                     }
                 });
-
-                if(hasDiscount > 0) {
-                    $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));
-                    $('#issues_discount').text(numeral(total_with_discount).format('0,0.00'));
-                    $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
-                }
-                else {
-                    $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));
-                    $('#issues_discount').text(numeral("0").format('0,0.00'));
-                    $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
-                }
-
                 BaseTotalAmount = total_with_discount;
                 $('#txtBaseAmount').val(numeral(BaseTotalAmount).format('0,0.00'));
                 $('#txtBaseAmountHidden').val(BaseTotalAmount);
-                $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
-                $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-info">Preview</a>');
-                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
             }
         });
 
@@ -439,6 +447,7 @@ function populate_issues_transaction(uid) {
         });
     })
 }
+
 </script>
 
 @endsection

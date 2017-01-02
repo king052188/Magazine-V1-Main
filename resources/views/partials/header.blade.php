@@ -17,7 +17,7 @@
 
         <ul class="nav navbar-top-links navbar-right">
             <li id="gen_notification" style="display: none;">
-                <a href="{{ URL('/logout_process') }}">
+                <a href="#">
                     <span id="gen_notification_count" class="noti_count"></span>
                     Notification
                 </a>
