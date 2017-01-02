@@ -132,7 +132,6 @@
                                         <?php
                                             $report_api = \App\Http\Controllers\AssemblyClass::get_reports_api();
                                         ?>
-                                        
                                         <section class="panel">
                                             @if(Session::has('success'))
                                                 <div class="alert alert-success alert-dismissable">
@@ -167,15 +166,15 @@
                                                 <table class="issues_amount_table" style="width: 250px" border="0" cellpadding="0" cellspacing="0">
                                                     <tr>
                                                         <td>Sub Total:</td>
-                                                        <td><span id="sub_total"></span></td>
+                                                        <td><span id="issues_sub_total"></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Discount:</td>
-                                                        <td><span id="discount"></span></td>
+                                                        <td><span id="issues_discount"></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Total Amount:</td>
-                                                        <td><span id="total_amount"></span></td>
+                                                        <td><span id="issues_total_amount"></span></td>
                                                     </tr>
                                                 </table>
                                             </div>
@@ -209,7 +208,7 @@
             </div>
             <div class="form-group">
                 <label for="recipient-name" class="form-control-label">Discount: <i>by percentage</i></label>
-                <input type="text" class="form-control" id="txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
+                <input type="number" class="form-control" id="txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
             </div>
               <div class="form-group">
                   <label for="recipient-name" class="form-control-label">Total Amount:</label>
@@ -230,8 +229,8 @@
 
 @section('scripts')
 <script>
-    $(document).ready(function(){
 
+$(document).ready(function(){
         var client_id = {{ $client_id }};
         $('#ad_criteria_id').on('change',function(){
             var mag_uid = {{ $transaction_uid[0]->magazine_id }};
@@ -288,14 +287,12 @@
 
     });
 
-function open_preview(trans_number)
-{
+function open_preview(trans_number) {
     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
             "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
 }
 
-function ConfirmDelete()
-{
+function ConfirmDelete() {
     var x = confirm("Are you sure you want to delete?");
     if (x)
         return true;
@@ -304,110 +301,106 @@ function ConfirmDelete()
 }
 
 var trans_id = {{ $transaction_uid[0]->transaction_id }};
+
 populate_issues_transaction(trans_id);
-function populate_issues_transaction(uid)
-{
-var html_thmb = "";
-var isFirstLoad = true;
-console.log(uid);
 
-$(document).ready( function() {
+function populate_issues_transaction(uid) {
+    var html_thmb = "";
+    var isFirstLoad = true;
 
-    var hasDiscount = 0;
-    var BaseTotalAmount = 0;
+    $(document).ready( function() {
+        var hasDiscount = 0;
+        var BaseTotalAmount = 0;
 
-    $.ajax({
-        url: "http://"+report_url_api+"/kpa/work/magazine-issue-lists/"+uid,
-        dataType: "text",
-        beforeSend: function () {
-            if(isFirstLoad) {
-                isFirstLoad = false;
-                $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
-            }
-//            $('#mag_name').text("***");
-//            $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="7">Loading... Please wait...</td> </tr>');
-        },
-        success: function(data) {
-            var json = $.parseJSON(data);
-            if(json == null)
-                return false;
+        $.ajax({
+            url: "http://"+report_url_api+"/kpa/work/magazine-issue-lists/"+uid,
+            dataType: "text",
+            beforeSend: function () {
+                if(isFirstLoad) {
+                    isFirstLoad = false;
+                    $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+                }
+            },
+            success: function(data) {
+                var json = $.parseJSON(data);
+                if(json == null)
+                    return false;
 
-            if(json.Status == 404) {
+                if(json.Status == 404) {
 
-                $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="7">' + json.Message + '</td> </tr>');
-                return;
-            }
-
-            $('#mag_trans_container').empty().prepend('<h3>'+ json.Magazine_Name +' [ <span>'+ json.Mag_Code +'</span> ] | '+ json.Mag_Country +' </h3>');
-
-            var total_with_discount = 0;
-            var item_count = 1;
-            $(json.Data).each(function(i, tran){
-
-                html_thmb += "<tr>";
-                html_thmb += "<td style='text-align: center;'>"+item_count+"</td>";
-                html_thmb += "<td style='text-align: left;'>"+tran.ad_color+"</td>";
-                html_thmb += "<td style='text-align: left;'>"+tran.ad_size+"</td>";
-                html_thmb += "<td style='text-align: center;'> IS"+tran.quarter_issued+"</td>";
-                html_thmb += "<td style='text-align: center;'> "+tran.line_item_qty+"</td>";
-                html_thmb += "<td style='text-align: center;'> "+numeral(tran.total_discount_by_percent).format('0,0')+"%</td>";
-
-                var n_status = "Void";
-                var p_status = parseInt(tran.status);
-
-                if(p_status == 1){
-                    n_status = "Pending";
-                }else if(p_status == 2){
-                    n_status = "For Approval";
-                }else if(p_status == 3){
-                    n_status = "Approved";
-                }else if(p_status == 4){
-                    n_status = "Declined";
+                    $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="7">' + json.Message + '</td> </tr>');
+                    return;
                 }
 
-                html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
-                html_thmb += "<td style='text-align: center;'><a onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a></td>";
-                html_thmb += "</tr>";
-                item_count++;
-                total_with_discount += parseFloat(tran.total_amount_with_discount);
-            });
+                $('#mag_trans_container').empty().prepend('<h3>'+ json.Magazine_Name +' [ <span>'+ json.Mag_Code +'</span> ] | '+ json.Mag_Country +' </h3>');
 
-            $('table#issue_reports > tbody').empty().prepend(html_thmb);
+                var total_with_discount = 0;
+                var item_count = 1;
+                $(json.Data).each(function(i, tran){
 
-            if(hasDiscount > 0) {
-                $('#sub_total').text(numeral(total_with_discount).format('0,0.00'));
-                $('#discount').text(numeral(total_with_discount).format('0,0.00'));
-                $('#total_amount').text(numeral(total_with_discount).format('0,0.00'));
+                    html_thmb += "<tr>";
+                    html_thmb += "<td style='text-align: center;'>"+item_count+"</td>";
+                    html_thmb += "<td style='text-align: left;'>"+tran.ad_color+"</td>";
+                    html_thmb += "<td style='text-align: left;'>"+tran.ad_size+"</td>";
+                    html_thmb += "<td style='text-align: center;'> IS"+tran.quarter_issued+"</td>";
+                    html_thmb += "<td style='text-align: center;'> "+tran.line_item_qty+"</td>";
+                    html_thmb += "<td style='text-align: center;'> "+numeral(tran.total_discount_by_percent).format('0,0')+"%</td>";
+
+                    var n_status = "Void";
+                    var p_status = parseInt(tran.status);
+
+                    if(p_status == 1){
+                        n_status = "Pending";
+                    }else if(p_status == 2){
+                        n_status = "For Approval";
+                    }else if(p_status == 3){
+                        n_status = "Approved";
+                    }else if(p_status == 4){
+                        n_status = "Declined";
+                    }
+
+                    html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
+                    html_thmb += "<td style='text-align: center;'><a onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a></td>";
+                    html_thmb += "</tr>";
+                    item_count++;
+                    total_with_discount += parseFloat(tran.total_amount_with_discount);
+                });
+
+                $('table#issue_reports > tbody').empty().prepend(html_thmb);
+
+                if(hasDiscount > 0) {
+                    $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));
+                    $('#issues_discount').text(numeral(total_with_discount).format('0,0.00'));
+                    $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
+                }
+                else {
+                    $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));
+                    $('#issues_discount').text(numeral("0").format('0,0.00'));
+                    $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
+                }
+
+                BaseTotalAmount = total_with_discount;
+                $('#txtBaseAmount').val(numeral(BaseTotalAmount).format('0,0.00'));
+                $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
+                $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-info">Preview</a>');
+                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+            }
+        });
+
+        $('#txtAmount').val("0.00");
+        $('#txtDiscount').on('keyup', function(){
+            var origin_amount = BaseTotalAmount;
+            var value = $(this).val();
+            if(value != "") {
+                var orig_amount = (parseFloat(origin_amount) * parseFloat(value)) / 100;
+                var new_amount = parseFloat(origin_amount) - orig_amount;
+                $('#txtAmount').val(numeral(new_amount).format('0,0.00'));
             }
             else {
-                $('#sub_total').text(numeral(total_with_discount).format('0,0.00'));
-                $('#discount').text(numeral("0").format('0,0.00'));
-                $('#total_amount').text(numeral(total_with_discount).format('0,0.00'));
+                $('#txtAmount').val("0.00");
             }
-
-            BaseTotalAmount = total_with_discount;
-            $('#txtBaseAmount').val(numeral(BaseTotalAmount).format('0,0.00'));
-            $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
-            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-info">Preview</a>');
-            $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
-        }
-    });
-
-
-    $('#txtAmount').val("0.00");
-    $('#txtDiscount').on('keyup', function(){
-        var origin_amount = BaseTotalAmount;
-        var value = $(this).val();
-        if(value != "") {
-            var orig_amount = (parseFloat(origin_amount) * parseFloat(value)) / 100;
-            var new_amount = parseFloat(origin_amount) - orig_amount;
-            $('#txtAmount').val(numeral(new_amount).format('0,0.00'));
-        }
-        else {
-            $('#txtAmount').val("0.00");
-        }
-    });
-})
+        });
+    })
 }
 </script>
 
