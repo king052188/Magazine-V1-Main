@@ -304,9 +304,9 @@
                             html_thmb += "<td style='text-align: left;'></td>";
                             html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: left;'>" +
-                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;' class='btn btn-info btn-xs view-clicked' get-val = '"+ tran.id + ":" + tran.total_amount_with_discount +"' title='Select Payments'><i class='fa fa-credit-card'></i> Select</a> " +
+                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;' class='btn btn-info btn-xs view-clicked' get-val = '"+ tran.id + ":" + tran.total_amount_with_discount + ":" + "' title='Select Payments'><i class='fa fa-credit-card'></i> Select</a> " +
                                     "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px 5px;' class='btn btn-success btn-xs view-transaction' get-val = '"+ tran.id + ":" + inv_num + ":" + tran.total_amount_with_discount +"' data-toggle='modal' data-target='#modal_transaction' title='View Transactions'><i class='fa fa-eye'></i> View</a>" +
-                                    "<a href = 'http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+ inv_num + "/" + tran.id + "' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px 8px;' class='btn btn-primary btn-xs' title='View Invoice'><i class='fa fa-eye'></i> View Invoice</a>" +
+//                                    "<a href = 'http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+ inv_num + "/" + tran.id + "' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px 8px;' class='btn btn-primary btn-xs' title='View Invoice'><i class='fa fa-eye'></i> View Invoice</a>" +
 //                                    "<select class='form-control'  id = 'action_payment_"+tran.id +"'>" +
 //                                    "<option value = '0'>--select--</option>" +
 //                                    "<option value = '1'>Select for payment</option>" +
@@ -335,6 +335,7 @@
         $(document).on("click",".view-clicked",function() {
 
             var inv_num = $("#invoice_number").val();
+
             $(".group-payment").hide();
             $("#ref_number").val('');
 
@@ -526,7 +527,7 @@
 
     });
 
-    
+
     function open_preview(trans_number) {
         window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
                 "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
@@ -554,16 +555,16 @@
             }
         });
 
-        $('#amount').val("0.00");
-        $('#amount').on('keyup', function(){
-            var total_paid = $('#total_paid').val();
-            var value = $(this).val();
-            if(value != "") {
-                var rem_balance = parseFloat(total_paid) - parseFloat(value);
-                var t_blance = numeral(rem_balance).format('0,0.00');
-                $('#rem_balance').val(t_blance);
-            }
-        });
+//        $('#amount').val("0.00");
+//        $('#amount').on('keyup', function(){
+//            var total_paid = $('#total_paid').val();
+//            var value = $(this).val();
+//            if(value != "") {
+//                var rem_balance = parseFloat(total_paid) - parseFloat(value);
+//                var t_blance = numeral(rem_balance).format('0,0.00');
+//                $('#rem_balance').val(t_blance);
+//            }
+//        });
 
     } );
 

@@ -146,6 +146,7 @@ class paymentController extends Controller
         $rem_balance = DB::SELECT("SELECT SUM(amount) as remaining_balance FROM payment_transaction_table as bb WHERE bb.invoice_num = '{$inv_num}' AND bb.line_item_id = {$line_item} GROUP BY bb.line_item_id ASC");
 
         $result = DB::SELECT("SELECT aa.* FROM payment_transaction_table as aa WHERE aa.invoice_num = '{$inv_num}' AND aa.line_item_id = {$line_item}");
+
         if($result != null)
         {
             return array(
@@ -157,6 +158,15 @@ class paymentController extends Controller
                 "result" => $result
                 );
         }
+
+        return array(
+            "status" => 200,
+            "description" => "Available",
+            "invoice_num_result" => $inv_num,
+            "line_item_id_result" => $line_item,
+            "remaining_balance" => 0,
+            "result" => []
+        );
 
         return array("result" => 404, "description" => "No Result Found!");
     }
