@@ -3,7 +3,6 @@
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i></a>
         </div>
-
         <style>
             .noti_count {
                 font-size: .8em;
@@ -13,29 +12,25 @@
                 padding: 0px 5px 0px 5px;
                 margin:  0 1px 0 0;
             }
-            .unread {
+            li.unread {
                 color: #FFFFFF;
                 background: #337ab7;
-                padding: 5px;
-                height: 45px;
+                height: 80px;
+                padding: 15px;;
             }
-            .unread:hover {
+            li.unread:hover {
                 background: #135186;
             }
-            .unread div a, .unread div a strong, .unread div a small {
+            li.unread div a {
                 color: #FFFFFF;
             }
-            .read {
-                padding: 5px;
-                height: 45px;
+            li.read {
+                padding: 15px;;
+                height: 80px;;
             }
-
             li.read:hover {
                 background: #efefef;
-                padding: 5px;
-                height: 45px;
             }
-
         </style>
 
         <ul class="nav navbar-top-links navbar-right">
@@ -43,7 +38,7 @@
                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                     <i class="fa fa-bell"></i>  <span id="gen_notification_count" class="label label-primary noti_count"></span>
                 </a>
-                <ul style="margin-top: -5px; position: absolute; right: -115px;" class="dropdown-menu dropdown-alerts" id = "notif_lists"> </ul>
+                <ul style="margin-top: -5px; position: absolute; right: -110px;" class="dropdown-menu dropdown-alerts" id = "notif_lists"> </ul>
             </li>
             <li>
                 <a href="{{ URL('/logout_process') }}">

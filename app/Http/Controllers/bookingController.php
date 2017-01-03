@@ -466,18 +466,22 @@ class bookingController extends Controller
 
     public function save_discount(Request $request, $booking_trans_num, $mag_trans_uid, $client_id)
     {
+        $des_discount = (float)$request['txtDiscount'];
+
         $discount = new DiscountTransaction();
         $discount->trans_id = $booking_trans_num;
         $discount->sales_rep_id = $_COOKIE['Id'];
         $discount->amount = $request['txtBaseAmountHidden'];
-        $discount->discount_percent = $request['txtDiscount'];
+        $discount->discount_percent = $des_discount;
+        $discount->remarks = $request['txtRemarks'];
         $discount->status = 1;
         $discount->save();
 
         $notif = new Notification();
-        $notif->user_uid = $_COOKIE['Id'];
-        $notif->noti_subject = "Discretionary Discount";
-        $notif->noti_desc = "Add Discretionary Discount";
+        $notif->role = 1; // default administrator
+        $notif->from_user_uid = $_COOKIE['Id'];
+        $notif->to_user_uid = -1; // undecided purposes
+        $notif->noti_desc = "gives " . number_format($des_discount, 0, '.', ',') . "% discretionary discount.";
         $notif->noti_url = "/booking/add_issue/" . $mag_trans_uid . "/" . $client_id;
         $notif->noti_flag = 1;
         $notif->save();
@@ -487,7 +491,17 @@ class bookingController extends Controller
 
     public function get_discount_transaction($booking_trans_num)
     {
-        $result = DB::table('discount_transaction_table')->where('trans_id','=',$booking_trans_num)->get();
+//        $result = DB::table('discount_transaction_table')->where('trans_id','=',$booking_trans_num)->get();
+        $result = DB::select("
+            SELECT *, 
+                (
+                    SELECT CONCAT(first_name, ' ', last_name) 
+                    FROM user_account 
+                    WHERE Id = sales_rep_id
+                ) AS sales_rep_name
+            FROM discount_transaction_table 
+            WHERE trans_id = '{$booking_trans_num}'
+        ");
         if(COUNT($result) > 0){
             return array("status" => 202, "result" => $result);
         }
