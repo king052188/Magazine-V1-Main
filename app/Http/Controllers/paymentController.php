@@ -95,7 +95,7 @@ class paymentController extends Controller
         return array("result" => 404, "description" => "Invoice Number is not available");
     }
 
-    public function save_payment_transaction($inv_num, $line_item, $ref_number, $method_payment, $date_payment, $amount)
+    public function save_payment_transaction($inv_num, $line_item, $ref_number, $method_payment, $date_payment, $amount, $remarks)
     {
         $r = new PaymentTransaction();
         $r->invoice_num = $inv_num;
@@ -104,6 +104,7 @@ class paymentController extends Controller
         $r->method_payment = $method_payment;
         $r->date_payment = date('Y-m-d H:i:s', $date_payment);
         $r->amount = $amount;
+        $r->remarks = $remarks;
         $r->type = 2;
         $r->status = 2;
         $r->save();
@@ -142,7 +143,9 @@ class paymentController extends Controller
     {
         $line_item = (int)$line_item;
 
-        $result = DB::SELECT("SELECT * FROM payment_transaction_table WHERE invoice_num = '{$inv_num}' AND line_item_id = {$line_item}");
+        $rem_balance = DB::SELECT("SELECT SUM(amount) as remaining_balance FROM payment_transaction_table as bb WHERE bb.invoice_num = '{$inv_num}' AND bb.line_item_id = {$line_item} GROUP BY bb.line_item_id ASC");
+
+        $result = DB::SELECT("SELECT aa.* FROM payment_transaction_table as aa WHERE aa.invoice_num = '{$inv_num}' AND aa.line_item_id = {$line_item}");
         if($result != null)
         {
             return array(
@@ -150,6 +153,7 @@ class paymentController extends Controller
                 "description" => "Available",
                 "invoice_num_result" => $result[0]->invoice_num,
                 "line_item_id_result" => $result[0]->line_item_id,
+                "remaining_balance" => $rem_balance[0]->remaining_balance,
                 "result" => $result
                 );
         }

@@ -88,7 +88,7 @@ Route::get('/transaction/update/row/{trans_id}/{trans_status}', 'bookingControll
 Route::get('/payment/payment_list', 'paymentController@payment_list');
 Route::get('/payment/invoice_create_api/{trans_num}', 'paymentController@invoice_create_api');
 Route::get('/payment/search_invoice_number_api/{inv_num}', 'paymentController@search_invoice_number_api');
-Route::get('/payment/save_payment_transaction/{inv_num}/{line_item}/{ref_number}/{method_payment}/{date_payment}/{amount}', 'paymentController@save_payment_transaction');
+Route::get('/payment/save_payment_transaction/{inv_num}/{line_item}/{ref_number}/{method_payment}/{date_payment}/{amount}/{remarks}', 'paymentController@save_payment_transaction');
 Route::get('/payment/view/transaction/{inv_num}/{line_item}', 'paymentController@view_payment_transaction');
 
 // Search Routes

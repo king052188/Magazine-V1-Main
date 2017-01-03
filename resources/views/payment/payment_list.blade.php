@@ -74,7 +74,7 @@
 
                                     <div class="group-payment">
                                         <div class="form-group" id="data_1">
-                                        <label class="filter-col" style="margin-right:0;" for="pref-perpage">Date of Payment:</label><br/>
+                                            <label class="filter-col" style="margin-right:0;" for="pref-perpage">Date of Payment:</label><br/>
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 <input type="text" id = "date_of_payment" name = "date_of_payment" class="form-control" value="03/04/2014" required>
@@ -87,20 +87,37 @@
                                                 <option value="2">Credit Card</option>
                                                 <option value="3">Checked</option>
                                                 <option value="4">Paypal</option>
-                                            </select>                                
-                                        </div> 
-                                        <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Reference Number:</label><br/>
-                                            <input type="text" class="form-control" id="ref_number" name = "ref_number" required>
-                                        </div> 
+                                            </select>
+                                        </div>
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Which Line Item:</label><br/>
-                                            <input type="text" class="form-control" id="line_item" name = "line_item" required>
+                                            <input type="text" class="form-control" id="line_item" name = "line_item" required readonly>
                                         </div>
-
+                                        <br /><br />
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Amount to be paid:</label><br/>
                                             <input class="form-control" type='number' step='0.01' value='0.00' id = "amount" name = "amount" placeholder='0.00' required/>
+                                        </div>
+
+                                        <div class="form-group" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Total Paid:</label><br/>
+                                            <input class="form-control" type='number' step='0.01' value='0.00' id = "total_paid" name = "total_paid" placeholder='0.00' readonly/>
+                                        </div>
+
+                                        <div class="form-group" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Remaining Balance:</label><br/>
+                                            <input class="form-control" type='number' step='0.01' value='0.00' id = "rem_balance" name = "rem_balance" placeholder='0.00' readonly/>
+                                        </div>
+                                        <br /><br />
+
+                                        <div class="form-group" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Reference Number:</label><br/>
+                                            <input type="text" class="form-control" id="ref_number" name = "ref_number" required>
+                                        </div>
+
+                                        <div class="form-group" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Remarks:</label><br/>
+                                            <input type="text" class="form-control" id="remarks" name = "remarks" required>
                                         </div>
                                         <div class="form-group pull-right">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">&nbsp;</label><br/>
@@ -127,13 +144,13 @@
                                     <th style='text-align: center; '>Pub.</th>
                                     <th style='text-align: center; width: 70px;'>Issue</th>
                                     <th style='text-align: center; width: 70px;'>Year</th>
-                                    <th style='text-align: center; width: 70px;'>Ad Size</th>
+                                    <th style='text-align: center; width: 100px;'>Ad Size</th>
                                     <th style='text-align: center; width: 70px;'>Ad Color</th>
                                     <th style='text-align: right; width: 100px;'>Net</th>
                                     <th style='text-align: center; width: 70px;'>Qty</th>
                                     <th style='text-align: right; width: 100px;'>GST/HST</th>
                                     <th style='text-align: right; width: 100px;'>Amount</th>
-                                    <th style='text-align: center; width: 100px;'>Action</th>
+                                    <th style='text-align: center; width: 150px;'>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -205,16 +222,20 @@
 <script>
     $(document).ready(function(){
 
-        $('#tbl_booking_lists').DataTable({
-            dom: '<"html5buttons"B>lTfgitp',
-            "aaSorting": [0,'asc'],
-            buttons: []
-        });
-
         $(".group-payment").hide();
 
+//        $('#tbl_booking_lists').DataTable({
+//            dom: '<"html5buttons"B>lTfgitp',
+//            "aaSorting": [0,'asc'],
+//            buttons: []
+//        });
+//
+//        $('#tbl_booking_lists').find("th").off("click.DT");
+
+
+
         $("#btn_cancel").click(function(){
-            $("#invoice_number").val('');
+//            $("#invoice_number").val('');
             $(".group-payment").hide();
         });
 
@@ -258,11 +279,17 @@
         function populate_inv_num(inv_num)
         {
             var html_thmb = "";
+            var isFirstLoad = true;
+
 
             $.ajax({
                 url: "http://magazine-api.kpa21.com/kpa/work/invoice-transaction-list/" + inv_num,
                 dataType: "text",
                 beforeSend: function () {
+                    if(isFirstLoad) {
+                        isFirstLoad = false;
+                        $('table#tbl_booking_lists > tbody').empty().prepend('<tr> <td colspan="11" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+                    }
                 },
                 success: function(data) {
                     var json = $.parseJSON(data);
@@ -301,14 +328,51 @@
 
         $(document).on("click",".view-clicked",function() {
 
-            $(".group-payment").show();
+            var inv_num = $("#invoice_number").val();
+            $(".group-payment").hide();
             $("#ref_number").val('');
 
             var value =  $(this).attr('get-val');
             var values = value.split(":");
 
+            var line_item = values[0];
+            var amount = values[1];
+
             $('#line_item').val(values[0]);
-            $('#amount').val(values[1]);
+
+            $.ajax({
+                url: "/payment/view/transaction/" + inv_num + "/" + line_item,
+                dataType: "text",
+                beforeSend: function () {
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json == null)
+                        return false;
+
+                    if(json.status == 200)
+                    {
+                        var r_balance = amount - json.remaining_balance;
+
+                        $('#total_paid').val(json.remaining_balance);
+                        $('#rem_balance').val(r_balance);
+                        $('#amount').val("0.00");
+
+                        if(r_balance <= 0)
+                        {
+                            swal(
+                                    'PAID',
+                                    'Invoice Number <b>' + inv_num + '</b> and Proposal ID <b>'+ line_item +'</b>',
+                                    'info'
+                            )
+                            $(".group-payment").hide();
+                            return false;
+                        }else{
+                            $(".group-payment").show();
+                        }
+                    }
+                }
+            });
         });
 
         $(document).on("click",".view-transaction",function() {
@@ -331,6 +395,7 @@
 
                     if(json.status == 200)
                     {
+//                        var method_of_payment;
                         var html_thmb = "";
                         var total_payment = 0;
                         var available_balance = 0;
@@ -343,9 +408,20 @@
                             $("#invoice_number_result").empty().append(json.invoice_num_result);
                             $("#line_item_result").empty().append(json.line_item_id_result);
 
+                            if(info.method_payment == 1){
+                                method_of_payment = 'Cash';
+                            }else if(info.method_payment == 2){
+                                method_of_payment = 'Credit Card';
+                            }else if(info.method_payment == 3){
+                                method_of_payment = 'Checked';
+                            }else if(info.method_payment == 4){
+                                method_of_payment = 'Paypal';
+                            }
+
+
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ info.reference_number +"</td>";
-                            html_thmb += "<td style='text-align: left;'>"+ info.method_payment +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ method_of_payment +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ info.date_payment +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ info.amount +"</td>";
                             html_thmb += "</tr>";
@@ -368,27 +444,70 @@
             var ref_number = $("#ref_number").val();
             var line_item = $("#line_item").val();
             var amount = $("#amount").val();
+            var rem_balance = $("#rem_balance").val();
+            var remarks = $("#remarks").val();
 
-            $.ajax({
-                url: "/payment/save_payment_transaction/" + inv_num + "/" + line_item + "/" + ref_number + "/" + payment_method + "/" + date_of_payment + "/" + amount,
-                dataType: "text",
-                beforeSend: function () {
-                },
-                success: function(data) {
-                    var json = $.parseJSON(data);
-                    if(json.result == 200)
-                    {
-                        swal(
-                                '',
-                                'Successfully Saved!',
-                                'success'
-                        )
+            if(ref_number == "")
+            {
+                swal(
+                        'Oops...',
+                        'Ref Number is required!',
+                        'warning'
+                )
+                return false;
+            }
 
-                        $(".group-payment").hide();
+            if(amount == "" || amount == '0.00')
+            {
+                swal(
+                        'Oops...',
+                        'Please input your payment!',
+                        'warning'
+                )
+                return false;
+            }
+
+            if(remarks == "")
+            {
+                swal(
+                        'Oops...',
+                        'Remarks is required!',
+                        'warning'
+                )
+                return false;
+            }
+
+            if(parseFloat(amount) > parseFloat(rem_balance)){
+                swal(
+                        '',
+                        'Payment must be less than or equal invoice balance!',
+                        'error'
+                )
+                return false;
+            }
+            else
+            {
+                $.ajax({
+                    url: "/payment/save_payment_transaction/" + inv_num + "/" + line_item + "/" + ref_number + "/" + payment_method + "/" + date_of_payment + "/" + amount + "/" + remarks,
+                    dataType: "text",
+                    beforeSend: function () {
+                    },
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        if(json.result == 200)
+                        {
+                            swal(
+                                    '',
+                                    'The Payment Transaction has been saved!',
+                                    'success'
+                            )
+
+                            $(".group-payment").hide();
 //                        window.location.href = "/payment/payment_list";
+                        }
                     }
-                }
-            });
+                });
+            }
         });
 
 
@@ -434,6 +553,7 @@
                 }
             }
         });
+
     } );
 
     update_status = function(control_id, trans_num) {
