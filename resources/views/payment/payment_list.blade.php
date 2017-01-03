@@ -49,9 +49,6 @@
                     {{ Session::get('success') }}
                 </div>
                 @endif
-
-
-
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="col-sm-12 form-inline">
@@ -62,6 +59,7 @@
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Find by Invoice Number:</label><br/>
                                             <input type="text" class="form-control" id="invoice_number" name = "invoice_number" placeholder="Input Invoice Number">
                                         </div>
+
                                         <div class="form-group">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">&nbsp;</label><br/>
                                             <button type="submit" class="btn btn-primary filter-col " id = "btn_search" style="margin-bottom: 0px;">
@@ -71,16 +69,29 @@
 
                                     </div><br/>
 
-
                                     <div class="group-payment">
-                                        <div class="form-group" id="data_1">
+
+                                        <div class="form-group" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Which Line Item:</label><br/>
+                                            <input type="text" class="form-control" id="line_item" name = "line_item" style="width: 100px;" readonly>
+                                        </div>
+
+                                        <div class="form-group" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Reference Number:</label><br/>
+                                            <input type="text" class="form-control" id="ref_number" name = "ref_number" style="width: 240px;" required>
+                                        </div>
+
+                                        <br /><br />
+
+                                        <div class="form-group" id="data_1" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-perpage">Date of Payment:</label><br/>
                                             <div class="input-group date">
                                                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                 <input type="text" id = "date_of_payment" name = "date_of_payment" class="form-control" value="03/04/2014" required>
                                             </div>
                                         </div>
-                                        <div class="form-group" style="margin-right: 10px;">
+
+                                        <div class="form-group">
                                             <label class="filter-col" style="margin-right:0;" for="pref-perpage">Payment Method:</label><br/>
                                             <select class="form-control" id = "payment_method" name = "payment_method" required>
                                                 <option value="1">Cash</option>
@@ -89,36 +100,31 @@
                                                 <option value="4">Paypal</option>
                                             </select>
                                         </div>
-                                        <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Which Line Item:</label><br/>
-                                            <input type="text" class="form-control" id="line_item" name = "line_item" required readonly>
-                                        </div>
+
                                         <br /><br />
+
                                         <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Amount to be paid:</label><br/>
-                                            <input class="form-control" type='number' step='0.01' value='0.00' id = "amount" name = "amount" placeholder='0.00' required/>
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Amount:</label><br/>
+                                            <input style="text-align: right;" class="form-control" type='number' step='0.01' value='0.00' id = "amount" name = "amount" placeholder='0.00' required/>
                                         </div>
 
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Total Paid:</label><br/>
-                                            <input class="form-control" type='number' step='0.01' value='0.00' id = "total_paid" name = "total_paid" placeholder='0.00' readonly/>
+                                            <input style="text-align: right;" class="form-control" type='number' step='0.01' value='0.00' id = "total_paid" name = "total_paid" placeholder='0.00' readonly/>
                                         </div>
 
                                         <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Remaining Balance:</label><br/>
-                                            <input class="form-control" type='number' step='0.01' value='0.00' id = "rem_balance" name = "rem_balance" placeholder='0.00' readonly/>
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Total Balance:</label><br/>
+                                            <input style="text-align: right;" class="form-control" type='number' step='0.01' value='0.00' id = "rem_balance" name = "rem_balance" placeholder='0.00' readonly/>
                                         </div>
+
                                         <br /><br />
 
                                         <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Reference Number:</label><br/>
-                                            <input type="text" class="form-control" id="ref_number" name = "ref_number" required>
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Remarks:</label><br/>
+                                            <input type="text" class="form-control" id="remarks" name = "remarks" style="width: 360px;" required>
                                         </div>
 
-                                        <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Remarks:</label><br/>
-                                            <input type="text" class="form-control" id="remarks" name = "remarks" required>
-                                        </div>
                                         <div class="form-group pull-right">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">&nbsp;</label><br/>
                                             <button type="submit" class="btn btn-primary filter-col " id = "btn_save" style="margin-bottom: 0px;">
@@ -229,7 +235,6 @@
         });
 
         $("#btn_search").click(function(){
-
             var inv_num = $("#invoice_number").val();
             if(inv_num == "")
             {
@@ -521,11 +526,8 @@
 
     });
 
-
-    function open_preview(trans_number)
-    {
-//        window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_number + "?show=preview",
-//                "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
+    
+    function open_preview(trans_number) {
         window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
                 "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
     }
@@ -534,6 +536,7 @@
         $("#filter").on('change', function(){
             window.location.href = "/booking/booking-list/" + $(this).val();
         });
+
         $("#tbl_booking_lists > tbody  > tr").change(function(){
             var value =  $(this).find('select:first').val();
             var values = value.split(":");
@@ -542,14 +545,23 @@
                 var str_to_int = parseInt(values[0]);
                 var trans_num = values[1];
                 if(str_to_int == -1) {
-//                    window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/pdf/" + trans_num + "?show=preview",
-//                            "mywindow","location=1,status=1,scrollbars=1,width=727,height=680");
                     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_num + "/preview",
                             "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
                 }
                 if(str_to_int == -2) {
                     window.open("http://"+ Url_Client_Dashboard + trans_num,'_blank');
                 }
+            }
+        });
+
+        $('#amount').val("0.00");
+        $('#amount').on('keyup', function(){
+            var total_paid = $('#total_paid').val();
+            var value = $(this).val();
+            if(value != "") {
+                var rem_balance = parseFloat(total_paid) - parseFloat(value);
+                var t_blance = numeral(rem_balance).format('0,0.00');
+                $('#rem_balance').val(t_blance);
             }
         });
 
