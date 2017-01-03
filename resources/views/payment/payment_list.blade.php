@@ -276,7 +276,7 @@
 
 
             $.ajax({
-                url: "http://magazine-api.kpa21.com/kpa/work/invoice-transaction-list/" + inv_num,
+                url: "http://"+ report_url_api +"/kpa/work/invoice-transaction-list/" + inv_num,
                 dataType: "text",
                 beforeSend: function () {
                     if(isFirstLoad) {
