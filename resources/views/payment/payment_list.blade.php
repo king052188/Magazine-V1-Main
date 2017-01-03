@@ -137,7 +137,7 @@
                     </div>
 
                      <div class="table-responsive">
-                        <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example-main" >
+                        <table id="tbl_payment_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
                             <thead>
                                 <tr>
                                     <th style='text-align: center; width: 30px;'>Proposal ID</th>
@@ -150,7 +150,7 @@
                                     <th style='text-align: center; width: 70px;'>Qty</th>
                                     <th style='text-align: right; width: 100px;'>GST/HST</th>
                                     <th style='text-align: right; width: 100px;'>Amount</th>
-                                    <th style='text-align: center; width: 150px;'>Action</th>
+                                    <th style='text-align: center; width: 250px;'>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -198,11 +198,11 @@
                     <div class="col-sm-2" style = "text-align: right"><label id = "total_payment"></label></div>
 
                     <div class="col-sm-7"></div>
-                    <div class="col-sm-3"><b>Total Balance:</b></div>
+                    <div class="col-sm-3"><b>Total Payable:</b></div>
                     <div class="col-sm-2" style = "text-align: right"><label id = "total_balance"></label></div>
 
                     <div class="col-sm-7"></div>
-                    <div class="col-sm-3"><b>Available Balance:</b></div>
+                    <div class="col-sm-3"><b>Balance:</b></div>
                     <div class="col-sm-2" style = "text-align: right"><label id = "available_balance"></label></div>
                 </div>
                 <div style = "clear: both;"></div>
@@ -224,18 +224,7 @@
 
         $(".group-payment").hide();
 
-//        $('#tbl_booking_lists').DataTable({
-//            dom: '<"html5buttons"B>lTfgitp',
-//            "aaSorting": [0,'asc'],
-//            buttons: []
-//        });
-//
-//        $('#tbl_booking_lists').find("th").off("click.DT");
-
-
-
         $("#btn_cancel").click(function(){
-//            $("#invoice_number").val('');
             $(".group-payment").hide();
         });
 
@@ -276,19 +265,17 @@
             });
         });
 
-        function populate_inv_num(inv_num)
-        {
+        function populate_inv_num(inv_num) {
             var html_thmb = "";
             var isFirstLoad = true;
 
-
             $.ajax({
-                url: "http://magazine-api.kpa21.com/kpa/work/invoice-transaction-list/" + inv_num,
+                url: "http://"+ report_url_api +"/kpa/work/invoice-transaction-list/" + inv_num,
                 dataType: "text",
                 beforeSend: function () {
                     if(isFirstLoad) {
                         isFirstLoad = false;
-                        $('table#tbl_booking_lists > tbody').empty().prepend('<tr> <td colspan="11" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+                        $('table#tbl_payment_list > tbody').empty().prepend('<tr> <td colspan="11" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
                     }
                 },
                 success: function(data) {
@@ -312,15 +299,29 @@
                             html_thmb += "<td style='text-align: left;'></td>";
                             html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: left;'>" +
-                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;' class='btn btn-primary btn-xs view-clicked' get-val = '"+ tran.id + ":" + tran.total_amount_with_discount +"' title='Select Payments'><i class='fa fa-credit-card'></i> Select</a> " +
-                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px 5px;' class='btn btn-primary btn-xs view-transaction' get-val = '"+ tran.id + ":" + inv_num + ":" + tran.total_amount_with_discount +"' data-toggle='modal' data-target='#modal_transaction' title='View Transactions'><i class='fa fa-eye'></i> View</a>" +
+                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;' class='btn btn-info btn-xs view-clicked' get-val = '"+ tran.id + ":" + tran.total_amount_with_discount +"' title='Select Payments'><i class='fa fa-credit-card'></i> Select</a> " +
+                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px 5px;' class='btn btn-success btn-xs view-transaction' get-val = '"+ tran.id + ":" + inv_num + ":" + tran.total_amount_with_discount +"' data-toggle='modal' data-target='#modal_transaction' title='View Transactions'><i class='fa fa-eye'></i> View</a>" +
+                                    "<a href = 'http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+ inv_num + "/" + tran.id + "' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px 8px;' class='btn btn-primary btn-xs' title='View Invoice'><i class='fa fa-eye'></i> View Invoice</a>" +
+//                                    "<select class='form-control'  id = 'action_payment_"+tran.id +"'>" +
+//                                    "<option value = '0'>--select--</option>" +
+//                                    "<option value = '1'>Select for payment</option>" +
+//                                    "<option value = '2'>View Transaction</option>" +
+//                                    "<option value = '3'>View Invoice</option>" +
+//                                    "</select>" +
                                     "</td>";
                             html_thmb += "</tr>";
 
                         });
                     });
 
-                    $('table#tbl_booking_lists > tbody').empty().prepend(html_thmb);
+                    $('table#tbl_payment_list > tbody').empty().prepend(html_thmb);
+
+                    $("#tbl_payment_list > tbody  > tr").change(function(){
+                        var selected =  $(this).find('select:first');
+                        var value =  selected.val();
+
+
+                    });
 
                 }
             });
@@ -510,8 +511,6 @@
             }
         });
 
-
-
         $('#data_1 .input-group.date').datepicker({
             todayBtn: "linked",
             keyboardNavigation: false,
@@ -519,8 +518,8 @@
             calendarWeeks: true,
             autoclose: true
         });
-    });
 
+    });
 
 
     function open_preview(trans_number)

@@ -214,8 +214,8 @@
                                         <tr>
                                             <td colspan="2" style="padding: 5px;">
                                                 <div id="button_approve" style="float: right;">
-                                                    <button id="btnApprove" class="btn btn-primary">Approve</button>
-                                                    <button id="btnDecline" class="btn btn-danger">Decline</button>
+                                                    <button data-toggle="modal" data-target="#approved_modal" class="btn btn-primary">Approve</button>
+                                                    <button data-toggle="modal" data-target="#declined_modal" class="btn btn-danger">Decline</button>
                                                 </div>
                                                 <h3 id="text_status"> Approved </h3>
                                             </td>
@@ -231,6 +231,8 @@
 </div>
 
 <div class="bd-example">
+
+    {{--discount modal area--}}
     <div class="modal fade" id="discount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <form method="post" action = "{{ url('/booking/save/discount') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
@@ -269,6 +271,64 @@
             </form>
         </div>
     </div>
+
+    {{--approve modal area--}}
+    <div class="modal fade" id="approved_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelApprove" aria-hidden="true">
+        <form method="post" action = "{{ url('/booking/issue/discount/approve') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <input type = "hidden" id = "sls_rep" name = "sls_rep">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Approve</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">Remarks: <i>300 Characters</i> </label>
+                        <textarea type="number" class="form-control" id="txtApproveRemarks" name = "txtApproveRemarks" placeholder="Enter remarks" maxlength="300" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                    <button type="submit" id = "btn_approve_skip" class="btn btn-info pull-left">Skip</button>
+                    <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <button type="submit" id = "btn_approve_save" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+
+    {{--declined modal area--}}
+    <div class="modal fade" id="declined_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelDecline" aria-hidden="true">
+        <form method="post" action = "{{ url('/booking/issue/discount/decline') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <input type = "hidden" id = "sls_rep_dec" name = "sls_rep">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLabel">Decline</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Remarks: <i>300 Characters</i> </label>
+                            <textarea type="number" class="form-control" id="txtDeclineRemarks" name = "txtDeclineRemarks" placeholder="Enter remarks" maxlength="300" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <button type="submit" id = "btn_decline_skip" class="btn btn-info pull-left">Skip</button>
+                        <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                        <button type="submit" id = "btn_decline_save" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 @endsection
@@ -288,59 +348,88 @@
 <script>
 
 $(document).ready(function(){
-        var client_id = {{ $client_id }};
-        $('#ad_criteria_id').on('change',function(){
-            var mag_uid = {{ $transaction_uid[0]->magazine_id }};
-            var criteria_id = $(this).val();
-            $.ajax({
-                url: "/booking/getPackageName/" + criteria_id + "/" + mag_uid,
-                dataType: 'text',
-                success: function(data)
+    var client_id = {{ $client_id }};
+    $('#ad_criteria_id').on('change',function(){
+        var mag_uid = {{ $transaction_uid[0]->magazine_id }};
+        var criteria_id = $(this).val();
+        $.ajax({
+            url: "/booking/getPackageName/" + criteria_id + "/" + mag_uid,
+            dataType: 'text',
+            success: function(data)
+            {
+                var json = $.parseJSON(data);
+                if(json == null)
+                    return false;
+
+                // $('#ad_package_id').empty();
+                $('#package_label').empty().append("Ad Size");
+                $('#ad_package_id').empty().append("<select class='form-control' name = 'ad_package_id' id = 'ad_package_id_select'>");
+                $('#ad_package_id_select').empty().append("<option value = '' disabled selected>select</option>");
+                $(json.list).each(function(g, gl){
+                    $('#ad_package_id_select').append("<option value = "+ gl.ad_size + ";" + gl.ad_amount + ";" + gl.price_uid +">"+ gl.package_name +"</option>");
+                });
+                $('#ad_package_id').append("</select>");
+
+                //select package and call quarter issue
+                $('#ad_package_id_select').on('change',function()
                 {
-                    var json = $.parseJSON(data);
-                    if(json == null)
-                        return false;
+                    var i;
+                    var ad_size = $(this).val();
+                    var ad_sizes = ad_size.split(';');
 
-                    // $('#ad_package_id').empty();
-                    $('#package_label').empty().append("Ad Size");
-                    $('#ad_package_id').empty().append("<select class='form-control' name = 'ad_package_id' id = 'ad_package_id_select'>");
-                    $('#ad_package_id_select').empty().append("<option value = '' disabled selected>select</option>");
-                    $(json.list).each(function(g, gl){
-                        $('#ad_package_id_select').append("<option value = "+ gl.ad_size + ";" + gl.ad_amount + ";" + gl.price_uid +">"+ gl.package_name +"</option>");
-                    });
-                    $('#ad_package_id').append("</select>");
+                    $('#amount_label').empty().append("Amount");
+                    $('#amount_box').empty().append('<input type="hidden" value = "'+ ad_sizes[2] +'" name = "price_uid"><input type="hidden" value = "'+ ad_sizes[0] +'" name = "ad_p_split"><input type="text" value = "'+ ad_sizes[1] +'" name = "ad_amount" class="form-control" readonly>');
 
-                    //select package and call quarter issue
-                    $('#ad_package_id_select').on('change',function()
+                    $('#quarter_issues_label').empty().append("Issue");
+                    $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
+                    $('#quarter_issued_select').append("<option value = '' disabled selected>select</option>");
+                    for(i = 1; i <= 12; i++) {
+                        $('#quarter_issued_select').append("<option value = "+ i +"> " + i + "</option>");
+                    }
+                    $('#quarter_issued_box').append('</select>');
+
+                    //select quarter
+                    $('#quarter_issued_select').on('change',function()
                     {
-                        var i;
-                        var ad_size = $(this).val();
-                        var ad_sizes = ad_size.split(';');
-
-                        $('#amount_label').empty().append("Amount");
-                        $('#amount_box').empty().append('<input type="hidden" value = "'+ ad_sizes[2] +'" name = "price_uid"><input type="hidden" value = "'+ ad_sizes[0] +'" name = "ad_p_split"><input type="text" value = "'+ ad_sizes[1] +'" name = "ad_amount" class="form-control" readonly>');
-
-                        $('#quarter_issues_label').empty().append("Issue");
-                        $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
-                        $('#quarter_issued_select').append("<option value = '' disabled selected>select</option>");
-                        for(i = 1; i <= 12; i++) {
-                            $('#quarter_issued_select').append("<option value = "+ i +"> " + i + "</option>");
-                        }
-                        $('#quarter_issued_box').append('</select>');
-
-                        //select quarter
-                        $('#quarter_issued_select').on('change',function()
-                        {
-                            $('#line_item_qty_label').empty().append("Line Item QTY");
-                            $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
-                            $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary pull-right" value = "Save">');
-                        });
+                        $('#line_item_qty_label').empty().append("Line Item QTY");
+                        $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
+                        $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary pull-right" value = "Save">');
                     });
-                }
-            });
+                });
+            }
         });
-
     });
+
+    $("#btn_approve_save").click(function(){
+        var remarks = $("#txtApproveRemarks").val();
+        if(remarks == "")
+        {
+            swal({
+                title: "Remarks is required",
+                text: "",
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            return false;
+        }
+    });
+
+    $("#btn_decline_save").click(function(){
+        var remarks = $("#txtDeclineRemarks").val();
+        if(remarks == "")
+        {
+            swal({
+                title: "Remarks is required",
+                text: "",
+                timer: 2000,
+                showConfirmButton: false
+            });
+
+            return false;
+        }
+    });
+});
 
 function open_preview(trans_number) {
     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
@@ -471,6 +560,8 @@ function populate_issues_transaction(uid) {
                                     $('#approval_discretionary_discount').show();
                                     $('#total_result').hide();
                                     $("#approval_sales_rep").text(discount.sales_rep_name);
+                                    $("#sls_rep").val(discount.sales_rep_id);
+                                    $("#sls_rep_dec").val(discount.sales_rep_id);
                                     $("#approval_date").text(discount.created_at);
                                     $("#approval_remarks").text(discount.remarks);
                                     $("#approval_sub_total").text(numeral(total_with_discount).format('0,0.00'));

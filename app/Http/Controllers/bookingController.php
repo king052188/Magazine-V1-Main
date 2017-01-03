@@ -508,4 +508,65 @@ class bookingController extends Controller
         return array("status" => 404);
     }
 
+    public function approve_discount(Request $request, $booking_trans_num, $mag_trans_uid, $client_id)
+    {
+        $sls_id = $request['sls_rep'];
+        $remarks = $request['txtApproveRemarks'];
+
+        DB::table('discount_transaction_table')
+            ->where('trans_id', $booking_trans_num)
+            ->update(['status' => 2]); //2 = approved
+
+        $role = DB::SELECT("SELECT role FROM user_account WHERE Id = {$sls_id}");
+        $discount = DB::SELECT("SELECT discount_percent FROM discount_transaction_table WHERE trans_id = '{$booking_trans_num}'");
+
+        if($remarks == ""){
+            $r = "approved " . number_format($discount[0]->discount_percent, 0, '.', ',') . "% discretionary discount. ";
+        }else{
+            $r = $remarks;
+        }
+
+        $notif = new Notification();
+        $notif->role = $role[0]->role; // default administrator
+        $notif->from_user_uid = $_COOKIE['Id'];
+        $notif->to_user_uid = $sls_id; // undecided purposes
+        $notif->noti_desc = $r;
+        $notif->noti_url = "/booking/add_issue/" . $mag_trans_uid . "/" . $client_id;
+        $notif->noti_flag = 1;
+        $notif->save();
+
+        return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Discretionary Discount Approved.');
+
+    }
+
+    public function decline_discount(Request $request, $booking_trans_num, $mag_trans_uid, $client_id)
+    {
+        $sls_id = $request['sls_rep'];
+        $remarks = $request['txtDeclineRemarks'];
+
+        DB::table('discount_transaction_table')
+            ->where('trans_id', $booking_trans_num)
+            ->update(['status' => 3]); //2 = declined
+
+        $role = DB::SELECT("SELECT role FROM user_account WHERE Id = {$sls_id}");
+        $discount = DB::SELECT("SELECT discount_percent FROM discount_transaction_table WHERE trans_id = '{$booking_trans_num}'");
+
+        if($remarks == ""){
+            $r = "declined " . number_format($discount[0]->discount_percent, 0, '.', ',') . "% discretionary discount. ";
+        }else{
+            $r = $remarks;
+        }
+
+        $notif = new Notification();
+        $notif->role = $role[0]->role; // default administrator
+        $notif->from_user_uid = $_COOKIE['Id'];
+        $notif->to_user_uid = $sls_id; // undecided purposes
+        $notif->noti_desc = $r;
+        $notif->noti_url = "/booking/add_issue/" . $mag_trans_uid . "/" . $client_id;
+        $notif->noti_flag = 1;
+        $notif->save();
+
+        return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Discretionary Discount Declined.');
+
+    }
 }

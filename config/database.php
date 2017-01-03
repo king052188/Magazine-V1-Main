@@ -48,7 +48,7 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => '192.168.20.17',
+            'host' => '192.168.43.132',
             'port' => '80',
         ],
 
@@ -60,7 +60,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '192.168.20.17'),
+            'host' => env('DB_HOST', '192.168.43.132'),
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'db_magazine_v1'), //sd
             'username' => env('DB_USERNAME', 'root'),
