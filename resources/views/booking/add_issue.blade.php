@@ -169,7 +169,7 @@
                                                         <td><span id="issues_sub_total"></span></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><span id = "issues_discount_label">Less 0% Discount:</span></td>
+                                                        <td><span id = "issues_discount_label">0% Discount:</span></td>
                                                         <td><span id="issues_discount"></span></td>
                                                     </tr>
                                                     <tr>
@@ -184,6 +184,44 @@
                                     </div>
                                  </div>
                                 <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px; display: none;"> </div>
+                                <div id="approval_discretionary_discount" style="width: 100%; margin-top: 10px; display: none; ">
+                                    <h3>Discretionary Discount</h3>
+                                    <table style="width: 100%; padding: 10px;" border="0" cellspacing="0" cellpadding="0">
+                                        <tr>
+                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> Sales Rep: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_sales_rep"></span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> Date: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_date"></span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> Remarks: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_remarks"></span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> Sub Total: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_sub_total"></span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_discount_label"></span> Discount: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_discount"></span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%; padding: 5px;"> Total Amount: </td>
+                                            <td style="text-align: right; padding: 5px;"> <span id="approval_amount"></span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="padding: 5px;">
+                                                <div id="button_approve" style="float: right;">
+                                                    <button id="btnApprove" class="btn btn-primary">Approve</button>
+                                                    <button id="btnDecline" class="btn btn-danger">Decline</button>
+                                                </div>
+                                                <h3 id="text_status"> Approved </h3>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -214,6 +252,10 @@
                             <input type="number" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
                         </div>
                         <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Remarks: <i>300 Characters</i> </label>
+                            <textarea type="number" class="form-control" id="txtRemarks" name = "txtRemarks" placeholder="Enter remarks" maxlength="300" rows="4"></textarea>
+                        </div>
+                        <div class="form-group">
                             <label for="recipient-name" class="form-control-label">Total Amount:</label>
                             <input type="text" class="form-control" id="txtAmount" disabled>
                         </div>
@@ -232,18 +274,24 @@
 @endsection
 
 @section('scripts')
+
+<style>
+    .btn-preview-kpa {
+        background: #7f7f7f;
+        color: #ffffff;
+    }
+    .btn-preview-kpa:hover {
+        background: #8d8d8d;
+        color: #ffffff;
+    }
+</style>
 <script>
 
 $(document).ready(function(){
         var client_id = {{ $client_id }};
         $('#ad_criteria_id').on('change',function(){
             var mag_uid = {{ $transaction_uid[0]->magazine_id }};
-
-//            console.log(mag_uid);
-
             var criteria_id = $(this).val();
-//            console.log(mag_uid);
-
             $.ajax({
                 url: "/booking/getPackageName/" + criteria_id + "/" + mag_uid,
                 dataType: 'text',
@@ -318,10 +366,8 @@ function populate_issues_transaction(uid) {
     console.log(uid);
 
     $(document).ready( function() {
-
         var hasDiscount = 0;
         var BaseTotalAmount = 0;
-
         $.ajax({
             url: "http://"+report_url_api+"/kpa/work/magazine-issue-lists/"+uid,
             dataType: "text",
@@ -337,11 +383,9 @@ function populate_issues_transaction(uid) {
                     return false;
 
                 if(json.Status == 404) {
-
                     $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="7">' + json.Message + '</td> </tr>');
                     return;
                 }
-
                 $('#mag_trans_container').empty().prepend('<h3>'+ json.Magazine_Name +' [ <span>'+ json.Mag_Code +'</span> ] | '+ json.Mag_Country +' </h3>');
 
                 var total_with_discount = 0;
@@ -388,32 +432,69 @@ function populate_issues_transaction(uid) {
                     success: function(data) {
                         var json = $.parseJSON(data);
                         if (json.status == 202) {
+
                             $(json.result).each(function(i, discount) {
                                 i_sub_total = discount.amount;
                                 i_discount = discount.discount_percent;
                                 i_total_less_discount = (i_sub_total * i_discount) / 100;
 
-                                $("#issues_discount_label").text(numeral(i_discount).format('0,0') + "% Discount:");
-                                $("#issues_discount").text( "(" + numeral(i_total_less_discount).format('0,0.00') + ")");
-                                $("#issues_total_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0.00'));
+                                console.log(Role);
 
-                                if(parseInt( discount.status ) > 1) {
-                                    $('#status_discretionary_discount').show();
-                                    var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid green; padding: 5px; border-radius: 5px;'>";
-                                    x_wrapper += "<h3 style='color: green;'>Discretionary Discount has been Approved</h3>";
-                                    x_wrapper += "</div>";
-                                    $('#status_discretionary_discount').empty().append(x_wrapper);
+                                if(Role > 1) {
+                                    $("#issues_discount_label").text(numeral(i_discount).format('0,0') + "% Discount:");
+                                    $("#issues_discount").text( "(" + numeral(i_total_less_discount).format('0,0.00') + ")");
+                                    $("#issues_total_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0.00'));
+                                    if(parseInt( discount.status ) == 2) {
+                                        $('#status_discretionary_discount').show();
+                                        var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid green; padding: 5px; border-radius: 5px;'>";
+                                        x_wrapper += "<h3 style='color: green;'>Discretionary Discount has been Approved</h3>";
+                                        x_wrapper += "</div>";
+                                        $('#status_discretionary_discount').empty().append(x_wrapper);
+                                    }
+                                    else if(parseInt( discount.status ) == 3) {
+                                        $('#status_discretionary_discount').show();
+                                        var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid red; padding: 5px; border-radius: 5px;'>";
+                                        x_wrapper += "<h3 style='color: red;'>Discretionary Discount has been Declined</h3>";
+                                        x_wrapper += "</div>";
+                                        $('#status_discretionary_discount').empty().append(x_wrapper);
+                                    }
+                                    else {
+                                        $('#status_discretionary_discount').show();
+                                        var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid #1976D2; padding: 5px; border-radius: 5px;'>";
+                                        x_wrapper += "<h3 style='color: #1976D2;'>Discretionary Discount is not yet Approved</h3>";
+                                        x_wrapper += "</div>";
+                                        $('#status_discretionary_discount').empty().append(x_wrapper);
+                                    }
                                 }
                                 else {
-                                    $('#status_discretionary_discount').show();
-                                    var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid red; padding: 5px; border-radius: 5px;'>";
-                                    x_wrapper += "<h3 style='color: red;'>Discretionary Discount is not yet Approved</h3>";
-                                    x_wrapper += "</div>";
-                                    $('#status_discretionary_discount').empty().append(x_wrapper);
+
+                                    $('#approval_discretionary_discount').show();
+                                    $('#total_result').hide();
+                                    $("#approval_sales_rep").text(discount.sales_rep_name);
+                                    $("#approval_date").text(discount.created_at);
+                                    $("#approval_remarks").text(discount.remarks);
+                                    $("#approval_sub_total").text(numeral(total_with_discount).format('0,0.00'));
+                                    $("#approval_discount_label").text(numeral(i_discount).format('0,0') + "%");
+                                    $("#approval_discount").text( "(" + numeral(i_total_less_discount).format('0,0') + ")");
+                                    $("#approval_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0'));
+
+                                    if(parseInt( discount.status ) == 2) {
+                                        $("#button_approve").hide();
+                                        $("#text_status").text("Approved");
+                                        $("#text_status").attr("style", "color: green;");
+                                    }
+                                    else if(parseInt( discount.status ) == 3) {
+                                        $("#button_approve").hide();
+                                        $("#text_status").text("Declined");
+                                        $("#text_status").attr("style", "color: red;");
+                                    }
+                                    else {
+                                        $("#text_status").hide();
+                                    }
                                 }
                             });
 
-                            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-info">Preview</a>');
+                            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                             $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
                         }
                         else {
@@ -421,7 +502,7 @@ function populate_issues_transaction(uid) {
                             $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
 
                             $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
-                            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-info">Preview</a>');
+                            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                             $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
                         }
                     }
@@ -431,6 +512,7 @@ function populate_issues_transaction(uid) {
                 $('#txtBaseAmountHidden').val(BaseTotalAmount);
             }
         });
+
 
         $('#txtAmount').val("0.00");
         $('#txtDiscount').on('keyup', function(){

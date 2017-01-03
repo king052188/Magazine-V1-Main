@@ -12,6 +12,7 @@
         var Url_Client_Dashboard    = "{{ $report_api["Url_Client_Dashboard"] }}";
         var Url_Insertion_Order     = "{{ $report_api["Url_Insertion_Order"] }}";
         var Url_Logo_Uploader       = "{{ $report_api["Url_Logo_Uploader"] }}";
+        var Role                    = {{ $_COOKIE['role'] }};
     </script>
     <title>Magazine | @yield('title')</title>
     <link href="{{ asset('css/bootstrap.min.css')}}" rel="stylesheet">
@@ -73,7 +74,7 @@
         // Notification
         general_notification();
         function general_notification() {
-            var url = "http://" + report_url_api + "/kpa/work/notification-list";
+            var url = "http://" + report_url_api + "/kpa/work/notification-list/"+Role;
             $(document).ready( function() {
 
                 var html_notif = "";
@@ -92,19 +93,26 @@
 
                             $(json.Data).each(function(n, notif){
                                 var unread = notif.noti_flag == 1 ? "class='unread'" : "class='read'";
-                                html_notif += "<li "+ unread +" onclick=notif_read(" + notif.Id + ")>";
-                                html_notif += "<div class='dropdown-messages-box' style='background: red;'>";
-                                html_notif += "<div style='float: left; margin-left: -15px;'><a href = "+  notif.noti_url +">";
-                                html_notif += "<i class='fa fa-flag' style='font-size:30px;'></i>";
-                                html_notif += "</a> </div>";
-                                html_notif += "<div style='float: left; width: 220px;'><a href = "+  notif.noti_url +">";
-                                html_notif += "<div style='float: left;'><strong> " + notif.noti_subject + "</strong><br />";
-                                html_notif += "<small>" + notif.noti_desc + "</small></div>";
-                                html_notif += "<div style='float: right; padding-right: 0px'><small>10 mins ago</small></div>";
-                                html_notif += "</a></div>";
-                                html_notif += "</div>";
-                                html_notif += "</li>";
-                                html_notif += "<li class='divider'></li>";
+                                html_notif += "" +
+                                        "<li "+ unread +" onclick=notif_read(" + notif.Id + ")>" +
+                                        "<div class='dropdown-messages-box'>" +
+                                        "   <a href = "+  notif.noti_url +">" +
+                                        "<div style='float: left; margin-left: 0px; width: 45px;'>" +
+                                        "   <i class='fa fa-flag' style='font-size:30px; margin-left: 7px;'></i>" +
+                                        "</div>" +
+                                        "<div style='float: left; width: 210px;'>" +
+                                        "       <div style='margin-top: -17px; padding: 2px;'>" +
+                                        "           <strong style='font-size: 1em;'> " + notif.from_name + "</strong>" +
+                                        "           <small style='font-size: 1em;'>" + notif.noti_desc + "</small>" +
+                                    "           </div>" +
+                                        "       <div style='padding: 2px;'>" +
+                                        "           <small>10 mins ago</small>" +
+                                        "       </div>" +
+                                        "</div>" +
+                                        "   </a>" +
+                                        "</div>" +
+                                        "</li>" +
+                                        "<li class='divider'></li>";
                             });
 
                             html_notif += "<li>";
@@ -121,7 +129,7 @@
                 });
             } );
         }
-//        setInterval(general_notification, 1000);
+        setInterval(general_notification, 1000);
         // End Notification
         
     </script>
