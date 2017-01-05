@@ -59,12 +59,11 @@
                             <tr>
                                 <th style='text-align: center; width: 30px;'>#</th>
                                 <th style='text-align: left;'>Magazine</th>
-                                <th style='text-align: left; width: 50px;'># Issue</th>
-                                <th style='text-align: left; width: 50px;'>Year Issue</th>
                                 <th style='text-align: left; width: 150px;'>Sales</th>
                                 <th style='text-align: left; width: 150px;'>Client</th>
                                 <th style='text-align: left; width: 150px;'>Agency</th>
-                                <th style='text-align: center; width: 50px;'>Line</th>
+                                <th style='text-align: center; width: 80px;'>Line Items</th>
+                                <th style='text-align: center; width: 100px;'>Date Created</th>
                                 <th style='text-align: center; width: 80px;'>Status/Action</th>
                                 <th style='text-align: center; width: 50px;'>-</th>
                             </tr>
@@ -78,12 +77,11 @@
                                     <tr>
                                         <td style='text-align: center;'>{{ $n++ }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
-                                        <td style='text-align: center;'>{{ $booking[$i]->magazine_issues }}</td>
-                                        <td style='text-align: center;'>{{ $booking[$i]->magazine_year }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
+                                        <td style='text-align: center;'>{{ $booking[$i]->created_at }}</td>
                                     @if($_COOKIE['role'] > 2)
                                         <td style='text-align: center;'>
                                             <form class="form-inline">
