@@ -44,7 +44,7 @@ class bookingController extends Controller
                                 SELECT magazine_name FROM magazine_table WHERE Id = m_trans.magazine_id 
                             ) AS magazine_name,
                             ( 
-                                SELECT magazine_issues FROM magazine_table WHERE Id = m_trans.magazine_id 
+                                 m_issue.quarter_issued
                             ) AS magazine_issues,
                             ( 
                                 SELECT magazine_year FROM magazine_table WHERE Id = m_trans.magazine_id 
