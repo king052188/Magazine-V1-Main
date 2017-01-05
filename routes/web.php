@@ -95,6 +95,10 @@ Route::get('/payment/invoice_create_api/{trans_num}', 'paymentController@invoice
 Route::get('/payment/search_invoice_number_api/{inv_num}', 'paymentController@search_invoice_number_api');
 Route::get('/payment/save_payment_transaction/{inv_num}/{line_item}/{ref_number}/{method_payment}/{date_payment}/{amount}/{remarks}', 'paymentController@save_payment_transaction');
 Route::get('/payment/view/transaction/{inv_num}/{line_item}', 'paymentController@view_payment_transaction');
+Route::get('/payment/invoice/generate/{generate_issue}/{generate_year}', 'paymentController@invoice_generate');
+Route::get('/payment/invoice', 'paymentController@invoice');
+Route::get('/payment/invoice/list', 'paymentController@invoice_list');
+
 
 // Search Routes
 Route::get('/execute/search/booking-and-sales', 'searchController@search_function');
