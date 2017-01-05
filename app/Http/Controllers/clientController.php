@@ -166,11 +166,11 @@ class clientController extends Controller
 
     public function save_contact(Request $request, $company_uid)
     {
-        //$role = array('', '0001', '0002', $request['branch_name'], '0004');
+        $role = array('', '0001', '0002', $request['branch_name'], $request['other_name'], $request['branch_name']);
 
         $client = new ClientContact();
         $client->client_id = $company_uid;
-        //$client->branch_name = $role[$request['role']];
+        $client->branch_name = $role[$request['role']];
         $client->first_name = $request['first_name'];
         $client->middle_name = $request['middle_name'];
         $client->last_name = $request['last_name'];
@@ -183,7 +183,7 @@ class clientController extends Controller
         $client->mobile = $request['mobile'];
         $client->position = $request['position'];
         $client->type = $request['type'];
-        $client->role = 4;
+        $client->role = $request['role'];
         $client->status = 2;
         $client->synched = 1;
         $client->save();

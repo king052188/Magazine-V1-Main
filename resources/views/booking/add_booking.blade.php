@@ -61,7 +61,7 @@
                             <label>Company Name</label>
 
                             <div class="input-group">
-                                <input type="text" class="form-control hidden" name="client_id" id="clientIdField" value="">
+                                <input type="hidden" class="form-control" name="client_id" id="clientIdField" value="">
                                 <input type="text" class="form-control" placeholder="(Company Name) Click Search..." id="clientIdFieldView" required disabled>
                                 <span class="input-group-btn">
                                     <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_client">Search <i class="fa fa-search"></i></button>
@@ -73,7 +73,7 @@
                             <label for="ex2">Agency ID <i>(if any)</i></label>
 
                             <div class="input-group">
-                                <input type="text" class="form-control hidden" name="agency_id" id="agencyIdField" value="">
+                                <input type="hidden" class="form-control" name="agency_id" id="agencyIdField" value="">
                                 <input type="text" class="form-control" placeholder="(Agency Name) Click Search..."  id="agencyIdFieldView" disabled>
                                 <span class="input-group-btn">
                                     <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_agency" >Search <i class="fa fa-search"></i></button>

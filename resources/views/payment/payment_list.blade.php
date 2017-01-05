@@ -228,6 +228,14 @@
 <script>
     $(document).ready(function(){
 
+
+//        TEMPORARY
+//        populate_inv_num('2017-12345');
+
+
+
+
+
         $(".group-payment").hide();
 
         $("#btn_cancel").click(function(){
@@ -304,15 +312,12 @@
                             html_thmb += "<td style='text-align: left;'></td>";
                             html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: left;'>" +
-                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;' class='btn btn-info btn-xs view-clicked' get-val = '"+ tran.id + ":" + tran.total_amount_with_discount + ":" + "' title='Select Payments'><i class='fa fa-credit-card'></i> Select</a> " +
-                                    "<a href = '#' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px 5px;' class='btn btn-success btn-xs view-transaction' get-val = '"+ tran.id + ":" + inv_num + ":" + tran.total_amount_with_discount +"' data-toggle='modal' data-target='#modal_transaction' title='View Transactions'><i class='fa fa-eye'></i> View</a>" +
-//                                    "<a href = 'http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+ inv_num + "/" + tran.id + "' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px 8px;' class='btn btn-primary btn-xs' title='View Invoice'><i class='fa fa-eye'></i> View Invoice</a>" +
-//                                    "<select class='form-control'  id = 'action_payment_"+tran.id +"'>" +
-//                                    "<option value = '0'>--select--</option>" +
-//                                    "<option value = '1'>Select for payment</option>" +
-//                                    "<option value = '2'>View Transaction</option>" +
-//                                    "<option value = '3'>View Invoice</option>" +
-//                                    "</select>" +
+                                    "<select class='form-control'  id = 'action_payment_"+tran.id +"'>" +
+                                    "<option value = '0'>--select--</option>" +
+                                    "<option value = '"+ tran.id + ":" + tran.total_amount_with_discount + ":" + inv_num + ":1'>Select for payment</option>" +
+                                    "<option value = '"+ tran.id + ":" + inv_num + ":" + tran.total_amount_with_discount + ":2'>View Transaction</option>" +
+                                    "<option value = '"+ tran.id + ":" + tran.total_amount_with_discount + ":" + inv_num + ":3'>View Invoice</option>" +
+                                    "</select>" +
                                     "</td>";
                             html_thmb += "</tr>";
 
@@ -324,125 +329,157 @@
                     $("#tbl_payment_list > tbody  > tr").change(function(){
                         var selected =  $(this).find('select:first');
                         var value =  selected.val();
+                        var values = value.split(":");
 
+                        if(values[3] == 1){
 
+                            var value =  selected.val();
+                            var values = value.split(":");
+                            var line_item = values[0];
+                            var amount = values[1];
+                            var inv_num = values[2];
+
+                            $('#line_item').val(values[0]);
+
+                            $.ajax({
+                                url: "/payment/view/transaction/" + inv_num + "/" + line_item,
+                                dataType: "text",
+                                beforeSend: function () {
+                                },
+                                success: function(data) {
+                                    var json = $.parseJSON(data);
+                                    if(json == null)
+                                        return false;
+
+                                    if(json.status == 200)
+                                    {
+                                        var r_balance = amount - json.total_paid;
+
+                                        $('#total_paid').val(json.total_paid);
+                                        $('#rem_balance').val(r_balance);
+                                        $('#amount').val("0.00");
+
+                                        if(r_balance <= 0)
+                                        {
+                                            swal(
+                                                    'PAID',
+                                                    'Invoice Number <b>' + inv_num + '</b> and Proposal ID <b>'+ line_item +'</b>',
+                                                    'info'
+                                            )
+                                            $(".group-payment").hide();
+                                            return false;
+                                        }else{
+                                            $(".group-payment").show();
+                                        }
+                                    }
+                                }
+                            });
+                        }else if(values[3] == 2){
+
+                            $('#modal_transaction').modal({
+                                show: true
+                            });
+
+                            var value =  selected.val();
+                            var values = value.split(":");
+                            var line_item = values[0];
+                            var inv_num = values[1];
+                            var total_balance = values[2];
+
+                            $.ajax({
+                                url: "/payment/view/transaction/" + inv_num + "/" + line_item,
+                                dataType: "text",
+                                beforeSend: function () {
+                                },
+                                success: function(data) {
+                                    var json = $.parseJSON(data);
+                                    if(json == null)
+                                        return false;
+
+                                    if(json.status == 200)
+                                    {
+//                        var method_of_payment;
+                                        var html_thmb = "";
+                                        var total_payment = 0;
+                                        var available_balance = 0;
+
+                                        $(json.result).each(function(i, info){
+
+                                            total_payment += Number(info.amount);
+                                            available_balance = (total_balance - total_payment);
+
+                                            $("#invoice_number_result").empty().append(json.invoice_num_result);
+                                            $("#line_item_result").empty().append(json.line_item_id_result);
+
+                                            if(info.method_payment == 1){
+                                                method_of_payment = 'Cash';
+                                            }else if(info.method_payment == 2){
+                                                method_of_payment = 'Credit Card';
+                                            }else if(info.method_payment == 3){
+                                                method_of_payment = 'Checked';
+                                            }else if(info.method_payment == 4){
+                                                method_of_payment = 'Paypal';
+                                            }
+
+                                            html_thmb += "<tr>";
+                                            html_thmb += "<td style='text-align: center;'>"+ info.reference_number +"</td>";
+                                            html_thmb += "<td style='text-align: center;'>"+ method_of_payment +"</td>";
+                                            html_thmb += "<td style='text-align: center;'>"+ info.date_payment +"</td>";
+                                            html_thmb += "<td style='text-align: center;'>"+ info.amount +"</td>";
+                                            html_thmb += "</tr>";
+
+                                        });
+
+                                        $('table#view_transaction_results > tbody').empty().prepend(html_thmb);
+                                        $('#total_payment').empty().append(numeral(total_payment).format('0,0.00'));
+                                        $('#total_balance').empty().append(numeral(total_balance).format('0,0.00'));
+                                        $('#available_balance').empty().append(numeral(available_balance).format('0,0.00'));
+                                    }
+                                }
+                            });
+
+                        }else if (values[3] == 3){
+
+                            var value =  selected.val();
+                            var values = value.split(":");
+                            var line_item = values[0];
+                            var inv_num = values[2];
+                            var amount = values[1];
+
+                            $.ajax({
+                                url: "/payment/view/transaction/" + inv_num + "/" + line_item,
+                                dataType: "text",
+                                beforeSend: function () {
+                                },
+                                success: function(data) {
+                                    var json = $.parseJSON(data);
+                                    if(json == null)
+                                        return false;
+
+                                    if(json.status == 200)
+                                    {
+                                        var r_balance = amount - json.total_paid;
+
+                                        if(r_balance <= 0)
+                                        {
+                                            window.open('http://'+ report_url_api +'/kpa/work/transaction/invoice-order/'+ inv_num +'/'+ line_item +'/paid',
+                                                    "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
+                                        }else{
+                                            window.open('http://'+ report_url_api +'/kpa/work/transaction/invoice-order/'+ inv_num +'/'+ line_item +'',
+                                                    "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
+                                        }
+                                    }
+                                }
+                            });
+
+                        } else {
+                            $(".group-payment").hide();
+                        }
                     });
 
                 }
             });
         }
-
-        $(document).on("click",".view-clicked",function() {
-
-            var inv_num = $("#invoice_number").val();
-
-            $(".group-payment").hide();
-            $("#ref_number").val('');
-
-            var value =  $(this).attr('get-val');
-            var values = value.split(":");
-
-            var line_item = values[0];
-            var amount = values[1];
-
-            $('#line_item').val(values[0]);
-
-            $.ajax({
-                url: "/payment/view/transaction/" + inv_num + "/" + line_item,
-                dataType: "text",
-                beforeSend: function () {
-                },
-                success: function(data) {
-                    var json = $.parseJSON(data);
-                    if(json == null)
-                        return false;
-
-                    if(json.status == 200)
-                    {
-                        var r_balance = amount - json.remaining_balance;
-
-                        $('#total_paid').val(json.remaining_balance);
-                        $('#rem_balance').val(r_balance);
-                        $('#amount').val("0.00");
-
-                        if(r_balance <= 0)
-                        {
-                            swal(
-                                    'PAID',
-                                    'Invoice Number <b>' + inv_num + '</b> and Proposal ID <b>'+ line_item +'</b>',
-                                    'info'
-                            )
-                            $(".group-payment").hide();
-                            return false;
-                        }else{
-                            $(".group-payment").show();
-                        }
-                    }
-                }
-            });
-        });
-
-        $(document).on("click",".view-transaction",function() {
-
-            var value =  $(this).attr('get-val');
-            var values = value.split(":");
-            var line_item = values[0];
-            var inv_num = values[1];
-            var total_balance = values[2];
-
-            $.ajax({
-                url: "/payment/view/transaction/" + inv_num + "/" + line_item,
-                dataType: "text",
-                beforeSend: function () {
-                },
-                success: function(data) {
-                    var json = $.parseJSON(data);
-                    if(json == null)
-                        return false;
-
-                    if(json.status == 200)
-                    {
-//                        var method_of_payment;
-                        var html_thmb = "";
-                        var total_payment = 0;
-                        var available_balance = 0;
-
-                        $(json.result).each(function(i, info){
-
-                            total_payment += Number(info.amount);
-                            available_balance = (total_balance - total_payment);
-
-                            $("#invoice_number_result").empty().append(json.invoice_num_result);
-                            $("#line_item_result").empty().append(json.line_item_id_result);
-
-                            if(info.method_payment == 1){
-                                method_of_payment = 'Cash';
-                            }else if(info.method_payment == 2){
-                                method_of_payment = 'Credit Card';
-                            }else if(info.method_payment == 3){
-                                method_of_payment = 'Checked';
-                            }else if(info.method_payment == 4){
-                                method_of_payment = 'Paypal';
-                            }
-
-
-                            html_thmb += "<tr>";
-                            html_thmb += "<td style='text-align: center;'>"+ info.reference_number +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ method_of_payment +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ info.date_payment +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ info.amount +"</td>";
-                            html_thmb += "</tr>";
-
-                        });
-
-                        $('table#view_transaction_results > tbody').empty().prepend(html_thmb);
-                        $('#total_payment').empty().append(numeral(total_payment).format('0,0.00'));
-                        $('#total_balance').empty().append(numeral(total_balance).format('0,0.00'));
-                        $('#available_balance').empty().append(numeral(available_balance).format('0,0.00'));
-                    }
-                }
-            });
-        });
 
         $("#btn_save").click(function(){
             var inv_num = $("#invoice_number").val();
@@ -453,6 +490,16 @@
             var amount = $("#amount").val();
             var rem_balance = $("#rem_balance").val();
             var remarks = $("#remarks").val();
+
+            if(inv_num == "")
+            {
+                swal(
+                        'Oops...',
+                        'Invoice # is required!',
+                        'warning'
+                )
+                return false;
+            }
 
             if(ref_number == "")
             {

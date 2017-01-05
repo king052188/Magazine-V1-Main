@@ -329,24 +329,31 @@
                             </div>
                             <div id="add_more_contacts" class="tab-pane">
                                 <div class="panel-body">
-                                    {{--<div class="col-lg-12" id = "role_handler">--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label for="ex2">Role</label>--}}
-                                            {{--<select class="form-control" name = "role" id = "role" required>--}}
-                                                {{--<option value="">--select--</option>--}}
-                                                {{--<option value="1" {{ COUNT($p) != 0 ? 'hidden' : '' }}>Primary Contact</option>--}}
-                                                {{--<option value="2" {{ COUNT($s) != 0 ? 'hidden' : '' }}>Secondary Contact</option>--}}
-                                                {{--<option value="3" {{ COUNT($b) != 0 ? 'hidden' : '' }}>Bill To Contact</option>--}}
-                                                {{--<option value="4">Other Contact</option>--}}
-                                            {{--</select>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="col-lg-6" id = "company_name_show">--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label for="ex2">Company Name</label>--}}
-                                            {{--<input class="form-control" type="text" name="branch_name" placeholder="Enter Company Name">--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
+                                    <div class="col-lg-12" id = "role_handler">
+                                        <div class="form-group">
+                                            <label for="ex2">Role</label>
+                                            <select class="form-control" name = "role" id = "role" required>
+                                                <option value="">--select--</option>
+                                                <option value="1" {{ COUNT($p) != 0 ? 'hidden' : '' }}>Primary Contact</option>
+                                                <option value="2" {{ COUNT($s) != 0 ? 'hidden' : '' }}>Secondary Contact</option>
+                                                <option value="3" {{ COUNT($b) != 0 ? 'hidden' : '' }}>Bill To Contact</option>
+                                                <option value="4">Other Contact</option>
+                                                <option value="5" {{ COUNT($same) != 0 ? 'hidden' : '' }}>Same as to Bill To Contact</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" id = "company_name_show">
+                                        <div class="form-group">
+                                            <label for="ex2">Company Name</label>
+                                            <input class="form-control" type="text" name="branch_name" placeholder="Enter Company Name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6" id = "other_name_show">
+                                        <div class="form-group">
+                                            <label for="ex2">Specify Name</label>
+                                            <input class="form-control" type="text" id ="other_name" name="other_name" placeholder="Enter Others Name">
+                                        </div>
+                                    </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="ex2">First Name</label>
@@ -456,13 +463,13 @@
                                 $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                                 $("#contact_company_name_show").show();
                                 $("#contact_other_name_show").hide();
-                                $("#branch_name").val(contact.branch_name);
+                                $("#contact_branch_name").val(contact.branch_name);
 
                             }else if(contact.role == 4){
                                 $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                                 $("#contact_other_name_show").show();
                                 $("#contact_company_name_show").hide();
-                                $("#other_name").val(contact.branch_name);
+                                $("#contact_other_name").val(contact.branch_name);
 
                             }else{
                                 $("#contact_company_name_show").hide();
@@ -530,13 +537,13 @@
                             <div class="col-lg-6" id = "contact_company_name_show">
                                 <div class="form-group">
                                     <label for="ex2">Company Name</label>
-                                    <input class="form-control" type="text" id ="branch_name" name="branch_name" placeholder="Enter Company Name">
+                                    <input class="form-control" type="text" id ="contact_branch_name" name="branch_name" placeholder="Enter Company Name">
                                 </div>
                             </div>
                             <div class="col-lg-6" id = "contact_other_name_show">
                                 <div class="form-group">
                                     <label for="ex2">Specify Name</label>
-                                    <input class="form-control" type="text" id ="other_name" name="other_name" placeholder="Enter Others Name">
+                                    <input class="form-control" type="text" id ="contact_other_name" name="other_name" placeholder="Enter Others Name">
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -655,7 +662,7 @@
 
             $("#btnSave").hide();
             $("#company_name_show").hide();
-//            $("#other_name_show").hide();
+            $("#other_name_show").hide();
 
             $('.ClientsListdataTables').DataTable({
                 dom: '<"html5buttons"B>lTfgitp',
@@ -664,12 +671,20 @@
             });
 
             $("#role").change(function(){
-                if($(this).val() == 3){
+                if($(this).val() == 3 || $(this).val() == 5){
                     $("#role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                     $("#company_name_show").show();
+                    $("#other_name_show").hide();
+
+                }else if($(this).val() == 4){
+                    $("#role_handler").removeClass('col-lg-12').addClass('col-lg-6');
+                    $("#other_name_show").show();
+                    $("#company_name_show").hide();
+
                 }else{
                     $("#role_handler").removeClass('col-lg-6').addClass('col-lg-12');
                     $("#company_name_show").hide();
+                    $("#other_name_show").hide();
                 }
             });
 

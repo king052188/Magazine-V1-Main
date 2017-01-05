@@ -143,29 +143,28 @@ class paymentController extends Controller
     {
         $line_item = (int)$line_item;
 
-        $rem_balance = DB::SELECT("SELECT SUM(amount) as remaining_balance FROM payment_transaction_table as bb WHERE bb.invoice_num = '{$inv_num}' AND bb.line_item_id = {$line_item} GROUP BY bb.line_item_id ASC");
-
+        $total_paid = DB::SELECT("SELECT SUM(amount) as paid FROM payment_transaction_table as bb WHERE bb.invoice_num = '{$inv_num}' AND bb.line_item_id = {$line_item} GROUP BY bb.line_item_id ASC");
         $result = DB::SELECT("SELECT aa.* FROM payment_transaction_table as aa WHERE aa.invoice_num = '{$inv_num}' AND aa.line_item_id = {$line_item}");
 
-        if($result != null)
+        if(COUNT($result) == 0)
         {
             return array(
-                "status" => 200,
-                "description" => "Available",
-                "invoice_num_result" => $result[0]->invoice_num,
-                "line_item_id_result" => $result[0]->line_item_id,
-                "remaining_balance" => $rem_balance[0]->remaining_balance,
-                "result" => $result
-                );
+                "status" => 404,
+                "description" => "Available 1",
+                "invoice_num_result" => $inv_num,
+                "line_item_id_result" => $line_item,
+                "total_paid" => 0,
+                "result" => []
+            );
         }
 
         return array(
             "status" => 200,
-            "description" => "Available",
+            "description" => "Available 2",
             "invoice_num_result" => $inv_num,
             "line_item_id_result" => $line_item,
-            "remaining_balance" => 0,
-            "result" => []
+            "total_paid" => $total_paid[0]->paid,
+            "result" => $result
         );
 
         return array("result" => 404, "description" => "No Result Found!");
