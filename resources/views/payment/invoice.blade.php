@@ -69,22 +69,54 @@
                         </div>
 
                         <div class="table-responsive">
-                            <table id="tbl_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
-                                <thead>
-                                <tr>
-                                    <th style='text-align: center; width: 200px;'>Invoice Number</th>
-                                    <th style='text-align: center; width: 200px;'>Issue</th>
-                                    <th style='text-align: center; width: 200px;'>Year</th>
-                                    <th style='text-align: center; width: 200px;'>Due Date</th>
-                                    <th style='text-align: center;'>Sales Representative</th>
-                                    <th style='text-align: center;'>Invoice Created</th>
-                                    <th style='text-align: center; width: 80px;'>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
 
-                                </tbody>
-                            </table>
+                            <div class="tabs-container">
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#all_invoice" id = "all_contacts_press"> All Invoice</a></li>
+                                    <li class=""><a data-toggle="tab" href="#latest_invoice" id = "add_more_contacts_press">Latest Invoice</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="all_invoice" class="tab-pane active">
+
+                                        <table id="tbl_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
+                                            <thead>
+                                            <tr>
+                                                <th style='text-align: center; width: 200px;'>Invoice Number</th>
+                                                <th style='text-align: center; width: 200px;'>Issue</th>
+                                                <th style='text-align: center; width: 200px;'>Year</th>
+                                                <th style='text-align: center; width: 200px;'>Due Date</th>
+                                                <th style='text-align: center;'>Sales Representative</th>
+                                                <th style='text-align: center;'>Invoice Created</th>
+                                                <th style='text-align: center; width: 80px;'>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div id="latest_invoice" class="tab-pane">
+                                        <table id="tbl_latest_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
+                                            <thead>
+                                            <tr>
+                                                <th style='text-align: center; width: 200px;'>Invoice Number</th>
+                                                <th style='text-align: center; width: 200px;'>Issue</th>
+                                                <th style='text-align: center; width: 200px;'>Year</th>
+                                                <th style='text-align: center; width: 200px;'>Due Date</th>
+                                                <th style='text-align: center;'>Sales Representative</th>
+                                                <th style='text-align: center;'>Invoice Created</th>
+                                                <th style='text-align: center; width: 80px;'>Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -140,6 +172,8 @@
 
     <script>
         $(document).ready(function(){
+
+            populate_invoice_list();
 
             function populate_invoice_list(){
                 var html_thmb = "";
