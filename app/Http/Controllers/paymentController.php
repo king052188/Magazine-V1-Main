@@ -7,6 +7,7 @@ use DB;
 use App\Contracts;
 use App\Invoice;
 use App\PaymentTransaction;
+use App\MagIssueTransaction;
 use Carbon\Carbon;
 
 
@@ -190,18 +191,33 @@ class paymentController extends Controller
         return array("status" => 404, "description" => "No Result Found!");
     }
 
+    public function latest_invoice_list()
+    {
+        $result = DB::SELECT("SELECT * FROM invoice_table");
+
+        if($result != null)
+        {
+            return array(
+                "status" => 202,
+                "list" => $result
+            );
+        }
+
+        return array("status" => 404, "description" => "No Result Found!");
+    }
+
     public function invoice_generate($generate_issue, $generate_year)
     {
         $quarter_issue = (int)$generate_issue;
 
         $process = DB::SELECT("
                         SELECT 
-                        cc.trans_num as r_trans_num, cc.sales_rep_code as r_sales_rep_code
+                        aa.Id as r_uid, cc.trans_num as r_trans_num, cc.sales_rep_code as r_sales_rep_code
                         FROM 
                         magazine_issue_transaction_table as aa
                         INNER JOIN magazine_transaction_table as bb ON bb.Id = aa.magazine_trans_id
                         INNER JOIN booking_sales_table as cc ON cc.Id = bb.transaction_id
-                        WHERE aa.quarter_issued = {$quarter_issue} AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year}  AND cc.status = 3
+                        WHERE aa.quarter_issued = {$quarter_issue} AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year}  AND cc.status = 3 AND aa.status = 2
                         ");
 
         if(COUNT($process) == 0)
@@ -216,6 +232,8 @@ class paymentController extends Controller
                 $result = DB::SELECT("SELECT * FROM invoice_table WHERE booking_trans = '{$chk_trans_num}' AND issue = {$quarter_issue}");
                 if(COUNT($result) == 0)
                 {
+                    MagIssueTransaction::where('Id', '=', $process[$i]->r_uid)->update(['status' => 3]);
+                    
                     $current = Carbon::now();
                     $due_date = $current->addDays(30);
 
@@ -232,6 +250,10 @@ class paymentController extends Controller
                     $invoice->account_executive = $process[$i]->r_sales_rep_code;
                     $invoice->status = 2;
                     $invoice->save();
+                }
+                else
+                {
+                    return array("status" => 404, "description" => "No Invoice Available.");
                 }
             }
 

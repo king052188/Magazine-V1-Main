@@ -2857,6 +2857,8 @@ a.forum-item-title:hover {
 .tabs-container .nav-tabs > li.active > a:focus {
   border: 1px solid #e7eaec;
   border-bottom-color: transparent;
+  background: #2f4050;
+  color: #FFFFFF;
 }
 .tabs-container .nav-tabs {
   border-bottom: 1px solid #e7eaec;

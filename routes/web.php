@@ -98,6 +98,7 @@ Route::get('/payment/view/transaction/{inv_num}/{line_item}', 'paymentController
 Route::get('/payment/invoice/generate/{generate_issue}/{generate_year}', 'paymentController@invoice_generate');
 Route::get('/payment/invoice', 'paymentController@invoice');
 Route::get('/payment/invoice/list', 'paymentController@invoice_list');
+Route::get('/payment/latest/invoice/list', 'paymentController@latest_invoice_list');
 
 
 // Search Routes

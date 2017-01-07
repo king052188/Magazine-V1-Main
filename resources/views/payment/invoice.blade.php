@@ -61,7 +61,6 @@
                                                 <i class="fa fa-ticket"></i> Generate
                                             </button>
                                         </div>
-
                                     </div><br/>
 
                                 </div>
@@ -69,26 +68,24 @@
                         </div>
 
                         <div class="table-responsive">
-
                             <div class="tabs-container">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#all_invoice" id = "all_contacts_press"> All Invoice</a></li>
-                                    <li class=""><a data-toggle="tab" href="#latest_invoice" id = "add_more_contacts_press">Latest Invoice</a></li>
+                                    <li class="active"><a data-toggle="tab" href="#latest_invoice" id = "latest_invoice_press"> Latest Invoice</a></li>
+                                    <li class=""><a data-toggle="tab" href="#all_invoice" id = "all_invoice_press"> All Invoice</a></li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div id="all_invoice" class="tab-pane active">
-
-                                        <table id="tbl_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
+                                    <div id="latest_invoice" class="tab-pane active">
+                                        <table id="tbl_latest_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
                                             <thead>
-                                            <tr>
-                                                <th style='text-align: center; width: 200px;'>Invoice Number</th>
-                                                <th style='text-align: center; width: 200px;'>Issue</th>
-                                                <th style='text-align: center; width: 200px;'>Year</th>
-                                                <th style='text-align: center; width: 200px;'>Due Date</th>
-                                                <th style='text-align: center;'>Sales Representative</th>
-                                                <th style='text-align: center;'>Invoice Created</th>
-                                                <th style='text-align: center; width: 80px;'>Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th style='text-align: center; width: 200px;'>Invoice Number</th>
+                                                    <th style='text-align: center; width: 200px;'>Issue</th>
+                                                    <th style='text-align: center; width: 200px;'>Year</th>
+                                                    <th style='text-align: center; width: 200px;'>Due Date</th>
+                                                    <th style='text-align: center;'>Sales Representative</th>
+                                                    <th style='text-align: center;'>Invoice Created</th>
+                                                    <th style='text-align: center; width: 80px;'>Action</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
 
@@ -96,18 +93,18 @@
                                         </table>
                                     </div>
 
-                                    <div id="latest_invoice" class="tab-pane">
-                                        <table id="tbl_latest_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
+                                    <div id="all_invoice" class="tab-pane">
+                                        <table id="tbl_all_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
                                             <thead>
-                                            <tr>
-                                                <th style='text-align: center; width: 200px;'>Invoice Number</th>
-                                                <th style='text-align: center; width: 200px;'>Issue</th>
-                                                <th style='text-align: center; width: 200px;'>Year</th>
-                                                <th style='text-align: center; width: 200px;'>Due Date</th>
-                                                <th style='text-align: center;'>Sales Representative</th>
-                                                <th style='text-align: center;'>Invoice Created</th>
-                                                <th style='text-align: center; width: 80px;'>Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th style='text-align: center; width: 200px;'>Invoice Number</th>
+                                                    <th style='text-align: center; width: 200px;'>Issue</th>
+                                                    <th style='text-align: center; width: 200px;'>Year</th>
+                                                    <th style='text-align: center; width: 200px;'>Due Date</th>
+                                                    <th style='text-align: center;'>Sales Representative</th>
+                                                    <th style='text-align: center;'>Invoice Created</th>
+                                                    <th style='text-align: center; width: 80px;'>Action</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
 
@@ -116,14 +113,12 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 
     <div class="modal fade" id="modal_view_invoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -169,11 +164,18 @@
 @section('scripts')
     <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('js/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
-
     <script>
         $(document).ready(function(){
 
-            populate_invoice_list();
+            populate_latest_invoice_list();
+
+            $("#latest_invoice_press").click(function(){
+                populate_latest_invoice_list();
+            });
+
+            $("#all_invoice_press").click(function(){
+                populate_invoice_list();
+            });
 
             function populate_invoice_list(){
                 var html_thmb = "";
@@ -184,7 +186,7 @@
                     beforeSend: function () {
                         if(isFirstLoad) {
                             isFirstLoad = false;
-                            $('table#tbl_payment_list > tbody').empty().prepend('<tr> <td colspan="5" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+                            $('table#tbl_all_invoice_list > tbody').empty().prepend('<tr> <td colspan="7" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
                         }
                     },
                     success: function(data) {
@@ -208,7 +210,45 @@
 
                         });
 
-                        $('table#tbl_invoice_list > tbody').empty().prepend(html_thmb);
+                        $('table#tbl_all_invoice_list > tbody').empty().prepend(html_thmb);
+                    }
+                });
+            }
+
+            function populate_latest_invoice_list(){
+                var html_thmb = "";
+                var isFirstLoad = true;
+                $.ajax({
+                    url: "/payment/latest/invoice/list",
+                    dataType: "text",
+                    beforeSend: function () {
+                        if(isFirstLoad) {
+                            isFirstLoad = false;
+                            $('table#tbl_latest_invoice_list > tbody').empty().prepend('<tr> <td colspan="7" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+                        }
+                    },
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        if(json == null)
+                            return false;
+
+                        $(json.list).each(function(i, tran){
+
+                            html_thmb += "<tr>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.due_date +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.account_executive +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
+                            html_thmb += "<td style='text-align: center;'>" +
+                                    "<a href = '#' get-val = '"+ tran.invoice_num + "' data-toggle='modal' data-target='#modal_view_invoice' class='btn btn-primary btn-xs view_invoice'><i class='fa fa-eye'></i> View</a>" +
+                                    "</td>";
+                            html_thmb += "</tr>";
+
+                        });
+
+                        $('table#tbl_latest_invoice_list > tbody').empty().prepend(html_thmb);
                     }
                 });
             }
@@ -233,7 +273,7 @@
                         {
                             swal(
                                     '',
-                                    'Generating Invoice Number has been done!',
+                                    'Generating Invoice Number has been done.',
                                     'success'
                             )
 
@@ -243,8 +283,8 @@
                         {
                             swal(
                                     '',
-                                    'Generating Invoice Number error!',
-                                    'fail'
+                                    'No Available Invoice.',
+                                    'error'
                             )
                         }
                     }
