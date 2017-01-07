@@ -233,9 +233,6 @@
 //        populate_inv_num('2017-12345');
 
 
-
-
-
         $(".group-payment").hide();
 
         $("#btn_cancel").click(function(){
@@ -369,8 +366,16 @@
                                             $(".group-payment").hide();
                                             return false;
                                         }else{
+
                                             $(".group-payment").show();
                                         }
+                                    }
+                                    else
+                                    {
+                                        $('#total_paid').val("0.00");
+                                        $('#rem_balance').val(amount);
+                                        $('#amount').val("0.00");
+                                        $(".group-payment").show();
                                     }
                                 }
                             });

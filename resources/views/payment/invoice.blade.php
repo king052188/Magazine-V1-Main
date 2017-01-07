@@ -70,11 +70,11 @@
                         <div class="table-responsive">
                             <div class="tabs-container">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#latest_invoice" id = "latest_invoice_press"> Latest Invoice</a></li>
-                                    <li class=""><a data-toggle="tab" href="#all_invoice" id = "all_invoice_press"> All Invoice</a></li>
+                                    <li class="active"><a data-toggle="tab" href="#all_invoice" id = "all_invoice_press"> All Invoices</a></li>
+                                    <li class=""><a data-toggle="tab" href="#latest_invoice" id = "latest_invoice_press"> Latest 24 hours Invoices</a></li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div id="latest_invoice" class="tab-pane active">
+                                    <div id="latest_invoice" class="tab-pane">
                                         <table id="tbl_latest_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
                                             <thead>
                                                 <tr>
@@ -90,7 +90,7 @@
                                             <tbody> </tbody>
                                         </table>
                                     </div>
-                                    <div id="all_invoice" class="tab-pane">
+                                    <div id="all_invoice" class="tab-pane active">
                                         <table id="tbl_all_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
                                             <thead>
                                             <tr>
@@ -162,7 +162,7 @@
     <script>
         $(document).ready(function(){
 
-            populate_latest_invoice_list();
+            populate_invoice_list();
 
             $("#latest_invoice_press").click(function(){
                 populate_latest_invoice_list();
@@ -285,7 +285,7 @@
                                     'success'
                             )
 
-                            populate_latest_invoice_list();
+                            populate_invoice_list();
                         }
                         else if(json.status == 404)
                         {
