@@ -201,7 +201,7 @@
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.due_date +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.account_executive +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
                             html_thmb += "<td style='text-align: center;'>" +
                                     "<a href = '#' get-val = '"+ tran.invoice_num + "' data-toggle='modal' data-target='#modal_view_invoice' class='btn btn-primary btn-xs view_invoice'><i class='fa fa-eye'></i> View</a>" +
@@ -239,7 +239,7 @@
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.due_date +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.account_executive +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
                             html_thmb += "<td style='text-align: center;'>" +
                                     "<a href = '#' get-val = '"+ tran.invoice_num + "' data-toggle='modal' data-target='#modal_view_invoice' class='btn btn-primary btn-xs view_invoice'><i class='fa fa-eye'></i> View</a>" +
@@ -277,7 +277,7 @@
                                     'success'
                             )
 
-                            populate_invoice_list();
+                            populate_latest_invoice_list();
                         }
                         else if(json.status == 404)
                         {
