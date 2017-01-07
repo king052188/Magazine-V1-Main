@@ -199,7 +199,7 @@
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.inv_year +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.due_date +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
@@ -237,7 +237,7 @@
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.inv_year +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.due_date +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";

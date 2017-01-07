@@ -179,7 +179,7 @@ class paymentController extends Controller
     public function invoice_list()
     {
         $result = DB::SELECT("
-                        SELECT aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
+                        SELECT aa.*, YEAR(aa.created_at) as inv_year, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
                         FROM invoice_table as aa
                         INNER JOIN user_account as bb ON bb.Id = aa.account_executive      
         ");
@@ -198,7 +198,7 @@ class paymentController extends Controller
     public function latest_invoice_list()
     {
         $result = DB::SELECT("
-                    SELECT aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
+                    SELECT aa.*, YEAR(aa.created_at) as inv_year, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
                     FROM invoice_table as aa
                     INNER JOIN user_account as bb ON bb.Id = aa.account_executive
                     WHERE DATE_FORMAT(aa.created_at,'%Y-%m-%d %T') 
