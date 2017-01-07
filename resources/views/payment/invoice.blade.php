@@ -194,10 +194,9 @@
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
-
                             var get_created_date = stripped_date_time(tran.created_at);
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[0] +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.account_executive +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] +"</td>";
 
                             var get_due_date = stripped_date_time(tran.created_at);
@@ -238,7 +237,7 @@
 
                             var get_created_date = stripped_date_time(tran.created_at);
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[0] +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.account_executive +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] +"</td>";
 
                             var get_due_date = stripped_date_time(tran.due_date);
@@ -286,7 +285,7 @@
                                     'success'
                             )
 
-                            populate_invoice_list();
+                            populate_latest_invoice_list();
                         }
                         else if(json.status == 404)
                         {

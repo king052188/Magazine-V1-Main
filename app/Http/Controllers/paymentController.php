@@ -178,7 +178,11 @@ class paymentController extends Controller
 
     public function invoice_list()
     {
-        $result = DB::SELECT("SELECT * FROM invoice_table");
+        $result = DB::SELECT("
+                        SELECT aa.*, YEAR(aa.created_at) as inv_year, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
+                        FROM invoice_table as aa
+                        INNER JOIN user_account as bb ON bb.Id = aa.account_executive      
+        ");
 
         if($result != null)
         {
@@ -193,7 +197,14 @@ class paymentController extends Controller
 
     public function latest_invoice_list()
     {
-        $result = DB::SELECT("SELECT * FROM invoice_table");
+        $result = DB::SELECT("
+                    SELECT aa.*, YEAR(aa.created_at) as inv_year, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
+                    FROM invoice_table as aa
+                    INNER JOIN user_account as bb ON bb.Id = aa.account_executive
+                    WHERE DATE_FORMAT(aa.created_at,'%Y-%m-%d %T') 
+                    BETWEEN DATE_FORMAT(NOW(),'%Y-%m-%d 00:00:00')
+                    AND DATE_FORMAT(NOW(),'%Y-%m-%d 11:59:59')
+                        ");
 
         if($result != null)
         {
