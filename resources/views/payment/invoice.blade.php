@@ -78,37 +78,32 @@
                                         <table id="tbl_latest_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
                                             <thead>
                                                 <tr>
-                                                    <th style='text-align: center; width: 200px;'>Invoice Number</th>
-                                                    <th style='text-align: center; width: 200px;'>Issue</th>
-                                                    <th style='text-align: center; width: 200px;'>Year</th>
-                                                    <th style='text-align: center; width: 200px;'>Due Date</th>
-                                                    <th style='text-align: center;'>Sales Representative</th>
-                                                    <th style='text-align: center;'>Invoice Created</th>
+                                                    <th style='text-align: center; width: 150px;'>Invoice #</th>
+                                                    <th style='text-align: center; width: 100px;'>Issue</th>
+                                                    <th style='text-align: center; width: 100px;'>Year</th>
+                                                    <th style='text-align: center;'>Executive Account</th>
+                                                    <th style='text-align: center; width: 150px;'>Invoice Created</th>
+                                                    <th style='text-align: center; width: 150px;'>Due Date</th>
                                                     <th style='text-align: center; width: 80px;'>Action</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
+                                            <tbody> </tbody>
                                         </table>
                                     </div>
-
                                     <div id="all_invoice" class="tab-pane">
                                         <table id="tbl_all_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
                                             <thead>
-                                                <tr>
-                                                    <th style='text-align: center; width: 200px;'>Invoice Number</th>
-                                                    <th style='text-align: center; width: 200px;'>Issue</th>
-                                                    <th style='text-align: center; width: 200px;'>Year</th>
-                                                    <th style='text-align: center; width: 200px;'>Due Date</th>
-                                                    <th style='text-align: center;'>Sales Representative</th>
-                                                    <th style='text-align: center;'>Invoice Created</th>
-                                                    <th style='text-align: center; width: 80px;'>Action</th>
-                                                </tr>
+                                            <tr>
+                                                <th style='text-align: center; width: 150px;'>Invoice #</th>
+                                                <th style='text-align: center; width: 100px;'>Issue</th>
+                                                <th style='text-align: center; width: 100px;'>Year</th>
+                                                <th style='text-align: center;'>Executive Account</th>
+                                                <th style='text-align: center; width: 150px;'>Invoice Created</th>
+                                                <th style='text-align: center; width: 150px;'>Due Date</th>
+                                                <th style='text-align: center; width: 80px;'>Action</th>
+                                            </tr>
                                             </thead>
-                                            <tbody>
-
-                                            </tbody>
+                                            <tbody> </tbody>
                                         </table>
                                     </div>
                                 </div>
@@ -199,10 +194,14 @@
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.due_date +"</td>";
+
+                            var get_created_date = stripped_date_time(tran.created_at);
+                            html_thmb += "<td style='text-align: center;'>"+ get_created_date[0] +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.account_executive +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] +"</td>";
+
+                            var get_due_date = stripped_date_time(tran.created_at);
+                            html_thmb += "<td style='text-align: center;'>"+ get_due_date[1] +"</td>";
                             html_thmb += "<td style='text-align: center;'>" +
                                     "<a href = '#' get-val = '"+ tran.invoice_num + "' data-toggle='modal' data-target='#modal_view_invoice' class='btn btn-primary btn-xs view_invoice'><i class='fa fa-eye'></i> View</a>" +
                                     "</td>";
@@ -233,14 +232,17 @@
                             return false;
 
                         $(json.list).each(function(i, tran){
-
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.due_date +"</td>";
+
+                            var get_created_date = stripped_date_time(tran.created_at);
+                            html_thmb += "<td style='text-align: center;'>"+ get_created_date[0] +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.account_executive +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ tran.created_at +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] +"</td>";
+
+                            var get_due_date = stripped_date_time(tran.due_date);
+                            html_thmb += "<td style='text-align: center;'>"+ get_due_date[1] +"</td>";
                             html_thmb += "<td style='text-align: center;'>" +
                                     "<a href = '#' get-val = '"+ tran.invoice_num + "' data-toggle='modal' data-target='#modal_view_invoice' class='btn btn-primary btn-xs view_invoice'><i class='fa fa-eye'></i> View</a>" +
                                     "</td>";
@@ -251,6 +253,13 @@
                         $('table#tbl_latest_invoice_list > tbody').empty().prepend(html_thmb);
                     }
                 });
+            }
+
+            function stripped_date_time(date_time) {
+                var get_created_at =  date_time.split(" ");
+                var get_year = get_created_at[0].split("-");
+                var get_date = get_year[1] + "-" + get_year[2] + "-" + get_year[0];
+                return [get_year[0], get_date];
             }
 
             $("#btn_generate").click(function(){
