@@ -489,9 +489,9 @@
                             }
 
                             if(contact.status == 2){
-                                $('#status').prop('checked', true);
+                                $('#e_status').prop('checked', true);
                             }else{
-                                $('#status').prop('checked', false);
+                                $('#e_status').prop('checked', false);
                             }
 
                             $("#contact_uid").val(contact.Id);
@@ -633,7 +633,7 @@
                                 <div class="form-group">
                                     <label for="ex2">Status</label>
                                     <div class="checkbox checkbox-primary">
-                                        <input class="styled" type="checkbox" id = "status" name="status">
+                                        <input class="form-control" type="checkbox" id = "e_status" name="status">
                                         <label for="checkbox2">
                                             Active
                                         </label>
