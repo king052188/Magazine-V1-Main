@@ -340,22 +340,55 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then(function () {
-                swal(
-                        'Deleted!',
-                        'Your file has been deleted.',
-                        'success'
-                )
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then(function() {
+                delete_ad_confirm(ad_uid);
+            }, function(dismiss) {
+                if (dismiss === 'cancel') {
+                    swal(
+                            'Cancelled',
+                            'Your data file is safe :)',
+                            'error'
+                    )
+                }
             })
-
-            delete_ad_confirm(ad_uid);
-
         });
     });
 
     function delete_ad_confirm(ad_uid){
-        console.log("Delete This: " + ad_uid);
+        var url = "/magazine/ad/delete/" + ad_uid;
+        $(document).ready( function() {
+            $.ajax({
+                url: url,
+                dataType: "text",
+                beforeSend: function () {
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json.status == 404)
+                    {
+                        swal(
+                                'Oops...',
+                                'Delete Failed!',
+                                'error'
+                        )
+                        return false;
+                    }else if(json.status == 202)
+                    {
+                        swal(
+                                '',
+                                'Delete Successful!',
+                                'success'
+                        ).then(
+                            function () {
+                                location.reload();
+                            }
+                        )
+                    }
+                }
+            });
+        } );
     }
 </script>
 <script>

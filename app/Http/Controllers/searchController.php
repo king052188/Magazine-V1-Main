@@ -12,13 +12,13 @@ class searchController extends Controller
     public function search_function(Request $request)
     {
         $output="";
-        $keyword = $request->search;
-        $c_type = (int)$request->type;
+            $keyword = $request->search;
+//        $c_type = (int)$request->type;
 
         $query_type = " AND status = 2 AND type != 2 ";
-        if($c_type > 1) {
-            $query_type = " AND status = 2 AND type = 2 ";
-        }
+//        if($c_type > 1) {
+//            $query_type = " AND status = 2 AND type = 2 ";
+//        }
 
         $clients = DB::SELECT("
                     SELECT *
@@ -34,7 +34,7 @@ class searchController extends Controller
             for($i = 0; $i < count($clients); $i++) {
                 $client_bill_to = DB::table('client_contacts_table')->where('client_id', '=', $clients[$i]->Id)->where('role', '=', 3)->get(); //Subscriber
                 $type = $clients[$i]->status == 2 ? '<span style="color:green;">Active</span>' : '<span style="color:red; text-align: center;">Inactive</span>';
-                $output .= "<tr id='" . $clients[$i]->Id ."' class='".$clients[$i]->company_name. "' name='".$client_bill_to[$i]->first_name. " " .$client_bill_to[$i]->last_name." (Billing Contact)'>
+                $output .= "<tr id='" . $clients[$i]->Id ."' class='".$clients[$i]->company_name. "' name='".$client_bill_to[$i]->first_name. " " .$client_bill_to[$i]->last_name." (Billing Contact)' get_data='".$client_bill_to[$i]->Id. "'>
                           <td>". $clients[$i]->company_name."</td>
                           <td style='width: 120px; text-align: center;'>".$type."</td>
                           <td style='width: 100px'><button class='btn btn-primary btn-sm list_client' data-dismiss='modal'><i class='fa fa-check'></i>&nbsp;&nbsp;Select</button>

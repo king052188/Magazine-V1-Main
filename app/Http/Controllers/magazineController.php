@@ -100,6 +100,18 @@ class magazineController extends Controller
         );
     }
 
+    public function magazine_ad_delete($ad_uid)
+    {
+        $ad_uid = (int)$ad_uid;
+        $result = DB::DELETE("DELETE FROM magzine_price_table WHERE Id = {$ad_uid}");
+        if($result)
+        {
+            return array("status" => 202, "description" => "Delete Successful");
+        }
+
+        return array("status" => 404, "description" => "Delete Failed");
+    }
+
     public function magazine_add_color_size($mag_uid)
     {
         if(!AssemblyClass::check_cookies()) {

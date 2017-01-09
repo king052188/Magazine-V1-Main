@@ -41,6 +41,7 @@ class clientController extends Controller
         $company->state = $request['c_state'];
         $company->zip_code = $request['c_zip_code'];
         $company->is_member = $request['c_is_member'] == false ? -1 : 1;
+        $company->type = 1;
         $company->status = 2;
         $result = $company->save();
 
@@ -166,11 +167,20 @@ class clientController extends Controller
 
     public function save_contact(Request $request, $company_uid)
     {
+
+        if($request['role'] == 1){
+            ClientContact::where('role', '=', 5)->where('client_id', '=', $company_uid)->update(['role' => 3]);
+        }elseif($request['role'] == 3){
+            ClientContact::where('role', '=', 5)->where('client_id', '=', $company_uid)->update(['role' => 1]);
+        }elseif($request['role'] == 5){
+            ClientContact::where('role', '=', 1)->orWhere('role', '=', 3)->where('client_id', '=', $company_uid)->update(['role' => 4]);
+        }
+
         $role = array('', '0001', '0002', $request['branch_name'], $request['other_name'], $request['branch_name']);
 
         $client = new ClientContact();
         $client->client_id = $company_uid;
-        $client->branch_name = $role[$request['role']];
+        $client->branch_name = $request['status'] == false ? '' : $role[$request['role']];
         $client->first_name = $request['first_name'];
         $client->middle_name = $request['middle_name'];
         $client->last_name = $request['last_name'];
@@ -183,8 +193,8 @@ class clientController extends Controller
         $client->mobile = $request['mobile'];
         $client->position = $request['position'];
         $client->type = $request['type'];
-        $client->role = $request['role'];
-        $client->status = 2;
+        $client->role = $request['status'] == false ? 4 : $request['role'];
+        $client->status = $request['status'] == false ? 1 : 2;
         $client->synched = 1;
         $client->save();
 

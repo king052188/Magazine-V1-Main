@@ -426,6 +426,17 @@
                                             {{--<input class="form-control" type="text" name="b_type_designation" placeholder="Enter Type" required>--}}
                                         </div>
                                     </div>
+                                    <div class="col-lg-2">
+                                        <div class="form-group">
+                                            <label for="ex2">Status</label>
+                                            <div class="checkbox checkbox-primary">
+                                                <input class="styled" type="checkbox" id = "status" name="status" checked>
+                                                <label for="checkbox2">
+                                                    Active
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group" >
                                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                                         <button id="btnUpdate" class="btn btn-primary btn-lg pull-right" type="submit" style = "width: 200px; display: none;">Create</button>

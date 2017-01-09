@@ -193,29 +193,30 @@ $('#executeSearchClient').on('keyup', function(){
     });
 });
 
-$('#executeSearchAgency').on('keyup', function(){
-    $value = $(this).val();
-    $.ajax({
-        type    : 'get',
-        url     : '{{ URL::to('/execute/search/booking-and-sales') }}',
-        data    : {'search': $value, 'type': "2"},
-        success : function(data){
-            if($value.length > 0){
-                $('#searchResultAgency').html(data);
-                $('.resultheader').removeClass('hidden');
-            }else{
-                $('#searchResultAgency').html("");
-                $('.resultheader').addClass('hidden');
-            }
-        }
-    });
-});
+{{--$('#executeSearchAgency').on('keyup', function(){--}}
+    {{--$value = $(this).val();--}}
+    {{--$.ajax({--}}
+        {{--type    : 'get',--}}
+        {{--url     : '{{ URL::to('/execute/search/booking-and-sales') }}',--}}
+        {{--data    : {'search': $value, 'type': "2"},--}}
+        {{--success : function(data){--}}
+            {{--if($value.length > 0){--}}
+                {{--$('#searchResultAgency').html(data);--}}
+                {{--$('.resultheader').removeClass('hidden');--}}
+            {{--}else{--}}
+                {{--$('#searchResultAgency').html("");--}}
+                {{--$('.resultheader').addClass('hidden');--}}
+            {{--}--}}
+        {{--}--}}
+    {{--});--}}
+{{--});--}}
 
 $(document).ajaxComplete(function (data) {
     $(".list_client").click(function() {
         $('#clientIdField').val($(this).closest('tr').attr('id'));
         $('#clientIdFieldView').val($(this).closest('tr').attr('class'));
 
+        $('#agencyIdField').val($(this).closest('tr').attr('get_data'));
         $('#agencyIdFieldView').val($(this).closest('tr').attr('name')); //bill to details
 
         $('.resultheader').addClass('hidden');
