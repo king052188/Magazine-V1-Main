@@ -160,7 +160,7 @@
                 if($(this).val() == 1)
                 {
                     $("#specify_province_code_area").show();
-                    $("#specify_province_code").attr( "required" )
+                    $("#specify_province_code").prop('required',true);
                 }else{
                     $("#specify_province_code_area").hide();
                 }
