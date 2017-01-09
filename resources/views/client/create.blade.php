@@ -63,7 +63,17 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Province/State</label>
-                                    <input type="text" placeholder="Enter Province/State" class="form-control"  name="c_state" required>
+                                    <select class="form-control" name = "c_state" id = "c_state" required>
+                                        <option value = "" selected>Select</option>
+                                        @for($i = 0; $i < COUNT($tax); $i++)
+                                            <option value = "{{ $tax[$i]->province_code }}">{{ $tax[$i]->province_name }} ({{ $tax[$i]->province_code }})</option>
+                                        @endfor
+                                        <option value = "1">Others</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" id = "specify_province_code_area" style = "display: none;">
+                                    <label>Specify Province Code</label>
+                                    <input type="text" placeholder="Specify Province Code" class="form-control"  id = "specify_province_code" name="specify_province_code">
                                 </div>
                                 <div class="form-group">
                                     <label>Postal/Zip Code</label>
@@ -143,6 +153,17 @@
             $("#btnSave").click(function(){
                 $("#btnCreate").click();
                 return false;
+            });
+
+            $("#c_state").change(function(){
+
+                if($(this).val() == 1)
+                {
+                    $("#specify_province_code_area").show();
+                    $("#specify_province_code").attr( "required" )
+                }else{
+                    $("#specify_province_code_area").hide();
+                }
             });
         });
     </script>

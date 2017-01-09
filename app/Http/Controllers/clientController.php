@@ -27,18 +27,25 @@ class clientController extends Controller
         }
 
         $clients = Client::all();
-
         $result = DB::table('client_reference_table')->get();
-        return view('client.create', compact('clients', 'result'));
+        $tax = DB::table('taxes_table')->get();
+        
+        return view('client.create', compact('clients', 'result', 'tax'));
     }
 
     public function save_company(Request $request)
     {
+        if($request['c_state'] == 1){
+            $state = $request['specify_province_code'];
+        }else{
+            $state = $request['c_state'];
+        }
+        
         $company = new Client();
         $company->company_name = $request['c_company_name'];
         $company->address = $request['c_address'];
         $company->city = $request['c_city'];
-        $company->state = $request['c_state'];
+        $company->state = $state;
         $company->zip_code = $request['c_zip_code'];
         $company->is_member = $request['c_is_member'] == false ? -1 : 1;
         $company->type = 1;
