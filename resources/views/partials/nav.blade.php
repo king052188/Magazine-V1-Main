@@ -41,10 +41,11 @@
                     </ul>
                 </li>
             @else
-            <li class="{{ Request::is('company') || Request::is('company/*') ? 'active' : '' }}">
-                <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Company</span><span class="fa arrow"></span></a>
+            <li class="{{ Request::is('publisher') || Request::is('publisher/*') ? 'active' : '' }}">
+
+                <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Publisher</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="/magazine/create/company">Add</a></li>
+                    <li><a href="/magazine/create/company">List Publishers</a></li>
                 </ul>
             </li>
             <li class="{{ Request::is('magazine') || Request::is('magazine/*') ? 'active' : '' }}">

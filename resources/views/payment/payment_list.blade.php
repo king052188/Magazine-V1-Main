@@ -52,7 +52,6 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="col-sm-12 form-inline">
-
                                 {{--<form class="form-inline" role="form">--}}
                                     <div class="">
                                         <div class="form-group" style="margin-right: 10px;">

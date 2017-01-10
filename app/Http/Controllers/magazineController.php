@@ -41,9 +41,10 @@ class magazineController extends Controller
             return redirect("/logout_process");
         }
 
+        $result = DB::SELECT("SELECT * FROM magazine_company_table ORDER BY company_name");
         $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
 
-        return view('magazine/create_company', compact('logo_uid'));
+        return view('magazine/create_company', compact('logo_uid','result'));
 
     }
 
@@ -227,9 +228,9 @@ class magazineController extends Controller
         $company->save();
 
         if($company->id > 0) {
-            return redirect('magazine/create')->with('success', 'Successfully Added New Company.');
+            return redirect('/magazine/create/company')->with('success', 'Successfully Added New Company.');
         }
-        return redirect('magazine/create')->with('success', 'Oops, Something went wrong.');
+        return redirect('/magazine/create/company')->with('success', 'Oops, Something went wrong.');
     }
 
     public function get_company()
@@ -297,4 +298,46 @@ class magazineController extends Controller
         return redirect('/magazine/all')->with('success', 'Successfully Updated.');
     }
 
+    public function list_publishers($publisher_uid)
+    {
+        $publisher_uid = (int)$publisher_uid;
+        $result = DB::SELECT("SELECT * FROM magazine_company_table WHERE Id = {$publisher_uid}");
+
+        if($result != null){
+            return array("status" => 200, "result" => $result);
+        }
+
+        return array("status" => 404, "description" => "Failed");
+    }
+
+    public function edit_publishers(Request $request)
+    {
+        MagazineCompany::where('Id', '=', $request['e_publisher_uid'])
+            ->update([
+                'company_name' => $request['e_company_name'],
+                'address_1' => $request['e_address_1'],
+                'address_2' => $request['e_address_2'],
+                'city' => $request['e_city'],
+                'state' => $request['e_state'],
+                'country' => $request['e_country'],
+                'email' => $request['e_email'],
+                'phone' => $request['e_phone'],
+                'fax' => $request['e_fax']
+//                'logo_uid' => $request['e_logo_uid']
+            ]);
+
+        return redirect('/magazine/create/company')->with('success', 'Successfully Updated.');
+    }
+
+    public function delete_publishers($publisher_uid)
+    {
+        $publisher_uid = (int)$publisher_uid;
+        $result = DB::DELETE("DELETE FROM magazine_company_table WHERE Id = {$publisher_uid}");
+
+        if($result){
+            return array("status" => 200);
+        }
+
+        return array("status" => 404, "description" => "Failed");
+    }
 }

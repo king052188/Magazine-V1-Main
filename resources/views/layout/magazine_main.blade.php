@@ -55,6 +55,7 @@
         $(document).ready(function() {
             $('.footable').footable();
             $('.footable2').footable();
+            
         });
 
         function notif_read(notif_uid) {
@@ -131,7 +132,6 @@
         }
         setInterval(general_notification, 1000);
         // End Notification
-        
     </script>
     <script src = "https://cdn.jsdelivr.net/sweetalert2/6.2.1/sweetalert2.min.js"></script>
     <link href = "https://cdn.jsdelivr.net/sweetalert2/6.2.1/sweetalert2.min.css" rel="stylesheet">

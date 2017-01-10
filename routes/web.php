@@ -60,6 +60,10 @@ Route::post('/magazine/add-color-size-discount/{mag_uid}', 'magazineController@a
 Route::get('/magazine/update/{magazine_uid}', 'magazineController@magazine_update');
 Route::post('/magazine/update/save', 'magazineController@magazine_update_save');
 
+Route::get('/magazine/list/publisher/{publisher_uid}', 'magazineController@list_publishers');
+Route::get('/magazine/delete/publisher/{publisher_uid}', 'magazineController@delete_publishers');
+Route::post('/magazine/update/save', 'magazineController@edit_publishers');
+
 // Transaction Routes
 Route::get('/transaction/create', 'transactionController@create');
 Route::post('/transaction/store', 'transactionController@store');

@@ -10,10 +10,10 @@
 @section('magazine_content')
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-8">
-        <h2>Magazine</h2>
+        <h2>Publication</h2>
         <ol class="breadcrumb">
             <li class="active">
-                <strong>Add Magazine</strong>
+                <strong>Add Publication</strong>
             </li>
         </ol>
     </div>
@@ -30,7 +30,7 @@
             <div id="tab_1" class="col-lg-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Create New Magazine<small> *all fields are required</small></h5>
+                        <h5>Create New Publication<small> *all fields are required</small></h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -41,11 +41,11 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Magazine Code</label>
+                                    <label>Publication Code</label>
                                     <input type="text" placeholder="Magazine Code" class="form-control" name="magcode" id="magcode" readonly>
                                 </div>
                                 <div class="form-group">
-                                    <label>Magazine Name</label>
+                                    <label>Publication Name</label>
                                     <input type="text" placeholder="Magazine Name" class="form-control" name="magname" id="magname">
                                 </div>
                                 <div class="form-group">

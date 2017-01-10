@@ -66,7 +66,10 @@
                                     <select class="form-control" name = "c_state" id = "c_state" required>
                                         <option value = "" selected>Select</option>
                                         @for($i = 0; $i < COUNT($tax); $i++)
-                                            <option value = "{{ $tax[$i]->province_code }}">{{ $tax[$i]->province_name }} ({{ $tax[$i]->province_code }})</option>
+                                            <option value = "{{ $tax[$i]->province_code }}">
+                                                <div>{{ $tax[$i]->province_code }}</div>
+                                                <div>{{ $tax[$i]->province_name }}</div>
+                                            </option>
                                         @endfor
                                         <option value = "1">Others</option>
                                     </select>
