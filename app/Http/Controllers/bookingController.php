@@ -28,50 +28,39 @@ class bookingController extends Controller
         
         $booking = DB::SELECT("
             SELECT 
-                book_trans.*, 
-                (
-                    SELECT CONCAT(a.first_name, ' ', a.middle_name, ' ', a.last_name)
-                    FROM user_account AS a
-                    WHERE Id = book_trans.sales_rep_code 
-                ) AS sales_rep_name,
-                (
-                    SELECT company_name FROM client_table WHERE Id = book_trans.client_id AND status = 2 AND type != 2
-                ) AS client_name,
-                (
-                    SELECT CONCAT(first_name, '', last_name) FROM client_contacts_table WHERE client_id = book_trans.client_id AND (role = 3 OR role = 5)
-                ) AS agency_name,
-                ( 
-                    SELECT magazine_name FROM magazine_table WHERE Id = m_trans.magazine_id 
-                ) AS magazine_name,
-                ( 
-                    SELECT 
-                        CASE WHEN magazine_country = 1 THEN 'USA' 
-                        WHEN magazine_country = 2 THEN 'CANADA' 
-                        ELSE 'PHILIPPINES' END AS magazine_country_name
-                    FROM magazine_table
-                    WHERE Id = m_trans.magazine_id
-                ) AS magazine_country_name,
-                ( 
-                    SELECT magazine_country
-                    FROM magazine_table
-                    WHERE Id = m_trans.magazine_id
-                ) AS magazine_country_id,
-                SUM(m_issue.line_item_qty) AS number_of_issue
-            FROM 
-                magazine_issue_transaction_table AS m_issue
-            INNER JOIN
-                magazine_transaction_table AS m_trans
-            ON
-                m_issue.magazine_trans_id = m_trans.Id
-            INNER JOIN
-                booking_sales_table AS book_trans
-            ON
-                m_trans.transaction_id = book_trans.Id
+
+                booked.Id,
                 
-            {$filter_tran}
-        
-            GROUP BY 
-                book_trans.Id, book_trans.trans_num, book_trans.sales_rep_code, book_trans.client_id, book_trans.agency_id, book_trans.status, book_trans.updated_at, book_trans.created_at, m_trans.magazine_id, m_issue.quarter_issued");
+                booked.client_id,
+                
+                booked.trans_num,
+            
+                ( SELECT invoice_num FROM invoice_table WHERE booking_trans = booked.trans_num AND status = 2 ) AS invoice_number,
+                
+                ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
+                
+                ( SELECT magazine_country FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_country,
+                
+                ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = booked.sales_rep_code ) AS sales_rep_name,
+                
+                ( SELECT company_name FROM client_table WHERE Id = booked.client_id AND status = 2 AND type != 2 ) AS client_name,
+                
+                ( SELECT COUNT(*) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
+                
+                ( SELECT SUM(line_item_qty) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS qty,
+                
+                ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
+                
+                ( SELECT (amount - (amount * discount_percent)) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num AND status = 2 ) AS new_amount,
+                
+                booked.status,
+                
+                booked.created_at
+                    
+            FROM booking_sales_table AS booked
+            INNER JOIN magazine_transaction_table AS trans
+            ON booked.Id = trans.transaction_id
+            ");
 
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();
 

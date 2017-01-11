@@ -61,9 +61,10 @@
                                 <th style='text-align: left;'>Magazine</th>
                                 <th style='text-align: left; width: 150px;'>Sales</th>
                                 <th style='text-align: left; width: 150px;'>Client</th>
-                                <th style='text-align: left; width: 150px;'>Agency</th>
-                                <th style='text-align: center; width: 80px;'>Line Items</th>
-                                <th style='text-align: center; width: 100px;'>Date Created</th>
+                                <th style='text-align: center; width: 50px;'>Line Items</th>
+                                <th style='text-align: center; width: 50px;'>Qty</th>
+                                <th style='text-align: right; width: 80px;'>Amount</th>
+                                <th style='text-align: center; width: 120px;'>Date Created</th>
                                 <th style='text-align: center; width: 80px;'>Status/Action</th>
                                 <th style='text-align: center; width: 50px;'>-</th>
                             </tr>
@@ -76,12 +77,18 @@
                                 @for($i = 0; $i < COUNT($booking); $i++)
                                     <tr>
                                         <td style='text-align: center;'>{{ $n++ }}</td>
-                                        <td style='text-align: left;'>{{ $booking[$i]->magazine_name }}</td>
+                                        <td style='text-align: left;'>{{ $booking[$i]->mag_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
-                                        <td style='text-align: left;'>{{ $booking[$i]->agency_name == null ? "NONE" : $booking[$i]->agency_name  }}</td>
-                                        <td style='text-align: center;'>{{ $booking[$i]->number_of_issue }}</td>
-                                        <td style='text-align: center;'>{{ $booking[$i]->created_at }}</td>
+                                        <td style='text-align: center;'>{{ $booking[$i]->line_item  }}</td>
+                                        <td style='text-align: center;'>{{ $booking[$i]->qty }}</td>
+                                        <td style='text-align: right;'>{{ $booking[$i]->new_amount != null ? number_format($booking[$i]->new_amount, 2, '.', ',') : number_format($booking[$i]->amount, 2, '.', ',') }}</td>
+                                        <td style='text-align: center;'>
+                                            <?php
+                                                $date_created = \Carbon\Carbon::parse($booking[$i]->created_at);
+                                            ?>
+                                            {{ $date_created->format('F d, Y') }}
+                                        </td>
                                     @if($_COOKIE['role'] > 2)
                                         <td style='text-align: center;'>
                                             <form class="form-inline">
@@ -152,7 +159,7 @@
                                         </td>
                                     @endif
                                         <td style='text-align: center;'>
-                                            <a href="{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->magazine_country_id . '/' . $booking[$i]->client_id ) }}" class="btn btn-primary" style="padding: 5px 7px 5px 7px; "><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a>
+                                            <a href="{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->mag_country . '/' . $booking[$i]->client_id ) }}" class="btn btn-primary" style="padding: 5px 7px 5px 7px; "><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a>
                                         </td>
                                     </tr>
                                     @endfor
