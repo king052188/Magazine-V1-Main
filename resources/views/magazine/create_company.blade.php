@@ -38,7 +38,7 @@
                             <table class="table table-striped table-bordered table-hover table-responsive" id = "tbl_publisher" >
                                 <thead>
                                 <tr>
-                                    <th style = "text-align: center;">Company Name</th>
+                                    <th style = "text-align: center;">Publisher Name</th>
                                     <th style = "text-align: center;">City</th>
                                     <th style = "text-align: center;">State</th>
                                     <th style = "text-align: center;">Country</th>
@@ -80,8 +80,8 @@
                                     <h3>Company Name of Magazine</h3>
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                            <label>Company Name</label>
-                                            <input type="text" placeholder="Company / Business Name" class="form-control"  name="company_name">
+                                            <label>Publisher Name</label>
+                                            <input type="text" placeholder="Publisher / Business Name" class="form-control"  name="company_name">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -173,9 +173,9 @@
                             <div class="col-lg-12">
                                 <div class="col-lg-12">
                                     <div class="form-group">
-                                        <label>Company Name</label>
+                                        <label>Publisher Name</label>
                                         <input type="hidden" class="form-control"  id = "e_publisher_uid" name="e_publisher_uid">
-                                        <input type="text" placeholder="Company / Business Name" class="form-control"  id = "e_company_name" name="e_company_name">
+                                        <input type="text" placeholder="Publisher / Business Name" class="form-control"  id = "e_company_name" name="e_company_name">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">

@@ -381,7 +381,15 @@
                                     <div class="col-lg-6">
                                         <div class="form-group">
                                             <label for="ex2">Province/State</label>
-                                            <input class="form-control" type="text" name="state" placeholder="Enter State" required>
+                                            <select class="form-control" name = "state" required>
+                                                <option value = "" selected>Select</option>
+                                                @for($i = 0; $i < COUNT($tax); $i++)
+                                                    <option value = "{{ $tax[$i]->province_code }}">
+                                                        [{{ $tax[$i]->province_code }}]
+                                                        {{ $tax[$i]->province_name }}
+                                                    </option>
+                                                @endfor
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -677,7 +685,8 @@
 
             $('.ClientsListdataTables').DataTable({
                 dom: '<"html5buttons"B>lTfgitp',
-                "aaSorting": [0,'asc'],
+//                "aaSorting": [4,'asc'],
+                bSort:false,
                 buttons: []
             });
 

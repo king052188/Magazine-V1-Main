@@ -67,8 +67,8 @@
                                         <option value = "" selected>Select</option>
                                         @for($i = 0; $i < COUNT($tax); $i++)
                                             <option value = "{{ $tax[$i]->province_code }}">
-                                                <div>{{ $tax[$i]->province_code }}</div>
-                                                <div>{{ $tax[$i]->province_name }}</div>
+                                                [{{ $tax[$i]->province_code }}]
+                                                {{ $tax[$i]->province_name }}
                                             </option>
                                         @endfor
                                         <option value = "1">Others</option>

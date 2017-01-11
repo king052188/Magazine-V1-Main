@@ -78,8 +78,9 @@ class clientController extends Controller
 //        $client->save();
 
         if($result) {
-            $company_last_uid = $company->id;
-            return redirect('client/view_contacts/'. $company_last_uid)->with('success', 'Successfully Added New Client, Please add your contact person.');
+            //$company_last_uid = $company->id;
+            //return redirect('client/view_contacts/'. $company_last_uid)->with('success', 'Successfully Added New Client, Please add your contact person.');
+            return redirect('client/create')->with('success', 'Successfully Added New Client, Please add your contact person.');
         }
 
         return redirect('client/create')->with('success', 'Oops, Something went wrong.');
@@ -129,8 +130,9 @@ class clientController extends Controller
         
         $ref = DB::table('client_reference_table')->get();
         $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
+        $tax = DB::table('taxes_table')->get();
 
-        $results = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->orderBy('first_name', 'asc')->get(); //Subscriber
+        $results = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->orderBy('role', 'asc')->get(); //Subscriber
         $results == null ? null : $results;
 
         $p = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 1)->get(); //Primary
@@ -145,7 +147,7 @@ class clientController extends Controller
         $same = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 5)->get(); //Primary and Bill To
         $same == null ? null : $same;
 
-        return view('client.client_contacts_view', compact('ref', 'company', 'results', 'p', 's', 'b', 'same'));
+        return view('client.client_contacts_view', compact('ref', 'company', 'results', 'p', 's', 'b', 'same', 'tax'));
     }
 
     public function store(Request $request)
