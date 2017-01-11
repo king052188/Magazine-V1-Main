@@ -269,7 +269,7 @@
                                             <div id="collapseTwo" class="panel-collapse collapse in">
                                                 <div class="panel-body">
                                                     <div class="table-responsive">
-                                                        <table class="table table-striped table-bordered table-hover table-responsive ClientsListdataTables" >
+                                                        <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                                                             <thead>
                                                             <tr>
                                                                 <th style = "width:100px; text-align: center;">Firstname</th>

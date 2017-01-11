@@ -142,7 +142,8 @@
                     </div>
 
                      <div class="table-responsive">
-                        <table id="tbl_payment_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
+                        <table id="tbl_payment_list" class="footable table table-striped table-bordered table-hover dataTables-example-main" >
+                         {{--<table id="tbl_payment_list" class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">--}}
                             <thead>
                                 <tr>
                                     <th style='text-align: center; width: 30px;'>Proposal ID</th>
@@ -183,7 +184,8 @@
                 Invoice Number: <label id = "invoice_number_result"></label> <br />
                 Proposal ID: <label id = "line_item_result"></label>
                 <br /><br />
-                <table class="table table-striped table-bordered table-hover dataTables-example" id="view_transaction_results">
+                {{--<table class="table table-striped table-bordered table-hover dataTables-example" id="view_transaction_results">--}}
+                    <table id="view_transaction_results" class="footable table table-striped table-bordered table-hover dataTables-example">
                     <thead>
                     <tr>
                         <th style="width: 10%; text-align: center;">Ref #</th>
@@ -227,7 +229,10 @@
 <script>
     $(document).ready(function(){
 
-
+//        $('.dataTables-example-main').DataTable({
+//            dom: '<"html5buttons"B>lTfgitp',
+//            buttons: []
+//        });
 //        TEMPORARY
 //        populate_inv_num('2017-12345');
 

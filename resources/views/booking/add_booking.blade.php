@@ -82,7 +82,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="ex2">Select Country</label>
+                            <label for="ex2">Select Country of Magazine</label>
                             <select class = "form-control" name = "which_country" id = "which_country">
                                 <option value = "">-- Select Country --</option>
                                 <option value = "1">USA</option>
