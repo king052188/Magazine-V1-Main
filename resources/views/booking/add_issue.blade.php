@@ -50,7 +50,7 @@
 
         <div class="row setup-content" id="step-1">
                 <div class="col-md-12 well">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4" id = "once_approved_aa">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <h5>Add Issue <small> *all fields are required</small></h5>
@@ -116,7 +116,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-8">
+                    <div class="col-lg-8" id = "once_approved_bb">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
                                 <h5>List issue of <b>{{ $mag_name[0]->magazine_name }}</b></h5>
@@ -570,17 +570,23 @@ function populate_issues_transaction(uid) {
                                     $("#approval_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0'));
 
                                     if(parseInt( discount.status ) == 2) {
+                                        $("#once_approved_aa").hide();
+                                        $("#once_approved_bb").removeClass('col-lg-8').addClass('col-lg-12');
                                         $("#button_approve").hide();
                                         $("#text_status").text("Approved");
                                         $("#text_status").attr("style", "color: green;");
                                     }
                                     else if(parseInt( discount.status ) == 3) {
+                                        $("#once_approved_aa").hide();
+                                        $("#once_approved_bb").removeClass('col-lg-8').addClass('col-lg-12');
                                         $("#button_approve").hide();
                                         $("#text_status").text("Declined");
                                         $("#text_status").attr("style", "color: red;");
                                     }
                                     else {
                                         $("#text_status").hide();
+                                        $("#once_approved_aa").show();
+                                        $("#once_approved_bb").removeClass('col-lg-12').addClass('col-lg-8');
                                     }
                                 }
                             });
