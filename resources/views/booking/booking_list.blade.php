@@ -99,21 +99,27 @@
                                                             <option value="0">Void</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                                <option value = "-2:{{ $booking[$i]->trans_num }}">View Invoice Order</option>
+                                                                @if($booking[$i]->invoice_number != null)
+                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                                @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                             </optgroup>
                                                         @elseif($booking[$i]->status == 3)
                                                             <option value="0">Approved</option>
                                                                 <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                                <option value = "-2:{{ $booking[$i]->trans_num }}">View Invoice Order</option>
+                                                                @if($booking[$i]->invoice_number != null)
+                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                                @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                             </optgroup>
                                                         @elseif($booking[$i]->status == 2)
                                                             <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2:{{ $booking[$i]->status == 2 ? 1 : 0 }}">For Approval</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                                <option value = "-2:{{ $booking[$i]->trans_num }}">View Invoice Order</option>
+                                                                @if($booking[$i]->invoice_number != null)
+                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                                @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                             </optgroup>
                                                         @else
@@ -121,7 +127,9 @@
                                                             <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2:{{ $booking[$i]->status == 2 ? 1 : 0 }}">For Approval</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                                <option value = "-2:{{ $booking[$i]->trans_num }}">View Invoice Order</option>
+                                                                @if($booking[$i]->invoice_number != null)
+                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                                @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                             </optgroup>
                                                         @endif
@@ -148,9 +156,11 @@
                                                             <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3:{{ $booking[$i]->status == 3 ? 1 : 0 }}">Approved</option>
                                                             <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5:{{ $booking[$i]->status == 5 ? 1 : 0 }}">Void</option>
                                                         <optgroup label="-- Action --"> -- Action -- </optgroup>
-                                                            <option value = "-1:{{ $booking[$i]->trans_num  }}">View Insertion Order</option>
-                                                            <option value = "-2:{{ $booking[$i]->trans_num  }}">View Invoice Order</option>
-                                                            <option value = "-3:{{ $booking[$i]->trans_num  }}">View As Client</option>
+                                                            <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
+                                                            @if($booking[$i]->invoice_number != null)
+                                                                <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                            @endif
+                                                            <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                         </optgroup>
                                                     </select>
                                                     <button class="btn btn-primary" id="btn_update_{{ $booking[$i]->Id }}" style = "width: 80px;margin-bottom: 0px; display: none;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
@@ -209,6 +219,7 @@
             if(values.length > 1) {
                 var str_to_int = parseInt(values[0]);
                 var trans_num = values[1];
+
                 if(str_to_int == -1) {
                     $("#btn_lists").hide();
                     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_num + "/preview",
@@ -216,9 +227,16 @@
                 }
                 else if(str_to_int == -2) {
 
-                    $("#btn_lists").hide();
-                    window.open("http://"+ report_url_api +"/kpa/work/transaction/invoice-order/1234567",
-                            "mywindow","location=1,status=1,scrollbars=1,width=795,height=760");
+                    if(values.length > 2) {
+
+                        var invoice_num = values[2];
+                        $("#btn_lists").hide();
+                        window.open("http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+invoice_num,
+                                "mywindow","location=1,status=1,scrollbars=1,width=795,height=760");
+
+                    }
+
+
 
 //                    $(document).ready( function() {
 //                        $.ajax({
