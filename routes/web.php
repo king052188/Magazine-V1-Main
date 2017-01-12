@@ -75,6 +75,7 @@ Route::get('/booking/booking-list/{filter?}', 'bookingController@booking_list');
 Route::get('/booking/booking-list_api/{filter?}', 'bookingController@booking_list_api');
 
 Route::get('/booking/add-booking', 'bookingController@add_booking');
+Route::get('/search/bill-to/{client_id}', 'bookingController@search_bill_to');
 
 Route::post('/booking/magazine-transaction-save-process', 'bookingController@save_booking'); // Process
 Route::any('/booking/magazine-transaction/{trans_uid}/{which_country}/{client_id}', 'bookingController@show_transaction_mag'); // after process viewing

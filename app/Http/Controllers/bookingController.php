@@ -75,6 +75,12 @@ class bookingController extends Controller
 
         $n_booking = \App\Http\Controllers\VMKhelper::get_new_contract();
 
+        $clients = DB::SELECT("
+                    SELECT *
+                    FROM client_table
+                    WHERE status = 2 AND type != 2 ORDER BY company_name ASC
+    	 ");
+
         $subscriber = DB::SELECT("
                     SELECT 
                         master.company_name, master.type, master.status, child.*, child.Id as child_uid
@@ -101,7 +107,30 @@ class bookingController extends Controller
                     ORDER BY master.company_name, branch_name ASC
         ");
 
-        return view('booking.add_booking', compact('n_booking','subscriber','agency'))->with('success', 'Booking details successful added!');
+        return view('booking.add_booking', compact('n_booking','subscriber','agency', 'clients'))->with('success', 'Booking details successful added!');
+    }
+
+    public function search_bill_to($client_id)
+    {
+        $bill_to = DB::SELECT("
+                    SELECT *
+                    FROM client_contacts_table
+                    WHERE client_id = {$client_id} AND role = 3
+    	 ");
+
+        if(COUNT($bill_to) > 0)
+        {
+            return array(
+                "status" => 200,
+                "bill_to_uid" =>  $bill_to[0]->Id,
+                "bill_to" => $bill_to[0]->first_name . " " . $bill_to[0]->last_name . " (Billing Contact)");
+        }
+        else
+        {
+            return array(
+                "status" => 404,
+                "result" =>  "No Result Found.");
+        }
     }
 
     public function save_booking(Request $request)

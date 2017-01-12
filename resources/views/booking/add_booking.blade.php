@@ -6,6 +6,7 @@
 
 @section('styles')
 <link rel="stylesheet" type="text/css" href="{{  asset('css/plugins/steps/jquery.steps.css')  }}">
+<link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
 @endsection
 
 @section('magazine_content')
@@ -59,26 +60,28 @@
 
                         <div class="form-group">
                             <label>Company Name</label>
-
-                            <div class="input-group">
-                                <input type="hidden" class="form-control" name="client_id" id="clientIdField" value="">
-                                <input type="text" class="form-control" placeholder="(Company Name) Click Search..." id="clientIdFieldView" required disabled>
-                                <span class="input-group-btn">
-                                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_client">Search <i class="fa fa-search"></i></button>
-                                </span>
-                            </div>
+                            {{--<div class="input-group">--}}
+                                {{--<input type="hidden" class="form-control" name="client_id" id="clientIdField" value="">--}}
+                                {{--<input type="text" class="form-control" placeholder="(Company Name) Click Search..." id="clientIdFieldView" required disabled>--}}
+                                {{--<span class="input-group-btn">--}}
+                                    {{--<button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_client">Search <i class="fa fa-search"></i></button>--}}
+                                {{--</span>--}}
+                            {{--</div>--}}
+                            <select class="form-control chosen-select" style = "background: none;" name = "client_id" id = "clientIdField">
+                                <option value="">Select</option>
+                                @for($i = 0; $i < COUNT($clients); $i++)
+                                    <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
+                                @endfor
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="ex2">Agency ID <i>(if any)</i></label>
-
-                            <div class="input-group">
-                                <input type="hidden" class="form-control" name="agency_id" id="agencyIdField" value="">
-                                <input type="text" class="form-control" placeholder="(Agency Name) Click Search..."  id="agencyIdFieldView" disabled>
-                                <span class="input-group-btn">
-                                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_agency" >Search <i class="fa fa-search"></i></button>
-                                </span>
-                            </div>
+                            <input type="hidden" class="form-control" name="agency_id" id="agencyIdField" value="">
+                            <input type="text" class="form-control" placeholder="(Agency Name) Click Search..."  id="agencyIdFieldView" disabled>
+                            {{--<span class="input-group-btn">--}}
+                                {{--<button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_agency" >Search <i class="fa fa-search"></i></button>--}}
+                            {{--</span>--}}
                         </div>
 
                         <div class="form-group">
@@ -174,6 +177,38 @@
 @endsection
 
 @section('scripts')
+<script>
+    $(document).ready(function(){
+        $("#clientIdField").change(function(){
+
+            var client_id = $(this).val();
+
+            $.ajax({
+                url: "/search/bill-to/" + client_id,
+                dataType: "text",
+                beforeSend: function () {
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if (json == null)
+                        return false;
+
+                    if(json.status == 200)
+                    {
+                        $('#agencyIdField').val(json.bill_to_uid);
+                        $('#agencyIdFieldView').val(json.bill_to);
+                    }
+                    else
+                    {
+//                        console.log("Error in search_bill_to");
+                        $('#agencyIdField').val("");
+                        $('#agencyIdFieldView').val("No Agency");
+                    }
+                }
+            });
+        });
+    });
+</script>
 <script type="text/javascript">
 $('#executeSearchClient').on('keyup', function(){
     $value = $(this).val();
@@ -192,6 +227,8 @@ $('#executeSearchClient').on('keyup', function(){
         }
     });
 });
+
+
 
 {{--$('#executeSearchAgency').on('keyup', function(){--}}
     {{--$value = $(this).val();--}}
@@ -251,6 +288,20 @@ $(document).ajaxComplete(function (data) {
             return false;
         }
     });
+</script>
+
+<!-- Chosen -->
+<script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
+<script>
+    var config = {
+        '.chosen-select'           : {},
+        '.chosen-select-deselect'  : {allow_single_deselect:true},
+        '.chosen-select-no-single' : {disable_search_threshold:10},
+        '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'}
+    }
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
 </script>
 
 @endsection
