@@ -549,14 +549,15 @@ function populate_issues_transaction(uid) {
                         if (json.status == 202) {
 
                             $(json.result).each(function(i, discount) {
+
+                                console.log(discount);
+
                                 i_sub_total = discount.amount;
                                 i_discount = discount.discount_percent;
-                                i_total_less_discount = (i_sub_total * i_discount) / 100;
-
-                                console.log(Role);
+                                i_total_less_discount = (i_sub_total * i_discount);
 
                                 if(Role > 1) {
-                                    $("#issues_discount_label").text(numeral(i_discount).format('0,0') + "% Discount:");
+                                    $("#issues_discount_label").text("Discount:");
                                     $("#issues_discount").text( "(" + numeral(i_total_less_discount).format('0,0.00') + ")");
                                     $("#issues_total_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0.00'));
                                     if(parseInt( discount.status ) == 2) {
@@ -591,7 +592,6 @@ function populate_issues_transaction(uid) {
                                     $("#approval_date").text(discount.created_at);
                                     $("#approval_remarks").text(discount.remarks);
                                     $("#approval_sub_total").text(numeral(total_with_discount).format('0,0.00'));
-                                    $("#approval_discount_label").text(numeral(i_discount).format('0,0') + "%");
                                     $("#approval_discount").text( "(" + numeral(i_total_less_discount).format('0,0') + ")");
                                     $("#approval_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0'));
 
