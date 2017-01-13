@@ -101,6 +101,18 @@
                                                         <div id = "line_item_qty"></div>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label id = "artwork_label"></label>
+                                                        <div id = "artwork"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <label id = "directions_label"></label>
+                                                        <div id = "directions"></div>
+                                                    </div>
+                                                </div>
                                                 <br />
                                                 <div class="row">
                                                     <div class="col-xs-12 " id = "btn_save_box">
@@ -394,8 +406,18 @@ $(document).ready(function(){
                         $('#line_item_qty_label').empty().append("Line Item QTY");
                         $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
 
+                        $("#artwork_label").empty().append("Artwork");
+                        $('#artwork').empty().append("<select class='form-control' name = 'quarter_issue' id = 'artwork_select'>");
+                        $('#artwork_select').append("<option value = '' disabled selected>select</option>");
+                        $('#artwork_select').append("<option value = '1'>Supplied</option>");
+                        $('#artwork_select').append("<option value = '2'>Build</option>");
+                        $('#artwork_select').append("<option value = '3'>Renewal</option>");
+                        $('#artwork_select').append("<option value = '4'>Renewal with Changes</option>");
+                        $('#artwork').append('</select>');
 
 
+                        $("#directions_label").empty().append("Directions");
+                        $("#directions").empty().append("<textarea class='form-control' rows='5' id='comment'></textarea>");
 
                         $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary pull-right" value = "Save">');
                     });

@@ -20,10 +20,10 @@ class bookingController extends Controller
             return redirect("/logout_process");
         }
         
-        $filter_tran = "WHERE book_trans.status IN (1, 2, 3, 5)";
+        $filter_tran = "WHERE booked.status IN (1, 2, 3, 5)";
 
         if($filter != null){
-            $filter_tran = "WHERE book_trans.status = {$filter}";
+            $filter_tran = "WHERE booked.status = {$filter}";
         }
         
         $booking = DB::SELECT("
@@ -62,6 +62,9 @@ class bookingController extends Controller
             INNER JOIN magazine_transaction_table AS trans
             
             ON booked.Id = trans.transaction_id
+            
+            {$filter_tran}
+            
             ");
 
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();

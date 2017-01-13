@@ -42,6 +42,7 @@
                                     <th style = "text-align: center;">City</th>
                                     <th style = "text-align: center;">State</th>
                                     <th style = "text-align: center;">Country</th>
+                                    <th style = "text-align: center;">Status</th>
                                     <th style="width:150px;">&nbsp;</th>
                                 </tr>
                                 </thead>
@@ -59,12 +60,23 @@
                                                 CANADA
                                             @endif
                                         </td>
+                                        <td style="text-align: center;padding-top: 15px;">
+                                            @if($result[$i]->status == 1)
+                                                <b style = "color: #FF0000;">In-Active</b>
+                                            @else
+                                                Active
+                                            @endif
+                                        </td>
                                         <td>
                                             <select class = "form-control" id = "action_publisher_{{ $result[$i]->Id }}">
                                                 <option value = "">--select--</option>
                                                 <option value = "1:{{ $result[$i]->Id }}">View Information</option>
                                                 <option value = "2:{{ $result[$i]->Id }}">Edit Information</option>
-                                                <option value = "3:{{ $result[$i]->Id }}">Delete Information</option>
+                                                @if($result[$i]->status == 2)
+                                                <option value = "3:{{ $result[$i]->Id }}">Set as Inactive</option>
+                                                @else
+                                                <option value = "4:{{ $result[$i]->Id }}">Set as Active</option>
+                                                @endif
                                             </select>
                                         </td>
                                     </tr>
@@ -156,6 +168,85 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="view_publisher_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Edit Publisher</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="col-lg-12">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Publisher Name</label>
+                                    <input type="hidden" class="form-control"  id = "e_publisher_uid" name="e_publisher_uid">
+                                    <input type="text" placeholder="Publisher / Business Name" class="form-control"  id = "e_company_name" name="e_company_name" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Address 1</label>
+                                    <input type="text" placeholder="Address 1" class="form-control" id = "e_address_1" name="e_address_1" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Address 2 (Optional)</label>
+                                    <input type="text" placeholder="Address 2 (Optional)" class="form-control" id = "e_address_2" name="e_address_2" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <input type="text" placeholder="City" class="form-control"  id = "e_city" name="e_city" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>State/Province</label>
+                                    <input type="text" placeholder="State" class="form-control"  id = "e_state" name="e_state" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Country</label>
+                                    <select class="form-control" id = "e_country" name="e_country" disabled>
+                                        <option value="1">USA</option>
+                                        <option value="2">CANADA</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="text" placeholder="Email" class="form-control"  id = "e_email" name="e_email" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="text" placeholder="Phone" class="form-control"  id = "e_phone" name="e_phone" readonly>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label>Fax</label>
+                                    <input type="text" placeholder="Fax" class="form-control"  id = "e_fax" name="e_fax" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div style = "clear: both;"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style = "margin-right: 5px;">Close</button>
+                    </div>
+                </div>
         </div>
     </div>
 
@@ -263,7 +354,10 @@
                 var values = value.split(":");
 
                 if(values[0] == 1){
-                    console.log("View Info");
+//                    console.log("View Info");
+                    $('#view_publisher_modal').modal({
+                        show: true
+                    });
 
                 }else if(values[0] == 2){
                     $('#edit_publisher_modal').modal({
@@ -271,7 +365,6 @@
                     });
 
                     var publisher_uid = values[1];
-
                     $.ajax({
                         url: "/magazine/list/publisher/" + publisher_uid,
                         dataType: "text",
@@ -304,7 +397,59 @@
                     });
 
                 }else if(values[0] == 3){
-                    console.log("Delete Info");
+                    //console.log("Delete Info");
+                    var publisher_uid = values[1]
+                    $.ajax({
+                        url: "/magazine/set/inactive/status/publisher/" + publisher_uid,
+                        dataType: "text",
+                        beforeSend: function () {
+                        },
+                        success: function(data) {
+                            var json = $.parseJSON(data);
+                            if(json == null)
+                                return false;
+
+                            if(json.status == 200)
+                            {
+                                swal(
+                                    '',
+                                    'Status Change to <b style = "color: #FF0000;">In-Active</b>!',
+                                    'success'
+                                ).then(
+                                        function () {
+                                            location.reload();
+                                        }
+                                )
+                            }
+                        }
+                    });
+                }else if(values[0] == 4){
+                    //console.log("Delete Info");
+                    var publisher_uid = values[1]
+                    $.ajax({
+                        url: "/magazine/set/active/status/publisher/" + publisher_uid,
+                        dataType: "text",
+                        beforeSend: function () {
+                        },
+                        success: function(data) {
+                            var json = $.parseJSON(data);
+                            if(json == null)
+                                return false;
+
+                            if(json.status == 200)
+                            {
+                                swal(
+                                        '',
+                                        'Status Change to Active!',
+                                        'success'
+                                ).then(
+                                        function () {
+                                            location.reload();
+                                        }
+                                )
+                            }
+                        }
+                    });
                 }
 
             });
