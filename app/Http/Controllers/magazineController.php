@@ -329,15 +329,25 @@ class magazineController extends Controller
         return redirect('/magazine/create/company')->with('success', 'Successfully Updated.');
     }
 
-    public function delete_publishers($publisher_uid)
+    public function set_inactive_publishers($publisher_uid)
     {
         $publisher_uid = (int)$publisher_uid;
-        $result = DB::DELETE("DELETE FROM magazine_company_table WHERE Id = {$publisher_uid}");
+        MagazineCompany::where('Id', '=', $publisher_uid)
+            ->update([
+                'status' => 1
+            ]);
 
-        if($result){
-            return array("status" => 200);
-        }
+        return array("status" => 200, "description" => "Success");
+    }
 
-        return array("status" => 404, "description" => "Failed");
+    public function set_active_publishers($publisher_uid)
+    {
+        $publisher_uid = (int)$publisher_uid;
+        MagazineCompany::where('Id', '=', $publisher_uid)
+            ->update([
+                'status' => 2
+            ]);
+
+        return array("status" => 200, "description" => "Success");
     }
 }
