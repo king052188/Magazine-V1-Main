@@ -34,8 +34,8 @@ class bookingController extends Controller
                 booked.client_id,
                 
                 booked.trans_num,
-            
-                ( SELECT invoice_num FROM invoice_table WHERE booking_trans = booked.trans_num AND status = 2 ) AS invoice_number,
+                
+                invoice.invoice_num,
                 
                 ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
                 
@@ -58,8 +58,14 @@ class bookingController extends Controller
                 booked.created_at
                     
             FROM booking_sales_table AS booked
+            
             INNER JOIN magazine_transaction_table AS trans
+            
             ON booked.Id = trans.transaction_id
+            
+            INNER JOIN invoice_table AS invoice
+            
+            ON booked.trans_num = invoice.booking_trans
             ");
 
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();

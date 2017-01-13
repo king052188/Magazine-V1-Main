@@ -99,8 +99,8 @@
                                                             <option value="0">Void</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                                @if($booking[$i]->invoice_number != null)
-                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                                @if($booking[$i]->invoice_num != null)
+                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                                 @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                             </optgroup>
@@ -108,8 +108,8 @@
                                                             <option value="0">Approved</option>
                                                                 <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                                @if($booking[$i]->invoice_number != null)
-                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                                @if($booking[$i]->invoice_num != null)
+                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                                 @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                             </optgroup>
@@ -117,8 +117,8 @@
                                                             <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2:{{ $booking[$i]->status == 2 ? 1 : 0 }}">For Approval</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                                @if($booking[$i]->invoice_number != null)
-                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                                @if($booking[$i]->invoice_num != null)
+                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                                 @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                             </optgroup>
@@ -127,8 +127,8 @@
                                                             <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2:{{ $booking[$i]->status == 2 ? 1 : 0 }}">For Approval</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                                @if($booking[$i]->invoice_number != null)
-                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                                @if($booking[$i]->invoice_num != null)
+                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                                 @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                             </optgroup>
@@ -157,8 +157,8 @@
                                                             <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5:{{ $booking[$i]->status == 5 ? 1 : 0 }}">Void</option>
                                                         <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                             <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                            @if($booking[$i]->invoice_number != null)
-                                                                <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_number }}">View Invoice Order</option>
+                                                            @if($booking[$i]->invoice_num != null)
+                                                                <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                             @endif
                                                             <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                         </optgroup>
