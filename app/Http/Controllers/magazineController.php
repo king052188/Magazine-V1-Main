@@ -241,7 +241,7 @@ class magazineController extends Controller
         //$result = DB::table('magazine_company_table')->where('country','=',$magc_id)->get();
 
         //version 1.1
-        $result = DB::table('magazine_company_table')->get();
+        $result = DB::table('magazine_company_table')->where('status','=',2)->get();
         if(COUNT($result) != 0){
             return array(
                 "result" => $result
