@@ -393,6 +393,10 @@ $(document).ready(function(){
                     {
                         $('#line_item_qty_label').empty().append("Line Item QTY");
                         $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
+
+
+
+
                         $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary pull-right" value = "Save">');
                     });
                 });
