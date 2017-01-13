@@ -195,7 +195,7 @@
 
                                     </div>
                                  </div>
-                                <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px; display: none;"> </div>
+                                <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px;"> </div>
                                 <div id="approval_discretionary_discount" style="width: 100%; margin-top: 10px; display: none; ">
                                     <h3>Discretionary Discount</h3>
                                     <table style="width: 100%; padding: 10px;" border="0" cellspacing="0" cellpadding="0">
@@ -360,6 +360,17 @@
 <script>
 
 $(document).ready(function(){
+    var trans_status = {{ $booking_trans_num[0]->status }};
+
+    if(trans_status != 1)
+    {
+        $("#once_approved_aa").hide();
+        $("#once_approved_bb").removeClass('col-lg-8').addClass('col-lg-12');
+//        $(".once_approved_cc").attr("style", "disabled");
+//        $( "#once_approved_cc" ).prop( "disabled", true );
+        $("#once_approved_cc").hide();
+    }
+
     var client_id = {{ $client_id }};
     $('#ad_criteria_id').on('change',function(){
         var mag_uid = {{ $transaction_uid[0]->magazine_id }};
@@ -498,7 +509,7 @@ function populate_issues_transaction(uid) {
                     return false;
 
                 if(json.Status == 404) {
-                    $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="7">' + json.Message + '</td> </tr>');
+                    $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8">' + json.Message + '</td> </tr>');
                     return;
                 }
                 $('#mag_trans_container').empty().prepend('<h3>'+ json.Magazine_Name +' [ <span>'+ json.Mag_Code +'</span> ] | '+ json.Mag_Country +' </h3>');
@@ -533,7 +544,18 @@ function populate_issues_transaction(uid) {
                     }
 
                     html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
-                    html_thmb += "<td style='text-align: center;'><a onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a></td>";
+                    html_thmb += "<td style='text-align: center;'>";
+
+                    if({{ $booking_trans_num[0]->status }} != 1)
+                    {
+                        html_thmb += "";
+                    }else{
+                        html_thmb += "<a id = 'once_approved_cc' onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a>";
+                    }
+
+
+                    html_thmb += "</td>";
+
                     html_thmb += "</tr>";
                     item_count++;
                     total_with_discount += parseFloat(tran.total_amount_with_discount);
@@ -595,24 +617,24 @@ function populate_issues_transaction(uid) {
                                     $("#approval_discount").text( "(" + numeral(i_total_less_discount).format('0,0') + ")");
                                     $("#approval_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0'));
 
-                                    if(parseInt( discount.status ) == 2) {
-                                        $("#once_approved_aa").hide();
-                                        $("#once_approved_bb").removeClass('col-lg-8').addClass('col-lg-12');
+                                    if(parseInt( discount.status ) == 2) { //approved discount (status from discount_transaction_table)
+//                                        $("#once_approved_aa").hide();
+//                                        $("#once_approved_bb").removeClass('col-lg-8').addClass('col-lg-12');
                                         $("#button_approve").hide();
-                                        $("#text_status").text("Approved");
+                                        $("#text_status").text("Approved Discount");
                                         $("#text_status").attr("style", "color: green;");
                                     }
-                                    else if(parseInt( discount.status ) == 3) {
-                                        $("#once_approved_aa").hide();
-                                        $("#once_approved_bb").removeClass('col-lg-8').addClass('col-lg-12');
+                                    else if(parseInt( discount.status ) == 3) { //desclined discount (status from discount_transaction_table)
+//                                        $("#once_approved_aa").hide();
+//                                        $("#once_approved_bb").removeClass('col-lg-8').addClass('col-lg-12');
                                         $("#button_approve").hide();
-                                        $("#text_status").text("Declined");
+                                        $("#text_status").text("Declined Discount");
                                         $("#text_status").attr("style", "color: red;");
                                     }
                                     else {
                                         $("#text_status").hide();
-                                        $("#once_approved_aa").show();
-                                        $("#once_approved_bb").removeClass('col-lg-12').addClass('col-lg-8');
+//                                        $("#once_approved_aa").show();
+//                                        $("#once_approved_bb").removeClass('col-lg-12').addClass('col-lg-8');
                                     }
                                 }
                             });
@@ -624,9 +646,16 @@ function populate_issues_transaction(uid) {
                             $('#issues_discount').text("(" + numeral("0").format('0,0.00') + ")");
                             $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
 
-                            $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning" data-toggle="modal" data-target="#discount">Discount</a>');
-                            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                            $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+                            if({{ $booking_trans_num[0]->status }} != 1)
+                            {
+                                $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
+                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+                            }else{
+                                $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>');
+                                $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
+                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+                            }
+
                         }
                     }
                 });

@@ -145,7 +145,7 @@ class bookingController extends Controller
         $booking->sales_rep_code = $request['sales_rep_code'];
         $booking->client_id = $request['client_id'];
         $booking->agency_id = $request['agency_id'] == "" ? 0 : $request['agency_id'];
-        $booking->status = 2;
+        $booking->status = 1; //default pending
         $booking->save();
 
         $booking_uid = $booking->id; //last_inserted_id
