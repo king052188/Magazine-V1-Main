@@ -33,6 +33,8 @@ class bookingController extends Controller
                 
                 booked.client_id,
                 
+                (SELECT is_member FROM db_magazine_v1.client_table WHERE Id = booked.client_id) AS is_member,
+                
                 booked.trans_num,
                 
                 (null) AS invoice_num,
@@ -47,7 +49,7 @@ class bookingController extends Controller
                 
                 ( SELECT COUNT(*) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
                 
-                ( SELECT SUM(line_item_qty) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS qty,
+                ( SELECT CASE WHEN SUM(line_item_qty) > 0 THEN SUM(line_item_qty) ELSE 0 END AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS qty,
                 
                 ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
                 

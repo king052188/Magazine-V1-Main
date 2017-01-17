@@ -82,12 +82,16 @@
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->line_item  }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->qty }}</td>
-                                        <td style='text-align: right;'>{{ $booking[$i]->new_amount != null ? number_format($booking[$i]->new_amount, 2, '.', ',') : number_format($booking[$i]->amount, 2, '.', ',') }}</td>
+                                        @if($booking[$i]->is_member == 1)
+                                            <td style='text-align: right;'>{{ $booking[$i]->new_amount != null ? number_format($booking[$i]->new_amount, 2, '.', ',') : number_format($booking[$i]->amount, 2, '.', ',') }}</td>
+                                        @else
+                                            <td style='text-align: right;'>{{ number_format($booking[$i]->amount, 2, '.', ',') }}</td>
+                                        @endif
                                         <td style='text-align: center;'>
-                                            <?php
-                                                $date_created = \Carbon\Carbon::parse($booking[$i]->created_at);
-                                            ?>
-                                            {{ $date_created->format('F d, Y') }}
+                                        <?php
+                                            $date_created = \Carbon\Carbon::parse($booking[$i]->created_at);
+                                        ?>
+                                        {{ $date_created->format('F d, Y') }}
                                         </td>
                                     @if($_COOKIE['role'] > 2)
                                         <td style='text-align: center;'>
