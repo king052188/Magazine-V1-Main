@@ -49,10 +49,10 @@
                 </ul>
             </li>
             <li class="{{ Request::is('magazine') || Request::is('magazine/*') ? 'active' : '' }}">
-                <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Magazine</span><span class="fa arrow"></span></a>
+                <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Publication</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="/magazine/create">Create New Magazine</a></li>
-                    <li><a href="/magazine/all">View All Magazine</a></li>
+                    <li><a href="/magazine/create">Create New Publication</a></li>
+                    <li><a href="/magazine/all">View All Publication</a></li>
                 </ul>
             </li>
             <li class="{{ Request::is('client') || Request::is('client/*') ? 'active' : '' }}">

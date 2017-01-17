@@ -70,8 +70,8 @@
                                         <td>
                                             <select class = "form-control" id = "action_publisher_{{ $result[$i]->Id }}">
                                                 <option value = "">--select--</option>
-                                                <option value = "1:{{ $result[$i]->Id }}">View Information</option>
-                                                <option value = "2:{{ $result[$i]->Id }}">Edit Information</option>
+                                                <option value = "1:{{ $result[$i]->Id }}">View Publisher</option>
+                                                <option value = "2:{{ $result[$i]->Id }}">Edit Publisher</option>
                                                 @if($result[$i]->status == 2)
                                                 <option value = "3:{{ $result[$i]->Id }}">Set as Inactive</option>
                                                 @else
@@ -178,7 +178,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="myModalLabel">Edit Publisher</h4>
+                        <h4 class="modal-title" id="myModalLabel">View Publisher</h4>
                     </div>
                     <div class="modal-body">
                         <div class="col-lg-12">

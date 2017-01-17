@@ -91,7 +91,7 @@
             <div id="tab_1" class="col-lg-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Create New Magazine<small> *all fields are required</small></h5>
+                        <h5>Create New Publication<small> *all fields are required</small></h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
