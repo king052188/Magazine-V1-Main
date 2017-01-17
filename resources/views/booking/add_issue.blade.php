@@ -543,7 +543,14 @@ function populate_issues_transaction(uid) {
                         n_status = "Declined";
                     }
 
-                    html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
+                    if({{ $is_member[0]->is_member }} == 1)
+                    {
+                        html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
+                    }else{
+                        html_thmb += "<td style='text-align: right;'>"+ numeral(tran.sub_total_amount).format('0,0.00') +"</td>";
+                    }
+
+
                     html_thmb += "<td style='text-align: center;'>";
 
                     if({{ $booking_trans_num[0]->status }} != 1)
@@ -558,7 +565,13 @@ function populate_issues_transaction(uid) {
 
                     html_thmb += "</tr>";
                     item_count++;
-                    total_with_discount += parseFloat(tran.total_amount_with_discount);
+                    if({{ $is_member[0]->is_member }} == 1)
+                    {
+                        total_with_discount += parseFloat(tran.total_amount_with_discount);
+                    }else{
+                        total_with_discount += parseFloat(tran.sub_total_amount);
+                    }
+
                 });
                 $('table#issue_reports > tbody').empty().prepend(html_thmb);
 
@@ -646,11 +659,27 @@ function populate_issues_transaction(uid) {
                             $('#issues_discount').text("(" + numeral("0").format('0,0.00') + ")");
                             $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
 
+
+                            {{--Version 1.0--}}
+                            {{--if({{ $booking_trans_num[0]->status }} != 1)--}}
+                            {{--{--}}
+                                {{--$('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');--}}
+                                {{--$('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');--}}
+                            {{--}else{--}}
+                                {{--$('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>');--}}
+                                {{--$('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');--}}
+                                {{--$('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');--}}
+                            {{--}--}}
+
+                            //Version 1.1
                             if({{ $booking_trans_num[0]->status }} != 1)
                             {
                                 $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                                 $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
-                            }else{
+                            }else if({{ $is_member[0]->is_member }} != 1) {
+                                $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
+                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+                            }else {
                                 $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>');
                                 $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                                 $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');

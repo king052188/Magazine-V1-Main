@@ -253,7 +253,9 @@ class bookingController extends Controller
                 GROUP BY c_uid, b.name ASC
         ");
 
-        return view('booking.add_issue', compact('mag_trans_uid', 'mag_name', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num'));
+        $is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
+
+        return view('booking.add_issue', compact('mag_trans_uid', 'mag_name', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num', 'is_member'));
     }
 
     public function save_issue_v1_backup(Request $request, $mag_trans_uid, $client_id)
