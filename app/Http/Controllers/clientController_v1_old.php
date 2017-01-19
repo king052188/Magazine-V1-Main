@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Client;
 use App\ClientContact;
-use App\GroupTable;
-use App\GroupList;
 use DB;
 
 class clientController extends Controller
@@ -112,129 +110,6 @@ class clientController extends Controller
         return view('/client/client_contacts', compact('result', 'company_uid', 'branch_name'));
     }
 
-    public function client_contacts_group_list($company_uid)
-    {
-        if(!AssemblyClass::check_cookies()) {
-            return redirect("/logout_process");
-        }
-
-        $company_uid = (int)$company_uid;
-
-        $result = DB::SELECT("SELECT Id, first_name, last_name FROM client_contacts_table WHERE client_id = {$company_uid}");
-        if($result != null)
-        {
-            return array("status" => 200, "result" => $result);
-        }
-
-        return array("status" => 404, "description" => "No Result Found");
-    }
-
-    public function list_of_contacts_in_group($company_uid)
-    {
-        if(!AssemblyClass::check_cookies()) {
-            return redirect("/logout_process");
-        }
-
-        $company_uid = (int)$company_uid;
-
-        $result = DB::SELECT("
-                        SELECT aa.*, bb.first_name, bb.last_name
-                        FROM group_list_table as aa
-                        LEFT JOIN client_contacts_table as bb ON bb.Id = aa.contact_id
-                        WHERE aa.client_id = {$company_uid}");
-        if($result != null)
-        {
-
-            return array(
-                "status" => 200,
-                "result" => $result
-            );
-        }
-
-        return array("status" => 404, "description" => "No Result Found");
-    }
-
-    public function add_contacts_in_group($company_uid, $group_id, $contact_id, $role)
-    {
-        if(!AssemblyClass::check_cookies()) {
-            return redirect("/logout_process");
-        }
-
-        $result = DB::SELECT("SELECT * FROM group_list_table WHERE contact_id = {$contact_id} AND client_id = {$company_uid}");
-        
-        if($result != null)
-        {
-            return array("status" => 404, "description" => "Contact is already in your group");
-        }
-        else
-        {
-            $result_aa = DB::SELECT("SELECT * FROM group_list_table WHERE role_id = {$role} AND client_id = {$company_uid}");
-            if($result_aa != null)
-            {
-                return array("status" => 403, "description" => "Role is already in your group");
-            }
-            else
-            {
-                $g = new GroupList();
-                $g->group_id = $group_id;
-                $g->contact_id = $contact_id;
-                $g->client_id = $company_uid;
-                $g->role_id = $role;
-                $g->status = 2;
-                $result_bb = $g->save();
-
-                if($result_bb)
-                {
-                    return array("status" => 200);
-                }
-            }
-        }
-
-    }
-
-    public function add_group($company_uid, $group_name, $category)
-    {
-        if(!AssemblyClass::check_cookies()) {
-            return redirect("/logout_process");
-        }
-
-        $gt = new GroupTable();
-        $gt->group_name = $group_name;
-        $gt->category_id = $category;
-        $gt->client_uid = $company_uid;
-        $gt->save();
-
-        return array("status" => 200);
-    }
-
-    public function list_group($company_uid)
-    {
-        if(!AssemblyClass::check_cookies()) {
-            return redirect("/logout_process");
-        }
-
-        $result = DB::SELECT("SELECT * FROM group_table WHERE client_uid = {$company_uid}");
-        if($result != null)
-        {
-            return array("status" => 200, "result" => $result);
-        }
-
-        return array("status" => 404, "description" => "No Result Found");
-    }
-
-    public function client_group($group_uid)
-    {
-        if(!AssemblyClass::check_cookies()) {
-            return redirect("/logout_process");
-        }
-
-        $group = DB::table('group_table')->where('Id', '=', $group_uid)->get();
-        $company = DB::table('client_table')->where('Id', '=', $group[0]->client_uid)->get();
-        $contacts = DB::table('client_contacts_table')->where('client_id', '=', $group[0]->client_uid)->get();
-
-        return view('client/client_group', compact('group', 'company', 'contacts'));
-    }
-
     public function companies()
     {
         if(!AssemblyClass::check_cookies()) {
@@ -272,7 +147,7 @@ class clientController extends Controller
         $same = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 5)->get(); //Primary and Bill To
         $same == null ? null : $same;
 
-        return view('client.client_contacts_view', compact('ref', 'company', 'results', 'p', 's', 'b', 'same', 'tax', 'category'));
+        return view('client.client_contacts_view', compact('ref', 'company', 'results', 'p', 's', 'b', 'same', 'tax'));
     }
 
     public function store(Request $request)

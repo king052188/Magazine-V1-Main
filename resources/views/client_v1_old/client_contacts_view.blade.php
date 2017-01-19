@@ -15,7 +15,6 @@
             height: 610px;
         }
     </style>
-
 @endsection
 
 @section('magazine_content')
@@ -41,7 +40,7 @@
         </div>
         <div class="col-sm-4">
             <div class="title-action">
-                {{--<a href="#" class="btn btn-primary" id="btnSave">Save</a>--}}
+                <a href="#" class="btn btn-primary" id="btnSave">Save</a>
             </div>
         </div>
     </div>
@@ -59,13 +58,208 @@
                     <div class="tabs-container">
                         <ul class="nav nav-tabs">
                             <li class="active"><a data-toggle="tab" href="#all_contacts" id = "all_contacts_press"> All Contacts</a></li>
-                            <li class=""><a data-toggle="tab" href="#all_groups" id = "all_groups_press"> All Groups</a></li>
                             <li class=""><a data-toggle="tab" href="#add_more_contacts" id = "add_more_contacts_press">Add More Contacts</a></li>
                         </ul>
                         <div class="tab-content">
                             <div id="all_contacts" class="tab-pane active">
                                 <div class="panel-body">
+
                                     <div class="panel-group" id="accordion">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h5 class="panel-title">
+                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" style = "font-size: 15px;">Main Contact Details</a>
+                                                </h5>
+                                            </div>
+                                            <div id="collapseOne" class="panel-collapse collapse in">
+                                                <div class="panel-body">
+                                                    <div class="col-lg-4">
+                                                        <div class="panel panel-primary">
+                                                            <div class="panel-heading" style = "padding: 5px; font-size: 15px;">
+                                                                <strong>Primary Contact Details</strong>
+                                                            </div>
+                                                            <div class="panel-body" style = "padding: 10px;">
+                                                                @if(COUNT($p) != 0)
+                                                                    <h3 style = "text-align: left; margin-left: 15px;"><strong>{{ $p[0]->first_name . " " . $p[0]->middle_name . " " . $p[0]->last_name}}</strong> ({{ $p[0]->position }})</h3>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-envelope" aria-hidden="true"></i> <strong> Email: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $p[0]->email }}
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-mobile" aria-hidden="true"></i> <strong> Mobile: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $p[0]->mobile }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-phone" aria-hidden="true"></i> <strong>Landline: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $p[0]->landline }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $p[0]->type == 1 ? "Advertiser" : ($p[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                    </div>
+                                                                @elseif(COUNT($same) != 0)
+                                                                    <h3 style = "text-align: left; margin-left: 15px;"><strong>{{ $same[0]->first_name . " " . $same[0]->middle_name . " " . $same[0]->last_name}}</strong> ({{ $same[0]->position }})</h3>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-envelope" aria-hidden="true"></i> <strong> Email: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->email }}
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-mobile" aria-hidden="true"></i> <strong> Mobile: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->mobile }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-phone" aria-hidden="true"></i> <strong>Landline: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->landline }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->type == 1 ? "Advertiser" : ($same[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                    </div>
+                                                                @else
+                                                                    <div class="col-lg-8">
+                                                                        No Record.
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div class="panel panel-warning">
+                                                            <div class="panel-heading" style = "padding: 5px; font-size: 15px;">
+                                                                <strong>Secondary Contact Details</strong>
+                                                            </div>
+                                                            <div class="panel-body" style = "padding: 10px;">
+                                                                @if(COUNT($s) != 0)
+                                                                    <h3 style = "text-align: left; margin-left: 15px;"><strong>{{ $s[0]->first_name . " " . $s[0]->middle_name . " " . $s[0]->last_name}}</strong> ({{ $s[0]->position }})</h3>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-envelope" aria-hidden="true"></i> <strong> Email: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $s[0]->email }}
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-mobile" aria-hidden="true"></i> <strong> Mobile: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $s[0]->mobile }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-phone" aria-hidden="true"></i> <strong>Landline: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $s[0]->landline }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $s[0]->type == 1 ? "Advertiser" : ($s[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                    </div>
+                                                                @else
+                                                                    <div class="col-lg-8">
+                                                                        No Record.
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4">
+                                                        <div class="panel panel-info">
+                                                            <div class="panel-heading" style = "padding: 5px; font-size: 15px;">
+                                                                <strong>Bill To Contact Details</strong>
+                                                            </div>
+                                                            <div class="panel-body" style = "padding: 10px;">
+                                                                @if(COUNT($b) != 0)
+                                                                    <h3 style = "text-align: left; margin-left: 15px;"><strong>{{ $b[0]->first_name . " " . $b[0]->middle_name . " " . $b[0]->last_name}}</strong> ({{ $b[0]->position }})</h3>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-envelope" aria-hidden="true"></i> <strong> Email: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $b[0]->email }}
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-mobile" aria-hidden="true"></i> <strong> Mobile: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $b[0]->mobile }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-phone" aria-hidden="true"></i> <strong>Landline: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $b[0]->landline }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $b[0]->type == 1 ? "Advertiser" : ($b[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                    </div>
+                                                                @elseif(COUNT($same) != 0)
+                                                                    <h3 style = "text-align: left; margin-left: 15px;"><strong>{{ $same[0]->first_name . " " . $same[0]->middle_name . " " . $same[0]->last_name}}</strong> ({{ $same[0]->position }})</h3>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-envelope" aria-hidden="true"></i> <strong> Email: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->email }}
+                                                                    </div>
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-mobile" aria-hidden="true"></i> <strong> Mobile: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->mobile }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-phone" aria-hidden="true"></i> <strong>Landline: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->landline }}
+                                                                    </div>
+
+                                                                    <div class="col-lg-4">
+                                                                        <i class="fa fa-tag" aria-hidden="true"></i> <strong>Type: </strong>
+                                                                    </div>
+                                                                    <div class="col-lg-8">
+                                                                        {{ $same[0]->type == 1 ? "Advertiser" : ($same[0]->type == 2 ? "Agency" : "Lead") }}
+                                                                    </div>
+                                                                @else
+                                                                    <div class="col-lg-8">
+                                                                        No Record.
+                                                                    </div>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <h4 class="panel-title">
@@ -253,39 +447,7 @@
                                     </div>
                                     <div class="form-group" >
                                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                        <button id="btnUpdate" class="btn btn-primary pull-right" type="submit">Save</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="all_groups" class="tab-pane">
-                                <div class="panel-body">
-                                    <div class="panel-group" id="accordion">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" style = "font-size: 15px;">List of all Groups</a>
-                                                    <a class="btn btn-primary btn-xs pull-right" data-toggle="modal" data-target="#modal_create_group" style = "color: #FFFFFF;">Create Group</a>
-                                                </h4>
-                                            </div>
-                                            <div id="collapseTwo" class="panel-collapse collapse in">
-                                                <div class="panel-body">
-                                                    <div class="table-responsive">
-                                                        <table class="footable table table-stripped toggle-arrow-tiny" id = "list_group_table" data-page-size="15">
-                                                            <thead>
-                                                            <tr>
-                                                                <th style = "text-align: Left;">Group Name</th>
-                                                                <th style = "text-align: Left;">Category</th>
-                                                                <th style = "text-align: Right;"></th>
-                                                            </tr>
-                                                            </thead>
-                                                            <tbody>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <button id="btnUpdate" class="btn btn-primary btn-lg pull-right" type="submit" style = "width: 200px; display: none;">Create</button>
                                     </div>
                                 </div>
                             </div>
@@ -509,35 +671,6 @@
             </div>
         </div>
     </div>
-
-    <div class="modal fade" id="modal_create_group" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-sm" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Create Group</h4>
-                </div>
-                <div class="modal-body form group">
-                    <label for="ex2">Group Name</label>
-                    <input class="form-control" type="text" id ="group_name" placeholder="Enter Group Name" required>
-                    <label for="ex2">Category</label>
-                    <select class="form-control" id = "category" required>
-                        <option value="">--select--</option>
-                        <option value="1">Print</option>
-                        <option value="2">Digital</option>
-                        <option value="3">Bulletin</option>
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-primary" type="submit" id = "add_group">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 @endsection
 
 
@@ -583,10 +716,6 @@
                 $("#btnSave").hide();
             });
 
-            $("#all_groups_press").click(function(){
-                $("#btnSave").hide();
-            });
-
             $("#btnSave").click(function(){
                 $("#btnUpdate").click();
                 return false;
@@ -610,96 +739,5 @@
                 }
             });
         });
-    </script>
-
-    <script>
-        $(document).ready(function(){
-
-            $("#all_groups_press").click(function(){
-                populate_all_groups();
-            });
-
-            $("#add_group").click(function(){
-                var group_name = $("#group_name").val();
-                var category = $("#category").val();
-                $.ajax({
-                    url: "/client/add_group/{{ $company[0]->Id }}/" + group_name + "/" + category,
-                    dataType: "text",
-                    beforeSend: function () {
-                    },
-                    success: function(data) {
-                        var json = $.parseJSON(data);
-                        if (json == null)
-                            return false;
-
-                        if(json.status == 200)
-                        {
-                            $('#modal_create_group').modal('hide');
-                            populate_all_groups();
-                        }
-                        else
-                        {
-                            console.log("Error");
-                        }
-                    }
-                });
-            });
-
-            function populate_all_groups(){
-                html_thmb = "";
-
-                $.ajax({
-                    url: "/client/list_group/{{ $company[0]->Id }}",
-                    dataType: "text",
-                    beforeSend: function () {
-                    },
-                    success: function(data) {
-                        var json = $.parseJSON(data);
-                        if (json == null)
-                            return false;
-
-                        if(json.status == 200)
-                        {
-                            $(json.result).each(function(i, tran){
-                                html_thmb += "<tr>";
-                                html_thmb += "<td style='text-align: left;'>"+tran.group_name+"</td>";
-
-                                if(tran.category_id == 1){
-                                    category = "Print";
-                                }else if(tran.category_id == 2){
-                                    category = "Digital"
-                                }else if(tran.category_id == 3){
-                                    category = "Bulletin"
-                                }
-
-                                html_thmb += "<td style='text-align: left;'>"+category+"</td>";
-                                html_thmb += "<td style='text-align: left;'><a href = '{{ URL("/client/client_group") . "/"}}"+ tran.Id +"' class='btn btn-info btn-xs pull-right' style = 'padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;'><i class='fa fa-plus' title = 'View Group'></i> View </a></td>";
-                                html_thmb += "</tr>";
-
-                            });
-                            $('table#list_group_table > tbody').empty().prepend(html_thmb);
-                        }
-                        else
-                        {
-                            $('table#list_group_table > tbody').empty().prepend("<tr><td>No Result Found</td></tr>");
-                        }
-                    }
-                });
-            }
-
-        });
-    </script>
-    <!-- Chosen -->
-    <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
-    <script>
-        var config = {
-            '.chosen-select'           : {},
-            '.chosen-select-deselect'  : {allow_single_deselect:true},
-            '.chosen-select-no-single' : {disable_search_threshold:10},
-            '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'}
-        }
-        for (var selector in config) {
-            $(selector).chosen(config[selector]);
-        }
     </script>
 @endsection

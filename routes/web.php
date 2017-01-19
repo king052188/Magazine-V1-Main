@@ -4,6 +4,10 @@ Route::get('/', function () {
     return view('login.login');
 });
 
+Route::get('/dual_list', function () {
+    return view('client.dual_list');
+});
+
 Route::get('/get_new_password/{value}', 'loginController@get_new_password');
 
 
@@ -34,6 +38,14 @@ Route::post('/client/update/save/{company_uid}', 'clientController@client_update
 
 Route::get('/contact/update/{contact_uid}', 'clientController@contact_update');
 Route::post('/client/save_update_contact', 'clientController@contact_update_save');
+
+Route::get('/client/client_contacts_group_list/{company_uid}', 'clientController@client_contacts_group_list');
+Route::get('/client/list_of_contacts_in_group/{company_uid}', 'clientController@list_of_contacts_in_group');
+
+Route::get('/client/add_contacts_in_group/{company_uid}/{group_id}/{contact_id}/{role}', 'clientController@add_contacts_in_group'); //ok
+Route::get('/client/add_group/{company_uid}/{group_name}/{category}', 'clientController@add_group'); //ok
+Route::get('/client/list_group/{company_uid}', 'clientController@list_group'); //ok
+Route::get('/client/client_group/{group_uid}', 'clientController@client_group'); //ok
 
 // Salesperson Routes
 Route::get('/users/create', 'userAccountController@create');
