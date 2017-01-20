@@ -125,6 +125,23 @@ class bookingController extends Controller
                     WHERE client_id = {$client_id} AND role = 3
     	 ");
 
+//        to be continue
+//        SELECT
+//
+//            trans.Id,
+//
+//            (SELECT group_name FROM group_table WHERE Id = trans.group_id) AS group_name,
+//
+//            (SELECT company_name FROM client_table WHERE Id = trans.client_id) AS company_name,
+//
+//            (SELECT CONCAT(first_name,' ', last_name) AS fullname FROM client_contacts_table WHERE Id = trans.contact_id) AS contact_name,
+//
+//            trans.role_id
+//
+//        FROM group_list_table AS trans
+//
+//        WHERE client_id = 129 AND status = 2 AND trans.group_id = 1;
+
         if(COUNT($bill_to) > 0)
         {
             return array(

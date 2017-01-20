@@ -59,7 +59,7 @@
                         <input class="form-control" placeholder="Sales Representative Code" id="ex2" type="hidden" value = "{{ $_COOKIE['Id'] }}" name = "sales_rep_code">
 
                         <div class="form-group">
-                            <label>Company Name</label>
+                            <label>Company</label>
                             {{--<div class="input-group">--}}
                                 {{--<input type="hidden" class="form-control" name="client_id" id="clientIdField" value="">--}}
                                 {{--<input type="text" class="form-control" placeholder="(Company Name) Click Search..." id="clientIdFieldView" required disabled>--}}
@@ -76,7 +76,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="ex2">Agency ID <i>(if any)</i></label>
+                            <label for="ex2">Agency <i>(if any)</i></label>
                             <input type="hidden" class="form-control" name="agency_id" id="agencyIdField" value="">
                             <input type="text" class="form-control" placeholder="(Agency Name) Click Search..."  id="agencyIdFieldView" disabled>
                             {{--<span class="input-group-btn">--}}

@@ -207,6 +207,9 @@
 
     function open_preview(trans_number)
     {
+//        var url = "http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview";
+        var url = "http://"+ report_url_api +"/kpa/work/generate/insertion-order/" + trans_number;
+
         window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
                 "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
     }
@@ -226,8 +229,9 @@
 
                 if(str_to_int == -1) {
                     $("#btn_lists").hide();
+
                     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_num + "/preview",
-                            "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
+                            "mywindow","location=1,status=1,scrollbars=1,width=855,height=800");
                 }
                 else if(str_to_int == -2) {
 

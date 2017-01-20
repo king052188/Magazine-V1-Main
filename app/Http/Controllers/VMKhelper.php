@@ -157,9 +157,16 @@ class VMKhelper extends Controller
     }
 
     public static function get_new_contract() {
+
         do {
 
-            $n_uid = array("id" => date("Ymdms") ."". strtoupper(uniqid()));
+            $data = substr(str_shuffle(str_repeat('QWERTYUIOPASDFGHJKLZXCVBNM',5)),0, 2);
+
+            $data = date("ym") . $data . substr(str_shuffle(str_repeat('0123456789',5)),0,4);
+
+//            $n_uid = array("id" => date("Ymdms") ."". strtoupper(uniqid()));
+
+            $n_uid = array("id" => $data);
 
             $data = DB::select("SELECT * FROM booking_sales_table WHERE trans_num = '{$n_uid["id"]}';");
 
