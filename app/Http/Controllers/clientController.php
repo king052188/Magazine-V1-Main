@@ -129,7 +129,7 @@ class clientController extends Controller
         return array("status" => 404, "description" => "No Result Found");
     }
 
-    public function list_of_contacts_in_group($company_uid)
+    public function list_of_contacts_in_group($company_uid, $group_id)
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
@@ -141,7 +141,7 @@ class clientController extends Controller
                         SELECT aa.*, bb.first_name, bb.last_name
                         FROM group_list_table as aa
                         LEFT JOIN client_contacts_table as bb ON bb.Id = aa.contact_id
-                        WHERE aa.client_id = {$company_uid}");
+                        WHERE aa.client_id = {$company_uid} AND aa.group_id = {$group_id}");
         if($result != null)
         {
 

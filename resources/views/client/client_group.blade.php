@@ -45,7 +45,7 @@
                     {!! Session::get('success') !!}
                 </div>
             @endif
-            {{--START COMPANY DETAILS--}}
+
             <div class="col-lg-4" >
                 <div class="ibox float-e-margins"> {{-- ibox start --}}
                     <div class="ibox-title">
@@ -185,7 +185,7 @@
             {
                 html_thmb = "";
                 $.ajax({
-                    url: "/client/list_of_contacts_in_group/{{ $company[0]->Id }}",
+                    url: "/client/list_of_contacts_in_group/{{ $company[0]->Id }}/{{ $group[0]->Id }}",
                     dataType: "text",
                     beforeSend: function () {
                     },

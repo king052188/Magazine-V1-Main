@@ -40,7 +40,7 @@ Route::get('/contact/update/{contact_uid}', 'clientController@contact_update');
 Route::post('/client/save_update_contact', 'clientController@contact_update_save');
 
 Route::get('/client/client_contacts_group_list/{company_uid}', 'clientController@client_contacts_group_list');
-Route::get('/client/list_of_contacts_in_group/{company_uid}', 'clientController@list_of_contacts_in_group');
+Route::get('/client/list_of_contacts_in_group/{company_uid}/{group_id}', 'clientController@list_of_contacts_in_group');
 
 Route::get('/client/add_contacts_in_group/{company_uid}/{group_id}/{contact_id}/{role}', 'clientController@add_contacts_in_group'); //ok
 Route::get('/client/add_group/{company_uid}/{group_name}/{category}', 'clientController@add_group'); //ok
