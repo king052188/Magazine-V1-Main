@@ -160,7 +160,7 @@ class clientController extends Controller
             return redirect("/logout_process");
         }
 
-        $result = DB::SELECT("SELECT * FROM group_list_table WHERE contact_id = {$contact_id} AND client_id = {$company_uid}");
+        $result = DB::SELECT("SELECT * FROM group_list_table WHERE contact_id = {$contact_id} AND client_id = {$company_uid} AND group_id = {$group_id}");
         
         if($result != null)
         {
@@ -168,7 +168,7 @@ class clientController extends Controller
         }
         else
         {
-            $result_aa = DB::SELECT("SELECT * FROM group_list_table WHERE role_id = {$role} AND client_id = {$company_uid}");
+            $result_aa = DB::SELECT("SELECT * FROM group_list_table WHERE role_id = {$role} AND client_id = {$company_uid} AND group_id = {$group_id}");
             if($result_aa != null)
             {
                 return array("status" => 403, "description" => "Role is already in your group");
