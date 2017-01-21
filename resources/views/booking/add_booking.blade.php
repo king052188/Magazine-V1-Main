@@ -60,18 +60,13 @@
 
                         <div class="form-group">
                             <label>Company</label>
-                            {{--<div class="input-group">--}}
-                                {{--<input type="hidden" class="form-control" name="client_id" id="clientIdField" value="">--}}
-                                {{--<input type="text" class="form-control" placeholder="(Company Name) Click Search..." id="clientIdFieldView" required disabled>--}}
-                                {{--<span class="input-group-btn">--}}
-                                    {{--<button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_client">Search <i class="fa fa-search"></i></button>--}}
-                                {{--</span>--}}
-                            {{--</div>--}}
+
                             <select class="form-control chosen-select" style = "background: none;" name = "client_id" id = "clientIdField">
-                                <option value="">Select</option>
+                                <option value="0">Select</option>
                                 @for($i = 0; $i < COUNT($clients); $i++)
                                     <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
                                 @endfor
+                                <option value="99">aSelect</option>
                             </select>
                         </div>
 
@@ -173,18 +168,168 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modal_search_category_and_group" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Category and Group List</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <p><i><b>Select Category</b></i></p>
+                        <select class = "form-control" name = "category" id = "category">
+                            <option value = "">--select--</option>
+                            <option value = "1">Print</option>
+                            <option value = "2">Digital</option>
+                            <option value = "3">Bulletin</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <p id = "select_group_label"></p>
+                        <div id = "select_group"></div>
+                    </div>
+
+                    <p id = "contacts_label"></p>
+                    <table class="table table-bordered" id = "contacts_of_group" style = "display: none;">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id = "btn_category_close">Close</button>
+                    <a class="btn btn-primary" id = "btn_category_done" style = "display: none;">Done</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 
 @section('scripts')
 <script>
     $(document).ready(function(){
+
+        function search_group_by_category(client_id){
+            //var category = $("#category").val();
+
+            $("#category").change(function(){
+
+                $("#contacts_of_group").hide();
+                $("#contacts_label").hide();
+                $("#select_group_label").hide();
+                $("#select_group").hide();
+
+                var category = $(this).val();
+
+                if(category == "")
+                {
+                    $("#contacts_of_group").hide();
+                    $("#contacts_label").hide();
+                    $("#select_group_label").hide();
+                    $("#select_group").hide();
+                }
+                else
+                {
+                    $.ajax({
+                        url: "/search/search-group-by-category/" + client_id + "/" + category,
+                        dataType: "text",
+                        beforeSend: function () {
+                        },
+                        success: function (data) {
+                            var json = $.parseJSON(data);
+                            if (json == null)
+                                return false;
+
+                            if (json.Code == 200) {
+                                $("#select_group_label").show();
+                                $("#select_group").show();
+                                $("#select_group_label").empty().append('<i><b>Select Group</b></i>');
+                                $("#select_group").empty().append('<select class = "form-control" id = "list_group_select">');
+                                $("#list_group_select").append('<option value = "">--select--</option>');
+                                $(json.result).each(function(i, groups){
+                                    $("#list_group_select").append('<option value = '+ groups.Id +'>'+ groups.group_name +'</option>');
+                                });
+                                $("#select_group").append('</select>');
+
+                                $("#list_group_select").change(function(){
+                                    search_contact_by_group($(this).val());
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function search_contact_by_group(group_uid){
+            if(group_uid == ""){
+
+            }else{
+                html_thmb = "";
+                $.ajax({
+                    url: "/search/search-contact-by-group/" + group_uid,
+                    dataType: "text",
+                    beforeSend: function () {
+                    },
+                    success: function (data) {
+                        var json = $.parseJSON(data);
+                        if (json == null)
+                            return false;
+
+                        if (json.Code == 200) {
+                            console.log(group_uid);
+                            $("#contacts_of_group").show();
+                            $("#contacts_label").empty().append('<i><b>List Of Contacts</b></i>');
+                            $(json.result).each(function (i, contact) {
+
+                                if(contact.role_id == 1){
+                                    var role = "Primary";
+                                }else if(contact.role_id == 2){
+                                    var role = "Secondary";
+                                }else if(contact.role_id == 3){
+                                    $("#btn_category_done").show();
+                                    var role = "Bill To";
+                                    var bill_to_contact_uid = contact.contact_id;
+                                    var bill_to_name = contact.first_name + " " + contact.last_name + " (" + json.group_name + ")";
+                                }
+
+                                html_thmb += "<tr>";
+                                html_thmb += "<td style='text-align: left; font-weight: bold;'>"+ role +"</td>";
+                                html_thmb += "<td style='text-align: left;'>"+ contact.first_name + " " + contact.last_name +"</td>";
+                                html_thmb += "</tr>";
+
+
+                                $("#btn_category_done").click(function(){
+                                    $("#agencyIdField").val(bill_to_contact_uid);
+                                    $("#agencyIdFieldView").val(bill_to_name);
+                                    $('#modal_search_category_and_group').modal('hide');
+                                });
+
+                            });
+
+                            $('table#contacts_of_group > tbody').empty().prepend(html_thmb);
+                        }
+                        else if (json.Code == 404)
+                        {
+                            $("#btn_category_done").hide();
+                            $('table#contacts_of_group > tbody').empty().prepend("<tr><td colspan = '3' style = 'color: #FF0000;'>"+ json.result +"</td></tr>");
+                        }
+                    }
+                });
+            }
+
+        }
+
         $("#clientIdField").change(function(){
 
             var client_id = $(this).val();
 
             $.ajax({
-                url: "/search/bill-to/" + client_id,
+                url: "/booking/get-client-contacts/" + client_id,
                 dataType: "text",
                 beforeSend: function () {
                 },
@@ -193,7 +338,34 @@
                     if (json == null)
                         return false;
 
-                    if(json.status == 200)
+                    if(json.Code == 200)
+                    {
+                        $('#modal_search_category_and_group').modal({
+                            show: true
+                        });
+
+                        search_group_by_category(client_id);
+
+                        $('#agencyIdFieldView').val("Searching...");
+
+                        $('#btn_category_close').click(function () {
+                            $('#modal_search_category_and_group').modal('hide');
+                            $('#clientIdField').val("0");
+                            if($('#clientIdField').val() == 0)
+                            {
+                                swal({
+                                    title: "",
+                                    text: "Please select group",
+                                    type: "warning"
+                                }).then(
+                                        function() {
+                                            location.reload();
+                                        }
+                                )
+                            }
+                        });
+                    }
+                    else if(json.Code == 201)
                     {
                         $('#agencyIdField').val(json.bill_to_uid);
                         $('#agencyIdFieldView').val(json.bill_to);
@@ -207,6 +379,8 @@
                 }
             });
         });
+
+
     });
 </script>
 <script type="text/javascript">

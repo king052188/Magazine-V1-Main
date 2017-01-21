@@ -119,26 +119,6 @@ class bookingController extends Controller
 
     public function search_bill_to($client_id)
     {
-//        $bill_to = DB::SELECT("
-//                    SELECT *
-//                    FROM client_contacts_table
-//                    WHERE client_id = {$client_id} AND role = 3
-//    	 ");
-
-//        if(COUNT($bill_to) > 0)
-//        {
-//            return array(
-//                "status" => 200,
-//                "bill_to_uid" =>  $bill_to[0]->Id,
-//                "bill_to" => $bill_to[0]->first_name . " " . $bill_to[0]->last_name . " (Billing Contact)");
-//        }
-//        else
-//        {
-//            return array(
-//                "status" => 404,
-//                "result" =>  "No Result Found.");
-//        }
-        
         $c_uid = (int)$client_id;
         $groups = DB::select("SELECT * FROM group_table WHERE client_uid = {$c_uid};");
 
@@ -171,7 +151,7 @@ class bookingController extends Controller
             $data = DB::SELECT("$sqlQuery");
             if(count($data) > 0) {
                 $group_list += array(
-                    $g_name => $data,
+                    "Group_". $i => $data,
                 );
             }
         }
@@ -184,14 +164,71 @@ class bookingController extends Controller
                 "Data" => $group_list
             );
         }
+        else
+        {
+            $bill_to = DB::SELECT("
+                    SELECT *
+                    FROM client_contacts_table
+                    WHERE client_id = {$c_uid} AND role = 3
+    	    ");
 
-        return array(
-            "Code" => 404,
-            "Message" => "No Record.",
-            "Details" => [],
-            "Data" => []
-        );
+            if(COUNT($bill_to) > 0)
+            {
+                return array(
+                    "Code" => 201,
+                    "bill_to_uid" =>  $bill_to[0]->Id,
+                    "bill_to" => $bill_to[0]->first_name . " " . $bill_to[0]->last_name . " (Billing Contact)");
+            }
+            else
+            {
+                return array(
+                    "Code" => 404,
+                    "result" =>  "No Result Found.");
+            }
 
+//            return array(
+//                "Code" => 404,
+//                "Message" => "No Record.",
+//                "Details" => [],
+//                "Data" => []
+//            );
+        }
+
+    }
+
+    public function search_group_by_category($client_id, $category)
+    {
+        $c_uid = (int)$client_id;
+        $category = (int)$category;
+
+        $groups = DB::select("SELECT * FROM group_table WHERE client_uid = {$c_uid} AND category_id = {$category}");
+
+        if(COUNT($groups) > 0)
+        {
+            return array("Code" => 200, "result" => $groups);
+        }
+
+        return array("Code" => 404, "result" => "No Result Found");
+    }
+
+    public function search_contact_by_group($group_uid)
+    {
+        $group_uid = (int)$group_uid;
+
+        $contact = DB::select("
+            SELECT aa.*, bb.first_name, bb.last_name
+            FROM group_list_table as aa
+            INNER JOIN client_contacts_table as bb ON bb.Id = aa.contact_id
+            WHERE aa.group_id = {$group_uid}");
+
+        $group_name = DB::SELECT("SELECT Id, group_name FROM group_table WHERE Id = {$group_uid}");
+
+        if(COUNT($contact) > 0)
+        {
+            return array("Code" => 200, "group_name" => $group_name[0]->group_name, "result" => $contact);
+        }
+
+        return array("Code" => 404, "result" => "No Result Found");
     }
 
     public function save_booking(Request $request)

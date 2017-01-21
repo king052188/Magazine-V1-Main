@@ -64,7 +64,7 @@
                                     <select class="form-control chosen-select" style = "background: none;" id = "add_contact" required>
                                         <option value="">Select</option>
                                         @for($i = 0; $i < COUNT($contacts); $i++)
-                                            <option value = "{{ $contacts[$i]->Id }}">{{ $contacts[$i]->first_name }}</option>
+                                            <option value = "{{ $contacts[$i]->Id }}">{{ $contacts[$i]->first_name . " " . $contacts[$i]->last_name }}</option>
                                         @endfor
                                     </select>
                                 </div>
