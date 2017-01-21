@@ -119,42 +119,79 @@ class bookingController extends Controller
 
     public function search_bill_to($client_id)
     {
-        $bill_to = DB::SELECT("
-                    SELECT *
-                    FROM client_contacts_table
-                    WHERE client_id = {$client_id} AND role = 3
-    	 ");
+//        $bill_to = DB::SELECT("
+//                    SELECT *
+//                    FROM client_contacts_table
+//                    WHERE client_id = {$client_id} AND role = 3
+//    	 ");
 
-//        to be continue
-//        SELECT
-//
-//            trans.Id,
-//
-//            (SELECT group_name FROM group_table WHERE Id = trans.group_id) AS group_name,
-//
-//            (SELECT company_name FROM client_table WHERE Id = trans.client_id) AS company_name,
-//
-//            (SELECT CONCAT(first_name,' ', last_name) AS fullname FROM client_contacts_table WHERE Id = trans.contact_id) AS contact_name,
-//
-//            trans.role_id
-//
-//        FROM group_list_table AS trans
-//
-//        WHERE client_id = 129 AND status = 2 AND trans.group_id = 1;
+//        if(COUNT($bill_to) > 0)
+//        {
+//            return array(
+//                "status" => 200,
+//                "bill_to_uid" =>  $bill_to[0]->Id,
+//                "bill_to" => $bill_to[0]->first_name . " " . $bill_to[0]->last_name . " (Billing Contact)");
+//        }
+//        else
+//        {
+//            return array(
+//                "status" => 404,
+//                "result" =>  "No Result Found.");
+//        }
+        
+        $c_uid = (int)$client_id;
+        $groups = DB::select("SELECT * FROM group_table WHERE client_uid = {$c_uid};");
 
-        if(COUNT($bill_to) > 0)
-        {
-            return array(
-                "status" => 200,
-                "bill_to_uid" =>  $bill_to[0]->Id,
-                "bill_to" => $bill_to[0]->first_name . " " . $bill_to[0]->last_name . " (Billing Contact)");
+        $group_list = [];
+        for($i = 0; $i < count($groups); $i++) {
+            $g_uid = $groups[$i]->Id;
+            $g_name = str_replace(' ', '_', $groups[$i]->group_name);
+            $g_category = $groups[$i]->category_id;
+            $sqlQuery = "
+                SELECT
+        
+                    trans.Id,
+                    
+                    trans.group_id AS Group_Id,
+        
+                    (SELECT category_id FROM group_table WHERE Id = trans.group_id) AS Group_Type,
+        
+                    (SELECT group_name FROM group_table WHERE Id = trans.group_id) AS Group_Name,
+                    
+                    (SELECT company_name FROM client_table WHERE Id = trans.client_id) AS Company_Name,
+        
+                    (SELECT CONCAT(first_name,' ', last_name) AS fullname FROM client_contacts_table WHERE Id = trans.contact_id) AS Contact_Name,
+        
+                    trans.role_id AS Role_Id
+        
+                FROM group_list_table AS trans
+        
+                WHERE client_id = {$c_uid} AND status = 2 AND trans.group_id = {$g_uid};
+            ";
+            $data = DB::SELECT("$sqlQuery");
+            if(count($data) > 0) {
+                $group_list += array(
+                    $g_name => $data,
+                );
+            }
         }
-        else
-        {
+
+        if(count($group_list) > 0) {
             return array(
-                "status" => 404,
-                "result" =>  "No Result Found.");
+                "Code" => 200,
+                "Message" => "Success",
+                "Details" => $groups,
+                "Data" => $group_list
+            );
         }
+
+        return array(
+            "Code" => 404,
+            "Message" => "No Record.",
+            "Details" => [],
+            "Data" => []
+        );
+
     }
 
     public function save_booking(Request $request)
