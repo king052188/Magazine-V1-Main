@@ -235,6 +235,17 @@ class clientController extends Controller
         return view('client/client_group', compact('group', 'company', 'contacts'));
     }
 
+    public function remove_contact_in_group($contact_uid_in_group)
+    {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        GroupList::where('id', $contact_uid_in_group)->delete();
+
+        return array("Code" => 200, "Description" => "Success");
+    }
+
     public function companies()
     {
         if(!AssemblyClass::check_cookies()) {

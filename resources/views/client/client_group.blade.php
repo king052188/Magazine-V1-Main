@@ -99,6 +99,7 @@
                                         <tr>
                                             <th style = "text-align: center;">Name</th>
                                             <th style = "text-align: center;">Role</th>
+                                            <th style = "text-align: center;"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -181,8 +182,34 @@
                 });
             });
 
-            function list_of_contacts_in_group()
+            remove_contact = function(contact_uid_in_group)
             {
+                $.ajax({
+                    url: "/client/remove_contact_in_group/" + contact_uid_in_group,
+                    dataType: "text",
+                    beforeSend: function () {
+                    },
+                    success: function (data) {
+                        var json = $.parseJSON(data);
+                        if (json == null)
+                            return false;
+
+                        if (json.Code == 200) {
+                            swal({
+                                title: "",
+                                text: "Delete Successful",
+                                type: "success"
+                            }).then(
+                                    function() {
+                                        list_of_contacts_in_group();
+                                    }
+                            )
+                        }
+                    }
+                });
+            };
+
+            function list_of_contacts_in_group(){
                 html_thmb = "";
                 $.ajax({
                     url: "/client/list_of_contacts_in_group/{{ $company[0]->Id }}/{{ $group[0]->Id }}",
@@ -209,6 +236,7 @@
                                 html_thmb += "<tr>";
                                 html_thmb += "<td style='text-align: center;'>"+ tran.first_name + " " + tran.last_name +"</td>";
                                 html_thmb += "<td style='text-align: center;'>"+ r_role +"</td>";
+                                html_thmb += "<td style='text-align: center;'><a href = '#' onclick='remove_contact("+ tran.Id +")' id = 'remove_contact' title = 'Delete Contact'>Remove</a></td>";
                                 html_thmb += "</tr>";
 
                             });
@@ -221,6 +249,7 @@
                     }
                 });
             }
+
         });
     </script>
     <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>

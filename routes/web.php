@@ -46,6 +46,7 @@ Route::get('/client/add_contacts_in_group/{company_uid}/{group_id}/{contact_id}/
 Route::get('/client/add_group/{company_uid}/{group_name}/{category}', 'clientController@add_group'); //ok
 Route::get('/client/list_group/{company_uid}', 'clientController@list_group'); //ok
 Route::get('/client/client_group/{group_uid}', 'clientController@client_group'); //ok
+Route::get('/client/remove_contact_in_group/{contact_uid_in_group}', 'clientController@remove_contact_in_group'); //ok
 
 // Salesperson Routes
 Route::get('/users/create', 'userAccountController@create');
