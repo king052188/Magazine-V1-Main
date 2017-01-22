@@ -91,7 +91,11 @@ Route::get('/booking/booking-list_api/{filter?}', 'bookingController@booking_lis
 Route::get('/booking/add-booking', 'bookingController@add_booking');
 Route::get('/booking/get-client-contacts/{client_id}', 'bookingController@search_bill_to');
 Route::get('/search/search-group-by-category/{client_id}/{category}', 'bookingController@search_group_by_category');
-Route::get('/search/search-contact-by-group/{group_uid}', 'bookingController@search_contact_by_group');
+
+Route::get('/search/search-contact-by-group/{client}/{category}', 'bookingController@search_contact_by_group_edited_kpa');
+//Route::get('/search/search-contact-by-group/{group_uid}', 'bookingController@search_contact_by_group');
+
+
 Route::get('/use-default-bill-to/{client_id}', 'bookingController@use_default_bill_to');
 
 Route::post('/booking/magazine-transaction-save-process', 'bookingController@save_booking'); // Process

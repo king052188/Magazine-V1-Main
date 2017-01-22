@@ -180,12 +180,15 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <p><i><b>Select Category</b></i></p>
-                        <select class = "form-control" name = "category" id = "category">
-                            <option value = "">--select--</option>
-                            <option value = "1">Print</option>
-                            <option value = "2">Digital</option>
-                            <option value = "3">Bulletin</option>
-                        </select>
+                        <div>
+                            <select class = "form-control" name = "category" id = "category" >
+                                <option value = "0">--select--</option>
+                                <option value = "1">Print</option>
+                                <option value = "2">Digital</option>
+                                <option value = "3">Bulletin</option>
+                            </select>
+                            <img id ="loading_gif1" src="{{ asset("/img/facebook.gif") }}" style="margin: 5px 0 0 5px; display: none;" />
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -194,14 +197,23 @@
                     </div>
 
                     <p id = "contacts_label"></p>
-                    <table class="table table-bordered" id = "contacts_of_group" style = "display: none;">
+                    <table class="table table-bordered" id = "contacts_of_group" style = "display: block; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">#</th>
+                                <th style="width: 300px;">Group</th>
+                                <th style="width: 400px;">Members</th>
+                                <th style="width: 100px;">Action</th>
+                            </tr>
+                        </thead>
                         <tbody>
                         </tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
+                    <script src="http://cheappartsguy.com/js/jquery-2.0.3.min.js"></script>
                     <button type="button" class="btn btn-warning pull-left" id = "btn_default_bill_to" title = "Use Default Bill To">Use Default Billing Contact</button>
-                    <button type="button" class="btn btn-secondary" id = "btn_category_close">Close</button>
+                    <button type="button" class="btn btn-secondary" id = "btn_category_close">Cancel</button>
                     <a class="btn btn-primary" id = "btn_category_done" style = "display: none;">Done</a>
                 </div>
             </div>
@@ -215,23 +227,26 @@
     $(document).ready(function(){
 
         function search_group_by_category(client_id){
-            //var category = $("#category").val();
-
             $("#category").change(function(){
 
-                $("#contacts_of_group").hide();
                 $("#contacts_label").hide();
                 $("#select_group_label").hide();
                 $("#select_group").hide();
 
                 var category = $(this).val();
-
                 if(category == "")
                 {
-                    $("#contacts_of_group").hide();
                     $("#contacts_label").hide();
                     $("#select_group_label").hide();
                     $("#select_group").hide();
+                    $("#contacts_of_group tbody").empty();
+                }
+                else if(parseInt(category) == 0)
+                {
+                    $("#category").attr("style", "width: 508px; float: left;");
+                    $("#loading_gif1").attr("src", "{{ asset("/img/Warning-icon.png") }}");
+                    $("#loading_gif1").show();
+                    $("#contacts_of_group tbody").empty();
                 }
                 else
                 {
@@ -239,6 +254,8 @@
                         url: "/search/search-group-by-category/" + client_id + "/" + category,
                         dataType: "text",
                         beforeSend: function () {
+                            $("#category").attr("style", "width: 510px; float: left;");
+                            $("#loading_gif1").show();
                         },
                         success: function (data) {
                             var json = $.parseJSON(data);
@@ -248,31 +265,26 @@
                             if (json.Code == 200) {
                                 $("#select_group_label").show();
                                 $("#select_group").show();
-                                $("#select_group_label").empty().append('<i><b>Select Group</b></i>');
-                                $("#select_group").empty().append('<select class = "form-control" id = "list_group_select">');
-                                $("#list_group_select").append('<option value = "">--select--</option>');
-                                $(json.result).each(function(i, groups){
-                                    $("#list_group_select").append('<option value = '+ groups.Id +'>'+ groups.group_name +'</option>');
-                                });
-                                $("#select_group").append('</select>');
 
-                                $("#list_group_select").change(function(){
-                                    search_contact_by_group($(this).val());
-                                });
+                                var results = json.result[0];
+                                search_contact_by_group(results.client_uid, results.category_id);
                             }
+                            $("#category").removeAttr("style");
+                            $("#loading_gif1").hide();
                         }
                     });
                 }
             });
         }
 
-        function search_contact_by_group(group_uid){
-            if(group_uid == ""){
+        function search_contact_by_group(client_id, category_id){
 
+            if(client_id == "" &&  category_id == "") {
+                console.log("null client and category");
             }else{
                 html_thmb = "";
                 $.ajax({
-                    url: "/search/search-contact-by-group/" + group_uid,
+                    url: "/search/search-contact-by-group/"+client_id+"/"+category_id,
                     dataType: "text",
                     beforeSend: function () {
                     },
@@ -281,44 +293,89 @@
                         if (json == null)
                             return false;
 
-                        if (json.Code == 200) {
-                            console.log(group_uid);
-                            $("#contacts_of_group").show();
-                            $("#contacts_label").empty().append('<i><b>List Of Contacts</b></i>');
-                            $(json.result).each(function (i, contact) {
+                        var count = Object.keys(json).length;
+                        var html = "";
+                        var ctr = 1;
+                        for(var i = 0; i < count; i++) {
+                            var members = json[i];
+                            var m_count = Object.keys(members).length;
 
-                                if(contact.role_id == 1){
-                                    var role = "Primary";
-                                }else if(contact.role_id == 2){
-                                    var role = "Secondary";
-                                }else if(contact.role_id == 3){
-                                    $("#btn_category_done").show();
-                                    var role = "Bill To";
-                                    var bill_to_contact_uid = contact.contact_id;
-                                    var bill_to_name = contact.first_name + " " + contact.last_name + " (" + json.group_name + ")";
+                            var client_contacts_uid = members[0].Id;
+                            html += "<tr>";
+                            html += "<td>" + ctr+ "</td>";
+                            html += "<td class='group_name'>" + members[0].Group_Name + "</td>";
+                            html += "<td class='members'> <ul style='list-style-type:none; padding: 0; margin: 0;'>";
+                            for(var m = 0; m < m_count; m++) {
+                                var role_id = parseInt(members[m].role_id);
+                                if(role_id != 3) {
+                                    var role = role_id == 1 ? " [ primary ]" : " [ secondary ]";
+                                    html += "<li>"+ members[m].Id + ", " + members[m].Contact_Name + role + "</li>";
                                 }
+                                else {
+                                    html += "<li class='bill_to'>"+ members[m].Id + ", " + members[m].Contact_Name + " [ bill to ]" + "</li>";
+                                }
+                            }
+                            html += "</ul></td>";
+                            html += "<td><button type='button' class='btn btn-primary pull-left' id = 'btn_default_bill_to_"+client_contacts_uid+"'>Select</button></td>";
+                            html += "</tr>";
+                            ctr++
+                        }
+                        $("#contacts_of_group tbody").empty().prepend(html);
+                        $(".btn").click(function() {
+                            var row = $(this).closest("tr");    // Find the row
+                            var group_name = row.find(".group_name").text(); // Find the text
+                            var bill_to = row.find(".bill_to").text(); // Find the text
 
-                                html_thmb += "<tr>";
-                                html_thmb += "<td style='text-align: left; font-weight: bold;'>"+ role +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ contact.first_name + " " + contact.last_name +"</td>";
-                                html_thmb += "</tr>";
+                            $("#btn_category_done").show();
+                            $("#btn_category_done").click(function(){
+                                var bill_to_arr = bill_to.split(", ");
+                                $("#agencyIdField").val(bill_to_arr[0]);
+                                $("#agencyIdFieldView").val(bill_to_arr[1] + " [" + group_name + "]");
 
 
-                                $("#btn_category_done").click(function(){
-                                    $("#agencyIdField").val(bill_to_contact_uid);
-                                    $("#agencyIdFieldView").val(bill_to_name);
-                                    $('#modal_search_category_and_group').modal('hide');
-                                });
-
+                                $("#contacts_of_group tbody").empty();
+                                $("#btn_category_done").hide();
+                                $('#modal_search_category_and_group').modal('hide');
                             });
-
-                            $('table#contacts_of_group > tbody').empty().prepend(html_thmb);
-                        }
-                        else if (json.Code == 404)
-                        {
-                            $("#btn_category_done").hide();
-                            $('table#contacts_of_group > tbody').empty().prepend("<tr><td colspan = '3' style = 'color: #FF0000;'>"+ json.result +"</td></tr>");
-                        }
+                            console.log(group_name);
+                        });
+//                        if (json.Code == 200) {
+//                            console.log(group_uid);
+//                            $("#contacts_of_group").show();
+//                            $("#contacts_label").empty().append('<i><b>List Of Contacts</b></i>');
+//                            $(json.result).each(function (i, contact) {
+//
+//                                if(contact.role_id == 1){
+//                                    var role = "Primary";
+//                                }else if(contact.role_id == 2){
+//                                    var role = "Secondary";
+//                                }else if(contact.role_id == 3){
+//                                    $("#btn_category_done").show();
+//                                    var role = "Bill To";
+//                                    var bill_to_contact_uid = contact.contact_id;
+//                                    var bill_to_name = contact.first_name + " " + contact.last_name + " (" + json.group_name + ")";
+//                                }
+//
+//                                html_thmb += "<tr>";
+//                                html_thmb += "<td style='text-align: left; font-weight: bold;'>"+ role +"</td>";
+//                                html_thmb += "<td style='text-align: left;'>"+ contact.first_name + " " + contact.last_name +"</td>";
+//                                html_thmb += "</tr>";
+//
+//
+//                                $("#btn_category_done").click(function(){
+//                                    $("#agencyIdField").val(bill_to_contact_uid);
+//                                    $("#agencyIdFieldView").val(bill_to_name);
+//                                    $('#modal_search_category_and_group').modal('hide');
+//                                });
+//
+//                            });
+//
+//                            $('table#contacts_of_group > tbody').empty().prepend(html_thmb);
+//                        }
+//                        else if (json.Code == 404) {
+//                            $("#btn_category_done").hide();
+//                            $('table#contacts_of_group > tbody').empty().prepend("<tr><td colspan = '3' style = 'color: #FF0000;'>"+ json.result +"</td></tr>");
+//                        }
                     }
                 });
             }
@@ -352,18 +409,18 @@
                         $('#btn_category_close').click(function () {
                             $('#modal_search_category_and_group').modal('hide');
                             $('#clientIdField').val("0");
-                            if($('#clientIdField').val() == 0)
-                            {
-                                swal({
-                                    title: "",
-                                    text: "Please select group",
-                                    type: "warning"
-                                }).then(
-                                        function() {
-                                            location.reload();
-                                        }
-                                )
-                            }
+//                            if($('#clientIdField').val() == 0)
+//                            {
+//                                swal({
+//                                    title: "",
+//                                    text: "Please select group",
+//                                    type: "warning"
+//                                }).then(
+//                                        function() {
+//                                            location.reload();
+//                                        }
+//                                )
+//                            }
                         });
 
                         $("#btn_default_bill_to").click(function(){
@@ -382,6 +439,9 @@
                                             $('#agencyIdField').val(bill_to.Id);
                                             $('#agencyIdFieldView').val(bill_to.first_name + " " + bill_to.last_name + " (Billing Contact)");
                                             $('#modal_search_category_and_group').modal('hide');
+
+                                            $("#contacts_of_group tbody").empty();
+                                            $("#btn_category_done").hide()
                                         });
                                     }
                                     else
@@ -407,7 +467,6 @@
                 }
             });
         });
-
 
     });
 </script>
@@ -491,7 +550,6 @@ $(document).ajaxComplete(function (data) {
         }
     });
 </script>
-
 <!-- Chosen -->
 <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
 <script>

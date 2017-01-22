@@ -225,6 +225,44 @@ class bookingController extends Controller
         return array("Code" => 404, "result" => "No Result Found");
     }
 
+    public function search_contact_by_group_edited_kpa($client_id, $category)
+    {
+        $category_uid = (int)$category;
+        $client_uid = (int)$client_id;
+        $groups = DB::select("SELECT * FROM group_table WHERE client_uid = {$client_uid} AND category_id = {$category_uid};");
+
+//        dd($groups);
+
+        $lists = [];
+
+        for($i = 0; $i < count($groups); $i++) {
+
+            $g_uid = $groups[$i]->Id;
+
+            $group_list = DB::SELECT("
+                SELECT 
+    
+                g_list.*,
+                
+                (SELECT group_name FROM group_table WHERE Id = g_list.group_id) AS Group_Name,
+                
+                (SELECT company_name FROM client_table WHERE Id = g_list.client_id) AS Company_Name,
+                        
+                (SELECT CONCAT(first_name,' ', last_name) AS fullname FROM client_contacts_table WHERE Id = g_list.contact_id) AS Contact_Name
+                
+                FROM db_magazine_v1.group_list_table AS g_list
+                
+                WHERE group_id = {$g_uid}
+            ");
+
+            $lists[] = $group_list;
+
+        }
+
+        return $lists;
+
+    }
+
     public function search_contact_by_group($group_uid)
     {
         $group_uid = (int)$group_uid;
