@@ -196,6 +196,20 @@ class bookingController extends Controller
 
     }
 
+    public function use_default_bill_to($client_id)
+    {
+        $c_uid = (int)$client_id;
+
+        $bill_to = DB::select("SELECT * FROM client_contacts_table WHERE client_id = {$c_uid} AND role IN (3,5)");
+
+        if(COUNT($bill_to) > 0)
+        {
+            return array("Code" => 200, "result" => $bill_to);
+        }
+
+        return array("Code" => 404, "result" => "No Result Found");
+    }
+
     public function search_group_by_category($client_id, $category)
     {
         $c_uid = (int)$client_id;

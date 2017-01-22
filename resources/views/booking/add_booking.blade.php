@@ -200,6 +200,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-warning pull-left" id = "btn_default_bill_to" title = "Use Default Bill To">Use Default Billing Contact</button>
                     <button type="button" class="btn btn-secondary" id = "btn_category_close">Close</button>
                     <a class="btn btn-primary" id = "btn_category_done" style = "display: none;">Done</a>
                 </div>
@@ -363,6 +364,33 @@
                                         }
                                 )
                             }
+                        });
+
+                        $("#btn_default_bill_to").click(function(){
+                            $.ajax({
+                                url: "/use-default-bill-to/" + client_id,
+                                dataType: "text",
+                                beforeSend: function () {
+                                },
+                                success: function (data) {
+                                    var json = $.parseJSON(data);
+                                    if (json == null)
+                                        return false;
+
+                                    if (json.Code == 200) {
+                                        $(json.result).each(function(a, bill_to){
+                                            $('#agencyIdField').val(bill_to.Id);
+                                            $('#agencyIdFieldView').val(bill_to.first_name + " " + bill_to.last_name + " (Billing Contact)");
+                                            $('#modal_search_category_and_group').modal('hide');
+                                        });
+                                    }
+                                    else
+                                    {
+                                        $('#agencyIdField').val("");
+                                        $('#agencyIdFieldView').val("No Agency");
+                                    }
+                                }
+                            });
                         });
                     }
                     else if(json.Code == 201)

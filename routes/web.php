@@ -91,6 +91,7 @@ Route::get('/booking/add-booking', 'bookingController@add_booking');
 Route::get('/booking/get-client-contacts/{client_id}', 'bookingController@search_bill_to');
 Route::get('/search/search-group-by-category/{client_id}/{category}', 'bookingController@search_group_by_category');
 Route::get('/search/search-contact-by-group/{group_uid}', 'bookingController@search_contact_by_group');
+Route::get('/use-default-bill-to/{client_id}', 'bookingController@use_default_bill_to');
 
 Route::post('/booking/magazine-transaction-save-process', 'bookingController@save_booking'); // Process
 Route::any('/booking/magazine-transaction/{trans_uid}/{which_country}/{client_id}', 'bookingController@show_transaction_mag'); // after process viewing
