@@ -174,79 +174,78 @@
     <div class="modal fade" id="view_publisher_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="myModalLabel">View Publisher</h4>
-                    </div>
-                    <div class="modal-body">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">View Publisher</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12">
                         <div class="col-lg-12">
-                            <div class="col-lg-12">
-                                <div class="form-group">
-                                    <label>Publisher Name</label>
-                                    <input type="hidden" class="form-control"  id = "e_publisher_uid" name="e_publisher_uid">
-                                    <input type="text" placeholder="Publisher / Business Name" class="form-control"  id = "e_company_name" name="e_company_name" readonly>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Address 1</label>
-                                    <input type="text" placeholder="Address 1" class="form-control" id = "e_address_1" name="e_address_1" readonly>
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <label>Address 2 (Optional)</label>
-                                    <input type="text" placeholder="Address 2 (Optional)" class="form-control" id = "e_address_2" name="e_address_2" readonly>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>City</label>
-                                    <input type="text" placeholder="City" class="form-control"  id = "e_city" name="e_city" readonly>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>State/Province</label>
-                                    <input type="text" placeholder="State" class="form-control"  id = "e_state" name="e_state" readonly>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Country</label>
-                                    <select class="form-control" id = "e_country" name="e_country" disabled>
-                                        <option value="1">USA</option>
-                                        <option value="2">CANADA</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="text" placeholder="Email" class="form-control"  id = "e_email" name="e_email" readonly>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Phone</label>
-                                    <input type="text" placeholder="Phone" class="form-control"  id = "e_phone" name="e_phone" readonly>
-                                </div>
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    <label>Fax</label>
-                                    <input type="text" placeholder="Fax" class="form-control"  id = "e_fax" name="e_fax" readonly>
-                                </div>
+                            <div class="form-group">
+                                <label>Publisher Name</label>
+                                <input type="text" placeholder="Publisher / Business Name" class="form-control"  id = "v_company_name" readonly>
                             </div>
                         </div>
-                        <div style = "clear: both;"></div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Address 1</label>
+                                <input type="text" placeholder="Address 1" class="form-control" id = "v_address_1" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label>Address 2 (Optional)</label>
+                                <input type="text" placeholder="Address 2 (Optional)" class="form-control" id = "v_address_2" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>City</label>
+                                <input type="text" placeholder="City" class="form-control"  id = "v_city" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>State/Province</label>
+                                <input type="text" placeholder="State" class="form-control"  id = "v_state" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Country</label>
+                                <select class="form-control" id = "v_country" disabled>
+                                    <option value="1">USA</option>
+                                    <option value="2">CANADA</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="text" placeholder="Email" class="form-control"  id = "v_email" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" placeholder="Phone" class="form-control"  id = "v_phone" readonly>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Fax</label>
+                                <input type="text" placeholder="Fax" class="form-control"  id = "v_fax" readonly>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style = "margin-right: 5px;">Close</button>
-                    </div>
+                    <div style = "clear: both;"></div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style = "margin-right: 5px;">Close</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -353,13 +352,45 @@
                 var value =  $(this).find('select:first').val();
                 var values = value.split(":");
 
-                if(values[0] == 1){
+
+                if(values[0] == 1){ //view information
 //                    console.log("View Info");
                     $('#view_publisher_modal').modal({
                         show: true
                     });
 
-                }else if(values[0] == 2){
+                    var publisher_uid = values[1];
+                    $.ajax({
+                        url: "/magazine/list/publisher/" + publisher_uid,
+                        dataType: "text",
+                        beforeSend: function () {
+                        },
+                        success: function(data) {
+                            var json = $.parseJSON(data);
+                            if(json == null)
+                                return false;
+
+                            if(json.status == 200)
+                            {
+                                $(json.result).each(function(i, info){
+
+                                    $("#v_company_name").val(info.company_name);
+                                    $("#v_address_1").val(info.address_1);
+                                    $("#v_address_2").val(info.address_2);
+                                    $("#v_city").val(info.city);
+                                    $("#v_state").val(info.state);
+                                    $("#v_country").val(info.country);
+                                    $("#v_email").val(info.email);
+                                    $("#v_phone").val(info.phone);
+                                    $("#v_fax").val(info.fax);
+                                    $("#v_logo_uid").val(info.logo_uid);
+
+                                });
+                            }
+                        }
+                    });
+
+                }else if(values[0] == 2){ //edit information
                     $('#edit_publisher_modal').modal({
                         show: true
                     });
@@ -396,7 +427,7 @@
                         }
                     });
 
-                }else if(values[0] == 3){
+                }else if(values[0] == 3){ //set as inactive
                     //console.log("Delete Info");
                     var publisher_uid = values[1]
                     $.ajax({
@@ -423,7 +454,7 @@
                             }
                         }
                     });
-                }else if(values[0] == 4){
+                }else if(values[0] == 4){ //set as active
                     //console.log("Delete Info");
                     var publisher_uid = values[1]
                     $.ajax({

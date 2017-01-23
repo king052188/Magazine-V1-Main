@@ -281,22 +281,22 @@ class magazineController extends Controller
         return array("result" => 404);
     }
 
-    public function magazine_update_save(Request $request)
-    {
-        Magazine::where('Id', '=', $request['magazine_uid'])
-            ->update([
-//                'logo_uid' => $request['logo_uid'],
-                'company_id' => (int)$request['cid'],
-                'mag_code' => $request['magcode'],
-                'magazine_name' => $request['magname'],
-                'magazine_year' => $request['year_issue'],
-                'magazine_issues' => $request['number_issue'],
-                'magazine_country' => (int)$request['magcountryID'],
-                'status' => $request['status']
-            ]);
-
-        return redirect('/magazine/all')->with('success', 'Successfully Updated.');
-    }
+//    public function magazine_update_save(Request $request)
+//    {
+//        Magazine::where('Id', '=', $request['magazine_uid'])
+//            ->update([
+////                'logo_uid' => $request['logo_uid'],
+//                'company_id' => (int)$request['cid'],
+//                'mag_code' => $request['magcode'],
+//                'magazine_name' => $request['magname'],
+//                'magazine_year' => $request['year_issue'],
+//                'magazine_issues' => $request['number_issue'],
+//                'magazine_country' => (int)$request['magcountryID'],
+//                'status' => $request['status']
+//            ]);
+//
+//        return redirect('/magazine/all')->with('success', 'Successfully Updated.');
+//    }
 
     public function list_publishers($publisher_uid)
     {

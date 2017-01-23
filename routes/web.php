@@ -71,7 +71,7 @@ Route::get('/magazine/company/get_company', 'magazineController@get_company');
 Route::get('/magazine/company/get_country/{company_uid}', 'magazineController@get_country');
 Route::post('/magazine/add-color-size-discount/{mag_uid}', 'magazineController@add_color_size_discount');
 Route::get('/magazine/update/{magazine_uid}', 'magazineController@magazine_update');
-Route::post('/magazine/update/save', 'magazineController@magazine_update_save');
+//Route::post('/magazine/update/save', 'magazineController@magazine_update_save');
 
 Route::get('/magazine/list/publisher/{publisher_uid}', 'magazineController@list_publishers');
 Route::get('/magazine/set/inactive/status/publisher/{publisher_uid}', 'magazineController@set_inactive_publishers');
