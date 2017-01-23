@@ -131,7 +131,8 @@
                     <div class="col-lg-8" id = "once_approved_bb">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>List issue of <b>{{ $mag_name[0]->magazine_name }}</b></h5>
+                                <h5>Client Name: <b>{{ $is_member[0]->company_name }}</b>   |
+                                List Issue Of: <b>{{ $mag_name[0]->magazine_name }}</b></h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
