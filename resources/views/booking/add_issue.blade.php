@@ -468,7 +468,7 @@ $(document).ready(function(){
 
 function open_preview(trans_number) {
     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
-            "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
+            "mywindow","location=1,status=1,scrollbars=1,width=855,height=760");
 }
 
 function ConfirmDelete() {
