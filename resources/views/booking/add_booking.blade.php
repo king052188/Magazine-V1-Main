@@ -72,6 +72,7 @@
 
                         <div class="form-group">
                             <label for="ex2">Agency <i>(if any)</i></label>
+                            <input type="hidden" class="form-control" name="group_uid" id="group_uid" value="">
                             <input type="hidden" class="form-control" name="agency_id" id="agencyIdField" value="">
                             <input type="text" class="form-control" placeholder="(Agency Name) Click Search..."  id="agencyIdFieldView" disabled>
                             {{--<span class="input-group-btn">--}}
@@ -200,7 +201,7 @@
                     <table class="table table-bordered" id = "contacts_of_group" style = "display: block; width: 100%;">
                         <thead>
                             <tr>
-                                <th style="width: 50px;">#</th>
+                                {{--<th style="width: 50px;">#</th>--}}
                                 <th style="width: 300px;">Group</th>
                                 <th style="width: 400px;">Members</th>
                                 <th style="width: 100px;">Action</th>
@@ -214,7 +215,7 @@
                     <script src="http://cheappartsguy.com/js/jquery-2.0.3.min.js"></script>
                     <button type="button" class="btn btn-warning pull-left" id = "btn_default_bill_to" title = "Use Default Bill To">Use Default Billing Contact</button>
                     <button type="button" class="btn btn-secondary" id = "btn_category_close">Cancel</button>
-                    <a class="btn btn-primary" id = "btn_category_done" style = "display: none;">Done</a>
+                    {{--<a class="btn btn-primary" id = "btn_category_done" style = "display: none;">Done</a>--}}
                 </div>
             </div>
         </div>
@@ -265,6 +266,7 @@
                             if (json.Code == 200) {
                                 $("#select_group_label").show();
                                 $("#select_group").show();
+                                $("#contacts_of_group tbody").empty();
 
                                 var results = json.result[0];
                                 search_contact_by_group(results.client_uid, results.category_id);
@@ -277,14 +279,14 @@
             });
         }
 
-        function search_contact_by_group(client_id, category_id){
-
-            if(client_id == "" &&  category_id == "") {
-                console.log("null client and category");
+        function search_contact_by_group(client_id, category){
+            if(client_id == "") {
+                console.log("null client");
             }else{
-                html_thmb = "";
+                var html_thmb = "";
                 $.ajax({
-                    url: "/search/search-contact-by-group/"+client_id+"/"+category_id,
+                    //url: "/search/search-contact-by-group/"+client_id+"/"+category,
+                    url: "/search/search-contact-by-group/"+client_id+"/"+category,
                     dataType: "text",
                     beforeSend: function () {
                     },
@@ -293,89 +295,155 @@
                         if (json == null)
                             return false;
 
-                        var count = Object.keys(json).length;
-                        var html = "";
-                        var ctr = 1;
-                        for(var i = 0; i < count; i++) {
-                            var members = json[i];
-                            var m_count = Object.keys(members).length;
+                        console.log("client_id: " + client_id);
+                        console.log("category_id: " + category);
 
-                            var client_contacts_uid = members[0].Id;
-                            html += "<tr>";
-                            html += "<td>" + ctr+ "</td>";
-                            html += "<td class='group_name'>" + members[0].Group_Name + "</td>";
-                            html += "<td class='members'> <ul style='list-style-type:none; padding: 0; margin: 0;'>";
-                            for(var m = 0; m < m_count; m++) {
-                                var role_id = parseInt(members[m].role_id);
-                                if(role_id != 3) {
-                                    var role = role_id == 1 ? " [ primary ]" : " [ secondary ]";
-                                    html += "<li>"+ members[m].Id + ", " + members[m].Contact_Name + role + "</li>";
-                                }
-                                else {
-                                    html += "<li class='bill_to'>"+ members[m].Id + ", " + members[m].Contact_Name + " [ bill to ]" + "</li>";
-                                }
-                            }
-                            html += "</ul></td>";
-                            html += "<td><button type='button' class='btn btn-primary pull-left' id = 'btn_default_bill_to_"+client_contacts_uid+"'>Select</button></td>";
-                            html += "</tr>";
-                            ctr++
-                        }
-                        $("#contacts_of_group tbody").empty().prepend(html);
-                        $(".btn").click(function() {
-                            var row = $(this).closest("tr");    // Find the row
-                            var group_name = row.find(".group_name").text(); // Find the text
-                            var bill_to = row.find(".bill_to").text(); // Find the text
-
-                            $("#btn_category_done").show();
-                            $("#btn_category_done").click(function(){
-                                var bill_to_arr = bill_to.split(", ");
-                                $("#agencyIdField").val(bill_to_arr[0]);
-                                $("#agencyIdFieldView").val(bill_to_arr[1] + " [" + group_name + "]");
-
-
-                                $("#contacts_of_group tbody").empty();
-                                $("#btn_category_done").hide();
-                                $('#modal_search_category_and_group').modal('hide');
-                            });
-                            console.log(group_name);
-                        });
-//                        if (json.Code == 200) {
-//                            console.log(group_uid);
-//                            $("#contacts_of_group").show();
-//                            $("#contacts_label").empty().append('<i><b>List Of Contacts</b></i>');
-//                            $(json.result).each(function (i, contact) {
+//                        var count = Object.keys(json).length;
+//                        var html = "";
+//                        var ctr = 1;
+//                        for(var i = 0; i < count; i++) {
+//                            var members = json[i];
+//                            var m_count = Object.keys(members).length;
 //
-//                                if(contact.role_id == 1){
-//                                    var role = "Primary";
-//                                }else if(contact.role_id == 2){
-//                                    var role = "Secondary";
-//                                }else if(contact.role_id == 3){
-//                                    $("#btn_category_done").show();
-//                                    var role = "Bill To";
-//                                    var bill_to_contact_uid = contact.contact_id;
-//                                    var bill_to_name = contact.first_name + " " + contact.last_name + " (" + json.group_name + ")";
+//                            var client_contacts_uid = members[0].Id;
+//                            html += "<tr>";
+//                            html += "<td>" + ctr+ "</td>";
+//                            html += "<td class='group_name'>" + members[0].Group_Name + "</td>";
+//                            html += "<td class='members'> <ul style='list-style-type:none; padding: 0; margin: 0;'>";
+//                            for(var m = 0; m < m_count; m++) {
+//                                var role_id = parseInt(members[m].role_id);
+//
+//                                if(role_id != 3) {
+//                                    var role = role_id == 1 ? " [ primary ]" : " [ secondary ]";
+//                                    html += "<li>"+ members[m].Id + ", " + members[m].Contact_Name + role + "</li>";
 //                                }
+//                                else {
+//                                    //$(".select-show").show();
+//                                    html += "<li class='bill_to'>"+ members[m].Id + ", " + members[m].Contact_Name + " [ bill to ]" + "</li>";
+//                                }
+//                            }
+//                            html += "</ul></td>";
+//                            html += "<td><button type='button' class='btn btn-primary pull-left select-show' id = 'btn_default_bill_to_"+client_contacts_uid+"'>Select</button></td>";
+//                            html += "</tr>";
+//                            ctr++
+//                        }
+//                        $("#contacts_of_group tbody").empty().prepend(html);
+//                        $(".btn").click(function() {
+//                            var row = $(this).closest("tr");    // Find the row
+//                            var group_name = row.find(".group_name").text(); // Find the text
+//                            var bill_to = row.find(".bill_to").text(); // Find the text
 //
-//                                html_thmb += "<tr>";
-//                                html_thmb += "<td style='text-align: left; font-weight: bold;'>"+ role +"</td>";
-//                                html_thmb += "<td style='text-align: left;'>"+ contact.first_name + " " + contact.last_name +"</td>";
-//                                html_thmb += "</tr>";
+//                            $("#btn_category_done").show();
+//                            $("#btn_category_done").click(function(){
+//                                var bill_to_arr = bill_to.split(", ");
+//                                $("#agencyIdField").val(bill_to_arr[0]);
+//                                $("#agencyIdFieldView").val(bill_to_arr[1] + " [" + group_name + "]");
 //
 //
-//                                $("#btn_category_done").click(function(){
+//                                $("#contacts_of_group tbody").empty();
+//                                $("#btn_category_done").hide();
+//                                $('#modal_search_category_and_group').modal('hide');
+//                            });
+//                            console.log(group_name);
+//                        });
+                        if (json.Code == 200) {
+                            //console.log(group_uid);
+
+//                            $("#contacts_of_group").show();
+
+                            $("#contacts_label").empty().append('<i><b>List Of Contacts</b></i>');
+                            $(json.list_of_groups).each(function (i, list_groups) {
+
+//                                console.log(list_groups);
+
+                                html_thmb += "<tr>";
+                                html_thmb += "<td style='text-align: left; font-weight: bold;'>"+ list_groups.group_name +"</td>";
+
+                                html_thmb += "<td style='text-align: left;'>";
+
+                                $(json.result).each(function (i, contact) {
+                                    if(contact.role_id == 1){
+                                        var role = "Primary";
+                                    }else if(contact.role_id == 2){
+                                        var role = "Secondary";
+                                    }else if(contact.role_id == 3){
+                                        $("#btn_category_done").show();
+                                        var role = "Bill To";
+                                        var group_uid = contact.group_id;
+                                        var bill_to_contact_uid = contact.contact_uid;
+                                        var bill_to_name = contact.name + " (" + contact.group_name + ")";
+
+                                    }
+
+                                    if(list_groups.Id == contact.group_id)
+                                    {
+                                        html_thmb += contact.name + " [" + role + "]" + "<br />";
+                                    }
+
+                                });
+
+                                if(list_groups.with_bill_to_contact != 1)
+                                {
+                                    html_thmb += "<i style = 'color: #FF0000;'>No Bill Contacts</i>";
+                                }
+                                html_thmb += "</td>";
+                                html_thmb += "<td>";
+
+                                if(list_groups.with_bill_to_contact == 1)
+                                {
+                                    html_thmb += "<button type='button' class='btn btn-primary pull-left select-show' onclick='btn_category_done("+ list_groups.Id +")';>Select</button>";
+                                }
+
+                                html_thmb += "</td>";
+                                html_thmb += "</tr>";
+
+
+                                btn_category_done = function(group_uid)
+                                {
+                                    console.log(group_uid);
+
+                                    $.ajax({
+                                        url: "/search/get-bill-to-using-group-uid/" + group_uid,
+                                        dataType: "text",
+                                        beforeSend: function () {
+                                        },
+                                        success: function (data) {
+                                            var json = $.parseJSON(data);
+                                            if (json == null)
+                                                return false;
+
+                                            if (json.Code == 200) {
+                                                $(json.result).each(function (i, contact_bill_to) {
+
+                                                    $("#group_uid").val(contact_bill_to.group_id);
+                                                    $("#agencyIdField").val(contact_bill_to.contact_uid);
+                                                    $("#agencyIdFieldView").val(contact_bill_to.name);
+                                                    $('#modal_search_category_and_group').modal('hide');
+
+                                                });
+                                            }
+                                        }
+                                    });
+                                }
+
+//                                $('#btn_category_done').click(function(){
+//
+//                                    $("#group_uid").val(group_uid);
 //                                    $("#agencyIdField").val(bill_to_contact_uid);
 //                                    $("#agencyIdFieldView").val(bill_to_name);
 //                                    $('#modal_search_category_and_group').modal('hide');
 //                                });
-//
-//                            });
-//
-//                            $('table#contacts_of_group > tbody').empty().prepend(html_thmb);
-//                        }
-//                        else if (json.Code == 404) {
-//                            $("#btn_category_done").hide();
-//                            $('table#contacts_of_group > tbody').empty().prepend("<tr><td colspan = '3' style = 'color: #FF0000;'>"+ json.result +"</td></tr>");
-//                        }
+
+                            });
+
+
+
+                            $('table#contacts_of_group > tbody').empty().prepend(html_thmb);
+                        }
+                        else if (json.Code == 404) {
+                            $("#btn_category_done").hide();
+                            $('table#contacts_of_group > tbody').empty().prepend("<tr><td colspan = '3' style = 'color: #FF0000;'>"+ json.result +"</td></tr>");
+                        }
                     }
                 });
             }
@@ -385,6 +453,7 @@
         $("#clientIdField").change(function(){
 
             var client_id = $(this).val();
+
 
             $.ajax({
                 url: "/booking/get-client-contacts/" + client_id,
@@ -402,6 +471,8 @@
                             show: true
                         });
 
+                        $("#contacts_of_group tbody").empty();
+
                         search_group_by_category(client_id);
 
                         $('#agencyIdFieldView').val("Searching...");
@@ -409,18 +480,18 @@
                         $('#btn_category_close').click(function () {
                             $('#modal_search_category_and_group').modal('hide');
                             $('#clientIdField').val("0");
-//                            if($('#clientIdField').val() == 0)
-//                            {
-//                                swal({
-//                                    title: "",
-//                                    text: "Please select group",
-//                                    type: "warning"
-//                                }).then(
-//                                        function() {
-//                                            location.reload();
-//                                        }
-//                                )
-//                            }
+                            if($('#clientIdField').val() == 0)
+                            {
+                                swal({
+                                    title: "",
+                                    text: "Please select group",
+                                    type: "warning"
+                                }).then(
+                                        function() {
+                                            location.reload();
+                                        }
+                                )
+                            }
                         });
 
                         $("#btn_default_bill_to").click(function(){

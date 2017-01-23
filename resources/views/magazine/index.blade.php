@@ -72,7 +72,7 @@
     function edit_magazine($magazine_uid) {
         var magazine_uid = $magazine_uid;
 
-//        console.log(magazine_uid);
+        //console.log(magazine_uid);
 
         $.ajax({
             url: "/magazine/update/" + magazine_uid,
@@ -84,7 +84,7 @@
                     console.log("error " . magazine_uid);
                 } else {
                     $(json.result).each(function(i, magazine) {
-                        console.log(magazine.mag_code);
+                        //console.log(magazine.mag_code);
                         $("div#hidden").show();
 //                            $("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
 //                        if(contact.role == 3){
@@ -123,6 +123,8 @@
 
         function populate_cid(magc_id)
         {
+            //console.log("company_id: " + magc_id);
+
             $("#cid").ready(function() {
                 $.ajax({
                     url: "/magazine/company/get_company",
@@ -136,10 +138,56 @@
                         } else {
 //                            $("#cid").empty().append("<option>--Select--</option>");
 
+
+                            $("#cid_area").empty().append("<select class='form-control' name='cid' id = 'cid' required>");
                             $(json.result).each(function(i, company) {
 
-                                $("#cid option[value='" + magc_id + "']").attr("selected","selected");
-                                $("#cid").append("<option value = '" + company.Id + "'>" + company.company_name + "</option>")
+                                //console.log("company_id_2nd: " + magc_id);
+
+                                if(company.Id == magc_id)
+                                {
+                                    //$("#cid option[value='" + magc_id + "']").attr("selected","selected");
+                                    select_true = "selected";
+                                }else {
+                                    select_true = "";
+                                }
+
+
+                                $("#cid").append("<option value = '" + company.Id + "' "+ select_true +">" + company.company_name + "</option>")
+                            });
+                            $("#cid_area").append("</select>");
+
+                            $('#cid').on('change', function() {
+                                var company_uid = $(this).val();
+
+                                $.ajax({
+                                    url: "/magazine/company/get_country/" + company_uid,
+                                    dataType: "text",
+                                    success: function(data) {
+                                        var json = $.parseJSON(data);
+                                        if (json == null) return false;
+                                        if (json.result == 404) {
+                                            $("div#hidden").hide();
+//                    $("#cid").empty().append("<option>--no data--</option>");
+                                        } else {
+                                            $("div#hidden").show();
+//                    $("#cid").empty();
+                                            $(json.result).each(function(i, c) {
+                                                if(c.country == 1){
+                                                    country_id = 1;
+                                                    country_name = "USA";
+                                                }else{
+                                                    country_id = 2;
+                                                    country_name = "CANADA";
+                                                }
+
+                                                $("#magcountryID").val(country_id);
+                                                $("#magcountry").val(country_name);
+                                                //$("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
+                                            });
+                                        }
+                                    }
+                                });
                             });
                         }
                     }
@@ -175,38 +223,7 @@
                 });
             });
 
-            $('#cid').on('change', function() {
-                var company_uid = $(this).val();
 
-                $.ajax({
-                    url: "/magazine/company/get_country/" + company_uid,
-                    dataType: "text",
-                    success: function(data) {
-                        var json = $.parseJSON(data);
-                        if (json == null) return false;
-                        if (json.result == 404) {
-                            $("div#hidden").hide();
-//                    $("#cid").empty().append("<option>--no data--</option>");
-                        } else {
-                            $("div#hidden").show();
-//                    $("#cid").empty();
-                            $(json.result).each(function(i, c) {
-                                if(c.country == 1){
-                                    country_id = 1;
-                                    country_name = "USA";
-                                }else{
-                                    country_id = 2;
-                                    country_name = "CANADA";
-                                }
-
-                                $("#magcountryID").val(country_id);
-                                $("#magcountry").val(country_name);
-                                //$("#cid").append("<option value = '" + country.Id + "'>" + country.company_name + "</option>")
-                            });
-                        }
-                    }
-                });
-            });
         }
     }
 </script>
@@ -235,8 +252,7 @@
                         </div>
                         <div class="form-group">
                             <label>Company Name</label>
-                            <select class='form-control' name='cid' id = 'cid' required>
-                            </select>
+                            <div id = "cid_area"></div>
                         </div>
                         <div class="form-group" id = "hidden">
                             <label for="ex2">Country</label>

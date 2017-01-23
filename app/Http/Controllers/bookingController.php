@@ -225,59 +225,100 @@ class bookingController extends Controller
         return array("Code" => 404, "result" => "No Result Found");
     }
 
-    public function search_contact_by_group_edited_kpa($client_id, $category)
+//    public function search_contact_by_group_edited_kpa($client_id, $category)
+//    {
+//        $category_uid = (int)$category;
+//        $client_uid = (int)$client_id;
+//        $groups = DB::select("SELECT * FROM group_table WHERE client_uid = {$client_uid} AND category_id = {$category_uid};");
+//
+////        dd($groups);
+//
+//        $lists = [];
+//
+//        for($i = 0; $i < count($groups); $i++) {
+//
+//            $g_uid = $groups[$i]->Id;
+//
+//            $group_list = DB::SELECT("
+//                SELECT 
+//    
+//                g_list.*,
+//                
+//                (SELECT group_name FROM group_table WHERE Id = g_list.group_id) AS Group_Name,
+//                
+//                (SELECT company_name FROM client_table WHERE Id = g_list.client_id) AS Company_Name,
+//                        
+//                (SELECT CONCAT(first_name,' ', last_name) AS fullname FROM client_contacts_table WHERE Id = g_list.contact_id) AS Contact_Name
+//                
+//                FROM db_magazine_v1.group_list_table AS g_list
+//                
+//                WHERE group_id = {$g_uid}
+//            ");
+//
+//            $lists[] = $group_list;
+//
+//        }
+//
+//        return $lists;
+//
+//    }
+
+    public function search_contact_by_group($client, $category)
     {
-        $category_uid = (int)$category;
-        $client_uid = (int)$client_id;
-        $groups = DB::select("SELECT * FROM group_table WHERE client_uid = {$client_uid} AND category_id = {$category_uid};");
+        $client = (int)$client;
+        $category = (int)$category;
 
-//        dd($groups);
+//        $contact = DB::select("
+//            SELECT aa.*, bb.first_name, bb.last_name
+//            FROM group_list_table as aa
+//            INNER JOIN client_contacts_table as bb ON bb.Id = aa.contact_id
+//            WHERE aa.client_id = {$client}");
 
-        $lists = [];
+//        $contact = DB::select("
+//            SELECT *
+//            FROM group_list_table
+//            WHERE client_id = {$client}");
+        $groups = DB::SELECT("
+                    SELECT xx.Id, xx.group_name, (SELECT COUNT(*) FROM group_list_table as yy WHERE yy.group_id = xx.Id AND yy.role_id = 3) as with_bill_to_contact
+                    FROM group_table as xx
+                    WHERE xx.client_uid = {$client} AND xx.category_id = {$category}");
 
-        for($i = 0; $i < count($groups); $i++) {
-
-            $g_uid = $groups[$i]->Id;
-
-            $group_list = DB::SELECT("
+        $contact = DB::SELECT("
                 SELECT 
-    
-                g_list.*,
-                
-                (SELECT group_name FROM group_table WHERE Id = g_list.group_id) AS Group_Name,
-                
-                (SELECT company_name FROM client_table WHERE Id = g_list.client_id) AS Company_Name,
-                        
-                (SELECT CONCAT(first_name,' ', last_name) AS fullname FROM client_contacts_table WHERE Id = g_list.contact_id) AS Contact_Name
-                
-                FROM db_magazine_v1.group_list_table AS g_list
-                
-                WHERE group_id = {$g_uid}
-            ");
-
-            $lists[] = $group_list;
-
-        }
-
-        return $lists;
-
-    }
-
-    public function search_contact_by_group($group_uid)
-    {
-        $group_uid = (int)$group_uid;
-
-        $contact = DB::select("
-            SELECT aa.*, bb.first_name, bb.last_name
-            FROM group_list_table as aa
-            INNER JOIN client_contacts_table as bb ON bb.Id = aa.contact_id
-            WHERE aa.group_id = {$group_uid}");
-
-        $group_name = DB::SELECT("SELECT Id, group_name FROM group_table WHERE Id = {$group_uid}");
+                aa.Id as group_id, aa.group_name, bb.contact_id, bb.role_id, cc.Id as contact_uid, concat_ws('',first_name, ' ', last_name) as name
+                FROM group_table as aa
+                INNER JOIN group_list_table as bb ON bb.group_id = aa.Id
+                INNER JOIN client_contacts_table as cc ON cc.Id = bb.contact_id
+                WHERE aa.client_uid = {$client} AND aa.category_id = {$category}
+                ");
 
         if(COUNT($contact) > 0)
         {
-            return array("Code" => 200, "group_name" => $group_name[0]->group_name, "result" => $contact);
+            return array(
+                "Code" => 200,
+                "list_of_groups" => $groups,
+                "result" => $contact
+            );
+        }
+
+        return array("Code" => 404, "result" => "No Result Found");
+    }
+
+    public function get_bill_to_using_group_to($group_uid)
+    {
+        $bill_contact = DB::SELECT("
+                        SELECT 
+                        aa.group_id, bb.Id as contact_uid, concat_ws('',bb.first_name, ' ', bb.last_name) as name
+                        FROM group_list_table as aa
+                        INNER JOIN client_contacts_table as bb ON bb.Id = aa.contact_id
+                        WHERE aa.group_id = {$group_uid} AND aa.role_id = 3");
+
+        if(COUNT($bill_contact) > 0)
+        {
+            return array(
+                "Code" => 200,
+                "result" => $bill_contact
+            );
         }
 
         return array("Code" => 404, "result" => "No Result Found");
@@ -290,6 +331,7 @@ class bookingController extends Controller
         $booking->sales_rep_code = $request['sales_rep_code'];
         $booking->client_id = $request['client_id'];
         $booking->agency_id = $request['agency_id'] == "" ? 0 : $request['agency_id'];
+        $booking->group_id = $request['group_uid'] == "" ? 0 : $request['group_uid'];
         $booking->status = 1; //default pending
         $booking->save();
 
