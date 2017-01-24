@@ -553,7 +553,7 @@ function populate_issues_transaction(uid) {
                     html_thmb += "</td>";
                     html_thmb += "</tr>";
                     item_count++;
-                    total_with_discount += parseFloat(tran.total_amount_with_discount);
+                    total_with_discount += parseFloat(new_price);
                 });
                 $('table#issue_reports > tbody').empty().prepend(html_thmb);
                 $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));
