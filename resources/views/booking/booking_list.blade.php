@@ -82,11 +82,10 @@
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->line_item  }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->qty }}</td>
-                                        @if($booking[$i]->is_member == 1)
-                                            <td style='text-align: right;'>{{ $booking[$i]->new_amount != null ? number_format($booking[$i]->new_amount, 2, '.', ',') : number_format($booking[$i]->amount, 2, '.', ',') }}</td>
-                                        @else
-                                            <td style='text-align: right;'>{{ number_format($booking[$i]->amount, 2, '.', ',') }}</td>
-                                        @endif
+                                        <?php
+                                            $amount = $booking[$i]->new_amount != null ? (float)$booking[$i]->new_amount : (float)$booking[$i]->amount;
+                                        ?>
+                                        <td style='text-align: right;'>{{ number_format($amount, 2, '.', ',') }}</td>
                                         <td style='text-align: center;'>
                                         <?php
                                             $date_created = \Carbon\Carbon::parse($booking[$i]->created_at);
@@ -198,6 +197,7 @@
 
 <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 <script>
+
     $(document).ready(function(){
         $('.dataTables-example').DataTable({
             dom: '<"html5buttons"B>lTfgitp',

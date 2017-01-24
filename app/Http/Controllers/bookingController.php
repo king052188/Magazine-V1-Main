@@ -33,7 +33,7 @@ class bookingController extends Controller
                 
                 booked.client_id,
                 
-                (SELECT is_member FROM db_magazine_v1.client_table WHERE Id = booked.client_id) AS is_member,
+                (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
                 
                 booked.trans_num,
                 
@@ -53,7 +53,7 @@ class bookingController extends Controller
                 
                 ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
                 
-                ( SELECT (amount - (amount * discount_percent)) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num AND status = 2 ) AS new_amount,
+                ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num AND status = 2 ) AS new_amount,
                 
                 booked.status,
                 
