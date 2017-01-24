@@ -342,7 +342,7 @@ class clientController extends Controller
                 'city' => $request['c_city'],
                 'state' => $request['c_state'],
                 'zip_code' => $request['c_zip_code'],
-                'type' => $request['c_type'],
+                'type' => 1,
                 'is_member' => $request['c_is_member'] == false ? -1 : 1,
                 'status' => 2
             ]);
