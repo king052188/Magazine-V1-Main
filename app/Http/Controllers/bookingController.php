@@ -418,6 +418,7 @@ class bookingController extends Controller
 
     public function add_issue($mag_trans_uid, $client_id)
     {
+
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }

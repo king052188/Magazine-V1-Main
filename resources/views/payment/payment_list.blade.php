@@ -264,7 +264,7 @@
                     var json = $.parseJSON(data);
                     if(json.result == 200)
                     {
-                        populate_inv_num(inv_num);
+                        populate_inv_num(inv_num, json.is_member, json.discount_percent, json.province_tax);
 
                     }else{
                         swal(
@@ -279,7 +279,7 @@
             });
         });
 
-        function populate_inv_num(inv_num) {
+        function populate_inv_num(inv_num, is_member, discount_percent, province_tax) {
             var html_thmb = "";
             var isFirstLoad = true;
 
@@ -308,16 +308,26 @@
                             html_thmb += "<td style='text-align: center;'>"+ json.Magazine_Year +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.ad_size +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.ad_color +"</td>";
-                            html_thmb += "<td style='text-align: right;'>"+ numeral(tran.sub_total_amount).format('0,0.00') +"</td>";
+
+                            var new_price = tran.sub_total_amount;
+                            if(is_member > 0) {
+                                discount = "15%";
+                                var new_price_aa = new_price - (new_price * 0.15);
+                                new_price =  new_price_aa - (new_price_aa * (discount_percent / 100));
+                            }
+
+                            var total_amount = new_price + (new_price * province_tax);
+
+                            html_thmb += "<td style='text-align: right;'>"+ numeral(new_price).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.line_item_qty +"</td>";
-                            html_thmb += "<td style='text-align: left;'></td>";
-                            html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
+                            html_thmb += "<td style='text-align: left;'>"+ numeral(province_tax * 100).format('0,0') +"%</td>";
+                            html_thmb += "<td style='text-align: right;'>"+ numeral(total_amount).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: left;'>" +
                                     "<select class='form-control'  id = 'action_payment_"+tran.id +"'>" +
                                     "<option value = '0'>--select--</option>" +
-                                    "<option value = '"+ tran.id + ":" + tran.total_amount_with_discount + ":" + inv_num + ":1'>Select for payment</option>" +
-                                    "<option value = '"+ tran.id + ":" + inv_num + ":" + tran.total_amount_with_discount + ":2'>View Transaction</option>" +
-                                    "<option value = '"+ tran.id + ":" + tran.total_amount_with_discount + ":" + inv_num + ":3'>View Invoice</option>" +
+                                    "<option value = '"+ tran.id + ":" + total_amount + ":" + inv_num + ":1'>Select for payment</option>" +
+                                    "<option value = '"+ tran.id + ":" + inv_num + ":" + total_amount + ":2'>View Transaction</option>" +
+                                    "<option value = '"+ tran.id + ":" + total_amount + ":" + inv_num + ":3'>View Invoice</option>" +
                                     "</select>" +
                                     "</td>";
                             html_thmb += "</tr>";

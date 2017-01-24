@@ -191,6 +191,8 @@
 
                         $(json.list).each(function(i, tran){
 
+                            //console.log(json);
+
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
@@ -304,6 +306,8 @@
                 var value =  $(this).attr('get-val');
                 var inv_num = value;
 
+                console.log(inv_num);
+
                 $.ajax({
                     url: "/payment/search_invoice_number_api/" + inv_num,
                     dataType: "text",
@@ -313,7 +317,7 @@
                         var json = $.parseJSON(data);
                         if(json.result == 200)
                         {
-                            populate_inv_num(inv_num);
+                            populate_inv_num(inv_num, json.is_member, json.discount_percent, json.province_tax);
 
                         }else{
                             swal(
@@ -328,7 +332,7 @@
                 });
             });
 
-            function populate_inv_num(inv_num) {
+            function populate_inv_num(inv_num, is_member, discount_percent, province_tax) {
                 var html_thmb = "";
                 var isFirstLoad = true;
 
@@ -357,10 +361,21 @@
                                 html_thmb += "<td style='text-align: center;'>"+ json.Magazine_Year +"</td>";
                                 html_thmb += "<td style='text-align: center;'>"+ tran.ad_size +"</td>";
                                 html_thmb += "<td style='text-align: center;'>"+ tran.ad_color +"</td>";
-                                html_thmb += "<td style='text-align: right;'>"+ numeral(tran.sub_total_amount).format('0,0.00') +"</td>";
+
+                                var new_price = tran.sub_total_amount;
+                                if(is_member > 0) {
+                                    discount = "15%";
+                                    var new_price_aa = new_price - (new_price * 0.15);
+                                    new_price =  new_price_aa - (new_price_aa * (discount_percent / 100));
+                                }
+
+                                //console.log(discount_percent);
+                                //console.log(province_tax * 100);
+
+                                html_thmb += "<td style='text-align: right;'>"+ numeral(new_price).format('0,0.00') +"</td>";
                                 html_thmb += "<td style='text-align: center;'>"+ tran.line_item_qty +"</td>";
-                                html_thmb += "<td style='text-align: left;'></td>";
-                                html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount_with_discount).format('0,0.00') +"</td>";
+                                html_thmb += "<td style='text-align: center;'>"+ numeral(province_tax * 100).format('0,0') +"%</td>";
+                                html_thmb += "<td style='text-align: right;'>"+ numeral(new_price + (new_price * province_tax)).format('0,0.00') +"</td>";
                                 html_thmb += "</tr>";
 
                             });

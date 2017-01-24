@@ -90,7 +90,19 @@ class paymentController extends Controller
         $result = DB::SELECT("SELECT * FROM invoice_table WHERE invoice_num = '{$inv_num}'");
         if($result != null)
         {
-            return array("result" => 200, "description" => "Invoice Number is available");
+            $trans = DB::table('booking_sales_table')->where('trans_num','=',$result[0]->booking_trans)->get();
+            $is_member = DB::table('client_table')->where('Id','=',$trans[0]->client_id)->get();
+            $discount = DB::table('discount_transaction_table')->where('trans_id','=',$result[0]->booking_trans)->get();
+            $province_tax = DB::table('taxes_table')->where('province_code','=',$is_member[0]->state)->get();
+
+            return array(
+                "result" => 200,
+                "description" => "Invoice Number is available",
+                "is_member" => COUNT($is_member) > 0 ? $is_member[0]->is_member : 0,
+                "province_state" => COUNT($is_member) > 0 ? $is_member[0]->state : 0,
+                "province_tax" => COUNT($province_tax) > 0 ? $province_tax[0]->tax_amount + 0 : 0,
+                "discount_percent" => $discount[0]->discount_percent + 0
+            );
         }
 
         return array("result" => 404, "description" => "Invoice Number is not available");
@@ -173,6 +185,8 @@ class paymentController extends Controller
 
     public function invoice()
     {
+        //$is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
+
         return view('payment.invoice');
     }
 
