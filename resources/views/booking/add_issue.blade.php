@@ -501,7 +501,7 @@ function populate_issues_transaction(uid) {
                 if(json == null)
                     return false;
 
-                console.log(json);
+                console.log(trans_id);
                 if(json.Status == 404) {
                     $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8">' + json.Message + '</td> </tr>');
                     return;

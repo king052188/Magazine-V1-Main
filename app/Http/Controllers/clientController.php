@@ -54,31 +54,6 @@ class clientController extends Controller
         $company->status = 2;
         $result = $company->save();
 
-//        $new_bn = $this->generate_branch_number($company_last_uid);
-//        $branch_name = $new_bn['new_bn'];
-
-//        $field = array('', 'p_', 's_', 'b_');
-//        $role = array('', '0001', '0002', $request['b_branch_name'], '0004');
-//
-//        $client = new ClientContact();
-//        $client->client_id = $company_last_uid;
-//        $client->branch_name = $role[$request['role']];
-//        $client->first_name = $request['first_name'];
-//        $client->middle_name = $request['middle_name'];
-//        $client->last_name = $request['last_name'];
-//        $client->address_1 = $request['address_1'];
-//        $client->city = $request['city'];
-//        $client->state = $request['state'];
-//        $client->zip_code = $request['zip_code'];
-//        $client->email = $request['email'];
-//        $client->landline = $request['landline'];
-//        $client->mobile = $request['mobile'];
-//        $client->position = $request['position'];
-//        $client->type = $request['type'];
-//        $client->status = 2;
-//        $client->synched = 1;
-//        $client->save();
-
         if($result) {
             //$company_last_uid = $company->id;
             //return redirect('client/view_contacts/'. $company_last_uid)->with('success', 'Successfully Added New Client, Please add your contact person.');
@@ -369,7 +344,7 @@ class clientController extends Controller
                 'zip_code' => $request['c_zip_code'],
                 'type' => $request['c_type'],
                 'is_member' => $request['c_is_member'] == false ? -1 : 1,
-                'status' => $request['c_status'] == false ? 1 : 2
+                'status' => 2
             ]);
 
         $field = array('', 'p_', 's_', 'b_');
