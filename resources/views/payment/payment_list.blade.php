@@ -481,9 +481,11 @@
 
                                         if(r_balance <= 0)
                                         {
+                                            console.log("Paid");
                                             window.open('http://'+ report_url_api +'/kpa/work/transaction/invoice-order/'+ inv_num +'/'+ line_item +'/paid',
                                                     "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
                                         }else{
+                                            console.log("Not Paid");
                                             window.open('http://'+ report_url_api +'/kpa/work/transaction/invoice-order/'+ inv_num +'/'+ line_item +'',
                                                     "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
                                         }
