@@ -327,10 +327,11 @@ class clientController extends Controller
             return redirect("/logout_process");
         }
 
+        $tax = DB::table('taxes_table')->get();
         $clients = Client::all();
         $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
 
-        return view('client.client_update', compact('clients', 'company'));
+        return view('client.client_update', compact('clients', 'company', 'tax'));
     }
 
     public function client_update_save(Request $request, $company_uid)

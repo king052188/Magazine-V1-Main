@@ -63,7 +63,16 @@
                                     </div>
                                     <div class="form-group">
                                         <label>Province/State</label>
-                                        <input type="text" placeholder="Enter Province/State" class="form-control" value = "{{ $company[0]->state }}" name="c_state" required>
+                                        {{--<input type="text" placeholder="Enter Province/State" class="form-control" value = "{{ $company[0]->state }}" name="c_state" required>--}}
+                                        <select class="form-control" name = "c_state" id = "c_state" required>
+                                            <option value = "">Select</option>
+                                            @for($i = 0; $i < COUNT($tax); $i++)
+                                                <option value = "{{ $tax[$i]->province_code }}" {{ $tax[$i]->province_code == $company[0]->state ? "selected" : "" }}>
+                                                    ( {{ $tax[$i]->province_code }} ) {{ $tax[$i]->province_name }}, {{ $tax[$i]->country_code }}
+                                                </option>
+                                            @endfor
+                                            <option value = "1">Others</option>
+                                        </select>
                                     </div>
                                     <div class="form-group">
                                         <label>Postal/Zip Code</label>
