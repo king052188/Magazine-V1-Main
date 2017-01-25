@@ -475,21 +475,21 @@
                                     if(json == null)
                                         return false;
 
-                                    if(json.status == 200)
-                                    {
+
+                                    //if(json.status == 200)
+                                    //{
                                         var r_balance = amount - json.total_paid;
 
                                         if(r_balance <= 0)
                                         {
-                                            console.log("Paid");
-                                            window.open('http://'+ report_url_api +'/kpa/work/transaction/invoice-order/'+ inv_num +'/'+ line_item +'/paid',
+                                            window.open("http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+ inv_num +"/"+ line_item +"/paid",
                                                     "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
                                         }else{
-                                            console.log("Not Paid");
-                                            window.open('http://'+ report_url_api +'/kpa/work/transaction/invoice-order/'+ inv_num +'/'+ line_item +'',
+                                            window.open("http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+ inv_num +"/"+ line_item +"",
                                                     "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
+
                                         }
-                                    }
+                                    //}
                                 }
                             });
 
