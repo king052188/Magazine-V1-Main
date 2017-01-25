@@ -283,6 +283,8 @@
             var html_thmb = "";
             var isFirstLoad = true;
 
+
+
             $.ajax({
                 url: "http://"+ report_url_api +"/kpa/work/invoice-transaction-list/" + inv_num,
                 dataType: "text",
@@ -318,9 +320,14 @@
 
                             var total_amount = new_price + (new_price * province_tax);
 
+//                            console.log("direct from tax table : " + province_tax);
+//                            console.log("direct from tax table * 100: " + province_tax * 100);
+//                            console.log("direct from tax table * 100 (with numeral): " + numeral(province_tax * 100).format('0,0'));
+
+
                             html_thmb += "<td style='text-align: right;'>"+ numeral(new_price).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.line_item_qty +"</td>";
-                            html_thmb += "<td style='text-align: left;'>"+ numeral(province_tax * 100).format('0,0') +"%</td>";
+                            html_thmb += "<td style='text-align: left;'>"+ numeral(new_price * province_tax).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: right;'>"+ numeral(total_amount).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: left;'>" +
                                     "<select class='form-control'  id = 'action_payment_"+tran.id +"'>" +
