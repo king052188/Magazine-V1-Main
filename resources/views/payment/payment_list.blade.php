@@ -68,7 +68,7 @@
 
                                     </div><br/>
 
-                                    <div class="group-payment">
+                                    <div class="group-payment" style = "display: none;">
 
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Which Line Item:</label><br/>
@@ -342,8 +342,9 @@
                         var value =  selected.val();
                         var values = value.split(":");
 
-                        if(values[3] == 1){
+                        //console.log("action_payment_" + values[0]);
 
+                        if(values[3] == 1){
                             var value =  selected.val();
                             var values = value.split(":");
                             var line_item = values[0];
@@ -391,9 +392,12 @@
                                         $('#amount').val("0.00");
                                         $(".group-payment").show();
                                     }
+
                                 }
                             });
+
                         }else if(values[3] == 2){
+                            $(".group-payment").hide();
 
                             $('#modal_transaction').modal({
                                 show: true
@@ -458,6 +462,7 @@
                             });
 
                         }else if (values[3] == 3){
+                            $(".group-payment").hide();
 
                             var value =  selected.val();
                             var values = value.split(":");
@@ -490,12 +495,16 @@
 
                                         }
                                     //}
+
                                 }
                             });
 
                         } else {
+
                             $(".group-payment").hide();
                         }
+
+                        $("#action_payment_" + values[0] + " option[value=0]").prop("selected", true);
                     });
 
                 }
