@@ -179,7 +179,7 @@
 
                             </tbody>
                     </table>
-                    <div id="btn_lists" style="height: 25px; margin-top: -10px; display: none;">
+                    <div id="btn_lists" style="border: 1px solid; height: 25px; margin-top: -10px; display: none;">
                         <span style="text-align: right; position: absolute; right: 220px; color: #983014; margin-top: 6px;">Click SAVE to continue Or Click CANCEL to discard.</span>
                         <button class="btn btn-primary" id="btn_save_clicked" style = "text-align: right; margin-bottom: 0px; right: 130px; position: absolute;" ><i class="fa fa-save"></i>&nbsp;&nbsp;Save</button>
                         <button class="btn btn-primary" id="btn_cancel_clicked" style = "text-align: right; margin-bottom: 0px; right: 35px; position: absolute; background: #a1a1a1; border: 1px solid #a1a1a1;" ><i class="fa fa-close"></i>&nbsp;&nbsp;Cancel</button>
@@ -219,8 +219,11 @@
             window.location.href = "/booking/booking-list/" + $(this).val();
         });
         $("#tbl_booking_lists > tbody  > tr").change(function(){
+//        $("#tbl_booking_lists > tbody  > tr").on('change', '#ddlStatus_190', function(){
             var selected =  $(this).find('select:first');
             var value =  selected.val();
+
+            console.log("this is it: " + selected);
             var values = value.split(":");
 
             if(values.length > 1) {
@@ -229,12 +232,10 @@
 
                 if(str_to_int == -1) {
                     $("#btn_lists").hide();
-
                     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_num + "/preview",
                             "mywindow","location=1,status=1,scrollbars=1,width=855,height=800");
                 }
                 else if(str_to_int == -2) {
-
                     if(values.length > 2) {
 
                         var invoice_num = values[2];
@@ -243,8 +244,6 @@
                                 "mywindow","location=1,status=1,scrollbars=1,width=795,height=760");
 
                     }
-
-
 
 //                    $(document).ready( function() {
 //                        $.ajax({
@@ -267,6 +266,7 @@
 //                    } );
                 }
                 else if(str_to_int == -3) {
+                    console.log(str_to_int);
                     $("#btn_lists").hide();
                     window.open("http://"+ Url_Client_Dashboard + trans_num,'_blank');
                 }
@@ -274,19 +274,62 @@
 
                     var selected_id = selected.attr("id");
                     var split_selected_id = selected_id.split("_");
-                    console.log(trans_num);
+                    console.log(str_to_int);
+                    console.log("this is trans num: " + trans_num);
                     console.log(split_selected_id);
+
+//                    1 = Pending
+//                    2 = For Approval
+//                    3 = Approved
+//                    5 = Void
+
+                    var status_msg = "Are you sure do you want to update as <b>PENDING</b>?";
+
+                    if(str_to_int == 2){
+                        status_msg = "Requesting <b>FOR APPROVAL</b>?";
+                    }else if(str_to_int == 3){
+                        status_msg = "Are you sure do you want to update as <b>APPROVED</b>?";;
+                    }else if(str_to_int == 5){
+                        status_msg = "Are you sure do you want to update to <b>VOID</b>?";
+                    }
+
                     if(trans_num != 1) {
 //                        $("#btn_update_"+split_selected_id[1]).show();
-                        $("#btn_lists").show();
-
-                        $("#btn_save_clicked").click(function() {
+//                        $("#btn_lists").show();
+//
+//                        $("#btn_save_clicked").click(function() {
+//
+//
+//                        });
+//
+//                        $("#btn_cancel_clicked").click(function() {
+//                            location.reload();
+//                        });
+                        swal({
+                            title: "",
+                            text: status_msg,
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Yes',
+                            cancelButtonText: 'Cancel'
+                        }).then(function() {
                             $("#btn_update_"+split_selected_id[1]).click();
-                        });
+                        }, function(dismiss) {
+                            if (dismiss === 'cancel') {
 
-                        $("#btn_cancel_clicked").click(function() {
-                            location.reload();
-                        });
+                                swal({
+                                    title: "Cancelled",
+                                    text: "",
+                                    type: "error"
+                                }).then(
+                                        function() {
+                                            location.reload();
+                                        }
+                                )
+                            }
+                        })
                     }
                     else {
 //                        $("#btn_update_"+split_selected_id[1]).hide();
@@ -314,8 +357,17 @@
                         var json = $.parseJSON(data);
                         if(json.status == 200)
                         {
-                            alert("Update was successful");
-                            location.reload();
+//                            alert("Update was successful");
+//                            location.reload();
+                            swal({
+                                title: "",
+                                text: "Update was successful",
+                                type: "success"
+                            }).then(
+                                    function() {
+                                        location.reload();
+                                    }
+                            )
                         }
                     }
                 });

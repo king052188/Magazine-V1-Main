@@ -38,7 +38,7 @@
                                     {{--<form class="form-inline" role="form">--}}
                                     <div class="">
                                         <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Year:</label><br/>
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Company Name</label><br/>
                                             <select class='form-control' name='generate_year' id = 'generate_year' style = 'width: 150px;' required>
                                                 @for($i = date('Y'); $i > date('Y') - 10; $i--)
                                                     <option value='{{ $i }}'>{{ $i }}</option>
@@ -47,7 +47,16 @@
                                         </div>
 
                                         <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Issue:</label><br/>
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Year</label><br/>
+                                            <select class='form-control' name='generate_year' id = 'generate_year' style = 'width: 150px;' required>
+                                                @for($i = date('Y'); $i > date('Y') - 10; $i--)
+                                                    <option value='{{ $i }}'>{{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Issue</label><br/>
                                             <select class='form-control' name='generate_issue' id = 'generate_issue' style = 'width: 100px;' required>
                                                 @for($i = 1; $i < 13; $i++)
                                                     <option value='{{ $i }}'>{{ $i }}</option>
@@ -75,7 +84,7 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div id="latest_invoice" class="tab-pane">
-                                        <table id="tbl_latest_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
+                                        <table id="tbl_latest_invoice_list" class="footable table table-striped table-bordered table-hover dataTables-example-main" >
                                             <thead>
                                                 <tr>
                                                     <th style='text-align: center; width: 150px;'>Invoice #</th>
@@ -91,17 +100,17 @@
                                         </table>
                                     </div>
                                     <div id="all_invoice" class="tab-pane active">
-                                        <table id="tbl_all_invoice_list" class="table table-striped table-bordered table-hover dataTables-example-main" >
+                                        <table id="tbl_all_invoice_list" class="footable table table-striped table-bordered table-hover dataTables-example-main" >
                                             <thead>
-                                            <tr>
-                                                <th style='text-align: center; width: 150px;'>Invoice #</th>
-                                                <th style='text-align: center; width: 100px;'>Issue</th>
-                                                <th style='text-align: center; width: 100px;'>Year</th>
-                                                <th style='text-align: center;'>Executive Account</th>
-                                                <th style='text-align: center; width: 150px;'>Invoice Created</th>
-                                                <th style='text-align: center; width: 150px;'>Due Date</th>
-                                                <th style='text-align: center; width: 80px;'>Action</th>
-                                            </tr>
+                                                <tr>
+                                                    <th style='text-align: center; width: 150px;'>Invoice #</th>
+                                                    <th style='text-align: center; width: 100px;'>Issue</th>
+                                                    <th style='text-align: center; width: 100px;'>Year</th>
+                                                    <th style='text-align: center;'>Executive Account</th>
+                                                    <th style='text-align: center; width: 150px;'>Invoice Created</th>
+                                                    <th style='text-align: center; width: 150px;'>Due Date</th>
+                                                    <th style='text-align: center; width: 80px;'>Action</th>
+                                                </tr>
                                             </thead>
                                             <tbody> </tbody>
                                         </table>
@@ -115,45 +124,45 @@
         </div>
     </div>
 
-    <div class="modal fade" id="modal_view_invoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">List of Issue</h4>
-                </div>
-                <div class="col-lg-12">
-                    <div class="modal-body form group">
-                        <table id="modal_info" class="table table-striped table-bordered table-hover dataTables-example-main" >
-                            <thead>
-                            <tr>
-                                <th style='text-align: center; width: 30px;'>Proposal ID</th>
-                                <th style='text-align: center; '>Pub.</th>
-                                <th style='text-align: center; width: 70px;'>Issue</th>
-                                <th style='text-align: center; width: 70px;'>Year</th>
-                                <th style='text-align: center; width: 100px;'>Ad Size</th>
-                                <th style='text-align: center; width: 70px;'>Ad Color</th>
-                                <th style='text-align: right; width: 100px;'>Net</th>
-                                <th style='text-align: center; width: 70px;'>Qty</th>
-                                <th style='text-align: right; width: 100px;'>GST/HST</th>
-                                <th style='text-align: right; width: 100px;'>Amount</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+    {{--<div class="modal fade" id="modal_view_invoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">--}}
+        {{--<div class="modal-dialog modal-lg" role="document">--}}
+            {{--<div class="modal-content">--}}
+                {{--<div class="modal-header">--}}
+                    {{--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
+                        {{--<span aria-hidden="true">&times;</span>--}}
+                    {{--</button>--}}
+                    {{--<h4 class="modal-title" id="myModalLabel">List of Issue</h4>--}}
+                {{--</div>--}}
+                {{--<div class="col-lg-12">--}}
+                    {{--<div class="modal-body form group">--}}
+                        {{--<table id="modal_info" class="table table-striped table-bordered table-hover dataTables-example-main" >--}}
+                            {{--<thead>--}}
+                            {{--<tr>--}}
+                                {{--<th style='text-align: center; width: 30px;'>Proposal ID</th>--}}
+                                {{--<th style='text-align: center; '>Pub.</th>--}}
+                                {{--<th style='text-align: center; width: 70px;'>Issue</th>--}}
+                                {{--<th style='text-align: center; width: 70px;'>Year</th>--}}
+                                {{--<th style='text-align: center; width: 100px;'>Ad Size</th>--}}
+                                {{--<th style='text-align: center; width: 70px;'>Ad Color</th>--}}
+                                {{--<th style='text-align: right; width: 100px;'>Net</th>--}}
+                                {{--<th style='text-align: center; width: 70px;'>Qty</th>--}}
+                                {{--<th style='text-align: right; width: 100px;'>GST/HST</th>--}}
+                                {{--<th style='text-align: right; width: 100px;'>Amount</th>--}}
+                            {{--</tr>--}}
+                            {{--</thead>--}}
+                            {{--<tbody>--}}
 
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
+                            {{--</tbody>--}}
+                        {{--</table>--}}
+                    {{--</div>--}}
+                {{--</div>--}}
+                {{--<div class="modal-footer">--}}
+                    {{--<input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />--}}
+                    {{--<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>--}}
+                {{--</div>--}}
+            {{--</div>--}}
+        {{--</div>--}}
+    {{--</div>--}}
 @endsection
 
 @section('scripts')
@@ -204,7 +213,7 @@
                             var get_due_date = stripped_date_time(tran.created_at);
                             html_thmb += "<td style='text-align: center;'>"+ get_due_date[1] +"</td>";
                             html_thmb += "<td style='text-align: center;'>" +
-                                    "<a href = '#' get-val = '"+ tran.invoice_num + "' data-toggle='modal' data-target='#modal_view_invoice' class='btn btn-primary btn-xs view_invoice'><i class='fa fa-eye'></i> View</a>" +
+                                    "<a href = '#' get-val = '"+ tran.invoice_num + "' data-toggle='modal' data-target='#modal_view_invoice' class='btn btn-primary btn-xs view_invoice'><i class='fa fa-eye'></i> View Invoice</a>" +
                                     "</td>";
                             html_thmb += "</tr>";
 
@@ -245,7 +254,7 @@
                             var get_due_date = stripped_date_time(tran.due_date);
                             html_thmb += "<td style='text-align: center;'>"+ get_due_date[1] +"</td>";
                             html_thmb += "<td style='text-align: center;'>" +
-                                    "<a href = '#' get-val = '"+ tran.invoice_num + "' data-toggle='modal' data-target='#modal_view_invoice' class='btn btn-primary btn-xs view_invoice'><i class='fa fa-eye'></i> View</a>" +
+                                    "<a href = '#' get-val = '"+ tran.invoice_num + "' class='btn btn-primary btn-xs view_invoice'><i class='fa fa-eye'></i> View</a>" +
                                     "</td>";
                             html_thmb += "</tr>";
 
@@ -306,30 +315,33 @@
                 var value =  $(this).attr('get-val');
                 var inv_num = value;
 
-                console.log(inv_num);
+                window.open("http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+ inv_num  +"",
+                        "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
 
-                $.ajax({
-                    url: "/payment/search_invoice_number_api/" + inv_num,
-                    dataType: "text",
-                    beforeSend: function () {
-                    },
-                    success: function(data) {
-                        var json = $.parseJSON(data);
-                        if(json.result == 200)
-                        {
-                            populate_inv_num(inv_num, json.is_member, json.discount_percent, json.province_tax);
-
-                        }else{
-                            swal(
-                                    '',
-                                    'Invoice Number is not available!',
-                                    'error'
-                            )
-                            return false;
-
-                        }
-                    }
-                });
+//                console.log(inv_num);
+//
+//                $.ajax({
+//                    url: "/payment/search_invoice_number_api/" + inv_num,
+//                    dataType: "text",
+//                    beforeSend: function () {
+//                    },
+//                    success: function(data) {
+//                        var json = $.parseJSON(data);
+//                        if(json.result == 200)
+//                        {
+//                            populate_inv_num(inv_num, json.is_member, json.discount_percent, json.province_tax);
+//
+//                        }else{
+//                            swal(
+//                                    '',
+//                                    'Invoice Number is not available!',
+//                                    'error'
+//                            )
+//                            return false;
+//
+//                        }
+//                    }
+//                });
             });
 
             function populate_inv_num(inv_num, is_member, discount_percent, province_tax) {

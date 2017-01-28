@@ -156,8 +156,9 @@
                                     </div>
                                     <div class="col-lg-6" id = "other_name_show">
                                         <div class="form-group">
-                                            <label for="ex2">Specify Name</label>
-                                            <input class="form-control" type="text" id ="other_name" name="other_name" placeholder="Enter Others Name">
+                                            {{--specify name--}}
+                                            <label for="ex2">Company Name</label>
+                                            <input class="form-control" type="text" id ="other_name" name="other_name" placeholder="Enter Company Name">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
@@ -320,13 +321,13 @@
                                 $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                                 $("#contact_company_name_show").show();
                                 $("#contact_other_name_show").hide();
-                                $("#contact_branch_name").val(contact.branch_name);
+                                $("#e_contact_branch_name").val(contact.branch_name);
 
                             }else if(contact.role == 4){
                                 $("#contact_role_handler").removeClass('col-lg-12').addClass('col-lg-6');
                                 $("#contact_other_name_show").show();
                                 $("#contact_company_name_show").hide();
-                                $("#contact_other_name").val(contact.branch_name);
+                                $("#e_contact_other_name").val(contact.branch_name);
 
                             }else{
                                 $("#contact_company_name_show").hide();
@@ -340,21 +341,26 @@
                                 $('#e_status').prop('checked', false);
                             }
 
-                            $("#contact_uid").val(contact.Id);
-                            $("#client_id").val(contact.client_id);
-                            $("#contact_role").val(contact.role);
-                            $("#first_name").val(contact.first_name);
-                            $("#middle_name").val(contact.middle_name);
-                            $("#last_name").val(contact.last_name);
-                            $("#address_1").val(contact.address_1);
-                            $("#city").val(contact.city);
-                            $("#state").val(contact.state);
-                            $("#zip_code").val(contact.zip_code);
-                            $("#email").val(contact.email);
-                            $("#landline").val(contact.landline);
-                            $("#mobile").val(contact.mobile);
-                            $("#position").val(contact.position);
-                            $("#type").val(contact.type);
+                            $("#e_contact_uid").val(contact.Id);
+                            $("#e_client_id").val(contact.client_id);
+                            $("#e_contact_role").val(contact.role);
+                            $("#e_first_name").val(contact.first_name);
+                            $("#e_middle_name").val(contact.middle_name);
+                            $("#e_last_name").val(contact.last_name);
+                            $("#e_address_1").val(contact.address_1);
+                            $("#e_city").val(contact.city);
+
+                            $("#e_state").val(contact.state);
+
+                            //var state_val = contact.state;
+                            //$("#e_state option[value=state_val]").prop("selected", true);
+
+                            $("#e_zip_code").val(contact.zip_code);
+                            $("#e_email").val(contact.email);
+                            $("#e_landline").val(contact.landline);
+                            $("#e_mobile").val(contact.mobile);
+                            $("#e_position").val(contact.position);
+                            $("#e_type").val(contact.type);
 
                         });
                     }
@@ -376,12 +382,12 @@
 
                     <div class="col-lg-12">
                         <div class="modal-body form group">
-                            <input type = "hidden" name = "contact_uid" id = "contact_uid">
-                            <input type = "hidden" name = "client_id" id = "client_id">
+                            <input type = "hidden" name = "contact_uid" id = "e_contact_uid">
+                            <input type = "hidden" name = "client_id" id = "e_client_id">
                             <div class="col-lg-12" id = "contact_role_handler">
                                 <div class="form-group">
                                     <label for="ex2">Role</label>
-                                    <select class="form-control" name = "role" id = "contact_role" required>
+                                    <select class="form-control" name = "role" id = "e_contact_role" required>
                                         <option value="">--select--</option>
                                         <option value="1" {{ COUNT($p) != 0 ? 'hidden' : '' }}>Primary Contact</option>
                                         <option value="2" {{ COUNT($s) != 0 ? 'hidden' : '' }}>Secondary Contact</option>
@@ -394,79 +400,89 @@
                             <div class="col-lg-6" id = "contact_company_name_show">
                                 <div class="form-group">
                                     <label for="ex2">Company Name</label>
-                                    <input class="form-control" type="text" id ="contact_branch_name" name="branch_name" placeholder="Enter Company Name">
+                                    <input class="form-control" type="text" id ="e_contact_branch_name" name="branch_name" placeholder="Enter Company Name">
                                 </div>
                             </div>
                             <div class="col-lg-6" id = "contact_other_name_show">
                                 <div class="form-group">
-                                    <label for="ex2">Specify Name</label>
-                                    <input class="form-control" type="text" id ="contact_other_name" name="other_name" placeholder="Enter Others Name">
+                                    {{--specify name--}}
+                                    <label for="ex2">Company Name</label>
+                                    <input class="form-control" type="text" id ="e_contact_other_name" name="other_name" placeholder="Enter Company Name">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">First Name</label>
-                                    <input class="form-control" type="text" id = "first_name" name="first_name" placeholder="Enter First Name" required>
+                                    <input class="form-control" type="text" id = "e_first_name" name="first_name" placeholder="Enter First Name" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">Last Name</label>
-                                    <input class="form-control" type="text" id = "last_name" name="last_name" placeholder="Enter Last Name" required>
+                                    <input class="form-control" type="text" id = "e_last_name" name="last_name" placeholder="Enter Last Name" required>
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     <label for="ex2">Address</label>
-                                    <input class="form-control" type="text" id = "address_1" name="address_1" placeholder="Enter Complete Address" required>
+                                    <input class="form-control" type="text" id = "e_address_1" name="address_1" placeholder="Enter Complete Address" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">City</label>
-                                    <input class="form-control" type="text" id = "city" name="city" placeholder="Enter City" required>
+                                    <input class="form-control" type="text" id = "e_city" name="city" placeholder="Enter City" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">Province/State</label>
-                                    <input class="form-control" type="text" id = "state" name="state" placeholder="Enter State" required>
+                                    {{--<input class="form-control" type="text" id = "state" name="state" placeholder="Enter State" required>--}}
+                                    <select class="form-control" name = "state" id = "e_state" required>
+                                        <option value = "" selected>Select</option>
+                                        @for($i = 0; $i < COUNT($tax); $i++)
+                                            <option value = "{{ $tax[$i]->province_code }}">
+                                                [{{ $tax[$i]->province_code }}]
+                                                {{ $tax[$i]->province_name }}
+                                            </option>
+                                        @endfor
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">Postal/Zip Code</label>
-                                    <input class="form-control" type="text" id = "zip_code" name="zip_code" placeholder="Email Postal/Zipcode" required>
+                                    <input class="form-control" type="text" id = "e_zip_code" name="zip_code" placeholder="Email Postal/Zipcode" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">Email</label>
-                                    <input class="form-control" type="text" id="email" name="email" placeholder="Enter Email" required>
+                                    <input class="form-control" type="text" id="e_email" name="email" placeholder="Enter Email" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">Landline</label>
-                                    <input class="form-control" type="text" id = "landline" name="landline" placeholder="Enter Landline Number" required>
+                                    <input class="form-control" type="text" id = "e_landline" name="landline" placeholder="Enter Landline Number" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">Mobile</label>
-                                    <input class="form-control" type="text" id = "mobile" name="mobile" placeholder="Enter Mobile Number" required>
+                                    <input class="form-control" type="text" id = "e_mobile" name="mobile" placeholder="Enter Mobile Number" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">Position</label>
-                                    <input class="form-control" type="text" id = "position" name="position" placeholder="Enter Position" required>
+                                    <input class="form-control" type="text" id = "e_position" name="position" placeholder="Enter Position" required>
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="ex2">Type</label>
-                                    <select class="form-control" name = "type" id = "type" required>
+                                    <select class="form-control" name = "type" id = "e_type" required>
                                         <option value="">--select--</option>
                                         @for($i = 0; $i < COUNT($ref); $i++)
                                             <option value="{{ $ref[$i]->Id }}">{{ $ref[$i]->name }}</option>
@@ -527,7 +543,6 @@
                         <option value="">--select--</option>
                         <option value="1">Print</option>
                         <option value="2">Digital</option>
-                        <option value="3">Bulletin</option>
                     </select>
                 </div>
                 <div class="modal-footer">
