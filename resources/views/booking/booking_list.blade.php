@@ -58,9 +58,10 @@
                         <thead>
                             <tr>
                                 <th style='text-align: center; width: 30px;'>#</th>
-                                <th style='text-align: left;'>Magazine</th>
-                                <th style='text-align: left; width: 150px;'>Sales</th>
-                                <th style='text-align: left; width: 150px;'>Client</th>
+                                <th style='text-align: center;'>Publication</th>
+                                <th style='text-align: center;'>Issue</th>
+                                <th style='text-align: center; width: 150px;'>Sales</th>
+                                <th style='text-align: center; width: 150px;'>Client</th>
                                 <th style='text-align: center; width: 50px;'>Line Items</th>
                                 <th style='text-align: center; width: 50px;'>Qty</th>
                                 <th style='text-align: right; width: 80px;'>Amount</th>
@@ -78,6 +79,7 @@
                                     <tr>
                                         <td style='text-align: center;'>{{ $n++ }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->mag_name }}</td>
+                                        <td style='text-align: left;'></td>
                                         <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->line_item  }}</td>

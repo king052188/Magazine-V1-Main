@@ -185,9 +185,15 @@ class paymentController extends Controller
 
     public function invoice()
     {
+        $clients = DB::SELECT("
+                    SELECT *
+                    FROM client_table
+                    WHERE status = 2 AND type != 2 ORDER BY company_name ASC
+    	 ");
+
         //$is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
 
-        return view('payment.invoice');
+        return view('payment.invoice', compact('clients'));
     }
 
     public function invoice_list()
@@ -231,9 +237,16 @@ class paymentController extends Controller
         return array("status" => 404, "description" => "No Result Found!");
     }
 
-    public function invoice_generate($generate_issue, $generate_year)
+    public function invoice_generate($generate_issue, $generate_year, $generate_company_name)
     {
         $quarter_issue = (int)$generate_issue;
+        $generate_company_name = (int)$generate_company_name;
+
+        if($generate_company_name == 0){
+            $client_name = "AND cc.client_id = {$generate_company_name}";
+        }else{
+            $client_name = "";
+        }
 
         $process = DB::SELECT("
                         SELECT 
@@ -242,7 +255,7 @@ class paymentController extends Controller
                         magazine_issue_transaction_table as aa
                         INNER JOIN magazine_transaction_table as bb ON bb.Id = aa.magazine_trans_id
                         INNER JOIN booking_sales_table as cc ON cc.Id = bb.transaction_id
-                        WHERE aa.quarter_issued = {$quarter_issue} AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year}  AND cc.status = 3 AND aa.status = 2
+                        WHERE aa.quarter_issued = {$quarter_issue} AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year} $client_name AND cc.status = 3 AND aa.status = 2
                         ");
 
         if(COUNT($process) == 0)

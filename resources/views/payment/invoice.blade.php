@@ -7,6 +7,7 @@
 @section('styles')
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/datepicker/datepicker3.css') }}" rel="stylesheet">
+    <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
 @endsection
 
 @section('magazine_content')
@@ -39,9 +40,10 @@
                                     <div class="">
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Company Name</label><br/>
-                                            <select class='form-control' name='generate_year' id = 'generate_year' style = 'width: 150px;' required>
-                                                @for($i = date('Y'); $i > date('Y') - 10; $i--)
-                                                    <option value='{{ $i }}'>{{ $i }}</option>
+                                            <select class="form-control chosen-select" style = "background: none;" name = "company_name" id = "company_name">
+                                                <option value="0">Select</option>
+                                                @for($i = 0; $i < COUNT($clients); $i++)
+                                                    <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
                                                 @endfor
                                             </select>
                                         </div>
@@ -276,9 +278,10 @@
 
                 var generate_issue = $("#generate_issue").val();
                 var generate_year = $("#generate_year").val();
+                var generate_company_name = $("#company_name").val();
 
                 $.ajax({
-                    url: "/payment/invoice/generate/" + generate_issue + "/" + generate_year,
+                    url: "/payment/invoice/generate/" + generate_issue + "/" + generate_year + "/" + generate_company_name,
                     dataType: "text",
                     beforeSend: function () {
 
@@ -400,5 +403,18 @@
             }
 
         });
+    </script>
+    <!-- Chosen -->
+    <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
+    <script>
+        var config = {
+            '.chosen-select'           : {},
+            '.chosen-select-deselect'  : {allow_single_deselect:true},
+            '.chosen-select-no-single' : {disable_search_threshold:10},
+            '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'}
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
     </script>
 @endsection

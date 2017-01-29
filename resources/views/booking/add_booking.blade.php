@@ -66,7 +66,6 @@
                                 @for($i = 0; $i < COUNT($clients); $i++)
                                     <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
                                 @endfor
-                                <option value="99">aSelect</option>
                             </select>
                         </div>
 
@@ -186,7 +185,7 @@
                                 <option value = "0">--select--</option>
                                 <option value = "1">Print</option>
                                 <option value = "2">Digital</option>
-                                <option value = "3">Bulletin</option>
+                                {{--<option value = "3">Bulletin</option>--}}
                             </select>
                             <img id ="loading_gif1" src="{{ asset("/img/facebook.gif") }}" style="margin: 5px 0 0 5px; display: none;" />
                         </div>

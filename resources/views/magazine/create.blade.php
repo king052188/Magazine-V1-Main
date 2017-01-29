@@ -76,7 +76,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-lg-4" id = "hidden">
-                                    <label>Numbers of Issue</label>
+                                    <label>Number of Issues</label>
                                     <input type='number' placeholder='Enter Issue Number' min="1" max="125" class='form-control' name='number_issue' id = "number_issue" value = '1'>
                                 </div>
                                 <div id = "hidden_submit">

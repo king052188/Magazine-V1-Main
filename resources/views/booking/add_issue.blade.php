@@ -418,7 +418,7 @@ $(document).ready(function(){
                         $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
 
                         $("#artwork_label").empty().append("Artwork");
-                        $('#artwork').empty().append("<select class='form-control' name = 'quarter_issue' id = 'artwork_select'>");
+                        $('#artwork').empty().append("<select class='form-control' name = 'artwork_select' id = 'artwork_select'>");
                         $('#artwork_select').append("<option value = '' disabled selected>select</option>");
                         $('#artwork_select').append("<option value = '1'>Supplied</option>");
                         $('#artwork_select').append("<option value = '2'>Build</option>");
@@ -427,7 +427,7 @@ $(document).ready(function(){
                         $('#artwork').append('</select>');
 
                         $("#directions_label").empty().append("Directions");
-                        $("#directions").empty().append("<textarea class='form-control' rows='5' id='comment'></textarea>");
+                        $("#directions").empty().append("<textarea class='form-control' rows='5' name = 'comment' id='comment'></textarea>");
                         $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary pull-right" value = "Save">');
                     });
                 });
