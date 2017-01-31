@@ -5,7 +5,7 @@
 @endsection
 
 @section('styles')
-<link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+{{--<link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">--}}
 @endsection
 
 @section('magazine_content')
@@ -52,14 +52,14 @@
                     {{ Session::get('success') }}
                 </div>
                 @endif
-
                 <div class="table-responsive">
-                    <table id="tbl_booking_lists" class="table table-striped table-bordered table-hover dataTables-example" >
+                    {{--<table id="tbl_booking_lists" class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" >--}}
+                    <table id="tbl_booking_lists" class="footable table" data-sorting="true" data-page-size="10">
                         <thead>
                             <tr>
                                 <th style='text-align: center; width: 30px;'>#</th>
                                 <th style='text-align: center;'>Publication</th>
-                                <th style='text-align: center;'>Issue</th>
+                                {{--<th style='text-align: center;'>Issue</th>--}}
                                 <th style='text-align: center; width: 150px;'>Sales</th>
                                 <th style='text-align: center; width: 150px;'>Client</th>
                                 <th style='text-align: center; width: 50px;'>Line Items</th>
@@ -79,7 +79,7 @@
                                     <tr>
                                         <td style='text-align: center;'>{{ $n++ }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->mag_name }}</td>
-                                        <td style='text-align: left;'></td>
+                                        {{--<td style='text-align: left;'></td>--}}
                                         <td style='text-align: left;'>{{ $booking[$i]->sales_rep_name }}</td>
                                         <td style='text-align: left;'>{{ $booking[$i]->client_name }}</td>
                                         <td style='text-align: center;'>{{ $booking[$i]->line_item  }}</td>
@@ -178,8 +178,14 @@
                                         </td>
                                     </tr>
                                     @endfor
-
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="11">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
                     </table>
                     <div id="btn_lists" style="border: 1px solid; height: 25px; margin-top: -10px; display: none;">
                         <span style="text-align: right; position: absolute; right: 220px; color: #983014; margin-top: 6px;">Click SAVE to continue Or Click CANCEL to discard.</span>
@@ -197,18 +203,9 @@
 
 @section('scripts')
 
-<script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 <script>
 
-    $(document).ready(function(){
-        $('.dataTables-example').DataTable({
-            dom: '<"html5buttons"B>lTfgitp',
-            buttons: []
-        });
-    });
-
-    function open_preview(trans_number)
-    {
+    function open_preview(trans_number) {
 //        var url = "http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview";
         var url = "http://"+ report_url_api +"/kpa/work/generate/insertion-order/" + trans_number;
 

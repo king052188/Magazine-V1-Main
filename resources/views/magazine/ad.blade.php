@@ -27,7 +27,8 @@
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div id="tab_1" class="col-lg-4">
-                <div class="ibox float-e-margins">
+                <form role="form" action="{{ URL('/magazine/add-color-size-discount') . '/' . $mag_uid }}" method="POST">
+                    <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>Create Ad Color & Size<small> *all fields are required</small></h5>
                         <div class="ibox-tools">
@@ -39,94 +40,164 @@
                     <div class="ibox-content">
                         <div class="row">
                             <div class="col-sm-12">
-                                <form role="form" action="{{ URL('/magazine/add-color-size-discount') . '/' . $mag_uid }}" method="POST">
-                                    <div class="form-group">
-                                        <label for="ex2">Ad Color</label>
-                                        <select class="form-control" name = "ad_color" id = "ad_color">
-                                            <option value = "" selected>select</option>
-                                            @for($i = 0; $i < COUNT($ad_c); $i++)
-                                                <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->name }}</option>
-                                            @endfor
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="ex2">Ad Size</label>
-                                        <select class="form-control" name = "ad_size" id = "ad_size">
-                                            <option value = "" selected>select</option>
-                                            @for($i = 0; $i < COUNT($ad_s); $i++)
-                                                <option value = "{{ $ad_s[$i]->Id }}">{{ $ad_s[$i]->package_name }}</option>
-                                            @endfor
-                                        </select>
-                                    </div>
+                                <div class="form-group">
+                                    <label for="ex2">Ad Color</label>
+                                    <select class="form-control" name = "ad_color" id = "ad_color">
+                                        <option value = "" selected>select</option>
+                                        @for($i = 0; $i < COUNT($ad_c); $i++)
+                                            <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->name }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ex2">Ad Size</label>
+                                    <select class="form-control" name = "ad_size" id = "ad_size">
+                                        <option value = "" selected>select</option>
+                                        @for($i = 0; $i < COUNT($ad_s); $i++)
+                                            <option value = "{{ $ad_s[$i]->Id }}">{{ $ad_s[$i]->package_name }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
 
-                                    <div class="form-group">
-                                        <label>Ad Amount</label>
-                                        <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount">
-                                    </div>
+                                <div class="form-group">
+                                    <label>Ad Amount</label>
+                                    <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
-                        <h5> Amount Discount by 1 or more Line Items <small> *all fields are required</small></h5>
-                        <div class="ibox-tools">
-                            <a class="collapse-link">
-                                <i class="fa fa-chevron-up"></i>
-                            </a>
+                    <div class="ibox float-e-margins">
+                        <div class="tabs-container">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a data-toggle="tab" href="#discount_qty"> Discount 1 or more Quantity</a></li>
+                                <li class=""><a data-toggle="tab" href="#discount_issue"> Discount 1 or more Issue</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div id="discount_qty" class="tab-pane active">
+                                    <div class="ibox-title">
+                                        <h5> Amount Discount by 1 or more quantity <small> </small></h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <div class="col-sm-6">
+                                                    <label>2x Percent Discount</label>
+                                                    <input id="2x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>2x Amount</label>
+                                                    <input id="2x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="col-sm-6">
+                                                    <label>3x Percent Discount</label>
+                                                    <input id="3x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>3x Amount</label>
+                                                    <input id="3x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="col-sm-6">
+                                                    <label>4x Percent Discount</label>
+                                                    <input id="4x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>4x Amount</label>
+                                                    <input id="4x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="col-sm-6">
+                                                    <label>5x Percent Discount</label>
+                                                    <input id="5x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>5x Amount</label>
+                                                    <input id="5x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 m-t-sm">
+                                                <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                                                <button class="btn btn-sm btn-primary pull-right" id = "btn_submit">Save</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="discount_issue" class="tab-pane">
+                                    <div class="ibox-title">
+                                        <h5> Amount Discount by 1 or more issue <small> </small></h5>
+                                        <div class="ibox-tools">
+                                            <a class="collapse-link">
+                                                <i class="fa fa-chevron-up"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="row">
+                                            <div class="form-group ">
+                                                <div class="col-sm-6">
+                                                    <label>2x Percent Discount</label>
+                                                    <input id="2x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>2x Amount</label>
+                                                    <input id="2x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="col-sm-6">
+                                                    <label>3x Percent Discount</label>
+                                                    <input id="3x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>3x Amount</label>
+                                                    <input id="3x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="col-sm-6">
+                                                    <label>4x Percent Discount</label>
+                                                    <input id="4x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>4x Amount</label>
+                                                    <input id="4x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group ">
+                                                <div class="col-sm-6">
+                                                    <label>5x Percent Discount</label>
+                                                    <input id="5x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>5x Amount</label>
+                                                    <input id="5x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12 m-t-sm">
+                                                <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                                                <button class="btn btn-sm btn-primary pull-right" id = "btn_submit">Save Issue</button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                                <div class="form-group ">
-                                    <div class="col-sm-6">
-                                        <label>2x Percent Discount</label>
-                                        <input id="2x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>2x Amount</label>
-                                        <input id="2x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="col-sm-6">
-                                        <label>3x Percent Discount</label>
-                                        <input id="3x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>3x Amount</label>
-                                        <input id="3x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="col-sm-6">
-                                        <label>4x Percent Discount</label>
-                                        <input id="4x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>4x Amount</label>
-                                        <input id="4x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="col-sm-6">
-                                        <label>5x Percent Discount</label>
-                                        <input id="5x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>5x Amount</label>
-                                        <input id="5x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-sm-12 m-t-sm">
-                                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                    <button class="btn btn-sm btn-primary pull-right" id = "btn_submit">Save</button>
-                                </div>
-                        
-                        </div>
-                    </div>
-                </div>
-               </form>
+
+                </form>
             </div>
 
             <div class="col-lg-8">
