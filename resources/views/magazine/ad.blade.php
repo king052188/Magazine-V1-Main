@@ -136,7 +136,7 @@
 
                                 <div id="discount_issue" class="tab-pane active">
                                     <div class="ibox-title">
-                                        <h5> Amount Discount by 1 or more issue <small> </small></h5>
+                                        <h5> Amount Discount by 1 or more issues <small> </small></h5>
                                         <div class="ibox-tools">
                                             <a class="collapse-link">
                                                 <i class="fa fa-chevron-up"></i>
