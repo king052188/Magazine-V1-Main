@@ -70,11 +70,11 @@
                     <div class="ibox float-e-margins">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#discount_qty"> Discount 1 or more Quantity</a></li>
-                                <li class=""><a data-toggle="tab" href="#discount_issue"> Discount 1 or more Issue</a></li>
+                                <li class="active"><a data-toggle="tab" href="#discount_issue"> Discount Issue</a></li>
+                                <li class=""><a data-toggle="tab" href="#discount_qty"> Discount Quantity</a></li>
                             </ul>
                             <div class="tab-content">
-                                <div id="discount_qty" class="tab-pane active">
+                                <div id="discount_qty" class="tab-pane">
                                     <div class="ibox-title">
                                         <h5> Amount Discount by 1 or more quantity <small> </small></h5>
                                         <div class="ibox-tools">
@@ -134,7 +134,7 @@
                                     </div>
                                 </div>
 
-                                <div id="discount_issue" class="tab-pane">
+                                <div id="discount_issue" class="tab-pane active">
                                     <div class="ibox-title">
                                         <h5> Amount Discount by 1 or more issue <small> </small></h5>
                                         <div class="ibox-tools">
@@ -148,46 +148,26 @@
                                             <div class="form-group ">
                                                 <div class="col-sm-6">
                                                     <label>2x Percent Discount</label>
-                                                    <input id="2x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                    <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_2">
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <label>2x Amount</label>
-                                                    <input id="2x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="form-group ">
                                                 <div class="col-sm-6">
                                                     <label>3x Percent Discount</label>
-                                                    <input id="3x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label>3x Amount</label>
-                                                    <input id="3x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                    <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_3">
                                                 </div>
                                             </div>
                                             <div class="form-group ">
                                                 <div class="col-sm-6">
                                                     <label>4x Percent Discount</label>
-                                                    <input id="4x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
+                                                    <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_4">
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <label>4x Amount</label>
-                                                    <input id="4x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="form-group ">
                                                 <div class="col-sm-6">
                                                     <label>5x Percent Discount</label>
-                                                    <input id="5x_per" type="text" placeholder="Enter Discount" class="form-control" name="discount[]">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label>5x Amount</label>
-                                                    <input id="5x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
+                                                    <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_5">
                                                 </div>
                                             </div>
+
                                             <div class="col-sm-12 m-t-sm">
-                                                <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                                <button class="btn btn-sm btn-primary pull-right" id = "btn_submit">Save Issue</button>
+                                                <a class="btn btn-sm btn-primary pull-right" id = "btn_discount_issue">Save Issue</a>
                                             </div>
 
                                         </div>
@@ -425,7 +405,79 @@
                 }
             })
         });
+
+        $("#btn_discount_issue").click(function(){
+
+            var d_2 = $("#discount_2").val();
+            var d_3 = $("#discount_3").val();
+            var d_4 = $("#discount_4").val();
+            var d_5 = $("#discount_5").val();
+
+            if(d_2 == ""){ d_2 = 0;}
+            if(d_3 == ""){ d_3 = 0;}
+            if(d_4 == ""){ d_4 = 0;}
+            if(d_5 == ""){ d_5 = 0;}
+
+            console.log({{ $mag_uid }});
+            console.log(d_2);
+            console.log(d_3);
+            console.log(d_4);
+            console.log(d_5);
+
+            $.ajax({
+                url: "/magazine/add-issue-discount/" + {{ $mag_uid }} + "/" + d_2 + "/" + d_3 + "/" + d_4 + "/" + d_5,
+                dataType: "text",
+                beforeSend: function(){},
+                success: function(data){
+                    var json = $.parseJSON(data);
+                    if(json.status == 200)
+                    {
+                        swal(
+                            '',
+                            'Add Successful',
+                            'success'
+                        ).then(
+                                function () {
+                                    location.reload();
+                                }
+                        )
+                    }
+                }
+            });
+        });
     });
+
+    populate_discount_issue({{ $mag_uid }});
+    function populate_discount_issue(mag_uid){
+        var m_uid = mag_uid;
+        $.ajax({
+            url: "/magazine/get-discount-issue/" + m_uid,
+            dataType: "text",
+            beforeSend: function(){},
+            success: function(data){
+                var json = $.parseJSON(data);
+
+                if(json.status == 200)
+                {
+                    $(json.result).each(function(i, tran){
+                        console.log(tran.type);
+                        if(tran.type == 2){
+                            $('#discount_2').val(tran.percent);
+                        }
+                        if(tran.type == 3){
+                            $('#discount_3').val(tran.percent);
+                        }
+                        if(tran.type == 4){
+                            $('#discount_4').val(tran.percent);
+                        }
+                        if(tran.type == 5){
+                            $('#discount_5').val(tran.percent);
+                        }
+                    });
+                }
+            }
+        });
+    }
 
     function delete_ad_confirm(ad_uid){
         var url = "/magazine/ad/delete/" + ad_uid;

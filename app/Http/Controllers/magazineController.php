@@ -8,6 +8,7 @@ use App\Magazine;
 use App\MagazineCompany;
 use App\MagazinePrice;
 use App\MagazineDiscount;
+use App\MagazineIssueDiscount;
 use DB;
 
 class magazineController extends Controller
@@ -175,7 +176,33 @@ class magazineController extends Controller
         $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
         $ad_s = DB::table('price_package_table')->where('status','=',2)->get();
 
-        return view('magazine/ad', compact('mag_uid','mag', 'ad_c', 'ad_s'));
+        return view('magazine/ad', compact('mag_uid','mag', 'ad_c', 'ad_s', 'discount_issue'));
+    }
+
+    public function get_discount_issue($mag_uid)
+    {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        $d = DB::table('magazine_issue_discount_table')->where('magazine_id','=',$mag_uid)->get();
+        if(COUNT($d) > 0)
+        {
+            for($i = 0; $i < COUNT($d); $i++)
+            {
+                $r[] = array(
+                    "status" => 200,
+                    "type" => $d[$i]->type,
+                    "percent" => $d[$i]->percent * 1
+                );
+            }
+
+            return array(
+                'status' => 200,
+                'result' => $r
+            );
+        }
+        return array("status" => 404, "description" => "No Result Found.");
     }
 
     public function add_color_size_discount(Request $request, $mag_uid)
@@ -207,6 +234,69 @@ class magazineController extends Controller
         }
 
         return redirect('/magazine/add-ad-color-and-size/'. $mag_uid)->with('success', 'Successfully Saved.');
+    }
+
+    public function add_issue_discount($mag_id, $discount_2, $discount_3, $discount_4, $discount_5)
+    {
+        if($discount_2 != 0){
+            $chk_2 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 2");
+            if(COUNT($chk_2) > 0){
+                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 2)->update(['percent' => $discount_2]);
+            }else{
+                $d_2 = new MagazineIssueDiscount();
+                $d_2->magazine_id = $mag_id;
+                $d_2->percent = $discount_2;
+                $d_2->type = 2;
+                $d_2->status = 2;
+                $d_2->save();
+            }
+        }
+
+        if($discount_3 != 0){
+            $chk_3 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 3");
+            if(COUNT($chk_3) > 0){
+                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 3)->update(['percent' => $discount_2]);
+            }else{
+                $d_3 = new MagazineIssueDiscount();
+                $d_3->magazine_id = $mag_id;
+                $d_3->percent = $discount_3;
+                $d_3->type = 3;
+                $d_3->status = 2;
+                $d_3->save();
+            }
+        }
+
+        if($discount_4 != 0){
+            $chk_4 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 4");
+            if(COUNT($chk_4) > 0){
+                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 4)->update(['percent' => $discount_4]);
+            }else{
+                $d_4 = new MagazineIssueDiscount();
+                $d_4->magazine_id = $mag_id;
+                $d_4->percent = $discount_4;
+                $d_4->type = 4;
+                $d_4->status = 2;
+                $d_4->save();
+            }
+        }
+
+        if($discount_5 != 0){
+            $chk_5 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 5");
+            if(COUNT($chk_5) > 0){
+                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 5)->update(['percent' => $discount_5]);
+            }else{
+                $d_5 = new MagazineIssueDiscount();
+                $d_5->magazine_id = $mag_id;
+                $d_5->percent = $discount_5;
+                $d_5->type = 5;
+                $d_5->status = 2;
+                $d_5->save();
+            }
+        }
+
+        return array(
+            "status" => 200
+        );
     }
 
     public function save_company(Request $request)
