@@ -14,16 +14,20 @@ use App\Notification;
 
 class bookingController extends Controller
 {
-    public function booking_list($filter = null)
+    public function booking_list($filter_publication = null, $filter_sales_rep = null, $filter_issue = null, $filter_client = null, $filter_status = null)
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
         
-        $filter_tran = "WHERE booked.status IN (1, 2, 3, 5)";
+        $filter_status_tran = "WHERE booked.status IN (1, 2, 3, 5)";
 
-        if($filter != null){
-            $filter_tran = "WHERE booked.status = {$filter}";
+        if($filter_status != null){
+            $filter_status_tran = "WHERE booked.status = {$filter_status}";
+        }
+
+        if($filter_sales_rep != null){
+            $filter_status_tran = "WHERE booked.sales_rep_code = {$filter_sales_rep}";
         }
         
         $booking = DB::SELECT("
@@ -65,13 +69,15 @@ class bookingController extends Controller
             
             ON booked.Id = trans.transaction_id
             
-            {$filter_tran}
+            {$filter_status_tran}
             
             ");
 
-        $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();
+        $publication = DB::table('magazine_table')->where('status', '=', 2)->get();
+        $clients = DB::table('client_table')->where('status', '=', 2)->get();
+        $sales_rep = DB::table('user_account')->where('status', '=', 2)->get();
 
-        return view('booking.booking_list', compact('booking', 'magazine', 'filter'))->with('success', 'Booking details successful added!');
+        return view('booking.booking_list', compact('booking', 'publication', 'clients', 'sales_rep', 'filter_publication', 'filter_sales_rep', 'filter_issue', 'filter_client', 'filter_status'))->with('success', 'Booking details successful added!');
     }
     
     public function add_booking()

@@ -87,7 +87,7 @@ Route::get('/transaction/all', 'transactionController@index');
 
 
 // Booking Routes
-Route::get('/booking/booking-list/{filter?}', 'bookingController@booking_list');
+Route::get('/booking/booking-list/{filter_publication?}/{filter_sales_rep?}/{filter_issue?}/{filter_client?}/{filter_status?}', 'bookingController@booking_list');
 Route::get('/booking/booking-list_api/{filter?}', 'bookingController@booking_list_api');
 
 Route::get('/booking/add-booking', 'bookingController@add_booking');
