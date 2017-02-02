@@ -102,17 +102,17 @@
                     <table id="tbl_booking_lists" class="footable table" data-sorting="true" data-page-size="10">
                         <thead>
                             <tr>
-                                <th style='text-align: center; width: 30px;'>#</th>
+                                <th style='text-align: center; width: 50px;'>#</th>
                                 <th style='text-align: center;'>Publication</th>
                                 {{--<th style='text-align: center;'>Issue</th>--}}
                                 <th style='text-align: center; width: 150px;'>Sales</th>
                                 <th style='text-align: center; width: 150px;'>Client</th>
-                                <th style='text-align: center; width: 50px;'>Line Items</th>
-                                <th style='text-align: center; width: 50px;'>Qty</th>
-                                <th style='text-align: right; width: 80px;'>Amount</th>
-                                <th style='text-align: center; width: 120px;'>Date Created</th>
+                                <th style='text-align: center; width: 100px;'>Line Items</th>
+                                <th style='text-align: center; width: 100px;'>Qty</th>
+                                <th style='text-align: right; width: 100px;'>Amount</th>
+                                <th style='text-align: center; width: 130px;'>Date Created</th>
                                 <th style='text-align: center; width: 80px;'>Status/Action</th>
-                                <th style='text-align: center; width: 50px;'>-</th>
+                                <th style='text-align: center; width: 50px;'></th>
                             </tr>
                         </thead>
                             <tbody>
