@@ -183,8 +183,12 @@
                                                         <td><span id="issues_sub_total"></span></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><span id = "issues_discount_label">Discount:</span></td>
+                                                        <td><span id="issues_discount_label">Issue Discount:</span></td>
                                                         <td><span id="issues_discount"></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span id = "discretionary_discount_label">Discretionary Discount:</span></td>
+                                                        <td><span id="discretionary_discount"></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td>Total Amount:</td>
@@ -218,7 +222,11 @@
                                             <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_sub_total"></span> </td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_discount_label"></span> Discount: </td>
+                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"><span id="issues_discount_label2">Issue Discount:</span></td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"><span id="issues_discount2"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_discount_label"></span> Discretionary Discount: </td>
                                             <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_discount"></span> </td>
                                         </tr>
                                         <tr>
@@ -365,8 +373,7 @@ var is_member = {{ $is_member[0]->is_member }};
 $(document).ready(function(){
     var client_id = {{ $client_id }};
     var trans_status = {{ $booking_trans_num[0]->status }};
-    if(trans_status != 1)
-    {
+    if(trans_status != 1) {
         $("#once_approved_aa").hide();
         $("#once_approved_bb").removeClass('col-lg-8').addClass('col-lg-12');
         $("#once_approved_cc").hide();
@@ -468,7 +475,7 @@ $(document).ready(function(){
 
 function open_preview(trans_number) {
     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
-            "mywindow","location=1,status=1,scrollbars=1,width=855,height=760");
+            "mywindow","location=1,status=1,scrollbars=1,width=800,height=760");
 }
 
 function ConfirmDelete() {
@@ -501,7 +508,7 @@ function populate_issues_transaction(uid) {
                 if(json == null)
                     return false;
 
-                console.log(trans_id);
+                console.log(json);
                 if(json.Status == 404) {
                     $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8">' + json.Message + '</td> </tr>');
                     return;
@@ -555,6 +562,30 @@ function populate_issues_transaction(uid) {
                     item_count++;
                     total_with_discount += parseFloat(new_price);
                 });
+
+                $(json.Issue_Discounts).each(function(i, issue){
+
+                    if(issue.Total_Issue > 1) {
+                        var issues_discount = parseFloat(issue.Total_Issue_Discount);
+                        issues_discount = total_with_discount * issues_discount;
+                        total_with_discount = total_with_discount - issues_discount;
+                        $("#issues_discount").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
+                        $("#issues_discount2").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
+
+                        $("#issues_discount_label").text(numeral(issues_discount).format('0.00') + "% Issue Discount:");
+                        $("#issues_discount_label2").text(numeral(issues_discount).format('0.00') + "% Issue Discount:");
+                    }
+                    else {
+                        $("#issues_discount").text( "(" + numeral(0).format('0,0.00') + ")");
+                        $("#issues_discount2").text( "(" + numeral(0).format('0,0.00') + ")");
+                    }
+
+                });
+
+
+                //issues_discount
+                $("#approval_discount_label").text("0%");
+
                 $('table#issue_reports > tbody').empty().prepend(html_thmb);
                 $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));
                 $.ajax({
@@ -565,18 +596,15 @@ function populate_issues_transaction(uid) {
                         if (json.status == 202) {
 
                             $(json.result).each(function(i, discount) {
-
                                 i_sub_total = discount.amount;
-
                                 console.log(i_sub_total)
-
                                 i_discount = discount.discount_percent / 100;
                                 i_total_less_discount = (i_sub_total * i_discount);
                                 i_total = i_sub_total - i_total_less_discount;
                                 console.log(i_total_less_discount)
 ;
                                 if(Role > 1) {
-                                    $("#issues_discount").text( "(" + numeral(i_total_less_discount).format('0,0.00') + ")");
+                                    $("#discretionary_discount").text( "(" + numeral(i_total_less_discount).format('0.00') + ")");
                                     $("#issues_total_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0.00'));
                                     if(parseInt( discount.status ) == 2) {
                                         $('#status_discretionary_discount').show();
@@ -610,7 +638,7 @@ function populate_issues_transaction(uid) {
                                     $("#approval_date").text(discount.created_at);
                                     $("#approval_remarks").text(discount.remarks);
                                     $("#approval_sub_total").text(numeral(total_with_discount).format('0,0.00'));
-                                    $("#approval_discount").text( "(" + numeral(i_total_less_discount).format('0,0') + ")");
+                                    $("#approval_discount").text( "(" + numeral(i_total_less_discount).format('0,0.00') + ")");
                                     $("#approval_amount").text(numeral(i_total).format('0,0'));
 
                                     if(parseInt( discount.status ) == 2) {
@@ -633,7 +661,7 @@ function populate_issues_transaction(uid) {
                             $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
                         }
                         else {
-                            $('#issues_discount').text("(" + numeral("0").format('0,0.00') + ")");
+                            $('#discretionary_discount').text("(" + numeral("0").format('0,0.00') + ")");
                             $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
                             if({{ $booking_trans_num[0]->status }} != 1) {
                                 $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
