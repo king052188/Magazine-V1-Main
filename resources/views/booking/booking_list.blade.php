@@ -223,6 +223,10 @@
                                         </td>
                                     </tr>
                                     @endfor
+
+                                    @if(COUNT($booking) == 0)
+                                        <tr><td colspan = "10" style = "text-align: center;"><h3>No Records Found</h3></td></tr>
+                                    @endif
                             </tbody>
                             <tfoot>
                                 <tr>
