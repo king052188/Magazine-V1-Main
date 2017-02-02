@@ -33,39 +33,39 @@
                 <h5>Filter</h5>
                 <div class = "pull-left" style = "margin-left: 10px;">
                     <select class="form-control filter_click" id = "filter_publication" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">
-                        <option value = "">Publication</option>
+                        <option value = "0" {{ $filter_publication == "0" ? "selected" : "" }}>Publication</option>
                         @for($i = 0; $i < COUNT($publication); $i++)
-                        <option value = "{{ $publication[$i]->Id }}">{{ $publication[$i]->magazine_name }}</option>
+                        <option value = "{{ $publication[$i]->Id }}" {{ $filter_publication == $publication[$i]->Id ? "selected" : "" }}>{{ $publication[$i]->magazine_name }}</option>
                         @endfor
                     </select>
                 </div>
                 <div class = "pull-left" style = "margin-left: 10px;">
                     <select class="form-control filter_click" id = "filter_sales_rep" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">
-                        <option value = "">Sales Rep</option>
+                        <option value = "0" {{ $filter_sales_rep == "0" ? "selected" : "" }}>Sales Rep</option>
                         @for($i = 0; $i < COUNT($sales_rep); $i++)
-                            <option value = "{{ $sales_rep[$i]->Id }}">{{ $sales_rep[$i]->first_name . " " . $sales_rep[$i]->last_name }}</option>
+                            <option value = "{{ $sales_rep[$i]->Id }}" {{ $filter_sales_rep == $sales_rep[$i]->Id ? "selected" : "" }}>{{ $sales_rep[$i]->first_name . " " . $sales_rep[$i]->last_name }}</option>
                         @endfor
                     </select>
                 </div>
-                <div class = "pull-left" style = "margin-left: 10px;">
-                    <select class="form-control filter_click" id = "filter_issue" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">
-                        <option value = "">Issue</option>
-                        @for($i = 1; $i <= 12; $i++)
-                            <option value = "{{ $i }}">{{ "IS" . $i }}</option>
-                        @endfor
-                    </select>
-                </div>
+                {{--<div class = "pull-left" style = "margin-left: 10px;">--}}
+                    {{--<select class="form-control filter_click" id = "filter_issue" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">--}}
+                        {{--<option value = "">Issue</option>--}}
+                        {{--@for($i = 1; $i <= 12; $i++)--}}
+                            {{--<option value = "{{ $i }}">{{ "IS" . $i }}</option>--}}
+                        {{--@endfor--}}
+                    {{--</select>--}}
+                {{--</div>--}}
                 <div class = "pull-left" style = "margin-left: 10px;">
                     <select class="form-control filter_click" id = "filter_client" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">
-                        <option value = "">Client</option>
+                        <option value = "0" {{ $filter_client == "0" ? "selected" : "" }}>Client</option>
                         @for($i = 0; $i < COUNT($clients); $i++)
-                            <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
+                            <option value = "{{ $clients[$i]->Id }}" {{ $filter_client == $clients[$i]->Id ? "selected" : "" }}>{{ $clients[$i]->company_name }}</option>
                         @endfor
                     </select>
                 </div>
                 <div class = "pull-left" style = "margin-left: 10px;">
                     <select class="form-control filter_click" id = "filter_status" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">
-                        <option value = "" {{ $filter_status == "" ? "selected" : "" }}>Status</option>
+                        <option value = "0" {{ $filter_status == 0 ? "selected" : "" }}>Status</option>
                         <option value = "1" {{ $filter_status == 1 ? "selected" : "" }}>Pending</option>
                         <option value = "2" {{ $filter_status == 2 ? "selected" : "" }}>For Approval</option>
                         <option value = "3" {{ $filter_status == 3 ? "selected" : "" }}>Approved</option>
@@ -259,15 +259,22 @@
     }
 
     $(document).ready( function() {
-        $(".filter_click").on('change', function(){
+
+        $("#btn_filter_display").on('click', function(){
             var filter_publication = $("#filter_publication").val();
             var filter_sales_rep = $("#filter_sales_rep").val();
-            var filter_issue = $("#filter_issue").val();
+//            var filter_issue = $("#filter_issue").val();
             var filter_client = $("#filter_client").val();
             var filter_status = $("#filter_status").val();
 
-            window.location.href = "/booking/booking-list/" + filter_publication + "/" + filter_sales_rep + "/" + filter_issue + "/" + filter_client + "/" + filter_status;
+//            console.log("filter_publication " + filter_publication);
+//            console.log("filter_sales_rep " + filter_sales_rep);
+//            console.log("filter_client " + filter_client);
+//            console.log("filter_status " + filter_status);
+
+            window.location.href = "/booking/booking-list-filter/" + filter_publication + "/" + filter_sales_rep + "/" + filter_client + "/" + filter_status;
         });
+
         $("#tbl_booking_lists > tbody  > tr").change(function(){
 //        $("#tbl_booking_lists > tbody  > tr").on('change', '#ddlStatus_190', function(){
             var selected =  $(this).find('select:first');
