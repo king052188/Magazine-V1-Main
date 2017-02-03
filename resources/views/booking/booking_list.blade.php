@@ -29,11 +29,11 @@
     <div class="row">
         <div class="col-lg-12">
         <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Filter</h5>
+            <div class="ibox-title" style="height: 65px; padding: 20px;">
+                <h5>Filter By:</h5>
                 <div class = "pull-left" style = "margin-left: 10px;">
                     <select class="form-control filter_click" id = "filter_publication" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">
-                        <option value = "0" {{ $filter_publication == "0" ? "selected" : "" }}>Publication</option>
+                        <option value = "0" {{ $filter_publication == "0" ? "selected" : "" }}>-- and/or Publication --</option>
                         @for($i = 0; $i < COUNT($publication); $i++)
                         <option value = "{{ $publication[$i]->Id }}" {{ $filter_publication == $publication[$i]->Id ? "selected" : "" }}>{{ $publication[$i]->magazine_name }}</option>
                         @endfor
@@ -41,23 +41,15 @@
                 </div>
                 <div class = "pull-left" style = "margin-left: 10px;">
                     <select class="form-control filter_click" id = "filter_sales_rep" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">
-                        <option value = "0" {{ $filter_sales_rep == "0" ? "selected" : "" }}>Sales Rep</option>
+                        <option value = "0" {{ $filter_sales_rep == "0" ? "selected" : "" }}>-- and/or Sales Rep --</option>
                         @for($i = 0; $i < COUNT($sales_rep); $i++)
                             <option value = "{{ $sales_rep[$i]->Id }}" {{ $filter_sales_rep == $sales_rep[$i]->Id ? "selected" : "" }}>{{ $sales_rep[$i]->first_name . " " . $sales_rep[$i]->last_name }}</option>
                         @endfor
                     </select>
                 </div>
-                {{--<div class = "pull-left" style = "margin-left: 10px;">--}}
-                    {{--<select class="form-control filter_click" id = "filter_issue" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">--}}
-                        {{--<option value = "">Issue</option>--}}
-                        {{--@for($i = 1; $i <= 12; $i++)--}}
-                            {{--<option value = "{{ $i }}">{{ "IS" . $i }}</option>--}}
-                        {{--@endfor--}}
-                    {{--</select>--}}
-                {{--</div>--}}
                 <div class = "pull-left" style = "margin-left: 10px;">
                     <select class="form-control filter_click" id = "filter_client" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">
-                        <option value = "0" {{ $filter_client == "0" ? "selected" : "" }}>Client</option>
+                        <option value = "0" {{ $filter_client == "0" ? "selected" : "" }}>-- and/or Client --</option>
                         @for($i = 0; $i < COUNT($clients); $i++)
                             <option value = "{{ $clients[$i]->Id }}" {{ $filter_client == $clients[$i]->Id ? "selected" : "" }}>{{ $clients[$i]->company_name }}</option>
                         @endfor
@@ -65,7 +57,7 @@
                 </div>
                 <div class = "pull-left" style = "margin-left: 10px;">
                     <select class="form-control filter_click" id = "filter_status" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">
-                        <option value = "0" {{ $filter_status == 0 ? "selected" : "" }}>Status</option>
+                        <option value = "0" {{ $filter_status == 0 ? "selected" : "" }}>-- and/or Status --</option>
                         <option value = "1" {{ $filter_status == 1 ? "selected" : "" }}>Pending</option>
                         <option value = "2" {{ $filter_status == 2 ? "selected" : "" }}>For Approval</option>
                         <option value = "3" {{ $filter_status == 3 ? "selected" : "" }}>Approved</option>
@@ -73,20 +65,8 @@
                     </select>
                 </div>
                 <div class = "pull-left" style = "margin-left: 10px;">
-                    <button class="btn btn-info" id = "btn_filter_display" style = "margin-top: -7px;">Display</button>
+                    <button class="btn btn-info" id = "btn_filter_display" style = "margin-top: -7px;"><i class="fa fa-search"></i> Search</button>
                 </div>
-
-                {{--<div class = "pull-right">--}}
-                    {{--<select class="form-control" id = "filter" style = "margin-top: -7px;">--}}
-                        {{--<option disabled>--select--</option>--}}
-                        {{--<option value = "" {{ $filter == "" ? "selected" : "" }}>All</option>--}}
-                        {{--<option value = "1" {{ $filter == 1 ? "selected" : "" }}>Pending</option>--}}
-                        {{--<option value = "2" {{ $filter == 2 ? "selected" : "" }}>For Approval</option>--}}
-                        {{--<option value = "3" {{ $filter == 3 ? "selected" : "" }}>Approved</option>--}}
-                        {{--<option value = "5" {{ $filter == 5 ? "selected" : "" }}>Void</option>--}}
-                    {{--</select>--}}
-                {{--</div>--}}
-                {{--<div style = "float: right; margin-right: 5px; font-size: 15px;"><label>Sort by:</label></div>--}}
             </div>
 
             <div class="ibox-content">
