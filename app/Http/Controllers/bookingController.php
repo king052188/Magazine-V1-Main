@@ -729,7 +729,7 @@ class bookingController extends Controller
                     WHERE Id = sales_rep_id
                 ) AS sales_rep_name
             FROM discount_transaction_table 
-            WHERE trans_id = '{$booking_trans_num}' AND type = 1 AND status = 2
+            WHERE trans_id = '{$booking_trans_num}' AND type = 1
         ");
 
         if(COUNT($result) > 0){

@@ -92,16 +92,18 @@ class paymentController extends Controller
         {
             $trans = DB::table('booking_sales_table')->where('trans_num','=',$result[0]->booking_trans)->get();
             $is_member = DB::table('client_table')->where('Id','=',$trans[0]->client_id)->get();
-            $discount = DB::table('discount_transaction_table')->where('trans_id','=',$result[0]->booking_trans)->get();
+            $issue_discount = DB::select("SELECT * FROM discount_transaction_table WHERE trans_id = '{$result[0]->booking_trans}' AND type = 2 AND status = 2;");
+            $discretionary_discount = DB::select("SELECT * FROM discount_transaction_table WHERE trans_id = '{$result[0]->booking_trans}' AND type = 1 AND status = 2;");
             $province_tax = DB::table('taxes_table')->where('province_code','=',$is_member[0]->state)->get();
-
+            
             return array(
                 "result" => 200,
                 "description" => "Invoice Number is available",
                 "is_member" => COUNT($is_member) > 0 ? $is_member[0]->is_member : 0,
                 "province_state" => COUNT($is_member) > 0 ? $is_member[0]->state : 0,
                 "province_tax" => COUNT($province_tax) > 0 ? $province_tax[0]->tax_amount + 0 : 0,
-                "discount_percent" => $discount[0]->discount_percent + 0
+                "issue_discount" => COUNT($issue_discount) > 0 ? (float)$issue_discount[0]->discount_percent : 0,
+                "discretionary_discount" => COUNT($discretionary_discount) > 0 ? (float)$discretionary_discount[0]->discount_percent : 0
             );
         }
 

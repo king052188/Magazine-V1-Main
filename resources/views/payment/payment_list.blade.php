@@ -262,9 +262,12 @@
                 },
                 success: function(data) {
                     var json = $.parseJSON(data);
+
+                    console.log(json);
+
                     if(json.result == 200)
                     {
-                        populate_inv_num(inv_num, json.is_member, json.discount_percent, json.province_tax);
+                        populate_inv_num(inv_num, json.is_member, json.issue_discount, json.discretionary_discount, json.province_tax);
 
                     }else{
                         swal(
@@ -279,11 +282,9 @@
             });
         });
 
-        function populate_inv_num(inv_num, is_member, discount_percent, province_tax) {
+        function populate_inv_num(inv_num, is_member, issue_discount, discretionary_discount, province_tax) {
             var html_thmb = "";
             var isFirstLoad = true;
-
-
 
             $.ajax({
                 url: "http://"+ report_url_api +"/kpa/work/invoice-transaction-list/" + inv_num,
@@ -312,29 +313,36 @@
                             html_thmb += "<td style='text-align: center;'>"+ tran.ad_color +"</td>";
 
                             var new_price = tran.sub_total_amount;
+
+                            console.log(new_price);
+
                             if(is_member > 0) {
-                                discount = "15%";
                                 var new_price_aa = new_price - (new_price * 0.15);
-                                new_price =  new_price_aa - (new_price_aa * (discount_percent / 100));
+                                new_price = new_price_aa;
                             }
 
-                            var total_amount = new_price + (new_price * province_tax);
+                            // applied issues discount - IF ANY
+                            var total_amount1 = new_price - (new_price * (issue_discount / 100));
+                            new_price = total_amount1
 
-//                            console.log("direct from tax table : " + province_tax);
-//                            console.log("direct from tax table * 100: " + province_tax * 100);
-//                            console.log("direct from tax table * 100 (with numeral): " + numeral(province_tax * 100).format('0,0'));
+                            // applied discretionary discount - IF ANY
+                            var total_amount2 =  new_price - (new_price * (discretionary_discount / 100));
+                            new_price = total_amount2
 
+                            var total_amount3 = new_price + (new_price * province_tax);
+
+                            var total_amount3_formated = numeral(total_amount3).format('0.00');
 
                             html_thmb += "<td style='text-align: right;'>"+ numeral(new_price).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.line_item_qty +"</td>";
                             html_thmb += "<td style='text-align: left;'>"+ numeral(new_price * province_tax).format('0,0.00') +"</td>";
-                            html_thmb += "<td style='text-align: right;'>"+ numeral(total_amount).format('0,0.00') +"</td>";
+                            html_thmb += "<td style='text-align: right;'>"+ numeral(total_amount3).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: left;'>" +
                                     "<select class='form-control'  id = 'action_payment_"+tran.id +"'>" +
                                     "<option value = '0'>--select--</option>" +
-                                    "<option value = '"+ tran.id + ":" + total_amount + ":" + inv_num + ":1'>Select for payment</option>" +
-                                    "<option value = '"+ tran.id + ":" + inv_num + ":" + total_amount + ":2'>View Transaction</option>" +
-                                    "<option value = '"+ tran.id + ":" + total_amount + ":" + inv_num + ":3'>View Invoice</option>" +
+                                    "<option value = '"+ tran.id + ":" + total_amount3_formated + ":" + inv_num + ":1'>Select for payment</option>" +
+                                    "<option value = '"+ tran.id + ":" + inv_num + ":" + total_amount3_formated + ":2'>View Transaction</option>" +
+                                    "<option value = '"+ tran.id + ":" + total_amount3_formated + ":" + inv_num + ":3'>View Invoice</option>" +
                                     "</select>" +
                                     "</td>";
                             html_thmb += "</tr>";

@@ -613,6 +613,7 @@ function populate_issues_transaction(uid) {
                                 console.log(i_total_less_discount)
 ;
                                 if(Role > 1) {
+
                                     $("#discretionary_discount").text( "(" + numeral(i_total_less_discount).format('0.00') + ")");
                                     $("#issues_total_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0.00'));
                                     if(parseInt( discount.status ) == 2) {
