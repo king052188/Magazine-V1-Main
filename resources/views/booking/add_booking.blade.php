@@ -61,7 +61,7 @@
                         <div class="form-group">
                             <label>Company</label>
 
-                            <select class="form-control chosen-select" style = "background: none;" name = "client_id" id = "clientIdField">
+                            <select class="form-control chosen-select" style = "background: #FFF;" name = "client_id" id = "clientIdField" >
                                 <option value="0">Select</option>
                                 @for($i = 0; $i < COUNT($clients); $i++)
                                     <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>

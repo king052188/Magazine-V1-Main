@@ -8,7 +8,7 @@
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/datepicker/datepicker3.css') }}" rel="stylesheet">
     <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
-   
+
 @endsection
 
 @section('magazine_content')
@@ -40,7 +40,7 @@
                                     {{--<form class="form-inline" role="form">--}}
                                     <div class="">
                                         <div class="form-group imp_display" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Company Name</label><br/>
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Client Name</label><br/>
                                             <select class="form-control chosen-select" name = "company_name" id = "company_name">
                                                 <option value="0">Select</option>
                                                 @for($i = 0; $i < COUNT($clients); $i++)
@@ -50,7 +50,7 @@
                                         </div>
 
                                         <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Magazine Name</label><br/>
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Publication Name</label><br/>
                                             <select class="form-control chosen-select" style="background-color: #2f4050; color: #FFFFFF;" name = "magazine_name" id = "magazine_name">
                                                 <option value="0">Select</option>
                                                 @for($i = 0; $i < COUNT($magazine); $i++)
