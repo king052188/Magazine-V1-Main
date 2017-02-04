@@ -191,9 +191,15 @@ class paymentController extends Controller
                     WHERE status = 2 AND type != 2 ORDER BY company_name ASC
     	 ");
 
+        $magazine = DB::SELECT("
+                    SELECT *
+                    FROM magazine_table
+                    WHERE status = 2 ORDER BY magazine_name ASC
+    	 ");
+
         //$is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
 
-        return view('payment.invoice', compact('clients'));
+        return view('payment.invoice', compact('clients', 'magazine'));
     }
 
     public function invoice_list()
@@ -237,25 +243,40 @@ class paymentController extends Controller
         return array("status" => 404, "description" => "No Result Found!");
     }
 
-    public function invoice_generate($generate_issue, $generate_year, $generate_company_name)
+    public function invoice_generate($generate_issue, $generate_year, $generate_company_name, $generate_magazine_name)
     {
         $quarter_issue = (int)$generate_issue;
         $generate_company_name = (int)$generate_company_name;
+        $generate_magazine_name = (int)$generate_magazine_name;
 
-        if($generate_company_name == 0){
-            $client_name = "AND cc.client_id = {$generate_company_name}";
+
+//        return array(
+//            "issue" => $quarter_issue,
+//            "generate_year" => $generate_year,
+//            "generate_company_name" => $generate_company_name,
+//            "generate_magazine_name" => $generate_magazine_name
+//        );
+
+        if($generate_company_name != 0){
+            $client_name = " AND cc.client_id = {$generate_company_name}";
         }else{
             $client_name = "";
         }
 
+        if($generate_magazine_name != 0){
+            $magazine_name = " AND bb.magazine_id = {$generate_magazine_name}";
+        }else{
+            $magazine_name = "";
+        }
+
         $process = DB::SELECT("
-                        SELECT 
+                        SELECT
                         aa.Id as r_uid, cc.trans_num as r_trans_num, cc.sales_rep_code as r_sales_rep_code
-                        FROM 
+                        FROM
                         magazine_issue_transaction_table as aa
                         INNER JOIN magazine_transaction_table as bb ON bb.Id = aa.magazine_trans_id
                         INNER JOIN booking_sales_table as cc ON cc.Id = bb.transaction_id
-                        WHERE aa.quarter_issued = {$quarter_issue} AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year} $client_name AND cc.status = 3 AND aa.status = 2
+                        WHERE aa.quarter_issued = {$quarter_issue} AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year} $client_name $magazine_name AND cc.status = 3 AND aa.status = 2
                         ");
 
         if(COUNT($process) == 0)
@@ -271,7 +292,7 @@ class paymentController extends Controller
                 if(COUNT($result) == 0)
                 {
                     MagIssueTransaction::where('Id', '=', $process[$i]->r_uid)->update(['status' => 3]);
-                    
+
                     $current = Carbon::now();
                     $due_date = $current->addDays(30);
 

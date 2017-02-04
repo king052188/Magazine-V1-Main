@@ -8,6 +8,17 @@
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/datepicker/datepicker3.css') }}" rel="stylesheet">
     <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
+    <style type="text/css">
+        /*.imp_display select*/
+        /*{*/
+            /*background-color: #2f4050 !important;*/
+            /*color: #FFFFFF !important;*/
+        /*}*/
+        .imp_display > select > option{
+            background-color: #2f4050 !important;
+            color: #FFFFFF !important;
+        }
+    </style>
 @endsection
 
 @section('magazine_content')
@@ -38,9 +49,9 @@
 
                                     {{--<form class="form-inline" role="form">--}}
                                     <div class="">
-                                        <div class="form-group" style="margin-right: 10px;">
+                                        <div class="form-group imp_display" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Company Name</label><br/>
-                                            <select class="form-control chosen-select" style = "background: none;" name = "company_name" id = "company_name">
+                                            <select class="form-control chosen-select" name = "company_name" id = "company_name">
                                                 <option value="0">Select</option>
                                                 @for($i = 0; $i < COUNT($clients); $i++)
                                                     <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
@@ -49,8 +60,18 @@
                                         </div>
 
                                         <div class="form-group" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Magazine Name</label><br/>
+                                            <select class="form-control chosen-select" style="background-color: #2f4050; color: #FFFFFF;" name = "magazine_name" id = "magazine_name">
+                                                <option value="0">Select</option>
+                                                @for($i = 0; $i < COUNT($magazine); $i++)
+                                                    <option value = "{{ $magazine[$i]->Id }}">{{ $magazine[$i]->magazine_name }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Year</label><br/>
-                                            <select class='form-control' name='generate_year' id = 'generate_year' style = 'width: 150px;' required>
+                                            <select class='form-control' name='generate_year' id = 'generate_year' style="background-color: #2f4050; color: #FFFFFF; width: 150px; height: 30px;" required>
                                                 @for($i = date('Y'); $i > date('Y') - 10; $i--)
                                                     <option value='{{ $i }}'>{{ $i }}</option>
                                                 @endfor
@@ -59,7 +80,7 @@
 
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Issue</label><br/>
-                                            <select class='form-control' name='generate_issue' id = 'generate_issue' style = 'width: 100px;' required>
+                                            <select class='form-control' name='generate_issue' id = 'generate_issue' style="background-color: #2f4050; color: #FFFFFF; width: 100px; height: 30px;" required>
                                                 @for($i = 1; $i < 13; $i++)
                                                     <option value='{{ $i }}'>{{ $i }}</option>
                                                 @endfor
@@ -68,7 +89,7 @@
 
                                         <div class="form-group">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">&nbsp;</label><br/>
-                                            <button type="submit" class="btn btn-primary filter-col " id = "btn_generate" style="margin-bottom: 0px;">
+                                            <button type="submit" class="btn btn-primary filter-col " id = "btn_generate" style="margin-bottom: 0px; height: 30px; padding: 0 5px 0 5px;">
                                                 <i class="fa fa-ticket"></i> Generate
                                             </button>
                                         </div>
@@ -279,9 +300,10 @@
                 var generate_issue = $("#generate_issue").val();
                 var generate_year = $("#generate_year").val();
                 var generate_company_name = $("#company_name").val();
+                var generate_magazine_name = $("#magazine_name").val();
 
                 $.ajax({
-                    url: "/payment/invoice/generate/" + generate_issue + "/" + generate_year + "/" + generate_company_name,
+                    url: "/payment/invoice/generate/" + generate_issue + "/" + generate_year + "/" + generate_company_name + "/" + generate_magazine_name,
                     dataType: "text",
                     beforeSend: function () {
 
