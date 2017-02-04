@@ -50,7 +50,7 @@ class bookingController extends Controller
                 
                 ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
                 
-                ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num AND status = 2 ) AS new_amount,
+                ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num  AND type = 1 AND status = 2 ) AS new_amount,
                 
                 booked.status,
                 
@@ -729,8 +729,9 @@ class bookingController extends Controller
                     WHERE Id = sales_rep_id
                 ) AS sales_rep_name
             FROM discount_transaction_table 
-            WHERE trans_id = '{$booking_trans_num}'
+            WHERE trans_id = '{$booking_trans_num}' AND type = 1 AND status = 2
         ");
+
         if(COUNT($result) > 0){
             return array("status" => 202, "result" => $result);
         }
