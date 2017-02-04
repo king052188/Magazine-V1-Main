@@ -177,28 +177,31 @@
                                                 <style>
                                                     .issues_amount_table tr td { font-size: 1em; font-weight: 600; padding: 2px; text-align: right; }
                                                 </style>
-                                                <table class="issues_amount_table" style="width: 250px" border="0" cellpadding="0" cellspacing="0">
+                                                <table class="issues_amount_table" style="width: 240px" border="0" cellpadding="0" cellspacing="0">
                                                     <tr>
-                                                        <td>Sub Total:</td>
-                                                        <td><span id="issues_sub_total"></span></td>
+                                                        <td>Total:</td>
+                                                        <td><span id="issues_total"></span></td>
                                                     </tr>
                                                     <tr>
                                                         <td><span id="issues_discount_label">Issue Discount:</span></td>
                                                         <td><span id="issues_discount"></span></td>
                                                     </tr>
                                                     <tr>
-                                                        <td><span id = "discretionary_discount_label">Discretionary Discount:</span></td>
+                                                        <td style="border-top: 1px solid #C7C7C7;">Sub Total:</td>
+                                                        <td style="border-top: 1px solid #C7C7C7;"><span id="issues_sub_total"></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><span id = "discretionary_discount_label">0% Discretionary Discount:</span></td>
                                                         <td><span id="discretionary_discount"></span></td>
                                                     </tr>
                                                     <tr>
-                                                        <td>Total Amount:</td>
-                                                        <td><span id="issues_total_amount"></span></td>
+                                                        <td style="border-top: 1px solid #C7C7C7;">Total Amount:</td>
+                                                        <td style="border-top: 1px solid #C7C7C7;"><span id="issues_total_amount"></span></td>
                                                     </tr>
                                                 </table>
                                             </div>
                                             <div id="show_button" style="margin-top: 45px;" class="pull-left"></div>
                                         </section>
-
                                     </div>
                                  </div>
                                 <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px;"> </div>
@@ -206,36 +209,40 @@
                                     <h3>Discretionary Discount</h3>
                                     <table style="width: 100%; padding: 10px;" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
-                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> Sales Rep: </td>
-                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_sales_rep"></span> </td>
+                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"> Sales Rep: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; font-weight: 600;"> <span id="approval_sales_rep"></span> </td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> Date: </td>
-                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_date"></span> </td>
+                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"> Date & Time: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; font-weight: 600;"> <span id="approval_date"></span> </td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> Remarks: </td>
-                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_remarks"></span> </td>
+                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"> Remarks: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; font-weight: 600;"> <span id="approval_remarks"></span> </td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> Sub Total: </td>
-                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_sub_total"></span> </td>
+                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"> Origin Total: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; font-weight: 600;"> <span id="approval_total"></span> </td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"><span id="issues_discount_label2">Issue Discount:</span></td>
-                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"><span id="issues_discount2"></span></td>
+                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"><span id="issues_discount_label2">Issue Discount:</span></td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; color: red; font-weight: 600;"><span id="issues_discount2"></span></td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 20%; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_discount_label"></span> Discretionary Discount: </td>
-                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid gray;"> <span id="approval_discount"></span> </td>
+                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"> Sub Total: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; font-weight: 600;"> <span id="approval_sub_total"></span> </td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 20%; padding: 5px;"> Total Amount: </td>
-                                            <td style="text-align: right; padding: 5px;"> <span id="approval_amount"></span> </td>
+                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"> <span id="approval_discount_label"></span> Discretionary Discount: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; color: red; font-weight: 600;"> <span id="approval_discount"></span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="width: 250px; padding: 5px;"> Total Amount: </td>
+                                            <td style="text-align: right; padding: 5px; font-weight: 600;"> <span id="approval_amount"></span> </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2" style="padding: 5px;">
-                                                <div id="button_approve" style="float: right;">
+                                                <div id="button_approve" style="float: right; margin-top: 20px;">
                                                     <button data-toggle="modal" data-target="#approved_modal" class="btn btn-primary">Approve</button>
                                                     <button data-toggle="modal" data-target="#declined_modal" class="btn btn-danger">Decline</button>
                                                 </div>
@@ -530,13 +537,13 @@ function populate_issues_transaction(uid) {
                     html_thmb += "<td style='text-align: center;'> IS"+tran.quarter_issued+"</td>";
                     html_thmb += "<td style='text-align: center;'> "+tran.line_item_qty+"</td>";
 
-                    var discount = "0%";
+                    var discount = 0;
                     var new_price = tran.total_amount_with_discount;
                     if(is_member > 0) {
-                        discount = "15%";
+                        discount = new_price * 0.15;
                         new_price = new_price - (new_price * 0.15);
                     }
-                    html_thmb += "<td style='text-align: center;'> "+discount+"</td>";
+                    html_thmb += "<td style='text-align: center;'> Member: "+numeral(discount).format('0,0.00')+"</td>";
 
                     var n_status = "Void";
                     var p_status = parseInt(tran.status);
@@ -563,17 +570,20 @@ function populate_issues_transaction(uid) {
                     total_with_discount += parseFloat(new_price);
                 });
 
+                $("#issues_total").text(numeral(total_with_discount).format('0,0.00'));
+                $("#approval_total").text(numeral(total_with_discount).format('0,0.00'));
                 $(json.Issue_Discounts).each(function(i, issue){
 
                     if(issue.Total_Issue > 1) {
-                        var issues_discount = parseFloat(issue.Total_Issue_Discount);
-                        issues_discount = total_with_discount * issues_discount;
+                        var issues_discount_origin = parseFloat(issue.Total_Issue_Discount);
+                        var issues_discount = total_with_discount * issues_discount_origin;
                         total_with_discount = total_with_discount - issues_discount;
                         $("#issues_discount").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
                         $("#issues_discount2").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
 
-                        $("#issues_discount_label").text(numeral(issues_discount).format('0.00') + "% Issue Discount:");
-                        $("#issues_discount_label2").text(numeral(issues_discount).format('0.00') + "% Issue Discount:");
+                        var get_percentage = issues_discount_origin * 100;
+                        $("#issues_discount_label").text(numeral(get_percentage).format('0.00') + "% Issue Discount:");
+                        $("#issues_discount_label2").text(numeral(get_percentage).format('0.00') + "% Issue Discount:");
                     }
                     else {
                         $("#issues_discount").text( "(" + numeral(0).format('0,0.00') + ")");
@@ -581,7 +591,6 @@ function populate_issues_transaction(uid) {
                     }
 
                 });
-
 
                 //issues_discount
                 $("#approval_discount_label").text("0%");
@@ -639,7 +648,7 @@ function populate_issues_transaction(uid) {
                                     $("#approval_remarks").text(discount.remarks);
                                     $("#approval_sub_total").text(numeral(total_with_discount).format('0,0.00'));
                                     $("#approval_discount").text( "(" + numeral(i_total_less_discount).format('0,0.00') + ")");
-                                    $("#approval_amount").text(numeral(i_total).format('0,0'));
+                                    $("#approval_amount").text(numeral(i_total).format('0,0.00'));
 
                                     if(parseInt( discount.status ) == 2) {
                                         $("#button_approve").hide();
