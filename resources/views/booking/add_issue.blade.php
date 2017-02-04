@@ -271,6 +271,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                         <h4 class="modal-title" id="exampleModalLabel">Discretionary Discount</h4>
+                        <input type = "hidden" id = "count_line_item" name = "count_line_item">
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -516,6 +517,9 @@ function populate_issues_transaction(uid) {
                     return false;
 
                 console.log(json);
+
+                $("#count_line_item").val(json.Count);
+
                 if(json.Status == 404) {
                     $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8">' + json.Message + '</td> </tr>');
                     return;

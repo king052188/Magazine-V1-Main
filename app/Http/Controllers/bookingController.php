@@ -703,7 +703,8 @@ class bookingController extends Controller
         $discount->amount = $request['txtBaseAmountHidden'];
         $discount->discount_percent = $des_discount;
         $discount->remarks = $request['txtRemarks'];
-        $discount->status = 1;
+        $discount->type = 1; //1 = Discretionary Discount
+        $discount->status = 1; //1 = For Approval
         $discount->save();
 
         $notif = new Notification();
