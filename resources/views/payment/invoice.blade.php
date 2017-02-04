@@ -8,17 +8,7 @@
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/datepicker/datepicker3.css') }}" rel="stylesheet">
     <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
-    <style type="text/css">
-        /*.imp_display select*/
-        /*{*/
-            /*background-color: #2f4050 !important;*/
-            /*color: #FFFFFF !important;*/
-        /*}*/
-        .imp_display > select > option{
-            background-color: #2f4050 !important;
-            color: #FFFFFF !important;
-        }
-    </style>
+   
 @endsection
 
 @section('magazine_content')
