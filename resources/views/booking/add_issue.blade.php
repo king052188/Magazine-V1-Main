@@ -113,6 +113,9 @@
                                                         <div id = "directions"></div>
                                                     </div>
                                                 </div>
+                                                <input type = "hidden" id = "mag_id_for_discount" name = "mag_id_for_discount">
+                                                <input type = "hidden" id = "line_issue_count" name = "line_issue_count">
+                                                <input type = "hidden" id = "trans_num_for_discount" name = "trans_num_for_discount">
                                                 <br />
                                                 <div class="row">
                                                     <div class="col-xs-12 " id = "btn_save_box">
@@ -271,7 +274,6 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                         <h4 class="modal-title" id="exampleModalLabel">Discretionary Discount</h4>
-                        <input type = "hidden" id = "count_line_item" name = "count_line_item">
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -518,7 +520,22 @@ function populate_issues_transaction(uid) {
 
                 console.log(json);
 
-                $("#count_line_item").val(json.Count);
+                //$("#count_line_item").val(json.Count);
+                //json.Issue_Discounts[0]['Total_Issue']
+                var issue_discount_new = 0;
+                if(json.Count != 0)
+                {
+                    issue_discount_new = json.Count;
+                }
+
+                console.log("Transaction ID: " + {{ $transaction_uid[0]->transaction_id }});
+                console.log("Mag UID: " + json.Mag_Uid);
+                console.log("Line Issue Count: " + issue_discount_new);
+                console.log("Trans Num: " + '{{ $booking_trans_num[0]->trans_num }}');
+
+                $("#mag_id_for_discount").val(json.Mag_Uid);
+                $("#line_issue_count").val(issue_discount_new);
+                $("#trans_num_for_discount").val('{{ $booking_trans_num[0]->trans_num }}');
 
                 if(json.Status == 404) {
                     $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8">' + json.Message + '</td> </tr>');

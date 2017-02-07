@@ -95,7 +95,7 @@
                                             <select class="form-control" id = "payment_method" name = "payment_method" required>
                                                 <option value="1">Cash</option>
                                                 <option value="2">Credit Card</option>
-                                                <option value="3">Checked</option>
+                                                <option value="3">Cheque</option>
                                                 <option value="4">Paypal</option>
                                             </select>
                                         </div>

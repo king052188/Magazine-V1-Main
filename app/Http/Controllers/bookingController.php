@@ -143,7 +143,7 @@ class bookingController extends Controller
                 
                 ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
                 
-                ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num AND status = 2 ) AS new_amount,
+                ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num AND type = 1 AND status = 2 ) AS new_amount,
                 
                 booked.status,
                 
@@ -162,6 +162,7 @@ class bookingController extends Controller
             {$filter_process}
             
             ");
+
 
         $publication = DB::table('magazine_table')->where('status', '=', 2)->get();
         $clients = DB::table('client_table')->where('status', '=', 2)->get();
@@ -616,54 +617,247 @@ class bookingController extends Controller
     public function save_issue(Request $request, $mag_trans_uid, $client_id)
     {
         $mt_uid = (int)$mag_trans_uid;
-        $isMoreThanOne = DB::SELECT("SELECT * FROM magazine_issue_transaction_table WHERE magazine_trans_id = {$mt_uid}");
+        $mag_id_for_discount = (int)$request['mag_id_for_discount'];
+        $line_issue_count = (int)$request['line_issue_count'] + 1;
+        $trans_num_for_discount = $request['trans_num_for_discount'];
 
-        $type = DB::SELECT("SELECT bb.type as client_type FROM client_contacts_table as aa INNER JOIN client_table as bb ON bb.Id = aa.client_id WHERE aa.Id = {$client_id}");
+//        return array(
+//            "mag_id_for_discount" => $mag_id_for_discount,
+//            "line_issue_count" => $line_issue_count
+//        );
 
-        $ad_c = $request['ad_criteria_id'];
-        $ad_p = $request['ad_p_split'];
-        $quarter_issue = (int)$request['quarter_issue'];
-        $line_item_qty = (int)$request['line_item_qty'];
-        $ad_amount = $request['ad_amount'];
-        $price_uid = $request['price_uid'];
-//        $amount = DB::table('price_table')->where('criteria_id', '=', $ad_c)->where('package_id', '=', $ad_p)->where('type', '=', $type[0]->client_type)->get();
-
-//        dd($type[0]->client_type);
-
-        $check = DB::table('magazine_issue_transaction_table')
-            ->where('magazine_trans_id', '=', $mag_trans_uid)
-            ->where('ad_criteria_id', '=', $ad_c)
-            ->where('ad_package_id', '=', $ad_p)
-            ->where('quarter_issued', '=', $quarter_issue)
-            ->get();
-
-        if(COUNT($check) > 0)
+        if($line_issue_count > 1)
         {
-            return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('fail', 'Please delete original data, and insert with additional quantity.');
+
+            $chk_issue_discount = DB::SELECT("SELECT * FROM discount_transaction_table WHERE trans_id = '{$trans_num_for_discount}' AND type = 2");
+
+            if(COUNT($chk_issue_discount) == 0)
+            {
+                $chk_avail_discount = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = '{$mag_id_for_discount}'");
+                if(COUNT($chk_avail_discount) == 0)
+                {
+                    return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('fail', 'Please add issue discount.');
+                }
+                else
+                {
+                    $chk_avail_discount_aa = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = '{$mag_id_for_discount}' AND type = {$line_issue_count}");
+                    if(COUNT($chk_avail_discount_aa) == 0)
+                    {
+                        $chk_avail_discount_bb = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = '{$mag_id_for_discount}' ORDER BY type DESC LIMIT 1");
+                        $ad_c = $request['ad_criteria_id'];
+                        $ad_p = $request['ad_p_split'];
+                        $quarter_issue = (int)$request['quarter_issue'];
+                        $line_item_qty = (int)$request['line_item_qty'];
+                        $ad_amount = $request['ad_amount'];
+                        $price_uid = $request['price_uid'];
+
+                        $check = DB::table('magazine_issue_transaction_table')
+                            ->where('magazine_trans_id', '=', $mt_uid)
+                            ->where('ad_criteria_id', '=', $ad_c)
+                            ->where('ad_package_id', '=', $ad_p)
+                            ->where('quarter_issued', '=', $quarter_issue)
+                            ->get();
+
+                        if(COUNT($check) > 0)
+                        {
+                            return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('fail', 'Please delete original data, and insert with additional quantity.');
+                        }
+
+                        $mit = new MagIssueTransaction();
+                        $mit->magazine_trans_id = $mt_uid;
+                        $mit->ad_criteria_id = $ad_c;
+                        $mit->ad_package_id = $ad_p;
+                        $mit->amount = $ad_amount;
+                        $mit->quarter_issued = $quarter_issue;
+                        $mit->line_item_qty = $line_item_qty;
+                        $mit->mag_price_id = $price_uid;
+                        $mit->status = 2;
+                        $mit->save();
+
+                        $dt = new DiscountTransaction();
+                        $dt->trans_id = $trans_num_for_discount;
+                        $dt->sales_rep_id = $_COOKIE['Id'];
+                        $dt->amount = 0.00;
+                        $dt->discount_percent = $chk_avail_discount_bb[0]->percent;
+                        $dt->remarks = "SYSTEM AUTOMATED DISCOUNT";
+                        $dt->type = 2; //automated
+                        $dt->status = 2; //approved
+                        $dt->save();
+
+                        return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('success', 'Add Successful');
+                    }
+                    else
+                    {
+                        $ad_c = $request['ad_criteria_id'];
+                        $ad_p = $request['ad_p_split'];
+                        $quarter_issue = (int)$request['quarter_issue'];
+                        $line_item_qty = (int)$request['line_item_qty'];
+                        $ad_amount = $request['ad_amount'];
+                        $price_uid = $request['price_uid'];
+
+                        $check = DB::table('magazine_issue_transaction_table')
+                            ->where('magazine_trans_id', '=', $mt_uid)
+                            ->where('ad_criteria_id', '=', $ad_c)
+                            ->where('ad_package_id', '=', $ad_p)
+                            ->where('quarter_issued', '=', $quarter_issue)
+                            ->get();
+
+                        if(COUNT($check) > 0)
+                        {
+                            return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('fail', 'Please delete original data, and insert with additional quantity.');
+                        }
+
+                        $mit = new MagIssueTransaction();
+                        $mit->magazine_trans_id = $mt_uid;
+                        $mit->ad_criteria_id = $ad_c;
+                        $mit->ad_package_id = $ad_p;
+                        $mit->amount = $ad_amount;
+                        $mit->quarter_issued = $quarter_issue;
+                        $mit->line_item_qty = $line_item_qty;
+                        $mit->mag_price_id = $price_uid;
+                        $mit->status = 2;
+                        $mit->save();
+
+                        $dt = new DiscountTransaction();
+                        $dt->trans_id = $trans_num_for_discount;
+                        $dt->sales_rep_id = $_COOKIE['Id'];
+                        $dt->amount = 0.00;
+                        $dt->discount_percent = $chk_avail_discount_aa[0]->percent;
+                        $dt->remarks = "SYSTEM AUTOMATED DISCOUNT";
+                        $dt->type = 2; //automated
+                        $dt->status = 2; //approved
+                        $dt->save();
+
+                        return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('success', 'Add Successful');
+                    }
+                }
+            }
+            else
+            {
+                $chk_avail_discount = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = '{$mag_id_for_discount}'");
+                if(COUNT($chk_avail_discount) == 0)
+                {
+                    return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('fail', 'Please add issue discount.');
+                }
+                else
+                {
+                    $chk_avail_discount_aa = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = '{$mag_id_for_discount}' AND type = {$line_issue_count}");
+                    if(COUNT($chk_avail_discount_aa) == 0)
+                    {
+                        $chk_avail_discount_bb = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = '{$mag_id_for_discount}' ORDER BY type DESC LIMIT 1");
+                        $ad_c = $request['ad_criteria_id'];
+                        $ad_p = $request['ad_p_split'];
+                        $quarter_issue = (int)$request['quarter_issue'];
+                        $line_item_qty = (int)$request['line_item_qty'];
+                        $ad_amount = $request['ad_amount'];
+                        $price_uid = $request['price_uid'];
+
+                        $check = DB::table('magazine_issue_transaction_table')
+                            ->where('magazine_trans_id', '=', $mt_uid)
+                            ->where('ad_criteria_id', '=', $ad_c)
+                            ->where('ad_package_id', '=', $ad_p)
+                            ->where('quarter_issued', '=', $quarter_issue)
+                            ->get();
+
+                        if(COUNT($check) > 0)
+                        {
+                            return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('fail', 'Please delete original data, and insert with additional quantity.');
+                        }
+
+                        $mit = new MagIssueTransaction();
+                        $mit->magazine_trans_id = $mt_uid;
+                        $mit->ad_criteria_id = $ad_c;
+                        $mit->ad_package_id = $ad_p;
+                        $mit->amount = $ad_amount;
+                        $mit->quarter_issued = $quarter_issue;
+                        $mit->line_item_qty = $line_item_qty;
+                        $mit->mag_price_id = $price_uid;
+                        $mit->status = 2;
+                        $mit->save();
+
+                        DiscountTransaction::where('trans_id', '=', $trans_num_for_discount)
+                            ->where('type', '=', 2)
+                            ->update(['discount_percent' => $chk_avail_discount_bb[0]->percent]);
+
+                        return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('success', 'Add Successful');
+                    }
+                    else
+                    {
+                        $chk_avail_discount_bb = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = '{$mag_id_for_discount}' ORDER BY type DESC LIMIT 1");
+                        $ad_c = $request['ad_criteria_id'];
+                        $ad_p = $request['ad_p_split'];
+                        $quarter_issue = (int)$request['quarter_issue'];
+                        $line_item_qty = (int)$request['line_item_qty'];
+                        $ad_amount = $request['ad_amount'];
+                        $price_uid = $request['price_uid'];
+
+                        $check = DB::table('magazine_issue_transaction_table')
+                            ->where('magazine_trans_id', '=', $mt_uid)
+                            ->where('ad_criteria_id', '=', $ad_c)
+                            ->where('ad_package_id', '=', $ad_p)
+                            ->where('quarter_issued', '=', $quarter_issue)
+                            ->get();
+
+                        if(COUNT($check) > 0)
+                        {
+                            return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('fail', 'Please delete original data, and insert with additional quantity.');
+                        }
+
+                        $mit = new MagIssueTransaction();
+                        $mit->magazine_trans_id = $mt_uid;
+                        $mit->ad_criteria_id = $ad_c;
+                        $mit->ad_package_id = $ad_p;
+                        $mit->amount = $ad_amount;
+                        $mit->quarter_issued = $quarter_issue;
+                        $mit->line_item_qty = $line_item_qty;
+                        $mit->mag_price_id = $price_uid;
+                        $mit->status = 2;
+                        $mit->save();
+
+                        DiscountTransaction::where('trans_id', '=', $trans_num_for_discount)
+                            ->where('type', '=', 2)
+                            ->update(['discount_percent' => $chk_avail_discount_bb[0]->percent]);
+
+                        return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('success', 'Add Successful');
+                    }
+                }
+            }
+        }
+        else
+        {
+            $ad_c = $request['ad_criteria_id'];
+            $ad_p = $request['ad_p_split'];
+            $quarter_issue = (int)$request['quarter_issue'];
+            $line_item_qty = (int)$request['line_item_qty'];
+            $ad_amount = $request['ad_amount'];
+            $price_uid = $request['price_uid'];
+
+            $check = DB::table('magazine_issue_transaction_table')
+                ->where('magazine_trans_id', '=', $mt_uid)
+                ->where('ad_criteria_id', '=', $ad_c)
+                ->where('ad_package_id', '=', $ad_p)
+                ->where('quarter_issued', '=', $quarter_issue)
+                ->get();
+
+            if(COUNT($check) > 0)
+            {
+                return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('fail', 'Please delete original data, and insert with additional quantity.');
+            }
+
+            $mit = new MagIssueTransaction();
+            $mit->magazine_trans_id = $mt_uid;
+            $mit->ad_criteria_id = $ad_c;
+            $mit->ad_package_id = $ad_p;
+            $mit->amount = $ad_amount;
+            $mit->quarter_issued = $quarter_issue;
+            $mit->line_item_qty = $line_item_qty;
+            $mit->mag_price_id = $price_uid;
+            $mit->status = 2;
+            $mit->save();
+
+            return redirect("/booking/add_issue/". $mt_uid ."/". $client_id)->with('success', 'Add Successful');
         }
 
-//        if(COUNT($isMoreThanOne) >= 1)
-//        {
-//            MagIssueTransaction::where('magazine_trans_id', '=', $mag_trans_uid)
-//                ->where('ad_criteria_id', '=', $ad_c)
-//                ->where('ad_package_id', '=', $ad_p)
-//                ->update([
-//                    'amount' => $ad_amount
-//                ]);
-//        }
-
-        $mit = new MagIssueTransaction();
-        $mit->magazine_trans_id = $mag_trans_uid;
-        $mit->ad_criteria_id = $ad_c;
-        $mit->ad_package_id = $ad_p;
-        $mit->amount = $ad_amount;
-        $mit->quarter_issued = $quarter_issue;
-        $mit->line_item_qty = $line_item_qty;
-        $mit->mag_price_id = $price_uid;
-        $mit->status = 2;
-        $mit->save();
-
-        return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Add Successful');
     }
 
     public function trans_selected_row_update($trans_id, $trans_status)
