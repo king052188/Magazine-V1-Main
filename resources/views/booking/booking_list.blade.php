@@ -138,7 +138,16 @@
                                                 <div class="form-group">
                                                     <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" >
                                                         <optgroup label="-- Status --"> -- Status -- </optgroup>
-                                                        @if($booking[$i]->status == 5)
+                                                        @if($booking[$i]->status == 6)
+                                                            <option value="0">Invoice/Pending</option>
+                                                            <optgroup label="-- Action --"> -- Action -- </optgroup>
+                                                            <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
+                                                            @if($booking[$i]->invoice_num != null)
+                                                                <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
+                                                            @endif
+                                                            <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
+                                                            </optgroup>
+                                                        @elseif($booking[$i]->status == 5)
                                                             <option value="0">Void</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                                 <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
@@ -192,6 +201,18 @@
                                                   <li role="separator" class="divider"></li>
                                                   ...
                                                 </ul>
+                                                    @if($booking[$i]->status == 6)
+                                                        <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                            <option value="0">Invoice/Pending</option>
+                                                            <optgroup label="-- Action --"> -- Action -- </optgroup>
+                                                            <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
+                                                            @if($booking[$i]->invoice_num != null)
+                                                                <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
+                                                            @endif
+                                                            <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
+                                                            </optgroup>
+                                                        </select>
+                                                    @else
                                                     <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
                                                         <optgroup label="-- Status --"> -- Status -- </optgroup>
                                                             <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1:{{ $booking[$i]->status == 1 ? 1 : 0 }}">Pending</option>
@@ -206,6 +227,7 @@
                                                             <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
                                                         </optgroup>
                                                     </select>
+                                                    @endif
                                                     <button class="btn btn-primary" id="btn_update_{{ $booking[$i]->Id }}" style = "width: 80px;margin-bottom: 0px; display: none;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
                                                 </div>
                                             </div>

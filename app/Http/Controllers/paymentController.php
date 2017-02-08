@@ -8,6 +8,7 @@ use App\Contracts;
 use App\Invoice;
 use App\PaymentTransaction;
 use App\MagIssueTransaction;
+use App\Booking;
 use Carbon\Carbon;
 
 
@@ -294,6 +295,7 @@ class paymentController extends Controller
                 if(COUNT($result) == 0)
                 {
                     MagIssueTransaction::where('Id', '=', $process[$i]->r_uid)->update(['status' => 3]);
+                    Booking::where('trans_num', '=', $chk_trans_num)->update(['status' => 6]); //6 = Approved/Invoiced
 
                     $current = Carbon::now();
                     $due_date = $current->addDays(30);
@@ -314,7 +316,7 @@ class paymentController extends Controller
                 }
                 else
                 {
-                    return array("status" => 404, "description" => "No Invoice Available.");
+                    return array("status" => 404, "description" => "No Available Invoice");
                 }
             }
 
