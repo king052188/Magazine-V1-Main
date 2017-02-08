@@ -7459,7 +7459,7 @@ Responsive Util
 }
 .login-wrapper .bg-pic > img {
   height: 100%;
-  opacity: 0.6;
+  opacity: 1;
 }
 .login-container img {
   width: 60%;

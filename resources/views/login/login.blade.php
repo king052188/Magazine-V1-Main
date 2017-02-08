@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
     <meta charset="utf-8" />
-    <title>Pages - Admin Dashboard UI Kit - Lock Screen</title>
+    <title>CRM Login | Lester Digital</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
     <link rel="apple-touch-icon" href="pages/ico/60.png">
     <link rel="apple-touch-icon" sizes="76x76" href="pages/ico/76.png">
@@ -15,7 +15,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta content="" name="description" />
     <meta content="" name="author" />
-    
     <link href="{{ asset('css/plugins/pace/pace-theme-flash.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link class="main-stylesheet" href="{{ asset('css/vmk.css') }}" rel="stylesheet" type="text/css" />
@@ -36,13 +35,13 @@
       <!-- START Login Background Pic Wrapper-->
       <div class="bg-pic">
         <!-- START Background Pic-->
-        <img src="{{ asset('img/Fall-Beautiful-HD-Wallpaper.png') }}" data-src="{{ asset('img/Fall-Beautiful-HD-Wallpaper.png') }}" data-src-retina="{{ asset('img/Fall-Beautiful-HD-Wallpaper.png') }}" alt="" class="lazy">
+        <img src="{{ asset('img/bg.png') }}" data-src="{{ asset('img/bg.png') }}" data-src-retina="{{ asset('img/bg.png') }}" alt="" class="lazy">
         <!-- END Background Pic-->
         <!-- START Background Caption-->
         <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
           <h2 class="semi-bold text-white"></h2>
-          <p class="small">
-            Lester Digital &copy {{ date("Y") }} | <a href="/ph/developers">Developer</a>
+          <p class="small" style="color: #1a1a1a;">
+            &copy {{ date("Y") }} | <a href="/ph/developers">Developers</a>
           </p>
         </div>
         <!-- END Background Caption-->
