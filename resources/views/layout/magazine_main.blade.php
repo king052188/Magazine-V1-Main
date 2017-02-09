@@ -50,6 +50,8 @@
     <link href="{{ asset('css/plugins/footable/footable.core.css')}}" rel="stylesheet">
     <script src="{{ asset('js/plugins/footable/footable.all.min.js')}}"></script>
 
+    <script src="{{ asset('js/jquery.cookie.js')}}"></script>
+
     <!-- FooTable -- Page-Level Scripts -->
     <script>
         $(document).ready(function() {

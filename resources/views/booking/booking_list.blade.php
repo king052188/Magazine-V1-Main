@@ -282,8 +282,14 @@
     $(document).ready( function() {
 
         $("#btn_filter_display").on('click', function(){
+
             var filter_publication = $("#filter_publication").val();
-            var filter_sales_rep = $("#filter_sales_rep").val();
+
+            var filter_sales_rep = 0;
+            if($.cookie('role') != 3)
+            {
+                filter_sales_rep = $("#filter_sales_rep").val();
+            }
 //            var filter_issue = $("#filter_issue").val();
             var filter_client = $("#filter_client").val();
             var filter_status = $("#filter_status").val();

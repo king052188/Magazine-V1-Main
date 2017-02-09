@@ -114,7 +114,7 @@ class bookingController extends Controller
         }
         else
         {
-            $filter_sales_rep_tran = $_COOKIE['Id'];
+            $filter_sales_rep_tran = "booked.sales_rep_code = {$_COOKIE['Id']}";
         }
 
         if($filter_client != 0){
