@@ -171,7 +171,11 @@
                                                         <th style="width: 10%; text-align: center;">QTY</th>
                                                         <th style="width: 10%; text-align: center;">DISCOUNT</th>
                                                         <th style="width: 10%; text-align: right;">AMOUNT</th>
+                                                        @if($booking_trans_num[0]->status != 1)
+                                                        <th style="width: 10%; text-align: center;"></th>
+                                                        @else
                                                         <th style="width: 10%; text-align: center;">ACTION</th>
+                                                        @endif
                                                     </tr>
                                                 </thead>
                                                 <tbody></tbody>
@@ -586,6 +590,7 @@ function populate_issues_transaction(uid) {
                         html_thmb += "<a id = 'once_approved_cc' onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a>";
                     }
                     html_thmb += "</td>";
+
                     html_thmb += "</tr>";
                     item_count++;
                     total_with_discount += parseFloat(new_price);
