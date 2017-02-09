@@ -21,6 +21,14 @@ class bookingController extends Controller
         $filter_client = 0;
         $filter_status = 0;
 
+
+
+        if($_COOKIE['role'] == 3){
+            $filter_sales_rep = "WHERE booked.sales_rep_code = {$_COOKIE['Id']}";
+        }else{
+            $filter_sales_rep = "";
+        }
+
         $booking = DB::SELECT("
             SELECT 
 
@@ -66,6 +74,8 @@ class bookingController extends Controller
 
             ON mag.Id = trans.magazine_id
             
+            $filter_sales_rep
+            
             ");
 
         $publication = DB::table('magazine_table')->where('status', '=', 2)->get();
@@ -94,10 +104,17 @@ class bookingController extends Controller
             $filter_publication_tran = "mag.Id LIKE '%'";
         }
 
-        if($filter_sales_rep != 0){
-            $filter_sales_rep_tran = "booked.sales_rep_code = {$filter_sales_rep}";
-        }else{
-            $filter_sales_rep_tran = "booked.sales_rep_code LIKE '%'";
+        if($_COOKIE['role'] != 3)
+        {
+            if($filter_sales_rep != 0){
+                $filter_sales_rep_tran = "booked.sales_rep_code = {$filter_sales_rep}";
+            }else{
+                $filter_sales_rep_tran = "booked.sales_rep_code LIKE '%'";
+            }
+        }
+        else
+        {
+            $filter_sales_rep_tran = $_COOKIE['Id'];
         }
 
         if($filter_client != 0){

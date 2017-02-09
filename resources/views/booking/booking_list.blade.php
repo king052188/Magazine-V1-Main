@@ -46,6 +46,7 @@
                         @endfor
                     </select>
                 </div>
+                @if($_COOKIE['role'] != 3)
                 <div class = "pull-left" style = "margin-left: 10px;">
                     <select class="form-control filter_click" id = "filter_sales_rep" style = "background-color: #2f4050; height:30px; color: #FFFFFF;">
                         <option value = "0" {{ $filter_sales_rep == "0" ? "selected" : "" }}>-- and/or Sales Rep --</option>
@@ -54,6 +55,7 @@
                         @endfor
                     </select>
                 </div>
+                @endif
                 <div class = "pull-left" style = "margin-left: 10px;">
                     {{--<select class="form-control filter_click" id = "filter_client" style = "background-color: #2f4050; color: #FFFFFF; margin-top: -7px;">--}}
                         {{--<option value = "0" {{ $filter_client == "0" ? "selected" : "" }}>-- and/or Client --</option>--}}
@@ -139,7 +141,7 @@
                                                     <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" >
                                                         <optgroup label="-- Status --"> -- Status -- </optgroup>
                                                         @if($booking[$i]->status == 6)
-                                                            <option value="0">Invoice/Pending</option>
+                                                            <option value="0">Approved/Invoiced</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                             <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
                                                             @if($booking[$i]->invoice_num != null)
@@ -203,7 +205,7 @@
                                                 </ul>
                                                     @if($booking[$i]->status == 6)
                                                         <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
-                                                            <option value="0">Invoice/Pending</option>
+                                                            <option value="0">Approved/Invoiced</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                             <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
                                                             @if($booking[$i]->invoice_num != null)

@@ -88,7 +88,18 @@ class paymentController extends Controller
 
     public function search_invoice_number_api($inv_num)
     {
-        $result = DB::SELECT("SELECT * FROM invoice_table WHERE invoice_num = '{$inv_num}'");
+        //version 1
+        //$result = DB::SELECT("SELECT * FROM invoice_table WHERE invoice_num = '{$inv_num}'");
+
+        //version 2
+        $result = DB::SELECT("
+                    SELECT 
+                    aa.* 
+                    FROM invoice_table as aa 
+                    INNER JOIN booking_sales_table as bb ON aa.booking_trans = bb.trans_num
+                    INNER JOIN client_table as cc ON bb.client_id = cc.Id
+                    WHERE aa.invoice_num = '{$inv_num}' OR cc.company_name = '{$inv_num}'
+        ");
         if($result != null)
         {
             $trans = DB::table('booking_sales_table')->where('trans_num','=',$result[0]->booking_trans)->get();
@@ -108,7 +119,7 @@ class paymentController extends Controller
             );
         }
 
-        return array("result" => 404, "description" => "Invoice Number is not available");
+        return array("result" => 404, "description" => "Invoice Number/Company Name is not available");
     }
 
     public function save_payment_transaction($inv_num, $line_item, $ref_number, $method_payment, $date_payment, $amount, $remarks)

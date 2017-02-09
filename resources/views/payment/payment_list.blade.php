@@ -55,8 +55,8 @@
                                 {{--<form class="form-inline" role="form">--}}
                                     <div class="">
                                         <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Find by Invoice Number:</label><br/>
-                                            <input type="text" class="form-control" id="invoice_number" name = "invoice_number" placeholder="Input Invoice Number">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Find by Invoice Number / Company Name:</label><br/>
+                                            <input type="text" class="form-control" style = "width: 300px;" id="invoice_number" name = "invoice_number" placeholder="Input Invoice Number / Company Name">
                                         </div>
 
                                         <div class="form-group">
@@ -272,7 +272,7 @@
                     }else{
                         swal(
                                 '',
-                                'Invoice Number is not available!',
+                                'Invoice Number/Company Name is not available!',
                                 'error'
                         )
                         return false;
