@@ -11,6 +11,7 @@ use App\MagazineTransaction;
 use App\MagIssueTransaction;
 use App\DiscountTransaction;
 use App\Notification;
+use App\ArtworkTable;
 
 class bookingController extends Controller
 {
@@ -928,6 +929,65 @@ class bookingController extends Controller
         $notif->save();
 
         return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Add Successful');
+    }
+
+    public function save_artwork(Request $request, $booking_trans_num, $mag_trans_uid, $client_id)
+    {
+        /*
+         *  Artwork
+         *  1 = Supplied
+         *  2 = Build
+         *  3 = Renewal
+         *  4 = Renewal with changes
+         *
+         * */
+
+        $chk_artwork = DB::SELECT("SELECT * FROM artwork_table WHERE book_trans = '{$booking_trans_num}'");
+        if(COUNT($chk_artwork) > 0)
+        {
+            DB::table('artwork_table')
+                ->where('book_trans', '=', $booking_trans_num)
+                ->update([
+                    'artwork' => $request['selArtwork'],
+                    'directions' => $request['txtDirections']
+                ]);
+
+            return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Update Successful');
+        }
+        else
+        {
+            $discount = new ArtworkTable();
+            $discount->book_trans = $booking_trans_num;
+            $discount->artwork = $request['selArtwork'];
+            $discount->directions = $request['txtDirections'];
+            $discount->status = 2;
+            $discount->save();
+
+            return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Add Successful');
+        }
+
+    }
+
+    public function get_artwork($booking_trans_num)
+    {
+        /*
+         *  Artwork
+         *  1 = Supplied
+         *  2 = Build
+         *  3 = Renewal
+         *  4 = Renewal with changes
+         *
+         * */
+
+        $get_artwork = DB::SELECT("SELECT * FROM artwork_table WHERE book_trans = '{$booking_trans_num}'");
+        if(COUNT($get_artwork) > 0)
+        {
+            return array("Code" => 200, "result" => $get_artwork);
+        }
+        else
+        {
+            return array("Code" => 404, "result" => "No Result Found.");
+        }
     }
 
     public function get_discount_transaction($booking_trans_num)

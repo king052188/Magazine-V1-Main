@@ -365,6 +365,43 @@
             </div>
         </form>
     </div>
+
+    {{--discount modal area--}}
+    <div class="modal fade" id="artwork_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelArtwork" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <form method="post" action = "{{ url('/booking/save/artwork') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLabel">Add Artwork</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Artwork</label>
+                            <select class="form-control" id = "selArtwork" name = "selArtwork">
+                                <option value = "0">--select--</option>
+                                <option value = "1">Supplied</option>
+                                <option value = "2">Build</option>
+                                <option value = "3">Renewal</option>
+                                <option value = "4">Renewal with changes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Directions</label>
+                            <textarea class="form-control" id="txtDirections" name = "txtDirections" placeholder="Enter Directions" maxlength="300" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 @endsection
@@ -438,17 +475,17 @@ $(document).ready(function(){
                         $('#line_item_qty_label').empty().append("Line Item QTY");
                         $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
 
-                        $("#artwork_label").empty().append("Artwork");
-                        $('#artwork').empty().append("<select class='form-control' name = 'artwork_select' id = 'artwork_select'>");
-                        $('#artwork_select').append("<option value = '' disabled selected>select</option>");
-                        $('#artwork_select').append("<option value = '1'>Supplied</option>");
-                        $('#artwork_select').append("<option value = '2'>Build</option>");
-                        $('#artwork_select').append("<option value = '3'>Renewal</option>");
-                        $('#artwork_select').append("<option value = '4'>Renewal with Changes</option>");
-                        $('#artwork').append('</select>');
+                        //$("#artwork_label").empty().append("Artwork");
+                        //$('#artwork').empty().append("<select class='form-control' name = 'artwork_select' id = 'artwork_select'>");
+                        //$('#artwork_select').append("<option value = '' disabled selected>select</option>");
+                        //$('#artwork_select').append("<option value = '1'>Supplied</option>");
+                        //$('#artwork_select').append("<option value = '2'>Build</option>");
+                        //$('#artwork_select').append("<option value = '3'>Renewal</option>");
+                        //$('#artwork_select').append("<option value = '4'>Renewal with Changes</option>");
+                        //$('#artwork').append('</select>');
 
-                        $("#directions_label").empty().append("Directions");
-                        $("#directions").empty().append("<textarea class='form-control' rows='5' name = 'comment' id='comment'></textarea>");
+                        //$("#directions_label").empty().append("Directions");
+                        //$("#directions").empty().append("<textarea class='form-control' rows='5' name = 'comment' id='comment'></textarea>");
                         $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary pull-right" value = "Save">');
                     });
                 });
@@ -485,6 +522,7 @@ $(document).ready(function(){
             return false;
         }
     });
+
 });
 
 function open_preview(trans_number) {
@@ -693,21 +731,31 @@ function populate_issues_transaction(uid) {
                                 }
                             });
 
+                            $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
                             $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                             $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+
+
                         }
                         else {
                             $('#discretionary_discount').text("(" + numeral("0").format('0,0.00') + ")");
                             $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
                             if({{ $booking_trans_num[0]->status }} != 1) {
+                                $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
                                 $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                                 $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
                             }else {
+                                $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
                                 $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>');
                                 $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                                 $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
                             }
                         }
+
+                        $("#btn_artwork_modal").click(function(){
+                            var book_trans_num = '{{ $booking_trans_num[0]->trans_num }}';
+                            populate_get_artwork(book_trans_num);
+                        });
                     }
                 });
                 BaseTotalAmount = total_with_discount;
@@ -732,6 +780,34 @@ function populate_issues_transaction(uid) {
     })
 }
 
+function populate_get_artwork(book_trans_num) {
+    $(document).ready( function() {
+        $.ajax({
+            url: "/booking/get_artwork/" + book_trans_num,
+            dataType: "text",
+            beforeSend: function () {
+            },
+            success: function(data) {
+                var json = $.parseJSON(data);
+                if(json == null)
+                    return false;
+
+                if(json.Code == 200)
+                {
+                    $(json.result).each(function(i, tran){
+                        $("#selArtwork").val(tran.artwork);
+                        $("#txtDirections").val(tran.directions);
+                    });
+                }
+                else if(json.Code == 404)
+                {
+                    $("#selArtwork").val();
+                    $("#txtDirections").val();
+                }
+            }
+        });
+    })
+}
 </script>
 
 @endsection
