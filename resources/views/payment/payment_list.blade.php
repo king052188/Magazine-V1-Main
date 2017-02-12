@@ -58,8 +58,8 @@
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Find by:</label><br/>
                                             <select class = "form-control" id = "filter_by">
-                                                <option value = "1" selected>Invoice Number</option>
-                                                <option value = "2">Client Name</option>
+                                                <option value = "1">Invoice Number</option>
+                                                <option value = "2" selected>Client Name</option>
                                             </select>
                                         </div>
 
@@ -73,7 +73,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="form-group" id = "invoice_number_container" style="margin-right: 10px;">
+                                        <div class="form-group" id = "invoice_number_container" style="margin-right: 10px; display: none;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Invoice Number</label><br/>
                                             <input type="text" class="form-control" style = "width: 196px;" id="invoice_number" name = "invoice_number" placeholder="Input Invoice Number">
                                         </div>
@@ -262,9 +262,9 @@
             $(".group-payment").hide();
         });
 
-        $("#client_name_container").hide();
+        //$("#client_name_container").hide();
         $("#filter_by").change(function(){
-            console.log($(this).val());
+            //console.log($(this).val());
 
             if($(this).val() == 1){
                 $("#invoice_number_container").show();
@@ -273,7 +273,7 @@
                 $("#client_name_container").show();
                 $("#invoice_number_container").hide();
             }else{
-                $("#invoice_number_container").show();
+                $("#client_name_container").show();
             }
         });
 
@@ -352,7 +352,7 @@
                         }else{
                             swal(
                                     '',
-                                    'Company Name is not available!',
+                                    'Client Name is not available!',
                                     'error'
                             )
                             return false;
