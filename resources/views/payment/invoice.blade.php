@@ -17,7 +17,7 @@
             <h2>Payment</h2>
             <ol class="breadcrumb">
                 <li class="active">
-                    <strong>Generate Invoice</strong>
+                    <strong>List of all Invoices</strong>
                 </li>
             </ol>
         </div>
@@ -29,7 +29,7 @@
             <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Generate Invoice</h5>
+                        <h5>List of all Invoices</h5>
                     </div>
 
                     <div class="ibox-content">
@@ -38,7 +38,7 @@
                                 <div class="col-sm-12 form-inline">
 
                                     {{--<form class="form-inline" role="form">--}}
-                                    <div class="">
+                                    <div class="" id = "filter_container">
                                         <div class="form-group imp_display" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Client Name</label><br/>
                                             <select class="form-control chosen-select" name = "company_name" id = "company_name">
@@ -83,7 +83,12 @@
                                                 <i class="fa fa-ticket"></i> Generate
                                             </button>
                                         </div>
-                                    </div><br/>
+                                    </div>
+                                    <div id = "btn_generate_invoice_container">
+                                        <button type="submit" class="btn btn-primary" id = "btn_generate_invoice">
+                                            <i class="fa fa-ticket"></i> Generate Invoice
+                                        </button>
+                                    </div>
 
                                 </div>
                             </div>
@@ -184,7 +189,15 @@
     <script>
         $(document).ready(function(){
 
+
             populate_invoice_list();
+
+            $("#filter_container").hide();
+            $("#btn_generate_invoice_container").click(function(){
+//                $("#filter_container").attr("style", "display:block;");
+                $("#filter_container").show();
+                $("#btn_generate_invoice_container").hide();
+            });
 
             $("#latest_invoice_press").click(function(){
                 populate_latest_invoice_list();

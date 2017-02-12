@@ -83,7 +83,13 @@ class paymentController extends Controller
 
         $magazine = DB::table('magazine_table')->where('status', '=', 2)->get();
 
-        return view('payment.payment_list', compact('booking', 'magazine', 'filter'))->with('success', 'Booking details successful added!');
+        $clients = DB::SELECT("
+                    SELECT *
+                    FROM client_table
+                    WHERE status = 2 AND type != 2 ORDER BY company_name ASC
+    	 ");
+
+        return view('payment.payment_list', compact('booking', 'magazine', 'filter', 'clients'))->with('success', 'Booking details successful added!');
     }
 
     public function search_invoice_number_api($inv_num)

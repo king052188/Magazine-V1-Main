@@ -7,6 +7,7 @@
 @section('styles')
 <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
 <link href="{{ asset('css/plugins/datepicker/datepicker3.css') }}" rel="stylesheet">
+<link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
 @endsection
 
 @section('magazine_content')
@@ -55,8 +56,26 @@
                                 {{--<form class="form-inline" role="form">--}}
                                     <div class="">
                                         <div class="form-group" style="margin-right: 10px;">
-                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Find by Invoice Number / Company Name:</label><br/>
-                                            <input type="text" class="form-control" style = "width: 300px;" id="invoice_number" name = "invoice_number" placeholder="Input Invoice Number / Company Name">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Find by:</label><br/>
+                                            <select class = "form-control" id = "filter_by">
+                                                <option value = "1" selected>Invoice Number</option>
+                                                <option value = "2">Client Name</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group" id = "client_name_container" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Client Name</label><br/>
+                                            <select class="form-control chosen-select" name = "company_name" id = "company_name">
+                                                <option value="0">Select</option>
+                                                @for($i = 0; $i < COUNT($clients); $i++)
+                                                    <option value = "{{ $clients[$i]->company_name }}">{{ $clients[$i]->company_name }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+
+                                        <div class="form-group" id = "invoice_number_container" style="margin-right: 10px;">
+                                            <label class="filter-col" style="margin-right:0;" for="pref-search">Invoice Number</label><br/>
+                                            <input type="text" class="form-control" style = "width: 196px;" id="invoice_number" name = "invoice_number" placeholder="Input Invoice Number">
                                         </div>
 
                                         <div class="form-group">
@@ -243,43 +262,107 @@
             $(".group-payment").hide();
         });
 
+        $("#client_name_container").hide();
+        $("#filter_by").change(function(){
+            console.log($(this).val());
+
+            if($(this).val() == 1){
+                $("#invoice_number_container").show();
+                $("#client_name_container").hide();
+            }else if($(this).val() == 2){
+                $("#client_name_container").show();
+                $("#invoice_number_container").hide();
+            }else{
+                $("#invoice_number_container").show();
+            }
+        });
+
         $("#btn_search").click(function(){
+
+            var filter_by = $("#filter_by").val();
             var inv_num = $("#invoice_number").val();
-            if(inv_num == "")
+            var company_name = $("#company_name").val();
+
+            if(filter_by == 1)
             {
-                swal(
-                        'Oops...',
-                        'Invoice Number Required!',
-                        'error'
-                )
-                return false;
+                if(inv_num == "")
+                {
+                    swal(
+                            'Oops...',
+                            'Invoice Number Required!',
+                            'error'
+                    )
+                    return false;
+                }
+
+                $.ajax({
+                    url: "/payment/search_invoice_number_api/" + inv_num,
+                    dataType: "text",
+                    beforeSend: function () {
+                    },
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+
+                        console.log(json);
+
+                        if(json.result == 200)
+                        {
+                            populate_inv_num(inv_num, json.is_member, json.issue_discount, json.discretionary_discount, json.province_tax);
+
+                        }else{
+                            swal(
+                                    '',
+                                    'Invoice Number is not available!',
+                                    'error'
+                            )
+                            return false;
+
+                        }
+                    }
+                });
+            }
+            else if(filter_by == 2)
+            {
+                if(company_name == "")
+                {
+                    swal(
+                            'Oops...',
+                            'Client Name is Required!',
+                            'error'
+                    )
+                    return false;
+                }
+
+                var inv_num = company_name;
+
+                $.ajax({
+                    url: "/payment/search_invoice_number_api/" + inv_num,
+                    dataType: "text",
+                    beforeSend: function () {
+                    },
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+
+                        console.log(json);
+
+                        if(json.result == 200)
+                        {
+                            populate_inv_num(inv_num, json.is_member, json.issue_discount, json.discretionary_discount, json.province_tax);
+
+                        }else{
+                            swal(
+                                    '',
+                                    'Company Name is not available!',
+                                    'error'
+                            )
+                            return false;
+
+                        }
+                    }
+                });
             }
 
-            $.ajax({
-                url: "/payment/search_invoice_number_api/" + inv_num,
-                dataType: "text",
-                beforeSend: function () {
-                },
-                success: function(data) {
-                    var json = $.parseJSON(data);
 
-                    console.log(json);
-
-                    if(json.result == 200)
-                    {
-                        populate_inv_num(inv_num, json.is_member, json.issue_discount, json.discretionary_discount, json.province_tax);
-
-                    }else{
-                        swal(
-                                '',
-                                'Invoice Number/Company Name is not available!',
-                                'error'
-                        )
-                        return false;
-
-                    }
-                }
-            });
         });
 
         function populate_inv_num(inv_num, is_member, issue_discount, discretionary_discount, province_tax) {
@@ -683,6 +766,19 @@
                 });
             } );
         }
+    }
+</script>
+<!-- Chosen -->
+<script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
+<script>
+    var config = {
+        '.chosen-select'           : {},
+        '.chosen-select-deselect'  : {allow_single_deselect:true},
+        '.chosen-select-no-single' : {disable_search_threshold:10},
+        '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'}
+    }
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
     }
 </script>
 @endsection
