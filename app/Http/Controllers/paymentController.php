@@ -116,6 +116,7 @@ class paymentController extends Controller
             
             return array(
                 "result" => 200,
+                "invoice_number" => $result[0]->invoice_num,
                 "description" => "Invoice Number is available",
                 "is_member" => COUNT($is_member) > 0 ? $is_member[0]->is_member : 0,
                 "province_state" => COUNT($is_member) > 0 ? $is_member[0]->state : 0,

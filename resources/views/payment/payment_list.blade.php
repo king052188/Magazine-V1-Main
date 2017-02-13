@@ -76,6 +76,7 @@
                                         <div class="form-group" id = "invoice_number_container" style="margin-right: 10px; display: none;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Invoice Number</label><br/>
                                             <input type="text" class="form-control" style = "width: 196px;" id="invoice_number" name = "invoice_number" placeholder="Input Invoice Number">
+                                            <input type = "hidden" id = "hidden_inv_num">
                                         </div>
 
                                         <div class="form-group">
@@ -310,13 +311,16 @@
                             populate_inv_num(inv_num, json.is_member, json.issue_discount, json.discretionary_discount, json.province_tax);
 
                         }else{
-                            swal(
-                                    '',
-                                    'Invoice Number is not available!',
-                                    'error'
+                            swal({
+                                title: "",
+                                text: "nvoice Number is not available!",
+                                type: "error"
+                            }).then(
+                                    function() {
+                                        //location.reload();
+                                        $('table#tbl_payment_list > tbody').empty();
+                                    }
                             )
-                            return false;
-
                         }
                     }
                 });
@@ -334,11 +338,15 @@
                 }
 
                 var inv_num = company_name;
-
+                //var isFirstLoad = true;
                 $.ajax({
                     url: "/payment/search_invoice_number_api/" + inv_num,
                     dataType: "text",
                     beforeSend: function () {
+                        {{--if(isFirstLoad) {--}}
+                            {{--isFirstLoad = false;--}}
+                            {{--$('table#tbl_payment_list > tbody').empty().prepend('<tr> <td colspan="11" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  1Fetching All Transactions... Please wait...</td> </tr>');--}}
+                        {{--}--}}
                     },
                     success: function(data) {
                         var json = $.parseJSON(data);
@@ -347,16 +355,21 @@
 
                         if(json.result == 200)
                         {
-                            populate_inv_num(inv_num, json.is_member, json.issue_discount, json.discretionary_discount, json.province_tax);
+                            $('table#tbl_payment_list > tbody').empty();
+                            $("#hidden_inv_num").val(json.invoice_number);
+                            populate_inv_num(json.invoice_number, json.is_member, json.issue_discount, json.discretionary_discount, json.province_tax);
 
                         }else{
-                            swal(
-                                    '',
-                                    'Client Name is not available!',
-                                    'error'
+                            swal({
+                                title: "",
+                                text: "Client Name is not available!",
+                                type: "error"
+                            }).then(
+                                    function() {
+                                        //location.reload();
+                                        $('table#tbl_payment_list > tbody').empty();
+                                    }
                             )
-                            return false;
-
                         }
                     }
                 });
@@ -610,7 +623,7 @@
         }
 
         $("#btn_save").click(function(){
-            var inv_num = $("#invoice_number").val();
+            var inv_num = $("#hidden_inv_num").val();
             var date_of_payment = Date.parse($("#date_of_payment").val()) / 1000;
             var payment_method = $("#payment_method").val();
             var ref_number = $("#ref_number").val();
