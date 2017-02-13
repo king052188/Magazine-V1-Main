@@ -167,7 +167,7 @@
                             <thead>
                                 <tr>
                                     <th style='text-align: center; width: 30px;'>Proposal ID</th>
-                                    <th style='text-align: center; '>Pub.</th>
+                                    <th style='text-align: center; '>Publication</th>
                                     <th style='text-align: center; width: 70px;'>Issue</th>
                                     <th style='text-align: center; width: 70px;'>Year</th>
                                     <th style='text-align: center; width: 100px;'>Ad Size</th>
@@ -402,7 +402,7 @@
 
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.id +"</td>";
-                            html_thmb += "<td style='text-align: left;'>"+ info.company_name +"</td>";
+                            html_thmb += "<td style='text-align: left;'>"+ json.Magazine_Name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.quarter_issued +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ json.Magazine_Year +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.ad_size +"</td>";
