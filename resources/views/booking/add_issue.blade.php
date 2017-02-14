@@ -560,8 +560,6 @@ function populate_issues_transaction(uid) {
                 if(json == null)
                     return false;
 
-                console.log(json);
-
                 //$("#count_line_item").val(json.Count);
                 //json.Issue_Discounts[0]['Total_Issue']
                 var issue_discount_new = 0;
@@ -570,10 +568,10 @@ function populate_issues_transaction(uid) {
                     issue_discount_new = json.Count;
                 }
 
-                console.log("Transaction ID: " + {{ $transaction_uid[0]->transaction_id }});
-                console.log("Mag UID: " + json.Mag_Uid);
-                console.log("Line Issue Count: " + issue_discount_new);
-                console.log("Trans Num: " + '{{ $booking_trans_num[0]->trans_num }}');
+                {{--console.log("Transaction ID: " + {{ $transaction_uid[0]->transaction_id }});--}}
+                {{--console.log("Mag UID: " + json.Mag_Uid);--}}
+                {{--console.log("Line Issue Count: " + issue_discount_new);--}}
+                {{--console.log("Trans Num: " + '{{ $booking_trans_num[0]->trans_num }}');--}}
 
                 $("#mag_id_for_discount").val(json.Mag_Uid);
                 $("#line_issue_count").val(issue_discount_new);
@@ -601,11 +599,17 @@ function populate_issues_transaction(uid) {
                     html_thmb += "<td style='text-align: center;'> "+tran.line_item_qty+"</td>";
 
                     var discount = 0;
+                    var qty_discount = tran.total_discount_by_percent;
                     var new_price = tran.total_amount_with_discount;
+                    if(qty_discount == null) {
+                        new_price = tran.sub_total_amount;
+                    }
+
                     if(is_member > 0) {
                         discount = new_price * 0.15;
                         new_price = new_price - (new_price * 0.15);
                     }
+
                     html_thmb += "<td style='text-align: center;'> Member: "+numeral(discount).format('0,0.00')+"</td>";
 
                     var n_status = "Void";
@@ -660,7 +664,9 @@ function populate_issues_transaction(uid) {
                 $("#approval_discount_label").text("0%");
 
                 $('table#issue_reports > tbody').empty().prepend(html_thmb);
+
                 $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));
+
                 $.ajax({
                     url: "/booking/get_discount_transaction/" + '{{ $booking_trans_num[0]->trans_num }}',
                     dataType: "text",
