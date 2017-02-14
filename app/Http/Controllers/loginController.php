@@ -37,6 +37,7 @@ class loginController extends Controller
             "mobile" => $user_info[0]->mobile,
             "status" => $user_info[0]->status
         );
+
     }
 
     public function logout_process()

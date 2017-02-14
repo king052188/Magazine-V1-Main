@@ -225,17 +225,55 @@ class paymentController extends Controller
 
     public function invoice_list()
     {
+//        $result = DB::SELECT("
+//                        SELECT aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
+//                        FROM invoice_table as aa
+//                        INNER JOIN user_account as bb ON bb.Id = aa.account_executive
+//        ");
+
         $result = DB::SELECT("
-                        SELECT aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
-                        FROM invoice_table as aa
-                        INNER JOIN user_account as bb ON bb.Id = aa.account_executive      
+                    SELECT 
+                    aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name,
+                    (
+                        SELECT Id FROM booking_sales_table as zz WHERE zz.trans_num = aa.booking_trans
+                    ) as book_uid,
+                    (
+                        SELECT magazine_id FROM magazine_transaction_table as yy WHERE yy.transaction_id = book_uid
+                    ) as mag_id,
+                    (
+                        SELECT magazine_name FROM magazine_table as xx WHERE xx.Id = mag_id
+                    ) as mag_name
+                    FROM invoice_table as aa
+                    INNER JOIN user_account as bb ON bb.Id = aa.account_executive
         ");
 
         if($result != null)
         {
+            for($i = 0; $i < COUNT($result); $i++)
+            {
+                $ago = Carbon::parse($result[$i]->created_at)->diffForHumans();
+
+                $data[] = array(
+                    "Id" => $result[$i]->Id,
+                    "invoice_num" => $result[$i]->invoice_num,
+                    "booking_trans" => $result[$i]->booking_trans,
+                    "issue" => $result[$i]->issue,
+                    "due_date" => $result[$i]->due_date,
+                    "account_executive" => $result[$i]->account_executive,
+                    "status" => $result[$i]->status,
+                    "updated_at" => $result[$i]->updated_at,
+                    "created_at" => $result[$i]->created_at,
+                    "time_ago" => $ago,
+                    "sales_rep_name" => $result[$i]->sales_rep_name,
+                    "book_uid" => $result[$i]->book_uid,
+                    "mag_id" => $result[$i]->mag_id,
+                    "mag_name" => $result[$i]->mag_name
+                );
+            }
+
             return array(
                 "status" => 202,
-                "list" => $result
+                "list" => $data
             );
         }
 
@@ -244,23 +282,64 @@ class paymentController extends Controller
 
     public function latest_invoice_list()
     {
+//        $result = DB::SELECT("
+//                    SELECT aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
+//                    FROM invoice_table as aa
+//                    INNER JOIN user_account as bb ON bb.Id = aa.account_executive
+//                    WHERE DATE_FORMAT(aa.created_at,'%Y-%m-%d %T')
+//                    BETWEEN DATE_FORMAT(NOW(),'%Y-%m-%d 00:00:00')
+//                    AND DATE_FORMAT(NOW(),'%Y-%m-%d 11:59:59')
+//                        ");
+
         $result = DB::SELECT("
-                    SELECT aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
+                    SELECT 
+                    aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name,
+                    (
+                        SELECT Id FROM booking_sales_table as zz WHERE zz.trans_num = aa.booking_trans
+                    ) as book_uid,
+                    (
+                        SELECT magazine_id FROM magazine_transaction_table as yy WHERE yy.transaction_id = book_uid
+                    ) as mag_id,
+                    (
+                        SELECT magazine_name FROM magazine_table as xx WHERE xx.Id = mag_id
+                    ) as mag_name
                     FROM invoice_table as aa
                     INNER JOIN user_account as bb ON bb.Id = aa.account_executive
-                    WHERE DATE_FORMAT(aa.created_at,'%Y-%m-%d %T') 
-                    BETWEEN DATE_FORMAT(NOW(),'%Y-%m-%d 00:00:00')
-                    AND DATE_FORMAT(NOW(),'%Y-%m-%d 11:59:59')
-                        ");
+        ");
 
         if($result != null)
         {
+
+
+            for($i = 0; $i < COUNT($result); $i++)
+            {
+                $ago = Carbon::parse($result[$i]->created_at)->diffForHumans();
+
+                $data[] = array(
+                    "Id" => $result[$i]->Id,
+                    "invoice_num" => $result[$i]->invoice_num,
+                    "booking_trans" => $result[$i]->booking_trans,
+                    "issue" => $result[$i]->issue,
+                    "due_date" => $result[$i]->due_date,
+                    "account_executive" => $result[$i]->account_executive,
+                    "status" => $result[$i]->status,
+                    "updated_at" => $result[$i]->updated_at,
+                    "created_at" => $result[$i]->created_at,
+                    "time_ago" => $ago,
+                    "sales_rep_name" => $result[$i]->sales_rep_name,
+                    "book_uid" => $result[$i]->book_uid,
+                    "mag_id" => $result[$i]->mag_id,
+                    "mag_name" => $result[$i]->mag_name
+                );
+            }
+
             return array(
                 "status" => 202,
-                "list" => $result
+                "list" => $data
             );
         }
 
+//        $.cookie("Id",mem.Id,{expires: 365});
         return array("status" => 404, "description" => "No Result Found!");
     }
 

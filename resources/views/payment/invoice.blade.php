@@ -62,6 +62,7 @@
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Year</label><br/>
                                             <select class='form-control' name='generate_year' id = 'generate_year' style="background-color: #2f4050; color: #FFFFFF; width: 150px; height: 30px;" required>
+                                                <option value="0">Select</option>
                                                 @for($i = date('Y'); $i > date('Y') - 10; $i--)
                                                     <option value='{{ $i }}'>{{ $i }}</option>
                                                 @endfor
@@ -71,6 +72,7 @@
                                         <div class="form-group" style="margin-right: 10px;">
                                             <label class="filter-col" style="margin-right:0;" for="pref-search">Issue</label><br/>
                                             <select class='form-control' name='generate_issue' id = 'generate_issue' style="background-color: #2f4050; color: #FFFFFF; width: 100px; height: 30px;" required>
+                                                <option value="0">Select</option>
                                                 @for($i = 1; $i < 13; $i++)
                                                     <option value='{{ $i }}'>{{ $i }}</option>
                                                 @endfor
@@ -97,8 +99,8 @@
                         <div class="table-responsive">
                             <div class="tabs-container">
                                 <ul class="nav nav-tabs">
-                                    <li class="active"><a data-toggle="tab" href="#all_invoice" id = "all_invoice_press"> All Invoices</a></li>
-                                    <li class=""><a data-toggle="tab" href="#latest_invoice" id = "latest_invoice_press"> Latest 24 hours Invoices</a></li>
+                                    <li class="active" id = "all_invoices_tab"><a data-toggle="tab" href="#all_invoice" id = "all_invoice_press"> All Invoices</a></li>
+                                    <li class="" id = "latest_invoice_tab" style = "display: none;"><a data-toggle="tab" href="#latest_invoice" id = "latest_invoice_press"> Latest Invoices </a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div id="latest_invoice" class="tab-pane">
@@ -106,10 +108,11 @@
                                             <thead>
                                                 <tr>
                                                     <th style='text-align: center; width: 150px;'>Invoice #</th>
+                                                    <th style='text-align: center; width: 150px;'>Publication</th>
                                                     <th style='text-align: center; width: 100px;'>Issue</th>
                                                     <th style='text-align: center; width: 100px;'>Year</th>
                                                     <th style='text-align: center;'>Executive Account</th>
-                                                    <th style='text-align: center; width: 150px;'>Invoice Created</th>
+                                                    <th style='text-align: center; width: 200px;'>Invoice Created</th>
                                                     <th style='text-align: center; width: 150px;'>Due Date</th>
                                                     <th style='text-align: center; width: 80px;'>Action</th>
                                                 </tr>
@@ -122,10 +125,11 @@
                                             <thead>
                                                 <tr>
                                                     <th style='text-align: center; width: 150px;'>Invoice #</th>
+                                                    <th style='text-align: center; width: 150px;'>Publication</th>
                                                     <th style='text-align: center; width: 100px;'>Issue</th>
                                                     <th style='text-align: center; width: 100px;'>Year</th>
                                                     <th style='text-align: center;'>Executive Account</th>
-                                                    <th style='text-align: center; width: 150px;'>Invoice Created</th>
+                                                    <th style='text-align: center; width: 200px;'>Invoice Created</th>
                                                     <th style='text-align: center; width: 150px;'>Due Date</th>
                                                     <th style='text-align: center; width: 80px;'>Action</th>
                                                 </tr>
@@ -230,11 +234,12 @@
 
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.mag_name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
                             var get_created_date = stripped_date_time(tran.created_at);
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[0] +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] + " | " + tran.time_ago +"</td>";
 
                             var get_due_date = stripped_date_time(tran.created_at);
                             html_thmb += "<td style='text-align: center;'>"+ get_due_date[1] +"</td>";
@@ -270,12 +275,14 @@
                         $(json.list).each(function(i, tran){
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.mag_name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
-
                             var get_created_date = stripped_date_time(tran.created_at);
+                            console.log(get_created_date);
+
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[0] +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
-                            html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] + " | " + tran.time_ago +"</td>";
 
                             var get_due_date = stripped_date_time(tran.due_date);
                             html_thmb += "<td style='text-align: center;'>"+ get_due_date[1] +"</td>";
@@ -305,37 +312,53 @@
                 var generate_company_name = $("#company_name").val();
                 var generate_magazine_name = $("#magazine_name").val();
 
-                $.ajax({
-                    url: "/payment/invoice/generate/" + generate_issue + "/" + generate_year + "/" + generate_company_name + "/" + generate_magazine_name,
-                    dataType: "text",
-                    beforeSend: function () {
+                if(generate_year == 0 || generate_issue == 0)
+                {
+                    swal(
+                            '',
+                            'Required Year and Issue.',
+                            'warning'
+                    )
 
-                    },
-                    success: function(data) {
-                        var json = $.parseJSON(data);
-                        if(json == null)
-                            return false;
+                    return false;
+                }
+                else
+                {
+                    $.ajax({
+                        url: "/payment/invoice/generate/" + generate_issue + "/" + generate_year + "/" + generate_company_name + "/" + generate_magazine_name,
+                        dataType: "text",
+                        beforeSend: function () {
 
-                        if(json.status == 202)
-                        {
-                            swal(
-                                    '',
-                                    'Generating Invoice Number has been done.',
-                                    'success'
-                            )
+                        },
+                        success: function(data) {
+                            var json = $.parseJSON(data);
+                            if(json == null)
+                                return false;
 
-                            populate_invoice_list();
+                            if(json.status == 202)
+                            {
+                                swal(
+                                        '',
+                                        'Generating Invoice Number has been done.',
+                                        'success'
+                                )
+
+                                $("#all_invoices_tab").removeClass("active");
+                                $("#latest_invoice_tab").addClass("active");
+                                $("#latest_invoice_tab").show();
+                                populate_invoice_list();
+                            }
+                            else if(json.status == 404)
+                            {
+                                swal(
+                                        '',
+                                        'No Available Invoice.',
+                                        'error'
+                                )
+                            }
                         }
-                        else if(json.status == 404)
-                        {
-                            swal(
-                                    '',
-                                    'No Available Invoice.',
-                                    'error'
-                            )
-                        }
-                    }
-                });
+                    });
+                }
             });
 
             $(document).on("click",".view_invoice",function() {
