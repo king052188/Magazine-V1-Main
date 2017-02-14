@@ -235,14 +235,13 @@ class paymentController extends Controller
                     SELECT 
                     aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name,
                     (
-                        SELECT Id FROM booking_sales_table as zz WHERE zz.trans_num = aa.booking_trans
-                    ) as book_uid,
-                    (
-                        SELECT magazine_id FROM magazine_transaction_table as yy WHERE yy.transaction_id = book_uid
-                    ) as mag_id,
-                    (
-                        SELECT magazine_name FROM magazine_table as xx WHERE xx.Id = mag_id
-                    ) as mag_name
+                        SELECT magazine_name 
+                        FROM magazine_table as xx
+                        INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
+                        INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
+                        WHERE zz.trans_num = aa.booking_trans
+                    ) 
+                    as mag_name
                     FROM invoice_table as aa
                     INNER JOIN user_account as bb ON bb.Id = aa.account_executive
         ");
@@ -265,8 +264,6 @@ class paymentController extends Controller
                     "created_at" => $result[$i]->created_at,
                     "time_ago" => $ago,
                     "sales_rep_name" => $result[$i]->sales_rep_name,
-                    "book_uid" => $result[$i]->book_uid,
-                    "mag_id" => $result[$i]->mag_id,
                     "mag_name" => $result[$i]->mag_name
                 );
             }
@@ -282,35 +279,24 @@ class paymentController extends Controller
 
     public function latest_invoice_list()
     {
-//        $result = DB::SELECT("
-//                    SELECT aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
-//                    FROM invoice_table as aa
-//                    INNER JOIN user_account as bb ON bb.Id = aa.account_executive
-//                    WHERE DATE_FORMAT(aa.created_at,'%Y-%m-%d %T')
-//                    BETWEEN DATE_FORMAT(NOW(),'%Y-%m-%d 00:00:00')
-//                    AND DATE_FORMAT(NOW(),'%Y-%m-%d 11:59:59')
-//                        ");
 
         $result = DB::SELECT("
                     SELECT 
                     aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name,
                     (
-                        SELECT Id FROM booking_sales_table as zz WHERE zz.trans_num = aa.booking_trans
-                    ) as book_uid,
-                    (
-                        SELECT magazine_id FROM magazine_transaction_table as yy WHERE yy.transaction_id = book_uid
-                    ) as mag_id,
-                    (
-                        SELECT magazine_name FROM magazine_table as xx WHERE xx.Id = mag_id
-                    ) as mag_name
+                        SELECT magazine_name 
+                        FROM magazine_table as xx
+                        INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
+                        INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
+                        WHERE zz.trans_num = aa.booking_trans
+                    ) 
+                    as mag_name
                     FROM invoice_table as aa
                     INNER JOIN user_account as bb ON bb.Id = aa.account_executive
         ");
 
         if($result != null)
         {
-
-
             for($i = 0; $i < COUNT($result); $i++)
             {
                 $ago = Carbon::parse($result[$i]->created_at)->diffForHumans();
@@ -327,8 +313,6 @@ class paymentController extends Controller
                     "created_at" => $result[$i]->created_at,
                     "time_ago" => $ago,
                     "sales_rep_name" => $result[$i]->sales_rep_name,
-                    "book_uid" => $result[$i]->book_uid,
-                    "mag_id" => $result[$i]->mag_id,
                     "mag_name" => $result[$i]->mag_name
                 );
             }
