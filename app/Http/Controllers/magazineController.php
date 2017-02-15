@@ -232,7 +232,7 @@ class magazineController extends Controller
             $md->status = 2;
             $md->save();
         }
-
+        
         return redirect('/magazine/add-ad-color-and-size/'. $mag_uid)->with('success', 'Successfully Saved.');
     }
 
@@ -255,7 +255,7 @@ class magazineController extends Controller
         if($discount_3 != 0){
             $chk_3 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 3");
             if(COUNT($chk_3) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 3)->update(['percent' => $discount_2]);
+                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 3)->update(['percent' => $discount_3]);
             }else{
                 $d_3 = new MagazineIssueDiscount();
                 $d_3->magazine_id = $mag_id;

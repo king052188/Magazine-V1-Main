@@ -70,11 +70,11 @@
                     <div class="ibox float-e-margins">
                         <div class="tabs-container">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a data-toggle="tab" href="#discount_issue"> Discount Issue</a></li>
-                                <li class=""><a data-toggle="tab" href="#discount_qty"> Discount Quantity</a></li>
+                                <li class="active"><a data-toggle="tab" href="#discount_qty"> Discount Quantity</a></li>
+                                {{--<li class=""><a data-toggle="tab" href="#discount_issue"> Discount Issue</a></li>--}}
                             </ul>
                             <div class="tab-content">
-                                <div id="discount_qty" class="tab-pane">
+                                <div id="discount_qty" class="tab-pane active">
                                     <div class="ibox-title">
                                         <h5> Amount Discount by 1 or more quantity <small> </small></h5>
                                         <div class="ibox-tools">
@@ -125,51 +125,12 @@
                                                     <input id="5x_amount" type="text" placeholder="Amount" class="form-control" name="cid" readonly>
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 m-t-sm">
+
+                                            <div class="col-sm-12" style = "margin-top: 10px;">
                                                 <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                                <button class="btn btn-sm btn-primary pull-right" id = "btn_submit">Save</button>
+                                                <button class="btn btn-md btn-primary pull-left" style = "width: 100px;" id = "btn_submit">Save</button>
+                                                <a class="btn btn-md btn-warning pull-left" style = "margin-left: 5px;" data-toggle="modal" data-target="#discount_issue_modal">Add Discount Issue</a>
                                             </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div id="discount_issue" class="tab-pane active">
-                                    <div class="ibox-title">
-                                        <h5> Amount Discount by 1 or more issues <small> </small></h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="ibox-content">
-                                        <div class="row">
-                                            <div class="form-group ">
-                                                <div class="col-sm-6">
-                                                    <label>2x Percent Discount</label>
-                                                    <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_2">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label>3x Percent Discount</label>
-                                                    <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_3">
-                                                </div>
-                                            </div>
-                                            <div class="form-group ">
-                                                <div class="col-sm-6">
-                                                    <label>4x Percent Discount</label>
-                                                    <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_4">
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <label>5x Percent Discount</label>
-                                                    <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_5">
-                                                </div>
-                                            </div>
-
-                                            <div class="col-sm-12 m-t-sm">
-                                                <a class="btn btn-sm btn-primary pull-right" id = "btn_discount_issue">Save Issue</a>
-                                            </div>
-
                                         </div>
                                     </div>
                                 </div>
@@ -178,6 +139,53 @@
                     </div>
 
                 </form>
+            </div>
+
+            <div class="modal fade" id="discount_issue_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelDiscountIssue" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="exampleModalLabel">Discount Issue <small> Amount Discount by 1 or more issues </small></h4>
+
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group ">
+                                    <div class="col-sm-6">
+                                        <label>2x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_2" name = "discount_2">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>3x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_3" name = "discount_3">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="col-sm-6">
+                                        <label>4x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_4" name = "discount_4">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>5x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_5" name = "discount_5">
+                                    </div>
+                                </div>
+
+                                {{--<div class="col-sm-12 m-t-sm">--}}
+                                {{--<a class="btn btn-sm btn-primary pull-right" id = "btn_discount_issue">Save Issue</a>--}}
+                                {{--</div>--}}
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                            <button type="submit" class="btn btn-primary" id = "btn_discount_issue">Save</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="col-lg-8">
@@ -432,14 +440,12 @@
                     var json = $.parseJSON(data);
                     if(json.status == 200)
                     {
+                        $('#discount_issue_modal').modal('hide');
+
                         swal(
                             '',
                             'Add Successful',
                             'success'
-                        ).then(
-                                function () {
-                                    location.reload();
-                                }
                         )
                     }
                 }
