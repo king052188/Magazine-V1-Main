@@ -508,7 +508,19 @@
         $.ajax({
             url: "/magazine/get-discount-issue/" + m_uid,
             dataType: "text",
-            beforeSend: function(){},
+            beforeSend: function(){
+                $('#discount_2').val("Fetching...");
+                $('#discount_3').val("Fetching...");
+                $('#discount_4').val("Fetching...");
+                $('#discount_5').val("Fetching...");
+                $('#discount_6').val("Fetching...");
+                $('#discount_7').val("Fetching...");
+                $('#discount_8').val("Fetching...");
+                $('#discount_9').val("Fetching...");
+                $('#discount_10').val("Fetching...");
+                $('#discount_11').val("Fetching...");
+                $('#discount_12').val("Fetching...");
+            },
             success: function(data){
                 var json = $.parseJSON(data);
 
@@ -527,6 +539,27 @@
                         }
                         if(tran.type == 5){
                             $('#discount_5').val(tran.percent);
+                        }
+                        if(tran.type == 6){
+                            $('#discount_6').val(tran.percent);
+                        }
+                        if(tran.type == 7){
+                            $('#discount_7').val(tran.percent);
+                        }
+                        if(tran.type == 8){
+                            $('#discount_8').val(tran.percent);
+                        }
+                        if(tran.type == 9){
+                            $('#discount_9').val(tran.percent);
+                        }
+                        if(tran.type == 10){
+                            $('#discount_10').val(tran.percent);
+                        }
+                        if(tran.type == 11){
+                            $('#discount_11').val(tran.percent);
+                        }
+                        if(tran.type == 12){
+                            $('#discount_12').val(tran.percent);
                         }
                     });
                 }
