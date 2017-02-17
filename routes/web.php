@@ -70,7 +70,7 @@ Route::post('/magazine/company/save', 'magazineController@save_company');
 Route::get('/magazine/company/get_company', 'magazineController@get_company');
 Route::get('/magazine/company/get_country/{company_uid}', 'magazineController@get_country');
 Route::post('/magazine/add-color-size-discount/{mag_uid}', 'magazineController@add_color_size_discount');
-Route::get('/magazine/add-issue-discount/{mag_id}/{discount_2}/{discount_3}/{discount_4}/{discount_5}', 'magazineController@add_issue_discount');
+Route::get('/magazine/add-issue-discount/{mag_id}/{discount_2}/{discount_3}/{discount_4}/{discount_5}/{discount_6}/{discount_7}/{discount_8}/{discount_9}/{discount_10}/{discount_11}/{discount_12}', 'magazineController@add_issue_discount');
 Route::get('/magazine/update/{magazine_uid}', 'magazineController@magazine_update');
 Route::get('/magazine/get-discount-issue/{mag_uid}', 'magazineController@get_discount_issue');
 //Route::post('/magazine/update/save', 'magazineController@magazine_update_save');
@@ -132,7 +132,7 @@ Route::get('/payment/view/transaction/{inv_num}/{line_item}', 'paymentController
 Route::get('/payment/invoice/generate/{generate_issue}/{generate_year}/{generate_company_name}/{generate_magazine_name}', 'paymentController@invoice_generate');
 Route::get('/payment/invoice', 'paymentController@invoice');
 Route::get('/payment/invoice/list', 'paymentController@invoice_list');
-Route::get('/payment/latest/invoice/list', 'paymentController@latest_invoice_list');
+Route::get('/payment/latest/invoice/list/{generate_issue}/{generate_year}/{generate_company_name}/{generate_magazine_name}', 'paymentController@latest_invoice_list');
 
 
 // Search Routes

@@ -11,7 +11,7 @@
 @section('magazine_content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-8">
-            <h2>Magazine</h2>
+            <h2>{{ $mag[0]['magazine_name'] }}</h2>
             <ol class="breadcrumb">
                 <li class="active">
                     <strong>Add Ad Colors & Sizes</strong>
@@ -148,7 +148,7 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h4 class="modal-title" id="exampleModalLabel">Discount Issue <small> Amount Discount by 1 or more issues </small></h4>
+                            <h4 class="modal-title" id="exampleModalLabel">Discount Issue s<small> Amount Discount by 1 or more issues </small></h4>
 
                         </div>
                         <div class="modal-body">
@@ -164,16 +164,51 @@
                                     </div>
                                 </div>
                                 <div class="form-group ">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>4x Percent Discount</label>
                                         <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_4" name = "discount_4">
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>5x Percent Discount</label>
                                         <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_5" name = "discount_5">
                                     </div>
                                 </div>
-
+                                <div class="form-group ">
+                                    <div class="col-sm-6" style = "margin-top: 10px;">
+                                        <label>6x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_6" name = "discount_6">
+                                    </div>
+                                    <div class="col-sm-6" style = "margin-top: 10px;">
+                                        <label>7x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_7" name = "discount_7">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="col-sm-6" style = "margin-top: 10px;">
+                                        <label>8x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_8" name = "discount_8">
+                                    </div>
+                                    <div class="col-sm-6" style = "margin-top: 10px;">
+                                        <label>9x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_9" name = "discount_9">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="col-sm-6" style = "margin-top: 10px;">
+                                        <label>10x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_10" name = "discount_10">
+                                    </div>
+                                    <div class="col-sm-6" style = "margin-top: 10px;">
+                                        <label>11x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_11" name = "discount_11">
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <div class="col-sm-6" style = "margin-top: 10px;">
+                                        <label>12x Percent Discount</label>
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_12" name = "discount_12">
+                                    </div>
+                                </div>
                                 {{--<div class="col-sm-12 m-t-sm">--}}
                                 {{--<a class="btn btn-sm btn-primary pull-right" id = "btn_discount_issue">Save Issue</a>--}}
                                 {{--</div>--}}
@@ -420,20 +455,34 @@
             var d_3 = $("#discount_3").val();
             var d_4 = $("#discount_4").val();
             var d_5 = $("#discount_5").val();
+            var d_6 = $("#discount_6").val();
+            var d_7 = $("#discount_7").val();
+            var d_8 = $("#discount_8").val();
+            var d_9 = $("#discount_9").val();
+            var d_10 = $("#discount_10").val();
+            var d_11 = $("#discount_11").val();
+            var d_12 = $("#discount_12").val();
 
             if(d_2 == ""){ d_2 = 0;}
             if(d_3 == ""){ d_3 = 0;}
             if(d_4 == ""){ d_4 = 0;}
             if(d_5 == ""){ d_5 = 0;}
+            if(d_6 == ""){ d_6 = 0;}
+            if(d_7 == ""){ d_7 = 0;}
+            if(d_8 == ""){ d_8 = 0;}
+            if(d_9 == ""){ d_9 = 0;}
+            if(d_10 == ""){ d_10 = 0;}
+            if(d_11 == ""){ d_11 = 0;}
+            if(d_12 == ""){ d_12 = 0;}
 
-            console.log({{ $mag_uid }});
-            console.log(d_2);
-            console.log(d_3);
-            console.log(d_4);
-            console.log(d_5);
+            {{--console.log({{ $mag_uid }});--}}
+            {{--console.log(d_2);--}}
+            {{--console.log(d_3);--}}
+            {{--console.log(d_4);--}}
+            {{--console.log(d_5);--}}
 
             $.ajax({
-                url: "/magazine/add-issue-discount/" + {{ $mag_uid }} + "/" + d_2 + "/" + d_3 + "/" + d_4 + "/" + d_5,
+                url: "/magazine/add-issue-discount/" + {{ $mag_uid }} + "/" + d_2 + "/" + d_3 + "/" + d_4 + "/" + d_5 + "/" + d_6 + "/" + d_7 + "/" + d_8 + "/" + d_9 + "/" + d_10 + "/" + d_11 + "/" + d_12,
                 dataType: "text",
                 beforeSend: function(){},
                 success: function(data){

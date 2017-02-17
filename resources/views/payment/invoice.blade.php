@@ -203,9 +203,9 @@
                 $("#btn_generate_invoice_container").hide();
             });
 
-            $("#latest_invoice_press").click(function(){
-                populate_latest_invoice_list();
-            });
+//            $("#latest_invoice_press").click(function(){
+//                populate_latest_invoice_list();
+//            });
 
             $("#all_invoice_press").click(function(){
                 populate_invoice_list();
@@ -255,11 +255,11 @@
                 });
             }
 
-            function populate_latest_invoice_list(){
+            function populate_latest_invoice_list(generate_issue, generate_year, generate_company_name, generate_magazine_name){
                 var html_thmb = "";
                 var isFirstLoad = true;
                 $.ajax({
-                    url: "/payment/latest/invoice/list",
+                    url: "/payment/latest/invoice/list/" + generate_issue + "/" + generate_year + "/" + generate_company_name + "/" + generate_magazine_name,
                     dataType: "text",
                     beforeSend: function () {
                         if(isFirstLoad) {
@@ -344,9 +344,13 @@
                                 )
 
                                 $("#all_invoices_tab").removeClass("active");
+                                $("#all_invoice").removeClass("active");
+
                                 $("#latest_invoice_tab").addClass("active");
+                                $("#latest_invoice").addClass("active");
+
                                 $("#latest_invoice_tab").show();
-                                populate_invoice_list();
+                                populate_latest_invoice_list(json.generate_issue, json.generate_year, json.generate_company_name, json.generate_magazine_name);
                             }
                             else if(json.status == 404)
                             {

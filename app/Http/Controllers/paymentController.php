@@ -277,9 +277,40 @@ class paymentController extends Controller
         return array("status" => 404, "description" => "No Result Found!");
     }
 
-    public function latest_invoice_list()
+    public function latest_invoice_list($generate_issue, $generate_year, $generate_company_name, $generate_magazine_name)
     {
+        if($generate_company_name != 0){
+            //$client_name = " AND zz.client_id = {$generate_company_name}";
+            $client_name = "
+                AND
+                (
+                    SELECT client_id 
+                    FROM magazine_table as xx
+                    INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
+                    INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
+                    WHERE zz.trans_num = aa.booking_trans
+                ) = {$generate_company_name}
+            ";
 
+        }else{
+            $client_name = "";
+        }
+
+        if($generate_magazine_name != 0){
+            //$magazine_name = " AND yy.magazine_id = {$generate_magazine_name}";
+            $magazine_name = " 
+                AND
+                (
+                    SELECT magazine_id 
+                    FROM magazine_table as xx
+                    INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
+                    INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
+                    WHERE zz.trans_num = aa.booking_trans
+                ) = {$generate_magazine_name}
+            ";
+        }else{
+            $magazine_name = "";
+        }
         $result = DB::SELECT("
                     SELECT 
                     aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name,
@@ -293,6 +324,12 @@ class paymentController extends Controller
                     as mag_name
                     FROM invoice_table as aa
                     INNER JOIN user_account as bb ON bb.Id = aa.account_executive
+                    WHERE DATE_FORMAT(aa.created_at,'%Y-%m-%d %T')
+                    BETWEEN DATE_FORMAT(NOW(),'%Y-%m-%d 00:00:00')
+                    AND DATE_FORMAT(NOW(),'%Y-%m-%d 11:59:59')
+                    AND aa.issue = {$generate_issue}
+                    AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year}
+                    $client_name $magazine_name
         ");
 
         if($result != null)
@@ -353,6 +390,8 @@ class paymentController extends Controller
             $magazine_name = "";
         }
 
+        //$chk_issue_existing = DB::SELECT("SELECT * FROM invoice_table WHERE booking_trans = {}");
+
         $process = DB::SELECT("
                         SELECT
                         aa.Id as r_uid, cc.trans_num as r_trans_num, cc.sales_rep_code as r_sales_rep_code
@@ -360,7 +399,7 @@ class paymentController extends Controller
                         magazine_issue_transaction_table as aa
                         INNER JOIN magazine_transaction_table as bb ON bb.Id = aa.magazine_trans_id
                         INNER JOIN booking_sales_table as cc ON cc.Id = bb.transaction_id
-                        WHERE aa.quarter_issued = {$quarter_issue} AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year} $client_name $magazine_name AND cc.status = 3 AND aa.status = 2
+                        WHERE aa.quarter_issued = {$quarter_issue} AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year} $client_name $magazine_name AND cc.status IN (3, 6) AND aa.status = 2
                         ");
 
         if(COUNT($process) == 0)
@@ -401,7 +440,14 @@ class paymentController extends Controller
                 }
             }
 
-            return array("status" => 202, "description" => "Invoice Successfully Generated.");
+            return array(
+                "status" => 202,
+                "description" => "Invoice Successfully Generated.",
+                "generate_issue" => $generate_issue,
+                "generate_year" => $generate_year,
+                "generate_company_name" => $generate_company_name,
+                "generate_magazine_name" => $generate_magazine_name
+            );
         }
     }
 }

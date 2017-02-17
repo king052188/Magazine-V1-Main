@@ -93,6 +93,7 @@ class bookingController extends Controller
         $filter_client = (int)$filter_client;
         $filter_status = (int)$filter_status;
 
+
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
@@ -119,7 +120,7 @@ class bookingController extends Controller
         }
 
         if($filter_client != 0){
-            $filter_client_tran = "booked.client_id = {$filter_sales_rep}";
+            $filter_client_tran = "booked.client_id = {$filter_client}";
         }else{
             $filter_client_tran = "booked.client_id LIKE '%'";
         }
@@ -180,7 +181,6 @@ class bookingController extends Controller
             {$filter_process}
             
             ");
-
 
         $publication = DB::table('magazine_table')->where('status', '=', 2)->get();
         $clients = DB::table('client_table')->where('status', '=', 2)->get();
