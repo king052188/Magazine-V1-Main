@@ -509,17 +509,6 @@
             url: "/magazine/get-discount-issue/" + m_uid,
             dataType: "text",
             beforeSend: function(){
-                $('#discount_2').val("Fetching...");
-                $('#discount_3').val("Fetching...");
-                $('#discount_4').val("Fetching...");
-                $('#discount_5').val("Fetching...");
-                $('#discount_6').val("Fetching...");
-                $('#discount_7').val("Fetching...");
-                $('#discount_8').val("Fetching...");
-                $('#discount_9').val("Fetching...");
-                $('#discount_10').val("Fetching...");
-                $('#discount_11').val("Fetching...");
-                $('#discount_12').val("Fetching...");
             },
             success: function(data){
                 var json = $.parseJSON(data);
