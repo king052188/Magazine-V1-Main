@@ -12,6 +12,7 @@ use App\MagIssueTransaction;
 use App\DiscountTransaction;
 use App\Notification;
 use App\ArtworkTable;
+use App\Notes;
 
 class bookingController extends Controller
 {
@@ -1070,5 +1071,53 @@ class bookingController extends Controller
 
         return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Discretionary Discount Declined.');
 
+    }
+
+    public function notes_save($booking_trans_num, $notes)
+    {
+        $get_sales_rep = DB::SELECT("SELECT sales_rep_code FROM booking_sales_table WHERE trans_num = '{$booking_trans_num}'");
+        if(COUNT($get_sales_rep) > 0)
+        {
+            $n = new Notes();
+            $n->book_trans = $booking_trans_num;
+            $n->sales_rep = $get_sales_rep[0]->sales_rep_code;
+            $n->notes = $notes;
+            $n->status = 2;
+            $n->save();
+
+            return array("Code" => 200, "Description" => "Success Save", "trans_num" => $booking_trans_num);
+        }
+
+    }
+
+    public function notes_get($booking_trans_num)
+    {
+        $notes_lists = DB::SELECT("
+                            SELECT aa.*,
+                             (
+                                SELECT concat_ws('',first_name, ' ', last_name) as sales_rep_name FROM user_account WHERE Id = aa.sales_rep
+                             ) as sales_rep_name
+                            FROM notes_table as aa
+                            WHERE aa.book_trans = '{$booking_trans_num}'
+                            ORDER BY aa.Id ASC
+        ");
+
+        if(COUNT($notes_lists) > 0)
+        {
+            for($i = 0; $i < COUNT($notes_lists); $i++)
+            {
+                $date_created = \Carbon\Carbon::parse($notes_lists[$i]->created_at);
+                $data[] = array(
+                    "Id" => $notes_lists[$i]->Id,
+                    "sales_rep_name" => $notes_lists[$i]->sales_rep_name,
+                    "book_trans" => $notes_lists[$i]->book_trans,
+                    "notes" => $notes_lists[$i]->notes,
+                    "created_at" => $date_created->format('F d, Y')
+                );
+            }
+            return array("Code" => 200, "Description" => "Success", "result" => $data);
+        }
+
+        return array("Code" => 404, "Description" => "No Result Found.");
     }
 }

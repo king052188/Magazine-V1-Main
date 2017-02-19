@@ -112,6 +112,8 @@ Route::get('/booking/getPackageName/{criteria_id}/{mag_uid}', 'bookingController
 Route::get('/booking/delete_issue/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@delete_issue');
 Route::post('/booking/save/discount/{booking_trans_num}/{mag_trans_uid}/{client_id}', 'bookingController@save_discount');
 Route::get('/booking/get_discount_transaction/{booking_trans_num}', 'bookingController@get_discount_transaction');
+Route::get('/booking/notes/save/{booking_trans_num}/{notes}', 'bookingController@notes_save');
+Route::get('/booking/notes/get/{booking_trans_num}', 'bookingController@notes_get');
 
 Route::post('/booking/save/artwork/{booking_trans_num}/{mag_trans_uid}/{client_id}', 'bookingController@save_artwork');
 Route::get('/booking/get_artwork/{booking_trans_num}', 'bookingController@get_artwork');

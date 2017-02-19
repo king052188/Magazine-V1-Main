@@ -6,6 +6,12 @@
 
 @section('styles')
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+    <style>
+        #notes_modal_content{
+            overflow-y: auto;
+            height: 500px;
+        }
+    </style>
 @endsection
 
 @section('magazine_content')
@@ -402,6 +408,37 @@
             </form>
         </div>
     </div>
+
+    <div class="modal fade" id="notes_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelNotes" aria-hidden="true">
+        <div class="modal-dialog modal-md" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Booking Notes <b class = "pull-right" style = "font-weight: 600; margin-right: 10px;">Booking Ref. {{ $booking_trans_num[0]->trans_num }}</b></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group" id = "notes_modal_content">
+                        <table class="table" id = "notes_lists">
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipient-name" class="form-control-label">Notes</label>
+                        <textarea class="form-control" id="txtNotes"  placeholder="Enter Your Notes" maxlength="300" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                    <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <button class="btn btn-primary" id = "btn_notes_save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection
@@ -523,7 +560,64 @@ $(document).ready(function(){
         }
     });
 
+    populate_notes('{{ $booking_trans_num[0]->trans_num }}');
+    $("#btn_notes_save").click(function(){
+        var notes = $("#txtNotes").val();
+        $.ajax({
+            url: "/booking/notes/save/" + '{{ $booking_trans_num[0]->trans_num }}' + "/" + notes,
+            dataType: 'text',
+            success: function(data)
+            {
+                var json = $.parseJSON(data);
+                if(json == null)
+                    return false;
+
+                if(json.Code == 200)
+                {
+                    $("#txtNotes").val("");
+                    populate_notes(json.trans_num);
+                }
+            }
+        });
+    });
 });
+
+function populate_notes(n_book_trans_num)
+{
+    var html_thmb = "";
+    $.ajax({
+        url: "/booking/notes/get/" + n_book_trans_num,
+        dataType: 'text',
+        success: function(data)
+        {
+            var json = $.parseJSON(data);
+            if(json == null)
+                return false;
+
+            if(json.Code == 200)
+            {
+                $(json.result).each(function(i, tran){
+                    html_thmb += "<tr>";
+                    html_thmb += "<td style='text-align: left;'>" + tran.notes;
+                    html_thmb += "<br /><br /><b style = 'margin-right: 10px;'>Sales Rep </b>" + tran.sales_rep_name;
+                    html_thmb += "<b style = 'margin-left: 50px; margin-right: 10px;'>Date </b>" + tran.created_at;
+                    html_thmb += "</td>";
+                    html_thmb += "</tr>";
+                });
+
+            }
+            else
+            {
+                html_thmb += "<tr>";
+                html_thmb += "<td style='text-align: left;'>No Notes Available<td/>";
+                html_thmb += "</tr>";
+            }
+
+
+            $('table#notes_lists > tbody').empty().prepend(html_thmb);
+        }
+    });
+}
 
 function open_preview(trans_number) {
     window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/preview",
@@ -538,6 +632,7 @@ function ConfirmDelete() {
         return false;
 }
 var trans_id = {{ $transaction_uid[0]->transaction_id }};
+console.log(trans_id);
 populate_issues_transaction(trans_id);
 function populate_issues_transaction(uid) {
     var html_thmb = "";
@@ -739,7 +834,8 @@ function populate_issues_transaction(uid) {
 
                             $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
                             $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                            $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+                            $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
+                            $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
 
 
                         }
@@ -749,12 +845,14 @@ function populate_issues_transaction(uid) {
                             if({{ $booking_trans_num[0]->status }} != 1) {
                                 $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
                                 $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
+                                $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
                             }else {
                                 $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
                                 $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>');
                                 $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary">Done</a>');
+                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
+                                $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
                             }
                         }
 
@@ -783,7 +881,8 @@ function populate_issues_transaction(uid) {
                 $('#txtAmount').val("0.00");
             }
         });
-    })
+
+    }); //add semi colon
 }
 
 function populate_get_artwork(book_trans_num) {
