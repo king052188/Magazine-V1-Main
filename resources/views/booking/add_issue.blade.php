@@ -8,8 +8,9 @@
     <link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
     <style>
         #notes_modal_content{
-            overflow-y: auto;
+            overflow-y: scroll;
             height: 500px;
+            bottom:0;
         }
     </style>
 @endsection
@@ -580,6 +581,9 @@ $(document).ready(function(){
             }
         });
     });
+
+    $("#notes_modal_content").animate({scrollTop: position}).anchor.position().top + $("#notes_modal_content").scrollTop()
+
 });
 
 function populate_notes(n_book_trans_num)

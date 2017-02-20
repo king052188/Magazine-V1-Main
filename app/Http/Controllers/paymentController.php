@@ -311,6 +311,8 @@ class paymentController extends Controller
         }else{
             $magazine_name = "";
         }
+
+
         $result = DB::SELECT("
                     SELECT 
                     aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name,
@@ -324,13 +326,14 @@ class paymentController extends Controller
                     as mag_name
                     FROM invoice_table as aa
                     INNER JOIN user_account as bb ON bb.Id = aa.account_executive
-                    WHERE DATE_FORMAT(aa.created_at,'%Y-%m-%d %T')
-                    BETWEEN DATE_FORMAT(NOW(),'%Y-%m-%d 00:00:00')
-                    AND DATE_FORMAT(NOW(),'%Y-%m-%d 11:59:59')
-                    AND aa.issue = {$generate_issue}
+                    WHERE
+                    aa.issue = {$generate_issue}
                     AND EXTRACT(YEAR FROM aa.created_at) = {$generate_year}
-                    $client_name $magazine_name
         ");
+
+//        WHERE DATE_FORMAT(aa.created_at,'%Y-%m-%d %T')
+//        BETWEEN DATE_FORMAT(NOW(),'%Y-%m-%d 00:00:00')
+//        AND DATE_FORMAT(NOW(),'%Y-%m-%d 11:59:59')
 
         if($result != null)
         {

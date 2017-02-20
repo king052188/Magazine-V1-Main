@@ -197,7 +197,7 @@
             populate_invoice_list();
 
             $("#filter_container").hide();
-            $("#btn_generate_invoice_container").click(function(){
+            $("#btn_generate_invoice").click(function(){
 //                $("#filter_container").attr("style", "display:block;");
                 $("#filter_container").show();
                 $("#btn_generate_invoice_container").hide();
@@ -264,7 +264,7 @@
                     beforeSend: function () {
                         if(isFirstLoad) {
                             isFirstLoad = false;
-                            $('table#tbl_latest_invoice_list > tbody').empty().prepend('<tr> <td colspan="7" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+                            $('table#tbl_latest_invoice_list > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
                         }
                     },
                     success: function(data) {
@@ -350,6 +350,12 @@
                                 $("#latest_invoice").addClass("active");
 
                                 $("#latest_invoice_tab").show();
+
+                                console.log(json.generate_issue);
+                                console.log(json.generate_year);
+                                console.log(json.generate_company_name);
+                                console.log(json.generate_magazine_name);
+
                                 populate_latest_invoice_list(json.generate_issue, json.generate_year, json.generate_company_name, json.generate_magazine_name);
                             }
                             else if(json.status == 404)
