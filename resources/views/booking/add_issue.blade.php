@@ -736,23 +736,30 @@ function populate_issues_transaction(uid) {
                 $("#issues_total").text(numeral(total_with_discount).format('0,0.00'));
                 $("#approval_total").text(numeral(total_with_discount).format('0,0.00'));
                 $(json.Issue_Discounts).each(function(i, issue){
-
                     if(issue.Total_Issue > 1) {
-                        var issues_discount_origin = parseFloat(issue.Total_Issue_Discount);
-                        var issues_discount = total_with_discount * issues_discount_origin;
-                        total_with_discount = total_with_discount - issues_discount;
-                        $("#issues_discount").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
-                        $("#issues_discount2").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
+                        if(issue.Total_Issue_Discount != null) {
+                            var issues_discount_origin = parseFloat(issue.Total_Issue_Discount);
+                            var issues_discount = total_with_discount * issues_discount_origin;
+                            total_with_discount = total_with_discount - issues_discount;
+                            $("#issues_discount").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
+                            $("#issues_discount2").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
 
-                        var get_percentage = issues_discount_origin * 100;
-                        $("#issues_discount_label").text(numeral(get_percentage).format('0.00') + "% Issue Discount:");
-                        $("#issues_discount_label2").text(numeral(get_percentage).format('0.00') + "% Issue Discount:");
+                            var get_percentage = issues_discount_origin * 100;
+                            $("#issues_discount_label").text(numeral(get_percentage).format('0.00') + "% Issue Discount:");
+                            $("#issues_discount_label2").text(numeral(get_percentage).format('0.00') + "% Issue Discount:");
+                        }
+                        else {
+                            $("#issues_discount").text( "(" + numeral(0).format('0,0.00') + ")");
+                            $("#issues_discount2").text( "(" + numeral(0).format('0,0.00') + ")");
+
+                            $("#issues_discount_label").text(numeral(0).format('0.00') + "% Issue Discount:");
+                            $("#issues_discount_label2").text(numeral(0).format('0.00') + "% Issue Discount:");
+                        }
                     }
                     else {
                         $("#issues_discount").text( "(" + numeral(0).format('0,0.00') + ")");
                         $("#issues_discount2").text( "(" + numeral(0).format('0,0.00') + ")");
                     }
-
                 });
 
                 //issues_discount
@@ -770,13 +777,12 @@ function populate_issues_transaction(uid) {
                         if (json.status == 202) {
 
                             $(json.result).each(function(i, discount) {
-                                i_sub_total = discount.amount;
-                                console.log(i_sub_total)
+
+                                i_sub_total = total_with_discount;
                                 i_discount = discount.discount_percent / 100;
                                 i_total_less_discount = (i_sub_total * i_discount);
                                 i_total = i_sub_total - i_total_less_discount;
-                                console.log(i_total_less_discount)
-;
+
                                 if(Role > 1) {
 
                                     $("#discretionary_discount").text( "(" + numeral(i_total_less_discount).format('0.00') + ")");
@@ -836,7 +842,6 @@ function populate_issues_transaction(uid) {
                             $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                             $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
                             $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
-
 
                         }
                         else {
