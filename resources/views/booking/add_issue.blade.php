@@ -582,7 +582,7 @@ $(document).ready(function(){
         });
     });
 
-    $("#notes_modal_content").animate({scrollTop: position}).anchor.position().top + $("#notes_modal_content").scrollTop()
+    //$("#notes_modal_content").animate({scrollTop: position}).anchor.position().top + $("#notes_modal_content").scrollTop()
 
 });
 
