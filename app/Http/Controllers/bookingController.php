@@ -1075,18 +1075,20 @@ class bookingController extends Controller
 
     public function notes_save($booking_trans_num, $notes)
     {
-        $get_sales_rep = DB::SELECT("SELECT sales_rep_code FROM booking_sales_table WHERE trans_num = '{$booking_trans_num}'");
-        if(COUNT($get_sales_rep) > 0)
-        {
-            $n = new Notes();
-            $n->book_trans = $booking_trans_num;
-            $n->sales_rep = $get_sales_rep[0]->sales_rep_code;
-            $n->notes = $notes;
-            $n->status = 2;
-            $n->save();
+//        $get_sales_rep = DB::SELECT("SELECT sales_rep_code FROM booking_sales_table WHERE trans_num = '{$booking_trans_num}'");
+//        if(COUNT($get_sales_rep) > 0)
+//        {
+//
+//        }
 
-            return array("Code" => 200, "Description" => "Success Save", "trans_num" => $booking_trans_num);
-        }
+        $n = new Notes();
+        $n->book_trans = $booking_trans_num;
+        $n->sales_rep = $_COOKIE['Id'];
+        $n->notes = $notes;
+        $n->status = 2;
+        $n->save();
+
+        return array("Code" => 200, "Description" => "Success Save", "trans_num" => $booking_trans_num);
 
     }
 

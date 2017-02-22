@@ -10,7 +10,7 @@
         #notes_modal_content{
             overflow-y: scroll;
             height: 500px;
-            bottom:0;
+            max-height:500px;
         }
     </style>
 @endsection
@@ -460,6 +460,7 @@
 var is_member = {{ $is_member[0]->is_member }};
 
 $(document).ready(function(){
+
     var client_id = {{ $client_id }};
     var trans_status = {{ $booking_trans_num[0]->status }};
     if(trans_status != 1) {
@@ -607,6 +608,9 @@ function populate_notes(n_book_trans_num)
                     html_thmb += "<b style = 'margin-left: 50px; margin-right: 10px;'>Date </b>" + tran.created_at;
                     html_thmb += "</td>";
                     html_thmb += "</tr>";
+
+                    $("#notes_modal_content").animate({ scrollTop: $(document).height() }, "slow");
+                    //return false;
                 });
 
             }
