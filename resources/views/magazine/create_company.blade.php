@@ -348,6 +348,13 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
+
+
+            function receiveMessage()
+            {
+                console.log("dsadsa");
+            }
+
             $("#tbl_publisher > tbody  > tr").change(function(){
                 var value =  $(this).find('select:first').val();
                 var values = value.split(":");

@@ -108,7 +108,7 @@
                                     $url_api = $assembly::get_reports_api();
                                     $logo_uploader_url = 'http://'. $url_api["Url_Logo_Uploader"] .'type=MAGAZINE&uid='. $logo_uid['id_magazine'];
                                     ?>
-                                    <iframe src = "{{ $logo_uploader_url }}" style="width: 100%; height: 375px" frameborder="0" scrolling="no"> </iframe>
+                                    <iframe src = "{{ $logo_uploader_url }}" style="width: 100%; height: 290px" frameborder="0" scrolling="no"> </iframe>
                                 </div>
                                 <a href="#" class="btn btn-primary pull-right" id="btnSave">SAVE</a>
                             </div>
