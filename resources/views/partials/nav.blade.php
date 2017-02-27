@@ -73,7 +73,7 @@
                 </ul>
             </li>
             <li>
-                <a href="/reports"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reports</span></a>
+                <a href="/sales_report/view"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reports</span></a>
             </li>
             <li class="{{ Request::is('users') || Request::is('users') ? 'active' : '' }}">
                 <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Users</span><span class="fa arrow"></span></a>
