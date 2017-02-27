@@ -5,10 +5,7 @@
 @endsection
 
 @section('styles')
-    {{--<link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">--}}
     <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
-    <link href="{{ asset('css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/plugins/daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet">
 @endsection
 
 @section('magazine_content')
@@ -69,13 +66,13 @@
                                 <option value = "5" {{ $filter_status == 5 ? "selected" : "" }}>Void</option>
                             </select>
                         </div>
-                        <div class="pull-left" id="data_5" style = "margin-left: 10px;">
-                            <label class="font-noraml">Range select</label>
-                            <div class="input-daterange input-group" id="datepicker">
-                                <input type="text" class="input-sm form-control" name="start" value="05/14/2014"/>
-                                <span class="input-group-addon">to</span>
-                                <input type="text" class="input-sm form-control" name="end" value="05/22/2014" />
-                            </div>
+                        <div class="pull-left" style = "margin-left: 30px;">
+                            <b>From:</b>
+                            <input size="16" type="date" value="" style = "background-color: #2f4050; height: 30px; color: #FFFFFF;">
+                        </div>
+                        <div class="pull-left" style = "margin-left: 10px;">
+                            <b>To</b>
+                            <input size="16" type="date" value="" style = "background-color: #2f4050; height: 30px; color: #FFFFFF;">
                         </div>
                         <div class = "pull-left" style = "margin-left: 10px;">
                             <button class="btn btn-info" id = "btn_filter_display" style = "height: 30px;"><i class="fa fa-search"></i> Search</button>
@@ -111,6 +108,7 @@
                             </table>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -119,22 +117,6 @@
 @endsection
 
 @section('scripts')
-    <!-- Data picker -->
-    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
-    <!-- Date range picker -->
-    <script src="{{ asset('/js/plugins/daterangepicker/daterangepicker.js') }}"></script>
-
-    <script>
-        $(document).ready(function(){
-            $('#data_5 .input-daterange').datepicker({
-                keyboardNavigation: false,
-                forceParse: false,
-                autoclose: true
-            });
-
-            $('input[name="daterange"]').daterangepicker();
-        });
-    </script>
 
     <!-- Chosen -->
     <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
