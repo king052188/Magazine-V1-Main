@@ -37,7 +37,6 @@
                     <ul class="nav nav-second-level collapse">
                         <li><a href="{{ url('/booking/add-booking') }}"> <span class="nav-label">Book an Ad</span></a></li>
                         <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">List of Booked Ads</span></a></li>
-                        <li><a href="/sales_report/view">Sales Reports</a></li>
                     </ul>
                 </li>
             @else
@@ -63,7 +62,6 @@
                 <ul class="nav nav-second-level collapse">
                     <li><a href="{{ url('/booking/add-booking') }}"> <span class="nav-label">Book an Ad</span></a></li>
                     <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">List of Booked Ads</span></a></li>
-                    <li><a href="/sales_report/view">Sales Reports</a></li>
                 </ul>
             </li>
 
@@ -72,11 +70,10 @@
                 <ul class="nav nav-second-level collapse">
                     <li><a href="{{ url('payment/invoice') }}"> <span class="nav-label">Invoice</span></a></li>
                     <li><a href="{{ url('payment/payment_list') }}"> <span class="nav-label">Receiving</span></a></li>
-                    <li><a href="#">Reports</a></li>
                 </ul>
             </li>
             <li>
-                <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reports</span><span class="fa arrow"></span></a>
+                <a href="/reports"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Reports</span></a>
             </li>
             <li class="{{ Request::is('users') || Request::is('users') ? 'active' : '' }}">
                 <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Users</span><span class="fa arrow"></span></a>

@@ -141,5 +141,5 @@ Route::get('/payment/latest/invoice/list/{generate_issue}/{generate_year}/{gener
 Route::get('/execute/search/booking-and-sales', 'searchController@search_function');
 
 
-Route::get('/ph/developers', 'DeveloperClass@index');
+//Route::get('/ph/developers', 'DeveloperClass@index');
 

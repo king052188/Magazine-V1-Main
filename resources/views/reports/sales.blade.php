@@ -1,231 +1,152 @@
 @extends('layout.magazine_main')
 
+@section('title')
+    Reports
+@endsection
+
 @section('styles')
-<link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">
+    {{--<link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">--}}
+    <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet">
 @endsection
 
 @section('magazine_content')
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
-        <h2>Reports</h2>
-        <ol class="breadcrumb">
-            <li>
-                <a href="index.html">Reports</a>
-            </li>
-            <li class="active">
-                <strong>Sales Report</strong>
-            </li>
-        </ol>
-    </div>
-    <div class="col-lg-2">
-
-    </div>
-</div>
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Sales Report</h5>
-                <div class="ibox-tools">
-                    <a class="collapse-link">
-                        <i class="fa fa-chevron-up"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="ibox-content">
-                <div class="table-responsive">
-                    <style>
-
-                        .trans {
-                            display: inline-block;
-                            padding: 6px 12px;
-                            margin-bottom: 0;
-                            font-weight: 400;
-                            line-height: 1.42857143;
-                            text-align: center;
-                            -ms-touch-action: manipulation;
-                            touch-action: manipulation;
-                            -webkit-user-select: none;
-                            -moz-user-select: none;
-                            -ms-user-select: none;
-                            user-select: none;
-                            background-image: none;
-                            border: 1px solid transparent;
-                            border-radius: 4px;
-                        }
-
-                        .trans_pending {
-                            background-color: #8B8B8B;
-                            border-color: #8B8B8B;
-                            color: #FFFFFF;
-                        }
-
-                        .trans_pending:hover {
-                            background-color: #ffffff;
-                            border-color: #8B8B8B;
-                            color: #8B8B8B;
-                        }
-
-                        .trans_for_approval {
-                            background-color: #D329D8;
-                            border-color: #D329D8;
-                            color: #FFFFFF;
-                        }
-
-                        .trans_for_approval:hover {
-                            background-color: #FFFFFF;
-                            border-color: #D329D8;
-                            color: #D329D8;
-                        }
-
-                        .trans_approved {
-                            background-color: #3FD127;
-                            border-color: #3FD127;
-                            color: #FFFFFF;
-                        }
-
-                        .trans_approved:hover {
-                            background-color: #FFFFFF;
-                            border-color: #3FD127;
-                            color: #3FD127;
-                        }
-
-                        .trans_declined_void {
-                            background-color: #D83C2F;
-                            border-color: #D83C2F;
-                            color: #FFFFFF;
-                        }
-
-                        .trans_declined_void:hover {
-                            background-color: #FFFFFF;
-                            border-color: #D83C2F;
-                            color: #D83C2F;
-                        }
-
-                    </style>
-                    <script type="text/javascript" src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
-                    <script>
-
-                        var isFirstLoad = true;
-
-                        populate_sales_report();
-
-                        function populate_sales_report() {
-
-                            $(document).ready( function() {
-
-                                var html_thmb = null;
-
-                                $.ajax({
-                                    url: "http://"+report_url_api+"/kpa/work/booking-sales-report",
-                                    dataType: "text",
-                                    beforeSend: function () {
-                                        if(isFirstLoad) {
-                                            isFirstLoad = false;
-                                            $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
-                                        }
-                                    },
-                                    success: function(data) {
-                                        var json = $.parseJSON(data);
-
-                                        if(json == null)
-                                            return false;
-
-                                        if(json.Status == 404) {
-                                            $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8">' + json.Message + '</td> </tr>');
-                                            return;
-                                        }
-
-                                        var item_count = 1;
-                                        $(json.Data).each(function(i, tran){
-
-                                            html_thmb += "<tr>";
-                                            html_thmb += "<td style='text-align: center;'>"+item_count+"</td>";
-                                            html_thmb += "<td style='text-align: left;'>"+tran.trans_num+"</td>";
-                                            html_thmb += "<td style='text-align: left;'>"+tran.sales_rep_name+"</td>";
-                                            html_thmb += "<td style='text-align: left;'>"+tran.client_name+"</td>";
-                                            var agency = tran.agency_name == null ? "NONE" : tran.agency_name;
-                                            html_thmb += "<td style='text-align: left;'>"+agency+"</td>";
-                                            html_thmb += "<td style='text-align: center;'>"+tran.number_of_issue+"</td>";
-                                            html_thmb += "<td style='text-align: right;'>"+ numeral(tran.total_amount).format('0,0.00')+"</td>";
-
-                                            var n_status = "Void";
-                                            var p_status = parseInt(tran.status);
-
-                                            if(p_status == 1) {
-                                                n_status = "Pending";
-                                                html_thmb += "<td style='text-align: left;'> <span class='trans trans_pending'>"+n_status+"</span> </td>";
-                                            }
-                                            else if(p_status == 2) {
-                                                n_status = "For Approval";
-                                                html_thmb += "<td style='text-align: left;'> <span class='trans trans_for_approval'>"+n_status+"</span> </td>";
-                                            }
-                                            else if(p_status == 3) {
-                                                n_status = "Approved";
-                                                html_thmb += "<td style='text-align: left;'> <span class='trans trans_approved'>"+n_status+"</span> </td>";
-                                            }
-                                            else {
-                                                n_status = "Void";
-                                                html_thmb += "<td style='text-align: left;'> <span class='trans trans_declined_void'>"+n_status+"</span> </td>";
-                                            }
-
-
-                                            html_thmb += "</tr>";
-
-                                            item_count++;
-                                        });
-
-                                        $('table#issue_reports > tbody').empty().prepend(html_thmb);
-                                    }
-                                });
-                            } );
-
-                        }
-
-                        setInterval(populate_sales_report, 2000);
-
-                    </script>
-                    <section class="panel">
-                        <table class="table table-striped table-bordered table-hover SalesListdataTables" id="issue_reports">
-                            <thead>
-                            <tr>
-                                <th style='text-align: center;'>#</th>
-                                <th style='text-align: left;'>TRANS#</th>
-                                <th style='text-align: left;'>SALES</th>
-                                <th style='text-align: left;'>CLIENT</th>
-                                <th style='text-align: left;'>AGENCY</th>
-                                <th style='text-align: center;'>LINE ITEM</th>
-                                <th style='text-align: right;'>TOTAL AMOUNT</th>
-                                <th style='text-align: left;'>STATUS</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-                    </section>
-                </div>
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-lg-8">
+            <h2>Reports</h2>
+            <ol class="breadcrumb">
+                <li class="active">
+                    <strong>Generate your reports</strong>
+                </li>
+            </ol>
+        </div>
+        <div class="col-sm-4">
+            <div class="title-action">
+                {{--<a href="/booking/add-booking" class="btn btn-primary">Add New Booking</a>--}}
             </div>
         </div>
     </div>
-    </div>
-</div>
 
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" style="height: 65px; padding: 20px;">
+                        <h5>Filter By:</h5>
+                        <div class = "pull-left" style = "margin-left: 10px;">
+                            <select class="form-control chosen-select filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_publication">
+                                <option value = "0" {{ $filter_publication == "0" ? "selected" : "" }}>-- and/or Publication --</option>
+                                @for($i = 0; $i < COUNT($publication); $i++)
+                                    <option value = "{{ $publication[$i]->Id }}" {{ $filter_publication == $publication[$i]->Id ? "selected" : "" }}>{{ $publication[$i]->magazine_name }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        @if($_COOKIE['role'] != 3)
+                            <div class = "pull-left" style = "margin-left: 10px;">
+                                <select class="form-control filter_click" id = "filter_sales_rep" style = "background-color: #2f4050; height:30px; color: #FFFFFF;">
+                                    <option value = "0" {{ $filter_sales_rep == "0" ? "selected" : "" }}>-- and/or Sales Rep --</option>
+                                    @for($i = 0; $i < COUNT($sales_rep); $i++)
+                                        <option value = "{{ $sales_rep[$i]->Id }}" {{ $filter_sales_rep == $sales_rep[$i]->Id ? "selected" : "" }}>{{ $sales_rep[$i]->first_name . " " . $sales_rep[$i]->last_name }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                        @endif
+                        <div class = "pull-left" style = "margin-left: 10px;">
+                            <select class="form-control chosen-select filter_click" id = "filter_client">
+                                <option value = "0" {{ $filter_client == "0" ? "selected" : "" }}>-- and/or Client --</option>
+                                @for($i = 0; $i < COUNT($clients); $i++)
+                                    <option value = "{{ $clients[$i]->Id }}" {{ $filter_client == $clients[$i]->Id ? "selected" : "" }}>{{ $clients[$i]->company_name }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <div class = "pull-left" style = "margin-left: 10px;">
+                            <select class="form-control filter_click" id = "filter_status" style = "background-color: #2f4050; height: 30px; color: #FFFFFF;">
+                                <option value = "0" {{ $filter_status == 0 ? "selected" : "" }}>-- and/or Status --</option>
+                                <option value = "1" {{ $filter_status == 1 ? "selected" : "" }}>Pending</option>
+                                <option value = "2" {{ $filter_status == 2 ? "selected" : "" }}>For Approval</option>
+                                <option value = "3" {{ $filter_status == 3 ? "selected" : "" }}>Approved</option>
+                                <option value = "5" {{ $filter_status == 5 ? "selected" : "" }}>Void</option>
+                            </select>
+                        </div>
+                        <div class="pull-left" id="data_5" style = "margin-left: 10px;">
+                            <label class="font-noraml">Range select</label>
+                            <div class="input-daterange input-group" id="datepicker">
+                                <input type="text" class="input-sm form-control" name="start" value="05/14/2014"/>
+                                <span class="input-group-addon">to</span>
+                                <input type="text" class="input-sm form-control" name="end" value="05/22/2014" />
+                            </div>
+                        </div>
+                        <div class = "pull-left" style = "margin-left: 10px;">
+                            <button class="btn btn-info" id = "btn_filter_display" style = "height: 30px;"><i class="fa fa-search"></i> Search</button>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        <div class="table-responsive">
+                            <table id="tbl_booking_lists" class="footable table" data-sorting="true" data-page-size="10">
+                                <thead>
+                                <tr>
+                                    <th style='text-align: center; width: 50px;'>#</th>
+                                    <th style='text-align: center;'>Publication</th>
+                                    <th style='text-align: center; width: 150px;'>Sales</th>
+                                    <th style='text-align: center; width: 150px;'>Client</th>
+                                    <th style='text-align: center; width: 100px;'>Line Items</th>
+                                    <th style='text-align: center; width: 100px;'>Qty</th>
+                                    <th style='text-align: right; width: 100px;'>Amount</th>
+                                    <th style='text-align: center; width: 130px;'>Date Created</th>
+                                    <th style='text-align: center; width: 80px;'>Status/Action</th>
+                                    <th style='text-align: center; width: 50px;'></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="11">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
 @endsection
 
 @section('scripts')
+    <!-- Data picker -->
+    <script src="js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <!-- Date range picker -->
+    <script src="{{ asset('/js/plugins/daterangepicker/daterangepicker.js') }}"></script>
 
-<script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
-<script>
+    <script>
+        $(document).ready(function(){
+            $('#data_5 .input-daterange').datepicker({
+                keyboardNavigation: false,
+                forceParse: false,
+                autoclose: true
+            });
 
-    $(document).ready( function() {
-
-        $('.SalesListdataTables').DataTable({
-        dom: '<"html5buttons"B>lTfgitp',
-        buttons: []
+            $('input[name="daterange"]').daterangepicker();
         });
+    </script>
 
-    });
-</script>
+    <!-- Chosen -->
+    <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
+    <script>
+        var config = {
+            '.chosen-select'           : {},
+            '.chosen-select-deselect'  : {allow_single_deselect:true},
+            '.chosen-select-no-single' : {disable_search_threshold:10},
+            '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'}
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
 @endsection

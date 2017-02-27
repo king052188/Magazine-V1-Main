@@ -609,10 +609,10 @@ function populate_notes(n_book_trans_num)
                     html_thmb += "</td>";
                     html_thmb += "</tr>";
 
-                    $("#notes_modal_content").animate({ scrollTop: $(document).height() }, "slow");
-                    //return false;
                 });
 
+                $("#notes_modal_content").animate({ scrollTop: $(document).height() }, "slow");
+                //return false;
             }
             else
             {
