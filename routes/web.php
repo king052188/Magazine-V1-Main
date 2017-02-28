@@ -17,9 +17,6 @@ Route::get('/logout_process', 'loginController@logout_process');
 
 Route::get('/dashboard', 'dashboardController@dashboard');
 
-// Reports Routes
-Route::get('/sales_report/view', 'reportController@viewSalesReport');
-
 Route::get('/agency/manage/{agency_uid}', 'agencyController@agency');
 Route::get('/agency/grab_checking/{client_code}/{agency_code}/{agency_uid}', 'AgencyController@agency_grab_checking');
 Route::get('/agency/grab_save/{client_code}/{agency_code}/{agency_uid}', 'AgencyController@agency_grab_save');
@@ -136,10 +133,15 @@ Route::get('/payment/invoice', 'paymentController@invoice');
 Route::get('/payment/invoice/list', 'paymentController@invoice_list');
 Route::get('/payment/latest/invoice/list/{generate_issue}/{generate_year}/{generate_company_name}/{generate_magazine_name}', 'paymentController@latest_invoice_list');
 
-
 // Search Routes
 Route::get('/execute/search/booking-and-sales', 'searchController@search_function');
 
 
-//Route::get('/ph/developers', 'DeveloperClass@index');
+// Reports Routes
+Route::get('/sales_report/view', 'reportController@viewSalesReport');
+Route::get('/sales_report/get_filter_data/{f_publication}/{f_sales_rep}/{f_client}/{f_status}/{f_date_from}/{f_date_to}/{f_operator}', 'reportController@get_filter_data');
 
+
+
+
+//Route::get('/ph/developers', 'DeveloperClass@index');
