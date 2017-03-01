@@ -128,37 +128,43 @@ class reportController extends Controller
             
             ");
 
-        for($i = 0; $i < COUNT($booking); $i++)
+        if(COUNT($booking) > 0)
         {
-            $date_created = \Carbon\Carbon::parse($booking[$i]->created_at);
-            if($booking[$i]->status == 1){
-                $status = "Pending";
-            }elseif($booking[$i]->status == 2){
-                $status = "For Approval";
-            }elseif($booking[$i]->status == 3){
-                $status = "Approved";
-            }elseif($booking[$i]->status == 5){
-                $status = "Void";
-            }elseif($booking[$i]->status == 6){
-                $status = "Approved/Invoiced";
+            for($i = 0; $i < COUNT($booking); $i++)
+            {
+                $date_created = \Carbon\Carbon::parse($booking[$i]->created_at);
+                if($booking[$i]->status == 1){
+                    $status = "Pending";
+                }elseif($booking[$i]->status == 2){
+                    $status = "For Approval";
+                }elseif($booking[$i]->status == 3){
+                    $status = "Approved";
+                }elseif($booking[$i]->status == 5){
+                    $status = "Void";
+                }elseif($booking[$i]->status == 6){
+                    $status = "Approved/Invoiced";
+                }
+                $amount = $booking[$i]->new_amount != null ? $booking[$i]->new_amount : $booking[$i]->amount;
+
+                $booking_result[] = array(
+                    "mag_name" => $booking[$i]->mag_name,
+                    "sales_rep_name" => $booking[$i]->sales_rep_name,
+                    "client_name" => $booking[$i]->client_name,
+                    "line_item" => $booking[$i]->line_item,
+                    "qty" => $booking[$i]->qty,
+                    "new_amount" => number_format($amount, 2),
+                    "status" => $status,
+                    "created_at" => $date_created->format('F d, Y')
+
+                );
             }
-            $amount = $booking[$i]->new_amount != null ? $booking[$i]->new_amount : $booking[$i]->amount;
 
-
-            $booking_result[] = array(
-                "mag_name" => $booking[$i]->mag_name,
-                "sales_rep_name" => $booking[$i]->sales_rep_name,
-                "client_name" => $booking[$i]->client_name,
-                "line_item" => $booking[$i]->line_item,
-                "qty" => $booking[$i]->qty,
-                "new_amount" => number_format($amount, 2),
-                "status" => $status,
-                "created_at" => $date_created->format('F d, Y')
-
-            );
+            return array("Code" => 200, "data" => $booking_result);
         }
 
-        return array("Code" => 200, "data" => $booking_result);
+        $booking_result = 0;
+        return array("Code" => 404, "data" => $booking_result);
+
     }
     
 }
