@@ -6,6 +6,8 @@
 
 @section('styles')
     <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
+    <link href="{{  asset('css/plugins/dataTables/datatables.min.css')  }}" rel="stylesheet">
+    <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet">
 @endsection
 
 @section('magazine_content')
@@ -35,7 +37,7 @@
 
                     <div class="ibox-content">
                         <div class="table-responsive">
-                            <table id="tbl_booking_lists" class="footable table" data-sorting="true" data-page-size="10">
+                            <table id="tbl_booking_lists" class="table display nowrap dataTables-example" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
                                     <th style='text-align: left;'>Publication</th>
@@ -51,12 +53,6 @@
                                 <tbody>
 
                                 </tbody>
-                                <tfoot>
-                                <tr>
-                                    <td colspan="11">
-                                        <ul class="pagination pull-right"></ul>
-                                    </td>
-                                </tr>
                                 </tfoot>
                             </table>
                         </div>
@@ -186,7 +182,16 @@
             $(selector).chosen(config[selector]);
         }
     </script>
-
+    <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
+    {{--<script src="//code.jquery.com/jquery-1.12.4.js"></script>--}}
+    {{--<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>--}}
+    {{--<script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>--}}
+    {{--<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>--}}
+    {{--<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>--}}
+    {{--<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>--}}
+    {{--<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>--}}
+    {{--<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>--}}
+    {{--<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>--}}
     <script>
         $(document).ready(function(){
             //get_all_data();
@@ -238,50 +243,27 @@
 
         function get_filter_data(f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator)
         {
-            var html_thmb = "";
-            $.ajax({
-                url: "/sales_report/get_filter_data/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
-                dataType: "text",
-                beforeSend: function () {
-                    $('table#tbl_booking_lists > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
-                },
-                success: function(data) {
-                    var json = $.parseJSON(data);
+            $(".dataTables-example").DataTable().destroy();
 
-                    console.log(json);
-
-                    if(json.Code == 200)
-                    {
-                        $(json.Result).each(function(i, tran){
-
-                            var amount = tran.new_amount != null ? tran.new_amount : tran.amount;
-
-                            html_thmb += "<tr>";
-                            html_thmb += "<td style='text-align: left;'>" + tran.mag_name + "</td>";
-                            html_thmb += "<td style='text-align: left;'>" + tran.sales_rep_name + "</td>";
-                            html_thmb += "<td style='text-align: left;'>" + tran.client_name + "</td>";
-                            html_thmb += "<td style='text-align: center;'>" + tran.line_item + "</td>";
-                            html_thmb += "<td style='text-align: center;'>" + tran.qty + "</td>";
-                            html_thmb += "<td style='text-align: right;'>" + numeral(amount).format('0,0.00') + "</td>";
-                            html_thmb += "<td style='text-align: left;'>" + tran.status + "</td>";
-                            html_thmb += "<td style='text-align: center;'>" + tran.created_at + "</td>";
-                            html_thmb += "</tr>";
-
-                        });
-                    }
+            $('.dataTables-example').DataTable( {
+                ajax: "/sales_report/get_filter_data/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
+                columns: [
+                    { data: 'mag_name' },
+                    { data: 'sales_rep_name' },
+                    { data: 'client_name' },
+                    { data: 'line_item' },
+                    { data: 'qty' },
+                    { data: 'new_amount' },
+                    { data: 'status' },
+                    { data: 'created_at' }
+                ],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            } );
 
 
-                    $('table#tbl_booking_lists > tbody').empty().prepend(html_thmb);
-
-                    $("#filter_m_publication").val(f_publication);
-                    $("#filter_m_sales_rep").val(f_sales_rep);
-                    $("#filter_m_client").val(f_client);
-                    $("#filter_m_status").val(f_status);
-                    $("#filter_m_date_from").val(f_date_from);
-                    $("#filter_m_date_to").val(f_date_to);
-                    $("#filter_m_operator").val(f_operator);
-                }
-            });
         }
 
         function get_publication() {

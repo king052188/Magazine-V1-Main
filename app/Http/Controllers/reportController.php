@@ -142,6 +142,8 @@ class reportController extends Controller
             }elseif($booking[$i]->status == 6){
                 $status = "Approved/Invoiced";
             }
+            $amount = $booking[$i]->new_amount != null ? $booking[$i]->new_amount : $booking[$i]->amount;
+
 
             $booking_result[] = array(
                 "mag_name" => $booking[$i]->mag_name,
@@ -149,15 +151,14 @@ class reportController extends Controller
                 "client_name" => $booking[$i]->client_name,
                 "line_item" => $booking[$i]->line_item,
                 "qty" => $booking[$i]->qty,
-                "amount" => $booking[$i]->amount,
-                "new_amount" => $booking[$i]->new_amount,
+                "new_amount" => number_format($amount, 2),
                 "status" => $status,
                 "created_at" => $date_created->format('F d, Y')
 
             );
         }
 
-        return array("Code" => 200, "Result" => $booking_result);
+        return array("Code" => 200, "data" => $booking_result);
     }
     
 }
