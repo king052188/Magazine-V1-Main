@@ -183,6 +183,7 @@
         }
     </script>
     <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
+    <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
     {{--<script src="//code.jquery.com/jquery-1.12.4.js"></script>--}}
     {{--<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>--}}
     {{--<script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>--}}
@@ -259,8 +260,42 @@
                 ],
                 dom: 'Bfrtip',
                 buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
+                    {
+                        extend: 'copy',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'colvis'
+                ],
+                columnDefs: [ {
+                    targets: -1,
+                    visible: false
+                } ]
             } );
 
 
