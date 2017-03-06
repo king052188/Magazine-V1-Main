@@ -147,6 +147,7 @@ class reportController extends Controller
                 $amount = $booking[$i]->new_amount != null ? $booking[$i]->new_amount : $booking[$i]->amount;
 
                 $booking_result[] = array(
+                    "reports_set" => "Booking",
                     "mag_name" => $booking[$i]->mag_name,
                     "sales_rep_name" => $booking[$i]->sales_rep_name,
                     "client_name" => $booking[$i]->client_name,
@@ -166,5 +167,105 @@ class reportController extends Controller
         return array("Code" => 404, "data" => $booking_result);
 
     }
-    
+
+    public function get_filter_data_invoice($i_invoice_number, $i_publication, $i_issue, $i_year, $i_sales_rep, $i_date_from, $i_date_to, $i_operator)
+    {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        if($i_invoice_number != 0){
+            $i_invoice_number_tran = "invoice_num = '{$i_invoice_number}'";
+        }else{
+            $i_invoice_number_tran = "invoice_num LIKE '%'";
+        }
+
+        if($i_publication != 0){
+            $i_publication_tran = "xx.Id = {$i_publication}";
+        }else{
+            $i_publication_tran = "xx.Id LIKE '%'";
+        }
+
+        if($i_issue != 0){
+            $i_issue_tran = "issue = {$i_issue}";
+        }else{
+            $i_issue_tran = "issue LIKE '%'";
+        }
+
+        if($i_year != 0){
+            $i_year_tran = "DATEPART(yyyy,aa.created_at) = {$i_year}";
+        }else{
+            $i_year_tran = "aa.created_at LIKE '%'";
+        }
+
+        if($_COOKIE['role'] != 3)
+        {
+            if($i_sales_rep != 0){
+                $i_sales_rep_tran = "aa.account_executive = {$i_sales_rep}";
+            }else{
+                $i_sales_rep_tran = "aa.account_executive LIKE '%'";
+            }
+        }
+        else
+        {
+            $i_sales_rep_tran = "aa.account_executive = {$_COOKIE['Id']}";
+        }
+
+        if($i_operator == 1) //operator equal
+        {
+            if($i_date_from != 0){
+                $i_date_from_tran = "DATE_FORMAT(aa.created_at, '%Y-%m-%d') = '{$i_date_from}'";
+            }else{
+                $i_date_from_tran = "aa.created_at LIKE '%'";
+            }
+        }
+        elseif($i_operator == 2) //operator between
+        {
+            if($i_date_from != 0 AND $i_date_to != 0){
+                $i_date_from_tran = "DATE_FORMAT(aa.created_at, '%Y-%m-%d') >= '{$i_date_from}' AND DATE_FORMAT(aa.created_at, '%Y-%m-%d') <= '{$i_date_to}'";
+            }else{
+                $i_date_from_tran = "aa.created_at LIKE '%'";
+            }
+        }
+
+        $filter_process = "WHERE " . $i_invoice_number_tran . ' AND ' . $i_publication_tran . ' AND ' . $i_issue_tran . ' AND ' . $i_year_tran . ' AND ' . $i_sales_rep_tran . ' AND ' . $i_date_from_tran;
+
+        $invoice = DB::SELECT("
+            SELECT 
+            aa.*, aa.created_at as invoice_created, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name, xx.Id as mag_uid, xx.magazine_name as mag_name
+            FROM invoice_table as aa
+            INNER JOIN user_account as bb ON bb.Id = aa.account_executive
+            INNER JOIN booking_sales_table as zz ON zz.trans_num = aa.booking_trans
+            INNER JOIN magazine_transaction_table as yy ON yy.transaction_id = zz.Id
+            INNER JOIN magazine_table as xx ON xx.Id = yy.magazine_id
+            
+            {$filter_process}
+            
+            ");
+
+        if(COUNT($invoice) > 0)
+        {
+            for($i = 0; $i < COUNT($invoice); $i++)
+            {
+                $date_created = \Carbon\Carbon::parse($invoice[$i]->invoice_created);
+
+                $invoice_result[] = array(
+                    "reports_set" => "Invoice",
+                    "invoice_number" => $invoice[$i]->invoice_num,
+                    "publication" => $invoice[$i]->mag_name,
+                    "issue" => $invoice[$i]->issue,
+                    "year" => $date_created->format('Y'),
+                    "executive_account" => $invoice[$i]->sales_rep_name,
+                    "invoice_created" => $date_created->format('F d, Y'),
+                    "due_date" => $date_created->format('F d, Y')
+                );
+            }
+
+            return array("Code" => 200, "data" => $invoice_result);
+        }
+
+        $invoice_result = 0;
+        return array("Code" => 404, "data" => $invoice_result);
+
+    }
 }

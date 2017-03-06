@@ -140,6 +140,7 @@ Route::get('/execute/search/booking-and-sales', 'searchController@search_functio
 // Reports Routes
 Route::get('/sales_report/view', 'reportController@viewSalesReport');
 Route::get('/sales_report/get_filter_data/{f_publication}/{f_sales_rep}/{f_client}/{f_status}/{f_date_from}/{f_date_to}/{f_operator}', 'reportController@get_filter_data');
+Route::get('/sales_report/get_filter_data_invoice/{i_invoice_number}/{i_publication}/{i_issue}/{i_year}/{i_sales_rep}/{i_date_from}/{i_date_to}/{i_operator}', 'reportController@get_filter_data_invoice');
 
 
 
