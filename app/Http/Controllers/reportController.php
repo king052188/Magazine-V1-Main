@@ -193,7 +193,7 @@ class reportController extends Controller
         }
 
         if($i_year != 0){
-            $i_year_tran = "DATEPART(yyyy,aa.created_at) = {$i_year}";
+            $i_year_tran = "YEAR(aa.created_at) = '{$i_year}'";
         }else{
             $i_year_tran = "aa.created_at LIKE '%'";
         }
