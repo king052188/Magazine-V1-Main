@@ -48,8 +48,8 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => 'localhost:5305', //client.lesterdigital.com
-            'port' => '80',
+            'host' => 'localhost', //client.lesterdigital.com
+            'port' => '8011',
         ],
 
         'sqlite' => [
@@ -64,7 +64,7 @@ return [
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'db_magazine_v1'), //sd
             'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', 'march123'), //ABC12abc@
+            'password' => env('DB_PASSWORD', 'ABC12abc'), //ABC12abc@
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',

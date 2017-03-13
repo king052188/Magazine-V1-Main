@@ -23,8 +23,6 @@ class bookingController extends Controller
         $filter_client = 0;
         $filter_status = 0;
 
-
-
         if($_COOKIE['role'] == 3){
             $filter_sales_rep = "WHERE booked.sales_rep_code = {$_COOKIE['Id']}";
         }else{
@@ -37,6 +35,8 @@ class bookingController extends Controller
                 booked.Id,
                 
                 booked.client_id,
+                
+                booked.agency_id,
                 
                 mag.Id as pub_uid,
                 

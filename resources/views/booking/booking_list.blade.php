@@ -138,6 +138,7 @@
                                         <td style='text-align: center;'>
                                             <form class="form-inline">
                                                 <div class="form-group">
+                                                    <span id="span_select_loading_{{ $booking[$i]->Id }}" style = "text-align: center; margin-top: 0px;"></span>
                                                     <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" >
                                                         <optgroup label="-- Status --"> -- Status -- </optgroup>
                                                         @if($booking[$i]->status == 6)
@@ -148,6 +149,7 @@
                                                                 <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                             @endif
                                                             <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
+                                                            <option value = "-4:{{ $booking[$i]->Id }}:{{ $booking[$i]->agency_id }}:{{ $booking[$i]->trans_num }}:INSERTION%20ORDER">Send PDF to Bill-To </option>
                                                             </optgroup>
                                                         @elseif($booking[$i]->status == 5)
                                                             <option value="0">Void</option>
@@ -157,6 +159,7 @@
                                                                     <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                                 @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
+                                                                <option value = "-4:{{ $booking[$i]->Id }}:{{ $booking[$i]->agency_id }}:{{ $booking[$i]->trans_num }}:INSERTION%20ORDER">Send PDF to Bill-To </option>
                                                             </optgroup>
                                                         @elseif($booking[$i]->status == 3)
                                                             <option value="0">Approved</option>
@@ -166,6 +169,7 @@
                                                                     <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                                 @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
+                                                                <option value = "-4:{{ $booking[$i]->Id }}:{{ $booking[$i]->agency_id }}:{{ $booking[$i]->trans_num }}:INSERTION%20ORDER">Send PDF to Bill-To </option>
                                                             </optgroup>
                                                         @elseif($booking[$i]->status == 2)
                                                             <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2:{{ $booking[$i]->status == 2 ? 1 : 0 }}">For Approval</option>
@@ -175,6 +179,7 @@
                                                                     <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                                 @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
+                                                                <option value = "-4:{{ $booking[$i]->Id }}:{{ $booking[$i]->agency_id }}:{{ $booking[$i]->trans_num }}:INSERTION%20ORDER">Send PDF to Bill-To </option>
                                                             </optgroup>
                                                         @else
                                                             <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1:{{ $booking[$i]->status == 1 ? 1 : 0 }}">Pending</option>
@@ -185,6 +190,7 @@
                                                                     <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                                 @endif
                                                                 <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
+                                                                <option value = "-4:{{ $booking[$i]->Id }}:{{ $booking[$i]->agency_id }}:{{ $booking[$i]->trans_num }}:INSERTION%20ORDER">Send PDF to Bill-To </option>
                                                             </optgroup>
                                                         @endif
                                                     </select>
@@ -196,6 +202,7 @@
                                         </td>
                                     @else
                                         <td style='text-align: center;'>
+
                                             <div class="form-inline">
                                                 <div class="form-group">
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuDivider">
@@ -203,6 +210,7 @@
                                                   <li role="separator" class="divider"></li>
                                                   ...
                                                 </ul>
+                                                    <span id="span_select_loading_{{ $booking[$i]->Id }}" style = "text-align: center; margin-top: 0px;"></span>
                                                     @if($booking[$i]->status == 6)
                                                         <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
                                                             <option value="0">Approved/Invoiced</option>
@@ -212,23 +220,25 @@
                                                                 <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
                                                             @endif
                                                             <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
+                                                            <option value = "-4:{{ $booking[$i]->Id }}:{{ $booking[$i]->agency_id }}:{{ $booking[$i]->trans_num }}:INSERTION%20ORDER">Send PDF to Bill-To </option>
                                                             </optgroup>
                                                         </select>
                                                     @else
-                                                    <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
-                                                        <optgroup label="-- Status --"> -- Status -- </optgroup>
-                                                            <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1:{{ $booking[$i]->status == 1 ? 1 : 0 }}">Pending</option>
-                                                            <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2:{{ $booking[$i]->status == 2 ? 1 : 0 }}">For Approval</option>
-                                                            <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3:{{ $booking[$i]->status == 3 ? 1 : 0 }}">Approved</option>
-                                                            <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5:{{ $booking[$i]->status == 5 ? 1 : 0 }}">Void</option>
-                                                        <optgroup label="-- Action --"> -- Action -- </optgroup>
-                                                            <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
-                                                            @if($booking[$i]->invoice_num != null)
-                                                                <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
-                                                            @endif
-                                                            <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
-                                                        </optgroup>
-                                                    </select>
+                                                        <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                            <optgroup label="-- Status --"> -- Status -- </optgroup>
+                                                                <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1:{{ $booking[$i]->status == 1 ? 1 : 0 }}">Pending</option>
+                                                                <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2:{{ $booking[$i]->status == 2 ? 1 : 0 }}">For Approval</option>
+                                                                <option {{ $booking[$i]->status == 3 ? "selected=true" : "" }} value = "3:{{ $booking[$i]->status == 3 ? 1 : 0 }}">Approved</option>
+                                                                <option {{ $booking[$i]->status == 5 ? "selected=true" : "" }} value = "5:{{ $booking[$i]->status == 5 ? 1 : 0 }}">Void</option>
+                                                            <optgroup label="-- Action --"> -- Action -- </optgroup>
+                                                                <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
+                                                                @if($booking[$i]->invoice_num != null)
+                                                                    <option value = "-2:{{ $booking[$i]->trans_num }}:{{ $booking[$i]->invoice_num }}">View Invoice Order</option>
+                                                                @endif
+                                                                <option value = "-3:{{ $booking[$i]->trans_num }}">View As Client</option>
+                                                                <option value = "-4:{{ $booking[$i]->Id }}:{{ $booking[$i]->agency_id }}:{{ $booking[$i]->trans_num }}:INSERTION%20ORDER">Send PDF to Bill-To </option>
+                                                            </optgroup>
+                                                        </select>
                                                     @endif
                                                     <button class="btn btn-primary" id="btn_update_{{ $booking[$i]->Id }}" style = "width: 80px;margin-bottom: 0px; display: none;" onclick="update_status('{{ $booking[$i]->Id  }}','{{ $booking[$i]->trans_num  }}')" style="margin-bottom: 0;">Update</button>
                                                 </div>
@@ -236,7 +246,7 @@
                                         </td>
                                     @endif
                                         <td style='text-align: center;'>
-                                            <a href="{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->mag_country . '/' . $booking[$i]->client_id ) }}" class="btn btn-primary" style="padding: 5px 7px 5px 7px; "><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a>
+                                            <a id="btn_view_{{ $booking[$i]->Id }}" href="{{ URL('/booking/magazine-transaction' . '/' . $booking[$i]->Id . '/' . $booking[$i]->mag_country . '/' . $booking[$i]->client_id ) }}" class="btn btn-primary" style="padding: 5px 7px 5px 7px; "><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a>
                                         </td>
                                     </tr>
                                     @endfor
@@ -293,12 +303,6 @@
 //            var filter_issue = $("#filter_issue").val();
             var filter_client = $("#filter_client").val();
             var filter_status = $("#filter_status").val();
-
-//            console.log("filter_publication " + filter_publication);
-//            console.log("filter_sales_rep " + filter_sales_rep);
-//            console.log("filter_client " + filter_client);
-//            console.log("filter_status " + filter_status);
-
             window.location.href = "/booking/booking-list-filter/" + filter_publication + "/" + filter_sales_rep + "/" + filter_client + "/" + filter_status;
         });
 
@@ -307,7 +311,6 @@
             var selected =  $(this).find('select:first');
             var value =  selected.val();
 
-            console.log("this is it: " + selected);
             var values = value.split(":");
 
             if(values.length > 1) {
@@ -353,6 +356,35 @@
                     console.log(str_to_int);
                     $("#btn_lists").hide();
                     window.open("http://"+ Url_Client_Dashboard + trans_num,'_blank');
+                }
+                else if(str_to_int == -4) {
+                    console.log(values);
+                    var btn_id = "#span_select_loading_" + values[1];
+                    var bill_to = values[2];
+                    var trans_num = values[3];
+                    var subject = values[4];
+
+                    $(document).ready( function() {
+                        $.ajax({
+                            url: "http://"+ report_url_api +"/kpa/work/send/email/"+bill_to+"/"+trans_num+"/"+ subject,
+                            dataType: "text",
+                            beforeSend: function () {
+                                selected.hide();
+                                $(btn_id).text("Please wait...");
+                            },
+                            success: function(data) {
+                                var json = $.parseJSON(data);
+                                if(json.code == 200)
+                                {
+                                    alert("Insertion Order has been sent.");
+                                    location.reload();
+                                }else{
+                                    alert("Oops, Server Error");
+                                    location.reload();
+                                }
+                            }
+                        });
+                    } );
                 }
                 else {
 
