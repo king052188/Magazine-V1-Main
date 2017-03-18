@@ -4,7 +4,7 @@
             <li class="nav-header">
                 <div class="dropdown profile-element">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ $user_info[0]->first_name }} {{ $user_info[0]->middle_name }} {{ $user_info[0]->last_name }}</strong>
+                        <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">{{ $user_info[0]->first_name }} {{ $user_info[0]->last_name }}</strong>
                             </span> <span class="text-muted text-xs block">
                                 @if($user_info[0]->role == 1)
                                     Administrator
