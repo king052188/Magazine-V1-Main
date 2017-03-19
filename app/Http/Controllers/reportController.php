@@ -18,7 +18,16 @@ class reportController extends Controller
         $clients = DB::table('client_table')->where('status', '=', 2)->get();
         $sales_rep = DB::table('user_account')->where('status', '=', 2)->get();
 
-        return view('/reports/sales', compact('publication', 'clients', 'sales_rep'));
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "active";
+        $nav_users = "";
+
+        return view('/reports/sales', compact('publication', 'clients', 'sales_rep', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function get_filter_data($f_publication, $f_sales_rep, $f_client, $f_status, $f_date_from, $f_date_to, $f_operator)

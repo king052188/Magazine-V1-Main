@@ -23,7 +23,16 @@ class userAccountController extends Controller
 
         $users = DB::SELECT("SELECT * FROM user_account {$filter_tran}");
 
-        return view('users/index', compact('users', 'filter'));
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "active";
+
+        return view('users/index', compact('users', 'filter','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function create()
@@ -32,7 +41,16 @@ class userAccountController extends Controller
             return redirect("/logout_process");
         }
 
-        return view('users/create');
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "active";
+
+        return view('users/create', compact('nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function store(Request $request)

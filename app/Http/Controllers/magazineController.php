@@ -22,7 +22,17 @@ class magazineController extends Controller
         $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
 
         $magazines = Magazine::all();
-        return view('magazine/index', compact('magazines', 'logo_uid'));
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "active";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('magazine/index', compact('magazines', 'logo_uid','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function create()
@@ -33,7 +43,16 @@ class magazineController extends Controller
 
         $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
 
-        return view('magazine/create', compact('logo_uid'));
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "active";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('magazine/create', compact('logo_uid','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function magazine_add_company()
@@ -45,7 +64,16 @@ class magazineController extends Controller
         $result = DB::SELECT("SELECT * FROM magazine_company_table ORDER BY company_name");
         $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
 
-        return view('magazine/create_company', compact('logo_uid','result'));
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "active";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('magazine/create_company', compact('logo_uid','result', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
 
     }
 

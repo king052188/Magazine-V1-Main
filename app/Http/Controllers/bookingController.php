@@ -84,7 +84,16 @@ class bookingController extends Controller
         $clients = DB::table('client_table')->where('status', '=', 2)->get();
         $sales_rep = DB::table('user_account')->where('status', '=', 2)->get();
 
-        return view('booking.booking_list', compact('booking', 'publication', 'clients', 'sales_rep', 'filter_publication', 'filter_sales_rep', 'filter_client', 'filter_status'))->with('success', 'Booking details successful added!');
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "active";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('booking.booking_list', compact('booking', 'publication', 'clients', 'sales_rep', 'filter_publication', 'filter_sales_rep', 'filter_client', 'filter_status', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales', 'nav_payment','nav_reports','nav_users'))->with('success', 'Booking details successful added!');
     }
 
     public function booking_list_filter($filter_publication, $filter_sales_rep, $filter_client, $filter_status)
@@ -230,7 +239,16 @@ class bookingController extends Controller
                     ORDER BY master.company_name, branch_name ASC
         ");
 
-        return view('booking.add_booking', compact('n_booking','subscriber','agency', 'clients'))->with('success', 'Booking details successful added!');
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "active";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+        
+        return view('booking.add_booking', compact('n_booking','subscriber','agency', 'clients', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Booking details successful added!');
     }
 
     public function search_bill_to($client_id)

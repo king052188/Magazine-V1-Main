@@ -31,8 +31,17 @@ class clientController extends Controller
         $clients = Client::all();
         $result = DB::table('client_reference_table')->get();
         $tax = DB::table('taxes_table')->get();
-        
-        return view('client.create', compact('clients', 'result', 'tax'));
+
+        $nav_dashboard = "";
+        $nav_clients = "active";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('client.create', compact('clients', 'result', 'tax', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function save_company(Request $request)

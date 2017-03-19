@@ -89,7 +89,16 @@ class paymentController extends Controller
                     WHERE status = 2 AND type != 2 ORDER BY company_name ASC
     	 ");
 
-        return view('payment.payment_list', compact('booking', 'magazine', 'filter', 'clients'))->with('success', 'Booking details successful added!');
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "active";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('payment.payment_list', compact('booking', 'magazine', 'filter', 'clients','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Booking details successful added!');
     }
 
     public function search_invoice_number_api($inv_num)
@@ -220,7 +229,16 @@ class paymentController extends Controller
 
         //$is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
 
-        return view('payment.invoice', compact('clients', 'magazine'));
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "active";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('payment.invoice', compact('clients', 'magazine','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function invoice_list()
