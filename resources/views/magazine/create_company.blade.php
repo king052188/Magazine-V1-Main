@@ -62,7 +62,7 @@
                                         </td>
                                         <td style="text-align: center;padding-top: 15px;">
                                             @if($result[$i]->status == 1)
-                                                <b style = "color: #FF0000;">In-Active</b>
+                                                <b style = "color: #FF0000;">Inactive</b>
                                             @else
                                                 Active
                                             @endif
@@ -70,8 +70,8 @@
                                         <td>
                                             <select class = "form-control" id = "action_publisher_{{ $result[$i]->Id }}">
                                                 <option value = "">--select--</option>
-                                                <option value = "1:{{ $result[$i]->Id }}">View Publisher</option>
-                                                <option value = "2:{{ $result[$i]->Id }}">Edit Publisher</option>
+                                                <!--<option value = "1:{{ $result[$i]->Id }}">View Publisher</option>-->
+                                                <option value = "2:{{ $result[$i]->Id }}">View/Edit Publisher </option>
                                                 @if($result[$i]->status == 2)
                                                 <option value = "3:{{ $result[$i]->Id }}">Set as Inactive</option>
                                                 @else
@@ -137,13 +137,13 @@
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label>Main Phone</label>
-                                            <input type="text" placeholder="Phone" class="form-control"  name="phone">
+                                            <input type="text" placeholder="Main Phone" class="form-control"  name="phone">
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
                                         <div class="form-group">
                                             <label>Main Fax</label>
-                                            <input type="text" placeholder="Fax" class="form-control"  name="fax">
+                                            <input type="text" placeholder="Main Fax" class="form-control"  name="fax">
                                         </div>
                                     </div>
                                     <div class="col-lg-3">
@@ -287,14 +287,14 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>Address 1</label>
-                                        <input type="text" placeholder="Address 1" class="form-control" id = "e_address_1" name="e_address_1">
+                                        <label>Address Line 1</label>
+                                        <input type="text" placeholder="Address Line 1" class="form-control" id = "e_address_1" name="e_address_1">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="form-group">
-                                        <label>Address 2 (Optional)</label>
-                                        <input type="text" placeholder="Address 2 (Optional)" class="form-control" id = "e_address_2" name="e_address_2">
+                                        <label>Address Line 2</label>
+                                        <input type="text" placeholder="Address Line 2" class="form-control" id = "e_address_2" name="e_address_2">
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -318,22 +318,40 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Email</label>
                                         <input type="text" placeholder="Email" class="form-control"  id = "e_email" name="e_email">
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Phone</label>
-                                        <input type="text" placeholder="Phone" class="form-control"  id = "e_phone" name="e_phone">
+                                        <input type="text" placeholder="Main Phone" class="form-control"  id = "e_phone" name="e_phone">
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
+                                <div class="col-lg-3">
                                     <div class="form-group">
                                         <label>Fax</label>
-                                        <input type="text" placeholder="Fax" class="form-control"  id = "e_fax" name="e_fax">
+                                        <input type="text" placeholder="Main Fax" class="form-control"  id = "e_fax" name="e_fax">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Zip/Postal Code</label>
+                                        <input type="text" placeholder="Zip/Postal Code" class="form-control" id = "e_zip_code" name="e_zip_code">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Toll Free Phone (Optional)</label>
+                                        <input type="text" placeholder="Toll Free Phone (optional)" class="form-control" id = "e_toll_free_phone" name="e_toll_free_phone">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label>Toll Free Fax (Optional)</label>
+                                        <input type="text" placeholder="Toll Free Fax (optional)" class="form-control" id = "e_toll_free_fax" name="e_toll_free_fax">
                                     </div>
                                 </div>
                             </div>
@@ -444,6 +462,9 @@
                                     $("#e_email").val(info.email);
                                     $("#e_phone").val(info.phone);
                                     $("#e_fax").val(info.fax);
+                                    $("#e_zip_code").val(info.zip_code);
+                                    $("#e_toll_free_phone").val(info.toll_free_phone);
+                                    $("#e_toll_free_fax").val(info.toll_free_fax);
                                     $("#e_logo_uid").val(info.logo_uid);
 
                                 });

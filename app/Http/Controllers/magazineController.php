@@ -503,7 +503,6 @@ class magazineController extends Controller
         $company->phone = $request['phone'];
         $company->fax = $request['fax'];
         $company->zip_code = $request['zip_code'];
-        $company->status = 2;
         $company->toll_free_phone = $request['toll_free_phone'];
         $company->toll_free_fax = $request['toll_free_fax'];
         $company->status = 2;
@@ -604,7 +603,10 @@ class magazineController extends Controller
                 'country' => $request['e_country'],
                 'email' => $request['e_email'],
                 'phone' => $request['e_phone'],
-                'fax' => $request['e_fax']
+                'fax' => $request['e_fax'],
+                'zip_code' => $request['e_zip_code'],
+                'toll_free_phone' => $request['e_toll_free_phone'],
+                'toll_free_fax' => $request['e_toll_free_fax']
 //                'logo_uid' => $request['e_logo_uid']
             ]);
 
