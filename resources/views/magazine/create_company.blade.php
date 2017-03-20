@@ -1,7 +1,7 @@
 @extends('layout.magazine_main')
 
 @section('title')
-    Add New Company
+
 @endsection
 
 @section('styles')
@@ -89,7 +89,6 @@
                         <div class="panel-body">
                             <form role="form" action="{{ url('/magazine/company/save') }}" method="post">
                                 <div class="col-lg-12">
-                                    <h3>Company Name of Magazine</h3>
                                     <div class="col-lg-12">
                                         <div class="form-group">
                                             <label>Publisher Name</label>
@@ -98,14 +97,14 @@
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label>Address 1</label>
-                                            <input type="text" placeholder="Address 1" class="form-control" name="address_1">
+                                            <label>Address Line 1</label>
+                                            <input type="text" placeholder="Address Line 1" class="form-control" name="address_1">
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label>Address 2 (Optional)</label>
-                                            <input type="text" placeholder="Address 2 (Optional)" class="form-control" name="address_2">
+                                            <label>Address Line 2</label>
+                                            <input type="text" placeholder="Address Line 2" class="form-control" name="address_2">
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -129,22 +128,40 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
                                             <label>Email</label>
                                             <input type="text" placeholder="Email" class="form-control"  name="email">
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label>Phone</label>
+                                            <label>Main Phone</label>
                                             <input type="text" placeholder="Phone" class="form-control"  name="phone">
                                         </div>
                                     </div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <div class="form-group">
-                                            <label>Fax</label>
+                                            <label>Main Fax</label>
                                             <input type="text" placeholder="Fax" class="form-control"  name="fax">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <div class="form-group">
+                                            <label>Zip/Postal Code</label>
+                                            <input type="text" placeholder="Zip/Postal Code" class="form-control"  name="zip_code">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Toll Free Phone (Optional)</label>
+                                            <input type="text" placeholder="Toll Free Phone (optional)" class="form-control"  name="toll_free_phone">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label>Toll Free Fax (Optional)</label>
+                                            <input type="text" placeholder="Toll Free Fax (optional)" class="form-control"  name="toll_free_fax">
                                         </div>
                                     </div>
                                 </div>

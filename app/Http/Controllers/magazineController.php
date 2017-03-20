@@ -502,11 +502,15 @@ class magazineController extends Controller
         $company->email = $request['email'];
         $company->phone = $request['phone'];
         $company->fax = $request['fax'];
+        $company->zip_code = $request['zip_code'];
+        $company->status = 2;
+        $company->toll_free_phone = $request['toll_free_phone'];
+        $company->toll_free_fax = $request['toll_free_fax'];
         $company->status = 2;
         $company->save();
 
         if($company->id > 0) {
-            return redirect('/magazine/create/company')->with('success', 'Successfully Added New Company.');
+            return redirect('/magazine/create/company')->with('success', 'Successfully Added Publisher.');
         }
         return redirect('/magazine/create/company')->with('success', 'Oops, Something went wrong.');
     }
