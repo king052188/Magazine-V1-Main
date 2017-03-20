@@ -267,7 +267,16 @@ class clientController extends Controller
         $same = DB::table('client_contacts_table')->where('client_id', '=', $company_uid)->where('role', '=', 5)->get(); //Primary and Bill To
         $same == null ? null : $same;
 
-        return view('client.client_contacts_view', compact('ref', 'company', 'results', 'p', 's', 'b', 'same', 'tax', 'category'));
+        $nav_dashboard = "";
+        $nav_clients = "active";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('client.client_contacts_view', compact('ref', 'company', 'results', 'p', 's', 'b', 'same', 'tax', 'category', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function store(Request $request)
@@ -340,7 +349,16 @@ class clientController extends Controller
         $clients = Client::all();
         $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
 
-        return view('client.client_update', compact('clients', 'company', 'tax'));
+        $nav_dashboard = "";
+        $nav_clients = "active";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('client.client_update', compact('clients', 'company', 'tax','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function client_update_save(Request $request, $company_uid)

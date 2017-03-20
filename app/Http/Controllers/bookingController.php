@@ -502,7 +502,17 @@ class bookingController extends Controller
         if(count($mag_l) > 0) {
             $disabled = ["set" => "disabled"];
         }
-        return view('booking.magazine_transaction', compact('booking_uid', 'mag_list', 'which_country', 'client_id', 'mag_l', 'disabled'))->with('success', 'Successfully Added Magazine');
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "active";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('booking.magazine_transaction', compact('booking_uid', 'mag_list', 'which_country', 'client_id', 'mag_l', 'disabled', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Successfully Added Magazine');
     }
 
     public function save_magazine_transaction(Request $request, $trans_uid, $which_country, $client_id)
@@ -575,7 +585,16 @@ class bookingController extends Controller
 
         $is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
 
-        return view('booking.add_issue', compact('mag_trans_uid', 'mag_name', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num', 'is_member'));
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "active";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+        
+        return view('booking.add_issue', compact('mag_trans_uid', 'mag_name', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num', 'is_member', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function save_issue_v1_backup(Request $request, $mag_trans_uid, $client_id)

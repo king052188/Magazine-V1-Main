@@ -10,10 +10,10 @@
 @section('magazine_content')
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-8">
-            <h2>Company</h2>
+            <h2>Publisher</h2>
             <ol class="breadcrumb">
                 <li class="active">
-                    <strong>Add Company</strong>
+                    <strong>Add Publisher</strong>
                 </li>
             </ol>
         </div>
@@ -29,11 +29,11 @@
             @endif
             <div class="tabs-container">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a data-toggle="tab" href="#list_publishers" id = "list_publishers_press"> List Publishers</a></li>
-                    <li class=""><a data-toggle="tab" href="#add_publishers" id = "add_publishers_press">Add Publisher</a></li>
+                    <li class="{{ $list_publisher_show == "active" ? "active" : "" }}"><a data-toggle="tab" href="#list_publishers" id = "list_publishers_press"> List Publishers</a></li>
+                    <li class="{{ $add_publisher_show == "active" ? "active" : "" }}"><a data-toggle="tab" href="#add_publishers" id = "add_publishers_press">Add Publisher</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div id="list_publishers" class="tab-pane active">
+                    <div id="list_publishers" class="tab-pane {{ $list_publisher_show == "active" ? "active" : "" }}">
                         <div class="panel-body">
                             <table class="table table-striped table-bordered table-hover table-responsive" id = "tbl_publisher" >
                                 <thead>
@@ -85,7 +85,7 @@
                             </table>
                         </div>
                     </div>
-                    <div id="add_publishers" class="tab-pane">
+                    <div id="add_publishers" class="tab-pane {{ $add_publisher_show == "active" ? "active" : "" }}">
                         <div class="panel-body">
                             <form role="form" action="{{ url('/magazine/company/save') }}" method="post">
                                 <div class="col-lg-12">

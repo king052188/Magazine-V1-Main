@@ -55,7 +55,7 @@ class magazineController extends Controller
         return view('magazine/create', compact('logo_uid','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
-    public function magazine_add_company()
+    public function magazine_add_company($add = null)
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
@@ -63,6 +63,14 @@ class magazineController extends Controller
 
         $result = DB::SELECT("SELECT * FROM magazine_company_table ORDER BY company_name");
         $logo_uid = \App\Http\Controllers\VMKhelper::get_logo_uid();
+
+        if($add != null){
+            $add_publisher_show = "active";
+            $list_publisher_show = "";
+        }else{
+            $list_publisher_show = "active";
+            $add_publisher_show = "";
+        }
 
         $nav_dashboard = "";
         $nav_clients = "";
@@ -73,7 +81,7 @@ class magazineController extends Controller
         $nav_reports = "";
         $nav_users = "";
 
-        return view('magazine/create_company', compact('logo_uid','result', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
+        return view('magazine/create_company', compact('logo_uid','result', 'add_publisher_show', 'list_publisher_show' ,'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
 
     }
 
@@ -205,7 +213,16 @@ class magazineController extends Controller
         $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
         $ad_s = DB::table('price_package_table')->where('status','=',2)->get();
 
-        return view('magazine/ad', compact('mag_uid','mag', 'ad_c', 'ad_s', 'discount_issue'));
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "active";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('magazine/ad', compact('mag_uid','mag', 'ad_c', 'ad_s', 'discount_issue','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function get_discount_issue($mag_uid)

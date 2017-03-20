@@ -57,7 +57,7 @@ Route::get('/contract/all', 'contractController@index');
 
 // Magazine Routes
 Route::get('/magazine/create', 'magazineController@create');
-Route::get('/magazine/create/company', 'magazineController@magazine_add_company');
+Route::get('/magazine/create/company/{add?}', 'magazineController@magazine_add_company');
 Route::post('/magazine/add-new', 'magazineController@magazine_add_new');
 Route::get('/magazine/add-ad-color-and-size/{mag_uid}', 'magazineController@magazine_add_color_size');
 Route::get('/magazine/ad/delete/{ad_uid}', 'magazineController@magazine_ad_delete');

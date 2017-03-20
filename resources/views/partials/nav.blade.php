@@ -43,7 +43,8 @@
             <li class = "nav_publisher {{ $nav_publisher == 'active' ? 'active' : '' }}">
                 <a href="#"><i class="fa fa-book" aria-hidden="true"></i> <span class="nav-label">Publisher</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li class = "nav_publisher {{ $nav_publisher == 'active' ? 'active' : '' }}"><a href="/magazine/create/company">List Publishers</a></li>
+                    <li><a href="/magazine/create/company/add">Create New Publishers</a></li>
+                    <li><a href="/magazine/create/company">List Publishers</a></li>
                 </ul>
             </li>
             <li class = "nav_publication {{ $nav_publication == 'active' ? 'active' : '' }}">
