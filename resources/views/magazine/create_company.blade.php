@@ -42,6 +42,7 @@
                                     <th style = "text-align: center;">City</th>
                                     <th style = "text-align: center;">State</th>
                                     <th style = "text-align: center;">Country</th>
+                                    <th style = "text-align: center;">Date Created</th>
                                     <th style = "text-align: center;">Status</th>
                                     <th style="width:150px;">&nbsp;</th>
                                 </tr>
@@ -60,16 +61,17 @@
                                                 CANADA
                                             @endif
                                         </td>
+                                        <td style="padding-top: 15px; text-align: center;">{{ date('Y-m-d', strtotime($result[$i]->created_at)) }}</td>
                                         <td style="text-align: center;padding-top: 15px;">
                                             @if($result[$i]->status == 1)
-                                                <b style = "color: #FF0000;">Inactive</b>
+                                                <b style = "font-weight: normal; color: #FF0000;">Inactive</b>
                                             @else
-                                                Active
+                                                <b style = "font-weight: bold; color: #006622;">Active</b>
                                             @endif
                                         </td>
                                         <td>
                                             <select class = "form-control" id = "action_publisher_{{ $result[$i]->Id }}">
-                                                <option value = "">--select--</option>
+                                                <option value = "0">--select--</option>
                                                 <!--<option value = "1:{{ $result[$i]->Id }}">View Publisher</option>-->
                                                 <option value = "2:{{ $result[$i]->Id }}">View/Edit Publisher </option>
                                                 @if($result[$i]->status == 2)
@@ -433,11 +435,16 @@
                     });
 
                 }else if(values[0] == 2){ //edit information
+
                     $('#edit_publisher_modal').modal({
                         show: true
                     });
 
                     var publisher_uid = values[1];
+
+                    $("#action_publisher_"+ publisher_uid +" option[value='0']").prop("selected", true);
+
+                    console.log(publisher_uid);
                     $.ajax({
                         url: "/magazine/list/publisher/" + publisher_uid,
                         dataType: "text",
@@ -489,7 +496,7 @@
                             {
                                 swal(
                                     '',
-                                    'Status Change to <b style = "color: #FF0000;">In-Active</b>!',
+                                    'Status Change to <b style = "font-weight: normal; color: #FF0000;">Inactive</b>!',
                                     'success'
                                 ).then(
                                         function () {
