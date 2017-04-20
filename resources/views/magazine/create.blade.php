@@ -54,34 +54,43 @@
                                     </select>
                                 </div>
                                 <div class="form-group" id = "hidden">
-                                    <label for="ex2">Country</label>
-                                    <input type = "hidden" class="form-control" name="magcountryID" id = "magcountryID" readonly>
-                                    <input type = "text" class="form-control" name="magcountry" id = "magcountry" readonly>
-                                    {{--<select class="form-control" name="magcountry" id = "magcountry" required>--}}
+                                    <label>Type of Magazine</label>
+                                    <select class='form-control' name='type_of_magazine' id = 'type_of_magazine' required>
+                                        <option value = "1">Print</option>
+                                        <option value = "2">Digital</option>
+                                    </select>
+                                </div>
+                                <div class = "print_type">
+                                    <div class="form-group" id = "hidden">
+                                        <label for="ex2">Country</label>
+                                        <input type = "hidden" class="form-control" name="magcountryID" id = "magcountryID" readonly>
+                                        <input type = "text" class="form-control" name="magcountry" id = "magcountry" readonly>
+                                        {{--<select class="form-control" name="magcountry" id = "magcountry" required>--}}
                                         {{--<option>--select--</option>--}}
                                         {{--<option value="1">USA</option>--}}
                                         {{--<option value="2">CANADA</option>--}}
-                                    {{--</select>--}}
-                                </div>
-                                <div class="form-group col-lg-4" id = "hidden">
-                                    <label>Status</label>
-                                    <select class='form-control' name='status' required><option value='1'>Inactive</option><option value='2'>Active</option></select>
-                                </div>
-                                <div class="form-group col-lg-4" id = "hidden">
-                                    <label>Year Issue</label>
-                                    <select class='form-control' name='year_issue' id = 'year_issue_selected' required>
-                                        @for($i = date('Y'); $i < date('Y') + 10; $i++)
-                                            <option value='{{ $i }}'>{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                                <div class="form-group col-lg-4" id = "hidden">
-                                    <label>Number of Issues</label>
-                                    <input type='number' placeholder='Enter Issue Number' min="1" max="125" class='form-control' name='number_issue' id = "number_issue" value = '1'>
-                                </div>
-                                <div id = "hidden_submit">
-                                    <input type='hidden' name='_token' id='csrf-token' value='{{ Session::token() }}' />
-                                    <button class='btn btn-sm btn-primary pull-right' id='btn_submit'>Create New Magazine</button>
+                                        {{--</select>--}}
+                                    </div>
+                                    <div class="form-group col-lg-4" id = "hidden">
+                                        <label>Status</label>
+                                        <select class='form-control' name='status' required><option value='1'>Inactive</option><option value='2'>Active</option></select>
+                                    </div>
+                                    <div class="form-group col-lg-4" id = "hidden">
+                                        <label>Year Issue</label>
+                                        <select class='form-control' name='year_issue' id = 'year_issue_selected' required>
+                                            @for($i = date('Y'); $i < date('Y') + 10; $i++)
+                                                <option value='{{ $i }}'>{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-4" id = "hidden">
+                                        <label>Number of Issues</label>
+                                        <input type='number' placeholder='Enter Issue Number' min="1" max="125" class='form-control' name='number_issue' id = "number_issue" value = '1'>
+                                    </div>
+                                    <div id = "hidden_submit">
+                                        <input type='hidden' name='_token' id='csrf-token' value='{{ Session::token() }}' />
+                                        <button class='btn btn-sm btn-primary pull-right' id='btn_submit'>Create New Magazine</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

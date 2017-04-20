@@ -94,7 +94,7 @@
                 @endif
                 <div class="table-responsive">
                     {{--<table id="tbl_booking_lists" class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" >--}}
-                    <table id="tbl_booking_lists" class="footable table" data-sorting="true" data-page-size="10">
+                    <table id="tbl_booking_lists" class="table" data-sorting="true" data-page-size="10">
                         <thead>
                             <tr>
                                 <th style='text-align: center; width: 50px;'>#</th>
