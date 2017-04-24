@@ -61,6 +61,8 @@ Route::get('/magazine/create/company/{add?}', 'magazineController@magazine_add_c
 Route::post('/magazine/add-new', 'magazineController@magazine_add_new');
 Route::get('/magazine/add-ad-color-and-size/{mag_uid}', 'magazineController@magazine_add_color_size');
 Route::get('/magazine/digital/settings/{mag_uid}', 'magazineController@show_digital_settings');
+Route::post('/magazine/digital/settings/save/{mag_uid}', 'magazineController@show_digital_settings_save');
+Route::get('/magazine/digital/settings/info/{mag_uid}', 'magazineController@get_show_digital_settings_info');
 
 
 Route::get('/magazine/ad/delete/{ad_uid}', 'magazineController@magazine_ad_delete');

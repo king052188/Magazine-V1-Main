@@ -27,7 +27,7 @@
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div id="tab_1" class="col-lg-4">
-                <form role="form" action="{{ URL('/magazine/add-color-size-discount') . '/' . $mag[0]->Id }}" method="POST">
+                <form role="form" action="{{ URL('/magazine/digital/settings/save') . '/' . $mag[0]->Id }}" method="POST">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
                             <h5>Create Digital Size with Price<small> *all fields are required</small></h5>
@@ -42,25 +42,29 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="ex2">Type</label>
-                                        <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount">
+                                        <input type="text" placeholder="Enter Type" class="form-control" name="digital_type">
                                     </div>
                                     <div class="form-group">
                                         <label for="ex2">Size</label>
-                                        <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount">
+                                        <input type="text" placeholder="Enter Size" class="form-control" name="digital_size">
                                     </div>
 
                                     <div class="form-group">
                                         <label>Amount</label>
-                                        <input id="original_amount" type="text" placeholder="Enter amount" class="form-control" name="ad_amount">
+                                        <input type="text" placeholder="Enter Amount" class="form-control" name="digital_amount">
                                     </div>
                                     <div class="form-group">
                                         <label for="ex2">Issue</label>
-                                        <select class="form-control" name = "ad_size" id = "ad_size">
+                                        <select class="form-control" name = "digital_issue">
                                             <option value = "0">-- Select --</option>
                                             <option value = "1">Monthly</option>
                                             <option value = "2">Weekly</option>
                                             <option value = "3">Both</option>
                                         </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                                        <input type = "submit" class = "btn btn-primary pull-right" value = "Add">
                                     </div>
                                 </div>
                             </div>
@@ -68,84 +72,6 @@
                     </div>
 
                 </form>
-            </div>
-
-            <div class="modal fade" id="discount_issue_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelDiscountIssue" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title" id="exampleModalLabel">Discount Issue s<small> Amount Discount by 1 or more issues </small></h4>
-
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="form-group ">
-                                    <div class="col-sm-6">
-                                        <label>2x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_2" name = "discount_2">
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label>3x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_3" name = "discount_3">
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="col-sm-6" style = "margin-top: 10px;">
-                                        <label>4x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_4" name = "discount_4">
-                                    </div>
-                                    <div class="col-sm-6" style = "margin-top: 10px;">
-                                        <label>5x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_5" name = "discount_5">
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="col-sm-6" style = "margin-top: 10px;">
-                                        <label>6x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_6" name = "discount_6">
-                                    </div>
-                                    <div class="col-sm-6" style = "margin-top: 10px;">
-                                        <label>7x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_7" name = "discount_7">
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="col-sm-6" style = "margin-top: 10px;">
-                                        <label>8x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_8" name = "discount_8">
-                                    </div>
-                                    <div class="col-sm-6" style = "margin-top: 10px;">
-                                        <label>9x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_9" name = "discount_9">
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="col-sm-6" style = "margin-top: 10px;">
-                                        <label>10x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_10" name = "discount_10">
-                                    </div>
-                                    <div class="col-sm-6" style = "margin-top: 10px;">
-                                        <label>11x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_11" name = "discount_11">
-                                    </div>
-                                </div>
-                                <div class="form-group ">
-                                    <div class="col-sm-6" style = "margin-top: 10px;">
-                                        <label>12x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_12" name = "discount_12">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
-                            <button type="submit" class="btn btn-primary" id = "btn_discount_issue">Save</button>
-                        </div>
-                    </div>
-                </div>
             </div>
 
             <div class="col-lg-8">
@@ -163,18 +89,19 @@
                         <div class="table-responsive">
 
                             <div class="col-lg-12">
-                                <table class="table table-striped table-bordered">
+                                <table class="table table-striped table-bordered" id = "info_table">
                                     <thead>
                                     <tr>
                                         <th data-toggle="true" style="width: 50px; text-align: center;">#</th>
-                                        <th style="width: 200px; text-align: center;">MAG Code</th>
                                         <th style="text-align: center;">Magazine Name</th>
-                                        <th style="text-align: center;">Company Name</th>
-                                        <th style="width: 100px; text-align: center;">Country</th>
-                                        <th style="width: 50px; text-align: center;" data-hide="all"></th>
+                                        <th style="text-align: center;">Type</th>
+                                        <th style="width: 100px; text-align: center;">Size</th>
+                                        <th style="width: 100px; text-align: center;">Amount</th>
+                                        <th style="width: 150px; text-align: center;">Issue</th>
                                     </tr>
                                     </thead>
                                     <tbody>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -184,5 +111,57 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script>
+        $(document).ready(function(){
+            get_info({{ $mag[0]->Id }});
+        });
+
+        function get_info(mag_uid){
+            var html_thmb = "";
+            $.ajax({
+                url: "/magazine/digital/settings/info/" + mag_uid,
+                dataType: "text",
+                beforeSend: function () {
+                    $('table#info_table > tbody').empty().prepend('<tr> <td colspan="6" style="text-align: center; font-size: 15px; padding-top: 20px;"> <img src="{{ asset('img/ripple.gif') }}"  /> <br /> Fetching All Data... Please wait...</td> </tr>');
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json == null)
+                        return false;
+
+                    if(json.Code == 404){
+                        $('table#info_table > tbody').empty().prepend('<tr> <td colspan="6" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available</td> </tr>');
+                        return false;
+                    }
+
+                    if(json.Code == 200){
+                        var count = 1;
+                        $(json.Result).each(function(i, tran){
+
+                            var n_issue = "Monthly & Weekly";
+                            if(tran.ad_issue == 1){
+                                n_issue = "Monthly";
+                            }else if(tran.ad_issue == 2){
+                                n_issue = "Weekly";
+                            }
+
+                            html_thmb += "<tr>";
+                            html_thmb += "<td style='font-weight: normal; text-align: center;'>"+ count++ +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.magazine_name +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.ad_type +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.ad_size +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.ad_amount +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ n_issue +"</td>";
+                            html_thmb += "</tr>";
+                        });
+                    }
+
+                    $('table#info_table > tbody').empty().prepend(html_thmb);
+                }
+            });
+        }
+    </script>
 @endsection

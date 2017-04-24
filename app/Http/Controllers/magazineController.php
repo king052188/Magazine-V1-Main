@@ -9,6 +9,7 @@ use App\MagazineCompany;
 use App\MagazinePrice;
 use App\MagazineDiscount;
 use App\MagazineIssueDiscount;
+use App\MagDigitalPrice;
 use DB;
 
 class magazineController extends Controller
@@ -251,6 +252,38 @@ class magazineController extends Controller
         $nav_users = "";
 
         return view('magazine/digital', compact('mag_uid','mag', 'discount_issue','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
+    }
+
+    public function show_digital_settings_save(Request $request, $mag_uid){
+
+        $magazine = new MagDigitalPrice();
+        $magazine->mag_id = $mag_uid;
+        $magazine->ad_type = $request['digital_type'];
+        $magazine->ad_size = $request['digital_size'];
+        $magazine->ad_amount = $request['digital_amount'];
+        $magazine->ad_issue = $request['digital_issue'];
+        $magazine->ad_status = 2;
+        $magazine->save();
+
+        return redirect('/magazine/digital/settings/71');
+    }
+
+    public function get_show_digital_settings_info($mag_uid){
+        $m_uid = (int)$mag_uid;
+        $get_magazines = DB::SELECT("
+                                SELECT aa.*, bb.magazine_name as magazine_name
+                                FROM 
+                                magzine_digital_price_table as aa
+                                INNER JOIN magazine_table as bb ON bb.Id = aa.mag_id
+                                WHERE aa.mag_id = {$m_uid}
+                                ");
+
+        if(COUNT($get_magazines) > 0)
+        {
+            return array("Code" => 200, "Result" => $get_magazines);
+        }else{
+            return array("Code" => 404, "Description" => "Failed");
+        }
     }
 
     public function get_discount_issue($mag_uid)
