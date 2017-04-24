@@ -98,10 +98,15 @@ class magazineController extends Controller
         $magazine->status = (int)$request['status'];
         $magazine->magazine_year = (int)$request['year_issue'];
         $magazine->magazine_issues = (int)$request['number_issue'];
+        $magazine->magazine_type = (int)$request['type_of_magazine'];
         $magazine->save();
 
         if($magazine->id > 0) {
             $mag_uid = $magazine->id;
+            $mag_type = (int)$request['type_of_magazine'];
+            if($mag_type > 1) {
+                return redirect('magazine/digital/settings/'. $mag_uid)->with('success', 'Successfully Added New Magazine.');
+            }
             return redirect('magazine/add-ad-color-and-size/'. $mag_uid)->with('success', 'Successfully Added New Magazine.');
         }
         return redirect('magazine/create')->with('success', 'Oops, Something went wrong.');
@@ -223,6 +228,29 @@ class magazineController extends Controller
         $nav_users = "";
 
         return view('magazine/ad', compact('mag_uid','mag', 'ad_c', 'ad_s', 'discount_issue','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
+    }
+
+    public function show_digital_settings($mag_uid) {
+
+        $m_uid = (int)$mag_uid;
+        $get_magazines = DB::SELECT("SELECT aa.*, bb.company_name as company_name
+                                    FROM 
+                                    magazine_table as aa
+                                    INNER JOIN magazine_company_table as bb ON bb.Id = aa.company_id
+                                    WHERE aa.Id = {$m_uid}");
+
+        $mag = $get_magazines;
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "active";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('magazine/digital', compact('mag_uid','mag', 'discount_issue','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function get_discount_issue($mag_uid)

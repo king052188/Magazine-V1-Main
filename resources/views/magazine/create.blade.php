@@ -27,6 +27,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <form role="form" action="/magazine/add-new" method="POST">
+
             <div id="tab_1" class="col-lg-6">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
@@ -56,6 +57,7 @@
                                 <div class="form-group" id = "hidden">
                                     <label>Type of Magazine</label>
                                     <select class='form-control' name='type_of_magazine' id = 'type_of_magazine' required>
+                                        <option value = "0">-- Select Type --</option>
                                         <option value = "1">Print</option>
                                         <option value = "2">Digital</option>
                                     </select>
@@ -92,12 +94,17 @@
                                         <button class='btn btn-sm btn-primary pull-right' id='btn_submit'>Create New Magazine</button>
                                     </div>
                                 </div>
+
+                                <div class="form-group" id = "div_btn_save" style="display: none; margin-top: 20px;">
+                                    <a href="#" class="btn btn-primary pull-right" id="btnSave2">SAVE</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="tab_1" class="col-lg-6">
+
+            <div id="tab_2" class="col-lg-6" style="display: none;">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         <h5>Create New Publication<small> *all fields are required</small></h5>
@@ -231,9 +238,30 @@
 <script>
 $(document).ready(function() {
 
+    $( "#type_of_magazine" ).change(function() {
+        var value = $(this).val(); // number_issue
+
+        if(parseInt(value) == 1) {
+            // Print Selected
+            $( "#number_issue" ).removeAttr("disabled");
+            $( "#number_issue" ).val("1");
+            $( "#tab_2" ).show();
+            $( "#div_btn_save" ).hide();
+        }
+        else if( parseInt(value) == 2) {
+            // Digital Selected
+            $( "#number_issue" ).attr("disabled", "disabled");
+            $( "#number_issue" ).val("0");
+            $( "#tab_2" ).hide();
+            $( "#div_btn_save" ).show();
+        }
+        else {
+
+        }
+    });
+
     $("div#hidden").hide();
     $("#hidden_submit").hide();
-
 
 //    function readURL(input) {
 //        if (input.files && input.files[0])
@@ -325,7 +353,10 @@ $(document).ready(function() {
 
     $("#btnSave").click(function(){
         $("#btn_submit").click();
-        return false;
+    });
+
+    $("#btnSave2").click(function(){
+        $("#btn_submit").click();
     });
 });
 
