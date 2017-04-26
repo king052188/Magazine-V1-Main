@@ -42,6 +42,7 @@
                             <tr>
                                 <th style="text-align: center; width: 200px;">Code</th>
                                 <th style="text-align: center; ">Magazine Name</th>
+                                <th style="text-align: center; width: 100px;">Magazine Type</th>
                                 <th style="text-align: center; width: 100px;">Country</th>
                                 <th style="text-align: center; width: 120px;">Action</th>
                             </tr>
@@ -51,12 +52,23 @@
                                     <tr>
                                         <td>{{ $magazine->mag_code }}</td>
                                         <td>{{ $magazine->magazine_name }}</td>
-                                        <td style="text-align: center;">{{ $magazine->magazine_country == 1 ? "US" : "CANADA" }}</td>
-                                        <td style="text-align: center;">
-                                            <a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-xs btn-info" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a>
-                                            &nbsp;
-                                            <a href = "" onclick="return edit_magazine({{ $magazine->Id }});" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_edit_magazine" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px 2px;"><i class="fa fa-edit" title = "Edit Magazine"></i> Edit</a>
-                                        </td>
+                                        @if($magazine->magazine_type > 1)
+                                            <td style="text-align: center; color: #FA4C21; font-weight: 600;">DIGITAL</td>
+                                            <td style="text-align: center;">N/A</td>
+                                            <td style="text-align: center;">
+                                                <a href = "{{ URL('/magazine/digital/settings') . '/'. $magazine->Id }}" class="btn btn-xs btn-info" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a>
+                                                &nbsp;
+                                                <a href = "" onclick="return edit_magazine({{ $magazine->Id }}, 2);" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_edit_magazine" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px 2px;"><i class="fa fa-edit" title = "Edit Magazine"></i> Edit</a>
+                                            </td>
+                                        @else
+                                            <td style="text-align: center; font-weight: 600;">PRINT</td>
+                                            <td style="text-align: center;">{{ $magazine->magazine_country == 1 ? "US" : "CANADA" }}</td>
+                                            <td style="text-align: center;">
+                                                <a href = "{{ URL('/magazine/add-ad-color-and-size') . '/'. $magazine->Id }}" class="btn btn-xs btn-info" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px -5px;"><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a>
+                                                &nbsp;
+                                                <a href = "" onclick="return edit_magazine({{ $magazine->Id }}, 1);" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modal_edit_magazine" style = "padding: 0px 5px 0px 5px; margin: -5px -5px -5px 2px;"><i class="fa fa-edit" title = "Edit Magazine"></i> Edit</a>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -69,8 +81,8 @@
 </div>
 
 <script type="text/javascript">
-    function edit_magazine($magazine_uid) {
-        var magazine_uid = $magazine_uid;
+    function edit_magazine(magazine_uid, uploadLogo) {
+//        var magazine_uid = magazine_uid;
 
         //console.log(magazine_uid);
 
@@ -112,8 +124,12 @@
                         $("#year_issue_selected").val(magazine.magazine_year);
                         $("#number_issue").val(magazine.magazine_issues);
 
-
-
+                        if(uploadLogo == 1) {
+                            $("#upload_logo").show();
+                        }
+                        else {
+                            $("#upload_logo").hide();
+                        }
                         populate_cid(magazine.company_id);
 
                     });
@@ -277,7 +293,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-12">
+
+                <div id="upload_logo" class="col-sm-12" style="display: none;">
                     <div class = "form-group">
                         <input type = "hidden" name = "logo_uid" value = "{{ $logo_uid['id_magazine'] }}">
                         <?php

@@ -30,7 +30,7 @@
                 <form role="form" action="{{ URL('/magazine/digital/settings/save') . '/' . $mag[0]->Id }}" method="POST">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
-                            <h5>Create Digital Size with Price<small> *all fields are required</small></h5>
+                            <h5>Create Digital Magazine Settings<small> *all fields are required</small></h5>
                             <div class="ibox-tools">
                                 <a class="collapse-link">
                                     <i class="fa fa-chevron-up"></i>
@@ -41,8 +41,8 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="ex2">Type</label>
-                                        <input type="text" placeholder="Enter Type" class="form-control" name="digital_type">
+                                        <label for="ex2">Position</label>
+                                        <input type="text" placeholder="Enter Position" class="form-control" name="digital_type">
                                     </div>
                                     <div class="form-group">
                                         <label for="ex2">Size</label>
@@ -54,7 +54,7 @@
                                         <input type="text" placeholder="Enter Amount" class="form-control" name="digital_amount">
                                     </div>
                                     <div class="form-group">
-                                        <label for="ex2">Issue</label>
+                                        <label for="ex2">Frequency</label>
                                         <select class="form-control" name = "digital_issue">
                                             <option value = "0">-- Select --</option>
                                             <option value = "1">Monthly</option>
@@ -94,10 +94,10 @@
                                     <tr>
                                         <th data-toggle="true" style="width: 50px; text-align: center;">#</th>
                                         <th style="text-align: center;">Magazine Name</th>
-                                        <th style="text-align: center;">Type</th>
+                                        <th style="text-align: center;">Position</th>
                                         <th style="width: 100px; text-align: center;">Size</th>
                                         <th style="width: 100px; text-align: center;">Amount</th>
-                                        <th style="width: 150px; text-align: center;">Issue</th>
+                                        <th style="width: 150px; text-align: center;">Frequency</th>
                                     </tr>
                                     </thead>
                                     <tbody>
