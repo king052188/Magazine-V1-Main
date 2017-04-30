@@ -695,4 +695,54 @@ class magazineController extends Controller
 
         return array("status" => 200, "description" => "Success");
     }
+
+    public function edit_digital_settings_info($digital_uid) {
+
+        $get = DB::SELECT("SELECT * FROM magzine_digital_price_table WHERE Id = {$digital_uid}");
+        if(COUNT($get) > 0){
+
+            return array(
+                "status" => 200,
+                "Id" => $get[0]->Id,
+                "ad_type" => $get[0]->ad_type,
+                "ad_size" => $get[0]->ad_size,
+                "ad_amount" => $get[0]->ad_amount,
+                "ad_issue" => $get[0]->ad_issue
+            );
+        }
+
+        return array("status" => 404, "description" => "Failed");
+
+//        MagDigitalPrice::where('Id', '=', $mag_uid)
+//            ->update([
+//                'status' => 1
+//            ]);
+
+
+
+    }
+
+    public function update_digital_settings_info($digital_uid, $digital_type, $digital_size, $digital_amount, $digital_issue) {
+
+        MagDigitalPrice::where('Id', '=', $digital_uid)
+            ->update([
+                'ad_type' => $digital_type,
+                'ad_size' => $digital_size,
+                'ad_amount' => $digital_amount,
+                'ad_issue' => $digital_issue,
+            ]);
+
+        return array("status" => 200, "description" => "Success");
+
+    }
+
+    public function delete_digital_settings_info($digital_uid) {
+
+        DB::DELETE("DELETE FROM magzine_digital_price_table WHERE Id = {$digital_uid}");
+
+        return array("status" => 200, "description" => "Success");
+
+    }
+
+
 }

@@ -42,21 +42,22 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="ex2">Position</label>
-                                        <input type="text" placeholder="Enter Position" class="form-control" name="digital_type">
+                                        <input type="text" placeholder="Enter Position" class="form-control" name="digital_type" id="digital_type" required>
+                                        <input type="hidden" class="form-control" id="digital_uid" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="ex2">Size</label>
-                                        <input type="text" placeholder="Enter Size" class="form-control" name="digital_size">
+                                        <input type="text" placeholder="Enter Size" class="form-control" name="digital_size" id="digital_size" required>
                                     </div>
 
                                     <div class="form-group">
                                         <label>Amount</label>
-                                        <input type="text" placeholder="Enter Amount" class="form-control" name="digital_amount">
+                                        <input type="number" placeholder="Enter Amount" class="form-control" name="digital_amount" id="digital_amount" required>
                                     </div>
                                     <div class="form-group">
                                         <label for="ex2">Frequency</label>
-                                        <select class="form-control" name = "digital_issue">
-                                            <option value = "0">-- Select --</option>
+                                        <select class="form-control" name = "digital_issue" id = "digital_issue" required>
+                                            <option value = "">-- Select --</option>
                                             <option value = "1">Monthly</option>
                                             <option value = "2">Weekly</option>
                                             <option value = "3">Both</option>
@@ -64,7 +65,9 @@
                                     </div>
                                     <div class="form-group">
                                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                        <input type = "submit" class = "btn btn-primary pull-right" value = "Add">
+                                        <input type = "submit" id = "add_digital" class = "btn btn-primary pull-right" style = "width: 100px;" value = "Add">
+                                        <a id = "update_digital" class = "btn btn-primary pull-right" style = "display: none; width: 100px;">Update</a>
+                                        <a id = "cancel_digital" class = "btn btn-danger pull-right" style = "display: none; width: 100px; margin-right: 5px;">Cancel</a>
                                     </div>
                                 </div>
                             </div>
@@ -98,6 +101,7 @@
                                         <th style="width: 100px; text-align: center;">Size</th>
                                         <th style="width: 100px; text-align: center;">Amount</th>
                                         <th style="width: 150px; text-align: center;">Frequency</th>
+                                        <th style="text-align: center;"></th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -155,6 +159,7 @@
                             html_thmb += "<td style='text-align: center;'>"+ tran.ad_size +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.ad_amount +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ n_issue +"</td>";
+                            html_thmb += "<td style='text-align: center;'><a id = 'edit_digital_settings' data-target = '"+ tran.Id +"' class = 'btn btn-primary' style = 'height: 25px; padding: 2px 5px 2px 5px; margin-right: 5px; width: 70px;'>Edit</a><a id = 'delete_digital_settings' data-target = '"+ tran.Id +"' class = 'btn btn-danger' style = 'height: 25px; padding: 2px 5px 2px 5px; width: 70px;'>Delete</a></td>";
                             html_thmb += "</tr>";
                         });
                     }
@@ -163,5 +168,127 @@
                 }
             });
         }
+
+        $("#info_table").on("click", "#edit_digital_settings", function(){
+
+            var digital_uid = $(this).attr("data-target");
+
+            $.ajax({
+                url: "/magazine/digital/settings/edit/" + digital_uid,
+                dataType: "text",
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json == null)
+                        return false;
+
+                    if(json.status == 200){
+                        $("#digital_uid").val(json.Id);
+                        $("#digital_type").val(json.ad_type);
+                        $("#digital_size").val(json.ad_size);
+                        $("#digital_amount").val(json.ad_amount);
+                        $("#digital_issue").val(json.ad_issue);
+
+                        $("#update_digital").show();
+                        $("#cancel_digital").show();
+                        $("#add_digital").hide();
+                    }
+                }
+            });
+        });
+
+        $("#info_table").on("click", "#delete_digital_settings", function(){
+
+            var digital_uid = $(this).attr("data-target");
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'Cancel'
+            }).then(function() {
+
+                $.ajax({
+                    url: "/magazine/digital/settings/delete/" + digital_uid,
+                    dataType: "text",
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        if(json == null)
+                            return false;
+
+                        if(json.status == 200){
+
+                            swal(
+                                    '',
+                                    'Delete Successful!',
+                                    'success'
+                            ).then(
+                                    function () {
+                                        location.reload();
+                                    }
+                            )
+                        }
+                    }
+                });
+
+            }, function(dismiss) {
+                if (dismiss === 'cancel') {
+                    swal(
+                        'Cancelled',
+                        'Your data file is safe :)',
+                        'error'
+                    )
+                }
+            })
+        });
+
+        $("#update_digital").click(function(){
+            var digital_uid = $("#digital_uid").val();
+            var digital_type = $("#digital_type").val();
+            var digital_size = $("#digital_size").val();
+            var digital_amount = $("#digital_amount").val();
+            var digital_issue = $("#digital_issue").val();
+
+            $.ajax({
+                url: "/magazine/digital/settings/update/" + digital_uid + "/" + digital_type + "/" + digital_size + "/" + digital_amount + "/" + digital_issue,
+                dataType: "text",
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json == null)
+                        return false;
+
+                    if(json.status == 200){
+
+                        swal(
+                                '',
+                                'Update Successful!',
+                                'success'
+                        ).then(
+                                function () {
+                                    location.reload();
+                                }
+                        )
+                    }
+                }
+            });
+
+            $("#update_digital").hide();
+            $("#cancel_digital").hide();
+            $("#add_digital").show();
+        });
+
+        $("#cancel_digital").click(function(){
+            $("#digital_type").val("");
+            $("#digital_size").val("");
+            $("#digital_amount").val("");
+            $("#digital_issue").val("");
+
+            $("#update_digital").hide();
+            $("#cancel_digital").hide();
+            $("#add_digital").show();
+        });
     </script>
 @endsection
