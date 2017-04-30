@@ -78,12 +78,12 @@ Route::post('/magazine/add-color-size-discount/{mag_uid}', 'magazineController@a
 Route::get('/magazine/add-issue-discount/{mag_id}/{discount_2}/{discount_3}/{discount_4}/{discount_5}/{discount_6}/{discount_7}/{discount_8}/{discount_9}/{discount_10}/{discount_11}/{discount_12}', 'magazineController@add_issue_discount');
 Route::get('/magazine/update/{magazine_uid}', 'magazineController@magazine_update');
 Route::get('/magazine/get-discount-issue/{mag_uid}', 'magazineController@get_discount_issue');
-//Route::post('/magazine/update/save', 'magazineController@magazine_update_save');
+Route::post('/magazine/update/save', 'magazineController@magazine_update_save');
 
 Route::get('/magazine/list/publisher/{publisher_uid}', 'magazineController@list_publishers');
 Route::get('/magazine/set/inactive/status/publisher/{publisher_uid}', 'magazineController@set_inactive_publishers');
 Route::get('/magazine/set/active/status/publisher/{publisher_uid}', 'magazineController@set_active_publishers');
-Route::post('/magazine/update/save', 'magazineController@edit_publishers');
+//Route::post('/magazine/update/save', 'magazineController@edit_publishers');
 
 // Transaction Routes
 Route::get('/transaction/create', 'transactionController@create');
