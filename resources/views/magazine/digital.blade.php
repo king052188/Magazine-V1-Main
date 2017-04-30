@@ -83,12 +83,12 @@
                         <h5>Magazine List</h5>
                     </div>
                     <div class="ibox-content">
-                        @if(Session::has('success'))
-                            <div class="alert alert-success alert-dismissable">
-                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                                {{ Session::get('success') }}
-                            </div>
-                        @endif
+                        {{--@if(Session::has('success'))--}}
+                            {{--<div class="alert alert-success alert-dismissable">--}}
+                                {{--<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>--}}
+                                {{--{{ Session::get('success') }}--}}
+                            {{--</div>--}}
+                        {{--@endif--}}
                         <div class="table-responsive">
 
                             <div class="col-lg-12">
@@ -117,7 +117,7 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    {{--<script src="https://code.jquery.com/jquery-1.12.4.js"></script>--}}
     <script>
         $(document).ready(function(){
             get_info({{ $mag[0]->Id }});

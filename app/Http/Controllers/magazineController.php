@@ -102,6 +102,7 @@ class magazineController extends Controller
         $magazine->magazine_type = (int)$request['type_of_magazine'];
         $magazine->save();
 
+
         if($magazine->id > 0) {
             $mag_uid = $magazine->id;
             $mag_type = (int)$request['type_of_magazine'];
@@ -111,7 +112,6 @@ class magazineController extends Controller
             return redirect('magazine/add-ad-color-and-size/'. $mag_uid)->with('success', 'Successfully Added New Magazine.');
         }
         return redirect('magazine/create')->with('success', 'Oops, Something went wrong.');
-
     }
 
     public function magazine_add_color_size_api()
@@ -265,7 +265,7 @@ class magazineController extends Controller
         $magazine->ad_status = 2;
         $magazine->save();
 
-        return redirect('/magazine/digital/settings/71');
+        return redirect('/magazine/digital/settings/' . $mag_uid);
     }
 
     public function get_show_digital_settings_info($mag_uid){
