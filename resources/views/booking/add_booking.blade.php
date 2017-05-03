@@ -35,11 +35,11 @@
                         <h4 class="list-group-item-heading">Step 1</h4>
                         <p class="list-group-item-text">Add Booking Details</p>
                     </a></li>
-                    <li class="disabled"><a href="#step-2" style="padding: 0px 20px 0px 25px;>
+                    <li class="disabled"><a href="#step-2" style="padding: 0px 20px 0px 25px;">
                         <h4 class="list-group-item-heading">Step 2</h4>
                         <p class="list-group-item-text">Select Magazine</p>
                     </a></li>
-                    <li class="disabled"><a href="#step-3" style="padding: 0px 20px 0px 25px;>
+                    <li class="disabled"><a href="#step-3" style="padding: 0px 20px 0px 25px;">
                         <h4 class="list-group-item-heading">Step 3</h4>
                         <p class="list-group-item-text">Add Issue</p>
                     </a></li>

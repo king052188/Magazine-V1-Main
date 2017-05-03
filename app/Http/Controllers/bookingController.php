@@ -13,6 +13,7 @@ use App\DiscountTransaction;
 use App\Notification;
 use App\ArtworkTable;
 use App\Notes;
+use App\MagazineDigitalTransaction;
 
 class bookingController extends Controller
 {
@@ -198,7 +199,24 @@ class bookingController extends Controller
 
         return view('booking.booking_list', compact('booking', 'publication', 'clients', 'sales_rep', 'filter_publication', 'filter_sales_rep', 'filter_client', 'filter_status'))->with('success', 'Booking details successful added!');
     }
-    
+
+    public function booking_checkpoint(){
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "active";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('booking.checkpoint', compact('n_booking','subscriber','agency', 'clients', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
+    }
+
     public function add_booking()
     {
         if(!AssemblyClass::check_cookies()) {
@@ -249,6 +267,58 @@ class bookingController extends Controller
         $nav_users = "";
         
         return view('booking.add_booking', compact('n_booking','subscriber','agency', 'clients', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Booking details successful added!');
+    }
+
+    public function add_booking_digital()
+    {
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        $n_booking = \App\Http\Controllers\VMKhelper::get_new_contract();
+
+        $clients = DB::SELECT("
+                    SELECT *
+                    FROM client_table
+                    WHERE status = 2 AND type != 2 ORDER BY company_name ASC
+    	 ");
+
+        $subscriber = DB::SELECT("
+                    SELECT 
+                        master.company_name, master.type, master.status, child.*, child.Id as child_uid
+                    FROM 
+                        client_table AS master
+                    INNER JOIN
+                        client_contacts_table AS child
+                    ON
+                        master.Id = child.client_id
+                    WHERE master.type = 1
+                    ORDER BY master.company_name, branch_name ASC
+        ");
+
+        $agency = DB::SELECT("
+                    SELECT 
+                        master.company_name, master.type, master.status, child.*, child.Id as child_uid
+                    FROM 
+                        client_table AS master
+                    INNER JOIN
+                        client_contacts_table AS child
+                    ON
+                        master.Id = child.client_id
+                    WHERE master.type = 2
+                    ORDER BY master.company_name, branch_name ASC
+        ");
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "active";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('booking.digital.add_booking_digital', compact('n_booking','subscriber','agency', 'clients', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Booking details successful added!');
     }
 
     public function search_bill_to($client_id)
@@ -478,6 +548,26 @@ class bookingController extends Controller
 
     }
 
+    public function save_booking_digital(Request $request)
+    {
+        $booking = new Booking();
+        $booking->trans_num = $request['trans_num'];
+        $booking->sales_rep_code = $request['sales_rep_code'];
+        $booking->client_id = $request['client_id'];
+        $booking->agency_id = $request['agency_id'] == "" ? 0 : $request['agency_id'];
+        $booking->group_id = $request['group_uid'] == "" ? 0 : $request['group_uid'];
+        $booking->status = 1; //default pending
+        $booking->save();
+
+        $booking_uid = $booking->id; //last_inserted_id
+        $which_country = $request['which_country'];
+        $client_id = $request['client_id'];
+        if($booking_uid > 0) {
+            return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id);
+        }
+
+    }
+
     public function show_transaction_mag($trans_uid, $which_country, $client_id) {
 
         if(!AssemblyClass::check_cookies()) {
@@ -498,7 +588,8 @@ class bookingController extends Controller
             return redirect("/booking/add_issue/" . $mag_l[0]->Id . "/" . $client_id);
         }
 
-        $mag_list = DB::table('magazine_table')->where('magazine_country', '=', $w_country)->where('status', '=', 2)->get();
+        //magazine_type = 1 (PRINT) | 2 (DIGITAL)
+        $mag_list = DB::table('magazine_table')->where('magazine_country', '=', $w_country)->where('magazine_type', '=', 1)->where('status', '=', 2)->get();
         if(count($mag_l) > 0) {
             $disabled = ["set" => "disabled"];
         }
@@ -513,6 +604,44 @@ class bookingController extends Controller
         $nav_users = "";
 
         return view('booking.magazine_transaction', compact('booking_uid', 'mag_list', 'which_country', 'client_id', 'mag_l', 'disabled', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Successfully Added Magazine');
+    }
+
+    public function show_transaction_mag_digital($trans_uid, $which_country, $client_id) {
+
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        $disabled = ["set" => ""];
+        $booking_uid = (int)$trans_uid;
+        $w_country = (int)$which_country;
+
+        $mag_l = DB::SELECT("
+                    SELECT * FROM magazine_table as mag
+                    LEFT JOIN magazine_transaction_table as mag_t
+                    ON mag_t.magazine_id = mag.Id
+                    WHERE mag_t.transaction_id = {$booking_uid}
+                    ");
+        if(count($mag_l) > 0) {
+            return redirect("/booking/digital/add_issue/" . $mag_l[0]->Id . "/" . $client_id);
+        }
+
+        //magazine_type = 1 (PRINT) | 2 (DIGITAL)
+        $mag_list = DB::table('magazine_table')->where('magazine_country', '=', $w_country)->where('magazine_type', '=', 2)->where('status', '=', 2)->get();
+        if(count($mag_l) > 0) {
+            $disabled = ["set" => "disabled"];
+        }
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "active";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('booking.digital.magazine_transaction_digital', compact('booking_uid', 'mag_list', 'which_country', 'client_id', 'mag_l', 'disabled', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Successfully Added Magazine');
     }
 
     public function save_magazine_transaction(Request $request, $trans_uid, $which_country, $client_id)
@@ -530,6 +659,24 @@ class bookingController extends Controller
         $r = $mt->save();
         $message = $r ? "Success" : "Fail";
         return redirect("/booking/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id)->with("message", $message);
+        /* END = Additional 11-20-2016 8:54PM | MJT */
+    }
+
+    public function save_magazine_transaction_digital(Request $request, $trans_uid, $which_country, $client_id)
+    {
+        $booking_uid = (int)$trans_uid;
+        $exist = DB::table('magazine_transaction_table')->where('transaction_id', '=', $booking_uid)->get();
+        if(COUNT($exist) > 0)
+        {
+            // not allow
+            return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id)->with("message", "1 magazine only");
+        }
+        $mt = new MagazineTransaction();
+        $mt->magazine_id = $request['magazine_id'];
+        $mt->transaction_id = $booking_uid;
+        $r = $mt->save();
+        $message = $r ? "Success" : "Fail";
+        return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id)->with("message", $message);
         /* END = Additional 11-20-2016 8:54PM | MJT */
     }
 
@@ -596,6 +743,154 @@ class bookingController extends Controller
         
         return view('booking.add_issue', compact('mag_trans_uid', 'mag_name', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num', 'is_member', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
+
+    public function add_issue_digital($mag_trans_uid, $client_id)
+    {
+
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+//        $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
+        $ad_p = DB::table('price_package_table')->where('status','=',2)->get();
+
+        $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
+        $booking_trans_num = DB::table('booking_sales_table')->where('Id','=',$transaction_uid[0]->transaction_id)->get();
+        $mag_name = DB::table('magazine_table')->where('Id','=',$transaction_uid[0]->magazine_id)->get();
+
+        $ad_c = DB::SELECT("
+                SELECT *
+                FROM magzine_digital_price_table
+                WHERE mag_id = {$transaction_uid[0]->magazine_id}
+                ORDER BY ad_type, ad_size ASC
+        ");
+
+        $is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "active";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('booking.digital.add_issue_digital', compact('mag_trans_uid', 'mag_name', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num', 'is_member', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
+    }
+
+    public function api_get_digital_price($digital_price_uid){
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        $get = DB::SELECT("SELECT * FROM magzine_digital_price_table WHERE Id = {$digital_price_uid}");
+        if(COUNT($get) > 0){
+            return array(
+                "Code" => 200,
+                "mag_id" => $get[0]->mag_id,
+                "ad_type" => $get[0]->ad_type,
+                "ad_size" => $get[0]->ad_size,
+                "ad_amount" => $get[0]->ad_amount,
+                "ad_issue" => $get[0]->ad_issue
+            );
+        }
+
+        return array("Code" => 404, "Description" => "No Data Found.");
+    }
+
+    public function digital_add_issue_save($mag_id, $position_id, $month_id, $week_id, $amount){
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        $mit = new MagazineDigitalTransaction();
+        $mit->magazine_id = $mag_id;
+        $mit->position_id = $position_id;
+        $mit->month_id = $month_id;
+        $mit->week_id = $week_id;
+        $mit->amount = $amount;
+        $mit->status = 2;
+        $mit->save();
+
+        return array("Code" => 200, "Description" => "Success");
+    }
+
+    public function api_get_digital_transaction($mag_id){
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        $get = DB::SELECT("
+                    SELECT 
+                    aa.*,
+                    (SELECT magazine_name FROM magazine_table WHERE Id = aa.magazine_id) as mag_name,
+                    (SELECT ad_type FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_type,
+                    (SELECT ad_size FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_size,
+                    (SELECT ad_amount FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_amount,
+                    (SELECT ad_issue FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_issue
+                    FROM magazine_digital_transaction_table as aa
+                    WHERE aa.magazine_id = {$mag_id}
+        ");
+
+        if(COUNT($get) > 0){
+
+            $n = 1;
+            for($i = 0; $i < COUNT($get); $i++)
+            {
+                if($get[$i]->ad_issue == 1){
+                    $a_issue = "Monthly";
+                }else{
+                    $a_issue = "Weekly";
+                }
+
+                if($get[$i]->month_id == 1){
+                    $month = "Jan";
+                }else if($get[$i]->month_id == 2){
+                    $month = "Feb";
+                }else if($get[$i]->month_id == 3){
+                    $month = "Mar";
+                }else if($get[$i]->month_id == 4){
+                    $month = "Apr";
+                }else if($get[$i]->month_id == 5){
+                    $month = "May";
+                }else if($get[$i]->month_id == 6){
+                    $month = "Jun";
+                }else if($get[$i]->month_id == 7){
+                    $month = "Jul";
+                }else if($get[$i]->month_id == 8){
+                    $month = "Aug";
+                }else if($get[$i]->month_id == 9){
+                    $month = "Sept";
+                }else if($get[$i]->month_id == 10){
+                    $month = "Oct";
+                }else if($get[$i]->month_id == 11){
+                    $month = "Nov";
+                }else if($get[$i]->month_id == 12){
+                    $month = "Dec";
+                }
+
+                $result[] = array(
+                    "d_num" => $n,
+                    "mag_name" => $get[$i]->mag_name,
+                    "ad_type" => $get[$i]->ad_type,
+                    "ad_size" => $get[$i]->ad_size,
+                    "ad_amount" => $get[$i]->ad_amount,
+                    "ad_issue" => $a_issue,
+                    "ad_months" => $month,
+                    "ad_weeks" => "Week " . $get[$i]->week_id
+                );
+            }
+
+            return array(
+                "Code" => 200,
+                "Result" => $result
+            );
+        }
+
+        return array("Code" => 404, "Description" => "No Data Found.");
+    }
+
 
     public function save_issue_v1_backup(Request $request, $mag_trans_uid, $client_id)
     {

@@ -60,7 +60,6 @@
                                             <option value = "">-- Select --</option>
                                             <option value = "1">Monthly</option>
                                             <option value = "2">Weekly</option>
-                                            <option value = "3">Both</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
@@ -145,9 +144,9 @@
                         var count = 1;
                         $(json.Result).each(function(i, tran){
 
-                            var n_issue = "Monthly & Weekly";
+                            //var n_issue = "Monthly & Weekly";
                             if(tran.ad_issue == 1){
-                                n_issue = "Monthly";
+                                var n_issue = "Monthly";
                             }else if(tran.ad_issue == 2){
                                 n_issue = "Weekly";
                             }
