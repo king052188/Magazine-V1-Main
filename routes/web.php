@@ -67,7 +67,6 @@ Route::get('/magazine/digital/settings/edit/{digital_uid}', 'magazineController@
 Route::get('/magazine/digital/settings/update/{digital_uid}/{digital_type}/{digital_size}/{digital_amount}/{digital_issue}', 'magazineController@update_digital_settings_info');
 Route::get('/magazine/digital/settings/delete/{digital_uid}', 'magazineController@delete_digital_settings_info');
 
-
 Route::get('/magazine/ad/delete/{ad_uid}', 'magazineController@magazine_ad_delete');
 Route::get('/magazine/add-ad-color-and-size-api', 'magazineController@magazine_add_color_size_api');
 Route::get('/magazine/all', 'magazineController@index');
@@ -140,8 +139,12 @@ Route::post('/booking/issue/discount/approve/{tran_issue_uid}/{mag_trans_uid}/{c
 
 Route::post('/booking/issue/discount/decline/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@decline_discount');
 
-
 Route::get('/transaction/update/row/{trans_id}/{trans_status}', 'bookingController@trans_selected_row_update');
+
+// Production Routes
+Route::get('/production/flat/planing', 'FlatPlanController@init');
+
+
 
 // Payment Routes
 Route::get('/payment/payment_list', 'paymentController@payment_list');

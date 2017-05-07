@@ -23,6 +23,46 @@
     <link href="{{ asset('css/plugins/steps/jquery.steps.css')}}" rel="stylesheet">
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.5.6/numeral.min.js"></script>
+    <script>
+        function do_flat() {
+            $(document).ready(function () {
+                $('#product_flat_plan').modal({
+                    show: true
+                });
+                $.ajax({
+                    url: "http://" + report_url_api + "/kpa/work-v2/flat-planning/populate/publication",
+                    dataType: "text",
+                    beforeSend: function () {
+                        console.log("Please wait...");
+                        $("#flat_plan_publication").empty().prepend('<h5>Please wait...</h5>');
+                    },
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        var select = '<select class="form-control" id = "fp_publication" name="fp_publication">';
+                        select += '<option value="0">-- Select --</option>';
+                        $(json).each(function(key, value){
+                            select += '<option value="'+value.Id+'">'+ value.magazine_name +'</option>';
+                        });
+                        select += '</select>';
+                        $("#flat_plan_publication").empty().prepend(select);
+                    }
+                });
+            })
+        }
+        function do_proceed() {
+            $(document).ready(function () {
+                var mag_id = $("#fp_publication").val();
+
+                if( parseInt(mag_id) == 0 ) {
+                    $("#err_mes").text('Oops, Please select one of "Publication"');
+                    return false;
+                }
+
+                var url = "http://" + report_url_api + "/kpa/work-v2/flat-planning/" + mag_id;
+                window.location.href=url;
+            })
+        }
+    </script>
     @yield('styles')
 </head> 
 
@@ -36,28 +76,52 @@
         </div>
     </div>
 
+    <div class="modal fade" id="product_flat_plan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Flat Planning</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-lg-12">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Publication Name</label>
+                                <div class="form-group" id = "flat_plan_publication"></div>
+                                <span id="err_mes" style="color: red;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style = "clear: both;"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary pull-right" onclick="do_proceed();" type="submit">Proceed</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" style = "margin-right: 5px;">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Mainly scripts -->
     <script src="{{ asset('js/jquery-2.1.1.js')}}"></script>
     <script src="{{ asset('js/bootstrap.min.js')}}"></script>
     <script src="{{ asset('js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
     <script src="{{ asset('js/plugins/slimscroll/jquery.slimscroll.min.js')}}"></script>
     <script src="{{ asset('js/plugins/steps/jquery.steps.min.js') }}"></script>
-
     <!-- Custom and plugin javascript -->
     <script src="{{ asset('js/inspinia.js')}}"></script>
-
     <!-- FooTable -->
     <link href="{{ asset('css/plugins/footable/footable.core.css')}}" rel="stylesheet">
     <script src="{{ asset('js/plugins/footable/footable.all.min.js')}}"></script>
-
     <script src="{{ asset('js/jquery.cookie.js')}}"></script>
-
     <!-- FooTable -- Page-Level Scripts -->
     <script>
         $(document).ready(function() {
             $('.footable').footable();
             $('.footable2').footable();
-            
         });
 
         function notif_read(notif_uid) {

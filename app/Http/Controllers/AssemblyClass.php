@@ -26,10 +26,13 @@ class AssemblyClass extends Controller
         return $kpa;
     }
 
-    public static function get_api_url() {
+    public static function get_api_url($path = null) {
         
         $kpa = AssemblyClass::get_config_api();
 
+        if($path != null) {
+            return $kpa['host'] .':'. $kpa['port'] . $path;
+        }
         return $kpa['host'] .':'. $kpa['port'];
     }
 
