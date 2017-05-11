@@ -66,7 +66,7 @@
                     return false;
                 }
 
-                var url = "http://" + report_url_api + "/kpa/work-v2/flat-planning/" + mag_id;
+                var url = "http://" + report_url_api + "/kpa/work-v2/flat-plan/" + mag_id;
                 window.location.href=url;
             })
         }
