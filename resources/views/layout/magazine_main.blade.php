@@ -38,7 +38,15 @@
                     },
                     success: function(data) {
                         var json = $.parseJSON(data);
-                        var select = '<select class="form-control" id = "fp_publication" name="fp_publication">';
+
+                        var f_type = '<select class="form-control" id = "fp_type" name="fp_type">';
+                        f_type += '<option value="0">-- Select --</option>';
+                        f_type += '<option value="1">Existing Flat Plan</option>';
+                        f_type += '<option value="2">Create New Flat PLan</option>';
+                        f_type += '</select>';
+                        $("#flat_plan_publication_type").empty().prepend(f_type);
+
+                        var select = '<select class="form-control" id = "fp_publication" name="fp_publication" style = "margin-top: 10px;">';
                         select += '<option value="0">-- Select --</option>';
                         $(json).each(function(key, value){
                             select += '<option value="'+value.Id+'">'+ value.magazine_name +'</option>';
@@ -89,6 +97,10 @@
                     <div class="col-lg-12">
                         <div class="col-lg-12">
                             <div class="form-group">
+                                <label>Type</label>
+                                <div class="form-group" id = "flat_plan_publication_type"></div>
+                                <span id="err_mes" style="color: red;"></span>
+
                                 <label>Publication Name</label>
                                 <div class="form-group" id = "flat_plan_publication"></div>
                                 <span id="err_mes" style="color: red;"></span>

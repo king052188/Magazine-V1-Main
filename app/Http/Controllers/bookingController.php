@@ -560,10 +560,13 @@ class bookingController extends Controller
         $booking->save();
 
         $booking_uid = $booking->id; //last_inserted_id
-        $which_country = $request['which_country'];
+//        $which_country = $request['which_country'];
         $client_id = $request['client_id'];
         if($booking_uid > 0) {
-            return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id);
+            //return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id);
+
+            //remove country
+            return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $client_id);
         }
 
     }
@@ -606,7 +609,7 @@ class bookingController extends Controller
         return view('booking.magazine_transaction', compact('booking_uid', 'mag_list', 'which_country', 'client_id', 'mag_l', 'disabled', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Successfully Added Magazine');
     }
 
-    public function show_transaction_mag_digital($trans_uid, $which_country, $client_id) {
+    public function show_transaction_mag_digital($trans_uid, $client_id) {
 
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
@@ -614,7 +617,7 @@ class bookingController extends Controller
 
         $disabled = ["set" => ""];
         $booking_uid = (int)$trans_uid;
-        $w_country = (int)$which_country;
+        //$w_country = (int)$which_country;
 
         $mag_l = DB::SELECT("
                     SELECT * FROM magazine_table as mag
@@ -627,7 +630,8 @@ class bookingController extends Controller
         }
 
         //magazine_type = 1 (PRINT) | 2 (DIGITAL)
-        $mag_list = DB::table('magazine_table')->where('magazine_country', '=', $w_country)->where('magazine_type', '=', 2)->where('status', '=', 2)->get();
+        //$mag_list = DB::table('magazine_table')->where('magazine_country', '=', $w_country)->where('magazine_type', '=', 2)->where('status', '=', 2)->get();
+        $mag_list = DB::table('magazine_table')->where('magazine_type', '=', 2)->where('status', '=', 2)->get();
         if(count($mag_l) > 0) {
             $disabled = ["set" => "disabled"];
         }
@@ -641,7 +645,7 @@ class bookingController extends Controller
         $nav_reports = "";
         $nav_users = "";
 
-        return view('booking.digital.magazine_transaction_digital', compact('booking_uid', 'mag_list', 'which_country', 'client_id', 'mag_l', 'disabled', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Successfully Added Magazine');
+        return view('booking.digital.magazine_transaction_digital', compact('booking_uid', 'mag_list', 'client_id', 'mag_l', 'disabled', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Successfully Added Magazine');
     }
 
     public function save_magazine_transaction(Request $request, $trans_uid, $which_country, $client_id)
@@ -662,21 +666,21 @@ class bookingController extends Controller
         /* END = Additional 11-20-2016 8:54PM | MJT */
     }
 
-    public function save_magazine_transaction_digital(Request $request, $trans_uid, $which_country, $client_id)
+    public function save_magazine_transaction_digital(Request $request, $trans_uid, $client_id)
     {
         $booking_uid = (int)$trans_uid;
         $exist = DB::table('magazine_transaction_table')->where('transaction_id', '=', $booking_uid)->get();
         if(COUNT($exist) > 0)
         {
             // not allow
-            return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id)->with("message", "1 magazine only");
+            return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $client_id)->with("message", "1 magazine only");
         }
         $mt = new MagazineTransaction();
         $mt->magazine_id = $request['magazine_id'];
         $mt->transaction_id = $booking_uid;
         $r = $mt->save();
         $message = $r ? "Success" : "Fail";
-        return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $which_country ."/". $client_id)->with("message", $message);
+        return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $client_id)->with("message", $message);
         /* END = Additional 11-20-2016 8:54PM | MJT */
     }
 
@@ -799,15 +803,17 @@ class bookingController extends Controller
         return array("Code" => 404, "Description" => "No Data Found.");
     }
 
-    public function digital_add_issue_save($mag_id, $position_id, $month_id, $week_id, $amount){
+    public function digital_add_issue_save($mag_id, $client_id, $position_id, $month_id, $year, $week_id, $amount){
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
 
         $mit = new MagazineDigitalTransaction();
         $mit->magazine_id = $mag_id;
+        $mit->client_id = $client_id;
         $mit->position_id = $position_id;
         $mit->month_id = $month_id;
+        $mit->year = $year;
         $mit->week_id = $week_id;
         $mit->amount = $amount;
         $mit->status = 2;
@@ -816,21 +822,21 @@ class bookingController extends Controller
         return array("Code" => 200, "Description" => "Success");
     }
 
-    public function api_get_digital_transaction($mag_id){
+    public function api_get_digital_transaction($mag_id, $client_id){
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
 
         $get = DB::SELECT("
                     SELECT 
-                    aa.*,
+                    aa.*, aa.Id as d_uid,
                     (SELECT magazine_name FROM magazine_table WHERE Id = aa.magazine_id) as mag_name,
                     (SELECT ad_type FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_type,
                     (SELECT ad_size FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_size,
                     (SELECT ad_amount FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_amount,
                     (SELECT ad_issue FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_issue
                     FROM magazine_digital_transaction_table as aa
-                    WHERE aa.magazine_id = {$mag_id}
+                    WHERE aa.magazine_id = {$mag_id} AND client_id = {$client_id}
         ");
 
         if(COUNT($get) > 0){
@@ -868,17 +874,21 @@ class bookingController extends Controller
                     $month = "Nov";
                 }else if($get[$i]->month_id == 12){
                     $month = "Dec";
+                }else{
+                    $month = "No Month Selected";
                 }
 
                 $result[] = array(
-                    "d_num" => $n,
+                    "d_uid" => $get[$i]->d_uid,
+                    "d_num" => $n++,
                     "mag_name" => $get[$i]->mag_name,
                     "ad_type" => $get[$i]->ad_type,
                     "ad_size" => $get[$i]->ad_size,
                     "ad_amount" => $get[$i]->ad_amount,
                     "ad_issue" => $a_issue,
                     "ad_months" => $month,
-                    "ad_weeks" => "Week " . $get[$i]->week_id
+                    "ad_year" => $get[$i]->year,
+                    "ad_weeks" => $get[$i]->week_id == 0 ? "" : "Wk " . $get[$i]->week_id
                 );
             }
 
@@ -889,6 +899,16 @@ class bookingController extends Controller
         }
 
         return array("Code" => 404, "Description" => "No Data Found.");
+    }
+
+    public function api_delete_digital_transaction($d_uid){
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        DB::DELETE("DELETE FROM magazine_digital_transaction_table WHERE Id = {$d_uid}");
+
+        return array("status" => 200, "Description" => "Success");
     }
 
 

@@ -49,7 +49,7 @@ return [
         'kpa' => [
             'driver' => 'api',
             'host' => '21.21.21.21', //client.lesterdigital.com
-            'port' => '8023',
+            'port' => '8000',
         ],
 
         'sqlite' => [

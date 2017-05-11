@@ -80,7 +80,6 @@
                                                             <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->ad_type . " " . $ad_c[$i]->ad_size }}</option>
                                                         @endfor
                                                     </select>
-                                                    <input type = "hidden" id = "digital_mag_id" value = "{{ $mag_name[0]->Id }}">
                                                 </div>
                                             </div>
 
@@ -101,9 +100,8 @@
 
                                             <div class="row" id = "show_me_month" style = "display: none; margin-top: 5px;">
                                                 <div class="col-xs-12">
-                                                    <label id = "ad_monthly_label">Months</label>
+                                                    <label id = "ad_monthly_label">Month</label>
                                                     <select class="form-control" id='ad_monthly' required>
-                                                        <option value='0'>--Select Month--</option>
                                                         <option value='1'>January</option>
                                                         <option value='2'>February</option>
                                                         <option value='3'>March</option>
@@ -120,11 +118,21 @@
                                                 </div>
                                             </div>
 
+                                            <div class="row" id = "show_me_year" style = "display: none; margin-top: 5px;">
+                                                <div class="col-xs-12">
+                                                    <label id = "ad_year_label">Year</label>
+                                                    <select class="form-control" id='ad_year' required>
+                                                        @for($i = date('Y') - 3; $i < date('Y') + 3; $i++)
+                                                            <option value='{{ $i }}' {{ $i == date('Y') ? 'selected' : '' }}>{{ $i }}</option>
+                                                        @endfor
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                             <div class="row" id = "show_me_weeks" style = "display: none; margin-top: 5px;">
                                                 <div class="col-xs-12">
                                                     <label id = "ad_weeks_label">Weeks</label>
                                                     <select class="form-control" id='ad_weekly' required>
-                                                        <option value='0'>--Select Weeks--</option>
                                                         <option value='1'>Week 1</option>
                                                         <option value='2'>Week 2</option>
                                                         <option value='3'>Week 3</option>
@@ -174,6 +182,7 @@
                                                 <th style="width: 10%; text-align: left;">AD AMOUNT</th>
                                                 <th style="width: 10%; text-align: left;">AD ISSUE</th>
                                                 <th style="width: 10%; text-align: left;">MONTH</th>
+                                                <th style="width: 10%; text-align: left;">YEAR</th>
                                                 <th style="width: 10%; text-align: left;">WEEK</th>
                                                 <th style="width: 10%; text-align: left;">ACTION</th>
                                             </tr>
@@ -453,7 +462,7 @@
         var is_member = {{ $is_member[0]->is_member }};
 
         $(document).ready(function(){
-            api_get_digital_transaction({{ $mag_name[0]->Id }});
+            api_get_digital_transaction({{ $mag_name[0]->Id }},{{ $is_member[0]->Id }});
             {{--var client_id = {{ $client_id }};--}}
             {{--var trans_status = {{ $booking_trans_num[0]->status }};--}}
             {{--if(trans_status != 1) {--}}
@@ -479,10 +488,13 @@
                         if(json.ad_issue == 1){
                             a_issue = "Monthly";
                             $("#show_me_month").show();
+                            $("#show_me_year").show();
+                            $("#show_me_weeks").hide();
 
                         }else if(json.ad_issue == 2){
                             a_issue = "Weekly";
                             $("#show_me_month").show();
+                            $("#show_me_year").show();
                             $("#show_me_weeks").show();
                         }
 
@@ -495,15 +507,25 @@
 
             $("#save_digital_issue").click(function(){
 
-                var d_mag_id = $("#digital_mag_id").val();
+                var d_client_id = '{{ $is_member[0]->Id }}';
+                var d_mag_id = '{{ $mag_name[0]->Id }}';
                 var d_position = $("#position").val();
                 var d_monthly = $("#ad_monthly").val();
+                var d_year = $("#ad_year").val();
                 var d_weekly = $("#ad_weekly").val();
                 var d_amount = $("#ad_amount_area").val();
                 var d_issue = $("#ad_issue_area_id").val();
 
+                var url = "";
+                if(d_issue == 1){ //1 = Monthly
+                    d_weekly = 0;
+                    url = "/booking/digital/add_issue/save/" + d_mag_id + "/" + d_client_id + "/" + d_position + "/" + d_monthly + "/" + d_year + "/" + d_weekly + "/" + d_amount;
+                }else if(d_issue == 2){ //2 = Weekly
+                    url = "/booking/digital/add_issue/save/" + d_mag_id + "/" + d_client_id + "/" + d_position + "/" + d_monthly + "/" + d_year + "/" + d_weekly + "/" + d_amount;
+                }
+
                 $.ajax({
-                    url: "/booking/digital/add_issue/save/" + d_mag_id + "/" + d_position + "/" + d_monthly + "/" + d_weekly + "/" + d_amount,
+                    url: url,
                     dataType: 'text',
                     success: function(data)
                     {
@@ -518,7 +540,7 @@
                                 'success'
                             ).then(
                                 function () {
-                                    api_get_digital_transaction({{ $mag_name[0]->Id }});
+                                    api_get_digital_transaction(d_mag_id, d_client_id);
                                 }
                             )
                         }
@@ -527,11 +549,11 @@
             });
 
 
-            function api_get_digital_transaction(mag_id){
+            function api_get_digital_transaction(mag_id, client_id){
 
                 var html_thmb = "";
                 $.ajax({
-                    url: "/api/api_get_digital_transaction/" + mag_id,
+                    url: "/api/api_get_digital_transaction/" + mag_id + "/" + client_id,
                     dataType: "text",
                     beforeSend: function () {
                         $('table#digital_issue_table > tbody').empty().prepend('<tr> <td colspan="9" style="text-align: center; font-size: 15px; padding-top: 20px;"> <img src="{{ asset('img/ripple.gif') }}"  /> <br /> Fetching All Data... Please wait...</td> </tr>');
@@ -557,14 +579,70 @@
                                 html_thmb += "<td style='text-align: left;'>"+ tran.ad_amount +"</td>";
                                 html_thmb += "<td style='text-align: left;'>"+ tran.ad_issue +"</td>";
                                 html_thmb += "<td style='text-align: left;'>"+ tran.ad_months +"</td>";
+                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_year +"</td>";
                                 html_thmb += "<td style='text-align: left;'>"+ tran.ad_weeks +"</td>";
-                                html_thmb += "<td style='text-align: left;'></td>";
+                                html_thmb += "<td style='text-align: left;'>";
+                                html_thmb += "<a class='btn btn-danger' data-target = '"+ tran.d_uid +"' id = 'd_delete' title='Delete'><i class='fa fa-trash'></i></a>";
+                                html_thmb += "</td>";
                                 html_thmb += "</tr>";
                             });
                         }
 
                         $('table#digital_issue_table > tbody').empty().prepend(html_thmb);
                     }
+                });
+            }
+
+
+            $("#digital_issue_table").on("click", "#d_delete", function(){
+                var d_uid = $(this).attr("data-target");
+
+                swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'Cancel'
+                }).then(function() {
+                    delete_d_confirm(d_uid);
+                }, function(dismiss) {
+                    if (dismiss === 'cancel') {
+                        swal(
+                                'Cancelled',
+                                'Your data file is safe :)',
+                                'error'
+                        )
+                    }
+                })
+            });
+
+
+            function delete_d_confirm(d_uid) {
+                var url = "/api/api_delete_digital_transaction/" + d_uid;
+                $(document).ready(function () {
+                    $.ajax({
+                        url: url,
+                        dataType: "text",
+                        beforeSend: function () {
+                        },
+                        success: function (data) {
+                            var json = $.parseJSON(data);
+                            if (json.status == 200) {
+                                swal(
+                                        '',
+                                        'Delete Successful!',
+                                        'success'
+                                ).then(
+                                        function () {
+                                            api_get_digital_transaction({{ $mag_name[0]->Id }},{{ $is_member[0]->Id }});
+                                        }
+                                )
+                            }
+                        }
+                    });
                 });
             }
 

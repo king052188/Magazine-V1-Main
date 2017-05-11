@@ -81,7 +81,7 @@
                                 {{--<button class="btn btn-info" type="button" data-toggle="modal" data-target="#modal_agency" >Search <i class="fa fa-search"></i></button>--}}
                                 {{--</span>--}}
                             </div>
-
+                            <!--
                             <div class="form-group">
                                 <label for="ex2">Select Country of Magazine</label>
                                 <select class = "form-control" name = "which_country" id = "which_country">
@@ -90,6 +90,7 @@
                                     <option value = "2">Canada</option>
                                 </select>
                             </div>
+                            -->
                             <div>
                                 <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
                                 <button class="btn btn-md btn-primary pull-right" id="btn_submit" type="submit">Create</button>

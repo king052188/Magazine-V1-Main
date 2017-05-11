@@ -1,5 +1,9 @@
 <?php
 
+Route::get('/tkb_reporting_machine', function () {
+    return view('welcome');
+});
+
 Route::get('/', function () {
     return view('login.login');
 });
@@ -113,16 +117,23 @@ Route::post('/booking/magazine-transaction-save-process', 'bookingController@sav
 Route::post('/booking/digital/magazine-transaction-save-process', 'bookingController@save_booking_digital');
 
 Route::any('/booking/magazine-transaction/{trans_uid}/{which_country}/{client_id}', 'bookingController@show_transaction_mag'); // after process viewing
-Route::any('/booking/digital/magazine-transaction/{trans_uid}/{which_country}/{client_id}', 'bookingController@show_transaction_mag_digital'); // after process viewing
+//Route::any('/booking/digital/magazine-transaction/{trans_uid}/{which_country}/{client_id}', 'bookingController@show_transaction_mag_digital'); // after process viewing
+
+//remove country
+Route::any('/booking/digital/magazine-transaction/{trans_uid}/{client_id}', 'bookingController@show_transaction_mag_digital'); // after process viewing
 
 Route::post('/booking/save-magazine-transaction/{trans_id}/{which_country}/{client_id}', 'bookingController@save_magazine_transaction');
-Route::post('/booking/digital/save-magazine-transaction/{trans_id}/{which_country}/{client_id}', 'bookingController@save_magazine_transaction_digital');
+//Route::post('/booking/digital/save-magazine-transaction/{trans_id}/{which_country}/{client_id}', 'bookingController@save_magazine_transaction_digital');
+
+//remove which country
+Route::post('/booking/digital/save-magazine-transaction/{trans_id}/{client_id}', 'bookingController@save_magazine_transaction_digital');
 
 Route::get('/booking/add_issue/{mag_trans_uid}/{client_id}', 'bookingController@add_issue');
 Route::get('/booking/digital/add_issue/{mag_trans_uid}/{client_id}', 'bookingController@add_issue_digital');
 Route::get('/api/api_get_digital_price/{digital_price_uid}', 'bookingController@api_get_digital_price');
-Route::get('/booking/digital/add_issue/save/{mag_id}/{position_id}/{month_id}/{week_id}/{amount}', 'bookingController@digital_add_issue_save');
-Route::get('/api/api_get_digital_transaction/{mag_id}', 'bookingController@api_get_digital_transaction');
+Route::get('/booking/digital/add_issue/save/{mag_id}/{client_id}/{position_id}/{month_id}/{year}/{week_id}/{amount}', 'bookingController@digital_add_issue_save');
+Route::get('/api/api_get_digital_transaction/{mag_id}/{client_id}', 'bookingController@api_get_digital_transaction');
+Route::get('/api/api_delete_digital_transaction/{d_uid}', 'bookingController@api_delete_digital_transaction');
 
 Route::post('/booking/save_issue/{mag_trans_uid}/{client_id}', 'bookingController@save_issue');
 Route::get('/booking/getPackageName/{criteria_id}/{mag_uid}', 'bookingController@getPackageName');

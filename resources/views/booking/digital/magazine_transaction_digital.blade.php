@@ -56,37 +56,7 @@
                             </div>
                         @endif
 
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th style="width: 30px; text-align: center;">#</th>
-                                <th style="width: 250px; text-align: center;">Magazine Code</th>
-                                <th style="text-align: center;">Magazine Name</th>
-                                <th style="width: 100px; text-align: center;">Country</th>
-                                <th style="width: 90px; text-align: center;">Action</th>
-                            </tr>
-                            </thead>
-                            <tbody id="magactive">
-                            <?php $n = 1; ?>
-                            @for($i = 0; $i < COUNT($mag_l); $i++)
-                                <tr>
-                                    <td style="text-align: center;">{{ $n++ }}</td>
-                                    <td>{{ $mag_l[$i]->mag_code }}</td>
-                                    <td>{{ $mag_l[$i]->magazine_name }}</td>
-                                    <td style="text-align: center;">
-                                        @if($mag_l[$i]->magazine_country == 1)
-                                            USA
-                                        @elseif($mag_l[$i]->magazine_country == 2)
-                                            CANADA
-                                        @endif
-                                    </td>
-                                    <td><button class='btn btn-primary btn-sm list_client' onclick="do_select_row('{{$mag_l[$i]->Id}}', '{{$client_id}}')"><i class='fa fa-check'></i>&nbsp;&nbsp;Select</button></td>
-                                </tr>
-                            @endfor
-                            </tbody>
-                        </table>
-
-                        <form role="form" action="{{ url('/booking/digital/save-magazine-transaction/'. $booking_uid .'/'. $which_country . '/' . $client_id) }}" method="post">
+                        <form role="form" action="{{ url('/booking/digital/save-magazine-transaction/'. $booking_uid .'/' . $client_id) }}" method="post">
                             <div class="form-group">
                                 <label for="ex2">Select Magazine</label>
                                 <select class="form-control" name = "magazine_id">
