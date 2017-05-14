@@ -162,6 +162,8 @@ Route::get('/transaction/update/row/{trans_id}/{trans_status}', 'bookingControll
 // Production Routes
 Route::get('/production/flat/planing', 'FlatPlanController@init');
 
+Route::get('/api/get/flat/plan/data/{mag_id}', 'FlatPlanController@api_get_flat_plan_data');
+
 
 
 // Payment Routes

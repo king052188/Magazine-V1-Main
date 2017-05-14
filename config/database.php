@@ -48,7 +48,7 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => '21.21.21.21', //client.lesterdigital.com
+            'host' => 'ckt.ptxt4wrd.com', //client.lesterdigital.com
             'port' => '8000',
         ],
 
@@ -60,7 +60,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '21.21.21.21'), //client.lesterdigital.com
+            'host' => env('DB_HOST', 'ckt.ptxt4wrd.com'), //client.lesterdigital.com
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'db_magazine_v1'), //sd
             'username' => env('DB_USERNAME', 'root'), //march2016

@@ -29,6 +29,7 @@
                 $('#product_flat_plan').modal({
                     show: true
                 });
+
                 $.ajax({
                     url: "http://" + report_url_api + "/kpa/work-v2/flat-planning/populate/publication",
                     dataType: "text",
@@ -46,27 +47,128 @@
                         f_type += '</select>';
                         $("#flat_plan_publication_type").empty().prepend(f_type);
 
-                        var select = '<select class="form-control" id = "fp_publication" name="fp_publication" style = "margin-top: 10px;">';
+                        $("#fp_type").change(function(){
+                            var val = $(this).val();
+
+                            if(val == 1){
+                                console.log("Existing");
+                                $("#fp_publication").show();
+                                $("#lbl_pub_name").show();
+                                $("#fp_publication_create").hide();
+                                $("#btn_proceed").hide();
+                            }else if(val == 2){
+                                console.log("Create");
+                                $("#fp_publication").hide();
+                                $("#lbl_pub_name").show();
+                                $("#fp_publication_create").show();
+                                $("#btn_proceed").hide();
+                            }else{
+                                $("#fp_publication").hide();
+                                $("#lbl_pub_name").hide();
+                                $("#fp_publication_create").hide();
+                                $("#btn_proceed").hide();
+                            }
+                        });
+
+                        var select = '<select class="form-control" id = "fp_publication" name="fp_publication" style = "margin-top: 10px; display: none;">';
                         select += '<option value="0">-- Select --</option>';
                         $(json).each(function(key, value){
-                            select += '<option value="'+value.Id+'">'+ value.magazine_name +'</option>';
+                            select += '<option value="'+value.Id+ ':' + value.magazine_year + ':' + value.magazine_issues + '">'+ value.magazine_name +'</option>';
                         });
                         select += '</select>';
                         $("#flat_plan_publication").empty().prepend(select);
+
+
+                        $("#fp_publication").change(function(){
+                            var value = $(this).val();
+                            var values = value.split(":");
+                            var mag_id = values[0];
+
+                            var table_data = "";
+                            $.ajax({
+                                url: "/api/get/flat/plan/data/" + mag_id,
+                                dataType: "text",
+                                beforeSend: function () {
+                                    console.log("Please wait...");
+                                    $("#flat_plan_table_list").empty().prepend('<h5>Please wait...</h5>');
+                                },
+                                success: function(data) {
+                                    var json = $.parseJSON(data);
+
+                                    if(json.Status == 404){
+                                        $("#flat_plan_data_table").hide();
+                                        $("#err_mes_table").text(' No Existing Flat Plan');
+                                        return false;
+                                    }
+
+                                    if(json.Status == 200){
+
+                                        $("#flat_plan_data_table").show();
+                                        $("#err_mes_table").text('');
+
+                                        $(json.Result).each(function(a, tran){
+                                            table_data += '<tr>';
+                                            table_data += '<td>'+ tran.magazine_id +'</td>';
+                                            table_data += '<td>'+ tran.trans_number +'</td>';
+                                            table_data += '<td>'+ tran.magazine_year +'</td>';
+                                            table_data += '<td>'+ tran.magazine_issue +'</td>';
+                                            table_data += '<td></td>';
+                                            table_data += "</tr>";
+                                        });
+
+                                        $('table#flat_plan_data_table > tbody').empty().prepend(table_data);
+                                    }
+
+                                }
+                            });
+                        });
+
+                        var select_create = '<select class="form-control" id = "fp_publication_create" name="fp_publication_create" style = "margin-top: 10px; display: none;">';
+                        select_create += '<option value="0">-- Select --</option>';
+                        $(json).each(function(key, value){
+                            select_create += '<option value="'+value.Id+ ':' + value.magazine_year + ':' + value.magazine_issues + '">'+ value.magazine_name +'</option>';
+                        });
+                        select_create += '</select>';
+                        $("#flat_plan_publication_create").empty().prepend(select_create);
                     }
                 });
+
+
             })
         }
+
+
         function do_proceed() {
             $(document).ready(function () {
-                var mag_id = $("#fp_publication").val();
+                var type = $("#fp_type").val();
+                var value = $("#fp_publication").val();
+                var values = value.split(":");
 
-                if( parseInt(mag_id) == 0 ) {
-                    $("#err_mes").text('Oops, Please select one of "Publication"');
+                var mag_id = values[0];
+                var magazine_year = values[1];
+                var magazine_issues = values[2];
+
+
+                if( parseInt(type) == 0 ) {
+                    $("#err_mes_type").text(' Oops, Please select type');
                     return false;
                 }
 
-                var url = "http://" + report_url_api + "/kpa/work-v2/flat-plan/" + mag_id;
+                if( parseInt(value) == 0 ) {
+                    $("#err_mes_pub").text(' Oops, Please select one of "Publication"');
+                    return false;
+                }
+
+                if(parseInt(type) == 1){ //Existing Flat Plan
+
+                    console.log("Existing Flat Plan");
+                    var url = "http://" + report_url_api + "/kpa/work-v2/flat-plan/" + mag_id + "?year=" + magazine_year + "&issue=" + magazine_issues;
+                }
+
+                if(parseInt(type) == 2){ //Create New Flat PLan
+                    var url = "http://" + report_url_api + "/kpa/work-v2/flat-plan/" + mag_id + "?year=" + magazine_year + "&issue=" + magazine_issues;
+                }
+
                 window.location.href=url;
             })
         }
@@ -97,20 +199,35 @@
                     <div class="col-lg-12">
                         <div class="col-lg-12">
                             <div class="form-group">
-                                <label>Type</label>
+                                <label>Type</label> <span id="err_mes_type" style="color: red;"></span>
                                 <div class="form-group" id = "flat_plan_publication_type"></div>
-                                <span id="err_mes" style="color: red;"></span>
 
-                                <label>Publication Name</label>
+                                <label id = "lbl_pub_name" style = "display: none;">Publication Name</label><span id="err_mes_pub" style="color: red;"></span>
                                 <div class="form-group" id = "flat_plan_publication"></div>
-                                <span id="err_mes" style="color: red;"></span>
+                                <div class="form-group" id = "flat_plan_publication_create"></div>
+
+
+                                <table id="flat_plan_data_table" class="table" data-sorting="true" data-page-size="10" style = "display: none;">
+                                    <thead>
+                                        <tr>
+                                            <th>MAG ID</th>
+                                            <th>TRANS NUM</th>
+                                            <th>YEAR</th>
+                                            <th>ISSUE</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                                <span id="err_mes_table" style="color: red;"></span>
                             </div>
                         </div>
                     </div>
                     <div style = "clear: both;"></div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-primary pull-right" onclick="do_proceed();" type="submit">Proceed</button>
+                    <button class="btn btn-primary pull-right" id = "btn_proceed" style = "display: none;" onclick="do_proceed();" type="submit">Proceed</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" style = "margin-right: 5px;">Cancel</button>
                 </div>
             </div>
