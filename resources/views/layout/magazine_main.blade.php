@@ -245,7 +245,7 @@
                                 <div class="form-group" id = "flat_plan_issue_create"></div>
 
 
-                                <div id = "flat_table_wrapper" style = "overflow: scroll; height: 400px; display: none;">
+                                <div id = "flat_table_wrapper" style = "overflow-y: scroll; height: 400px; display: none;">
                                     <table id="flat_plan_data_table" class="table" data-sorting="true" data-page-size="10" style = "display: none;">
                                         <thead>
                                             <tr>
