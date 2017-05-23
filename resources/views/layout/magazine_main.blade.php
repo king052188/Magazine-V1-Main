@@ -58,6 +58,7 @@
                                 $("#btn_proceed").hide();
                             }else if(val == 2){
                                 console.log("Create");
+                                $("#flat_table_wrapper").hide();
                                 $("#flat_plan_data_table").hide();
                                 $("#fp_publication").hide();
                                 $("#lbl_pub_name").show();
@@ -68,6 +69,7 @@
                                 $("#lbl_pub_name").hide();
                                 $("#fp_publication_create").hide();
                                 $("#btn_proceed").hide();
+                                $("#flat_table_wrapper").hide();
                                 $("#flat_plan_data_table").hide();
                             }
                         });
@@ -98,6 +100,7 @@
                                     var json = $.parseJSON(data);
 
                                     if(json.Status == 404){
+                                        $("#flat_table_wrapper").hide();
                                         $("#flat_plan_data_table").hide();
                                         $("#err_mes_table").text(' No Existing Flat Plan');
                                         return false;
@@ -105,6 +108,7 @@
 
                                     if(json.Status == 200){
 
+                                        $("#flat_table_wrapper").show();
                                         $("#flat_plan_data_table").show();
                                         $("#err_mes_table").text('');
 
@@ -241,19 +245,21 @@
                                 <div class="form-group" id = "flat_plan_issue_create"></div>
 
 
-                                <table id="flat_plan_data_table" class="table" data-sorting="true" data-page-size="10" style = "display: none;">
-                                    <thead>
-                                        <tr>
-                                            <th>MAG ID</th>
-                                            <th>TRANS NUM</th>
-                                            <th>YEAR</th>
-                                            <th>ISSUE</th>
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
+                                <div id = "flat_table_wrapper" style = "overflow: scroll; height: 400px; display: none;">
+                                    <table id="flat_plan_data_table" class="table" data-sorting="true" data-page-size="10" style = "display: none;">
+                                        <thead>
+                                            <tr>
+                                                <th>MAG ID</th>
+                                                <th>TRANS NUM</th>
+                                                <th>YEAR</th>
+                                                <th>ISSUE</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
                                 <span id="err_mes_table" style="color: red;"></span>
                             </div>
                         </div>
