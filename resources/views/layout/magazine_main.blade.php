@@ -58,15 +58,17 @@
                                 $("#btn_proceed").hide();
                             }else if(val == 2){
                                 console.log("Create");
+                                $("#flat_plan_data_table").hide();
                                 $("#fp_publication").hide();
                                 $("#lbl_pub_name").show();
                                 $("#fp_publication_create").show();
-                                $("#btn_proceed").hide();
+                                $("#btn_proceed").show();
                             }else{
                                 $("#fp_publication").hide();
                                 $("#lbl_pub_name").hide();
                                 $("#fp_publication_create").hide();
                                 $("#btn_proceed").hide();
+                                $("#flat_plan_data_table").hide();
                             }
                         });
 
@@ -107,12 +109,18 @@
                                         $("#err_mes_table").text('');
 
                                         $(json.Result).each(function(a, tran){
+
+                                            var mag_id = tran.magazine_id;
+                                            var trans_number = tran.trans_number;
+
+                                            var url_exists = "http://"+ report_url_api + "/kpa/work-v2/flat-plan/" + mag_id + "/" + trans_number;
+
                                             table_data += '<tr>';
                                             table_data += '<td>'+ tran.magazine_id +'</td>';
                                             table_data += '<td>'+ tran.trans_number +'</td>';
                                             table_data += '<td>'+ tran.magazine_year +'</td>';
                                             table_data += '<td>'+ tran.magazine_issue +'</td>';
-                                            table_data += '<td></td>';
+                                            table_data += '<td><a href = "' + url_exists + '" class="btn btn-primary pull-right">Select</a></td>';
                                             table_data += "</tr>";
                                         });
 
@@ -126,10 +134,34 @@
                         var select_create = '<select class="form-control" id = "fp_publication_create" name="fp_publication_create" style = "margin-top: 10px; display: none;">';
                         select_create += '<option value="0">-- Select --</option>';
                         $(json).each(function(key, value){
-                            select_create += '<option value="'+value.Id+ ':' + value.magazine_year + ':' + value.magazine_issues + '">'+ value.magazine_name +'</option>';
+                            select_create += '<option value="' + value.Id + '">'+ value.magazine_name +'</option>';
                         });
                         select_create += '</select>';
                         $("#flat_plan_publication_create").empty().prepend(select_create);
+
+
+                        $("#fp_publication_create").change(function(){
+                            $("#year_create").show();
+                            $("#year_create_lbl").show();
+                            $("#issue_create").show();
+                            $("#issue_create_lbl").show();
+                        });
+
+                        var year_create = '<div style = "width: 48%; float: left;"><label id = "year_create_lbl" style = "display: none;">Year</label><select class="form-control col-sm-2" id = "year_create" name="year_create" style = "margin-top: 10px; display: none;">';
+                        year_create += '@for($i = date("Y") - 3; $i < date("Y") + 3; $i++)';
+                        year_create += '<option value="{{ $i }}" {{ $i == date("Y") ? "selected" : "" }}>{{ $i }}</option>';
+                        year_create += ' @endfor';
+                        year_create += '</select></div>';
+                        $("#flat_plan_year_create").empty().prepend(year_create);
+
+
+                        var issue_create = '<div style = "width: 48%; float: right;"><label id = "issue_create_lbl" style = "display: none;">Issue</label><select class="form-control" id = "issue_create" name="issue_create" style = "margin-top: 10px; display: none;">';
+                        issue_create += '@for($i = 1; $i < 13; $i++)';
+                        issue_create += '<option value="{{ $i }}">{{ $i }}</option>';
+                        issue_create += ' @endfor';
+                        issue_create += '</select></div>';
+                        $("#flat_plan_issue_create").empty().prepend(issue_create);
+
                     }
                 });
 
@@ -141,12 +173,12 @@
         function do_proceed() {
             $(document).ready(function () {
                 var type = $("#fp_type").val();
-                var value = $("#fp_publication").val();
-                var values = value.split(":");
+                //var value = $("#fp_publication").val();
+                //var values = value.split(":");
 
-                var mag_id = values[0];
-                var magazine_year = values[1];
-                var magazine_issues = values[2];
+                var mag_id = $("#fp_publication_create").val();
+                var magazine_year = $("#year_create").val();
+                var magazine_issues = $("#issue_create").val();
 
 
                 if( parseInt(type) == 0 ) {
@@ -154,7 +186,7 @@
                     return false;
                 }
 
-                if( parseInt(value) == 0 ) {
+                if( parseInt(mag_id) == 0 ) {
                     $("#err_mes_pub").text(' Oops, Please select one of "Publication"');
                     return false;
                 }
@@ -205,6 +237,8 @@
                                 <label id = "lbl_pub_name" style = "display: none;">Publication Name</label><span id="err_mes_pub" style="color: red;"></span>
                                 <div class="form-group" id = "flat_plan_publication"></div>
                                 <div class="form-group" id = "flat_plan_publication_create"></div>
+                                <div class="form-group" id = "flat_plan_year_create"></div>
+                                <div class="form-group" id = "flat_plan_issue_create"></div>
 
 
                                 <table id="flat_plan_data_table" class="table" data-sorting="true" data-page-size="10" style = "display: none;">
