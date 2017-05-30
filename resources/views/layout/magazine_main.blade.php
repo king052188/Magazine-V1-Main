@@ -55,7 +55,10 @@
                                 $("#fp_publication").show();
                                 $("#lbl_pub_name").show();
                                 $("#fp_publication_create").hide();
-                                $("#btn_proceed").hide();
+                                $("#err_mes_table").show();
+                                $("#flat_plan_year_create").hide();
+                                $("#flat_plan_issue_create").hide();
+
                             }else if(val == 2){
                                 console.log("Create");
                                 $("#flat_table_wrapper").hide();
@@ -64,6 +67,10 @@
                                 $("#lbl_pub_name").show();
                                 $("#fp_publication_create").show();
                                 $("#btn_proceed").show();
+
+                                $("#err_mes_table").hide();
+                                $("#flat_plan_year_create").show();
+                                $("#flat_plan_issue_create").show();
                             }else{
                                 $("#fp_publication").hide();
                                 $("#lbl_pub_name").hide();
