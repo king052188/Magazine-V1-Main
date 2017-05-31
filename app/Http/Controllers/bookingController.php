@@ -97,6 +97,26 @@ class bookingController extends Controller
         return view('booking.booking_list', compact('booking', 'publication', 'clients', 'sales_rep', 'filter_publication', 'filter_sales_rep', 'filter_client', 'filter_status', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales', 'nav_payment','nav_reports','nav_users'))->with('success', 'Booking details successful added!');
     }
 
+    public function booking_digital_list() {
+        $query = "SELECT 
+
+                    digital.*,
+                    
+                    (SELECT is_member FROM client_table WHERE Id = digital.client_id) AS is_member,
+                    
+                    ( SELECT magazine_name FROM magazine_table WHERE Id = digital.magazine_id ) AS mag_name,
+                    
+                    ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = digital.sales_rep_id ) AS sales_rep_name,
+                    
+                    ( SELECT company_name FROM client_table WHERE Id = digital.client_id AND status = 2 AND type != 2 ) AS client_name
+                    
+                FROM magazine_digital_transaction_table AS digital;
+                ";
+
+        $data = DB::SELECT($query);
+        return $data;
+    }
+
     public function booking_list_filter($filter_publication, $filter_sales_rep, $filter_client, $filter_status)
     {
         $filter_publication = (int)$filter_publication;

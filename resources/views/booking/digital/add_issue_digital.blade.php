@@ -175,16 +175,14 @@
                                         <table class="table table-striped table-bordered table-hover dataTables-example" id="digital_issue_table">
                                             <thead>
                                             <tr>
-                                                <th style="width: 10%; text-align: left;">ITEM #</th>
-                                                <th style="width: 20%; text-align: left;">MAG NAME</th>
-                                                <th style="width: 20%; text-align: left;">AD TYPE</th>
-                                                <th style="width: 10%; text-align: left;">AD SIZE</th>
-                                                <th style="width: 10%; text-align: left;">AD AMOUNT</th>
-                                                <th style="width: 10%; text-align: left;">AD ISSUE</th>
-                                                <th style="width: 10%; text-align: left;">MONTH</th>
-                                                <th style="width: 10%; text-align: left;">YEAR</th>
-                                                <th style="width: 10%; text-align: left;">WEEK</th>
-                                                <th style="width: 10%; text-align: left;">ACTION</th>
+                                                <th style="width: 60px; text-align: center;">ITEM#</th>
+                                                <th style="text-align: left;">MAGAZINE</th>
+                                                <th style="width: 200px; text-align: center;">SIZE</th>
+                                                <th style="width: 100px; text-align: center;">MONTH</th>
+                                                <th style="width: 100px; text-align: center;">YEAR</th>
+                                                <th style="width: 100px; text-align: center;">WEEK</th>
+                                                <th style="width: 100px; text-align: right;">AMOUNT</th>
+                                                <th style="width: 30px; text-align: center;">ACTION</th>
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -463,13 +461,6 @@
 
         $(document).ready(function(){
             api_get_digital_transaction({{ $mag_name[0]->Id }},{{ $is_member[0]->Id }});
-            {{--var client_id = {{ $client_id }};--}}
-            {{--var trans_status = {{ $booking_trans_num[0]->status }};--}}
-            {{--if(trans_status != 1) {--}}
-                {{--$("#once_approved_aa").hide();--}}
-                {{--$("#once_approved_bb").removeClass('col-lg-8').addClass('col-lg-12');--}}
-                {{--$("#once_approved_cc").hide();--}}
-            {{--}--}}
 
             $('#position').on('change',function(){
                 var position_uid = $(this).val();
@@ -548,10 +539,12 @@
                 });
             });
 
-
             function api_get_digital_transaction(mag_id, client_id){
 
+                var issues_total = 0.0;
+
                 var html_thmb = "";
+
                 $.ajax({
                     url: "/api/api_get_digital_transaction/" + mag_id + "/" + client_id,
                     dataType: "text",
@@ -565,23 +558,29 @@
 
                         if(json.Code == 404){
                             html_thmb += '<tr> <td colspan="9" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available </td> </tr>';
-
                         }
 
                         if(json.Code == 200){
+
                             $(json.Result).each(function(i, tran){
 
                                 html_thmb += "<tr>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.d_num +"</td>";
+                                html_thmb += "<td style='text-align: center;'>"+ tran.d_num +"</td>";
                                 html_thmb += "<td style='text-align: left;'>"+ tran.mag_name +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_type +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_size +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_amount +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_issue +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_months +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_year +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_weeks +"</td>";
-                                html_thmb += "<td style='text-align: left;'>";
+                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_type + "-" + tran.ad_size +"</td>";
+                                html_thmb += "<td style='text-align: center;'>"+ tran.ad_months +"</td>";
+                                html_thmb += "<td style='text-align: center;'>"+ tran.ad_year +"</td>";
+
+                                if(tran.ad_weeks != "") {
+                                    html_thmb += "<td style='text-align: center;'>"+ tran.ad_weeks +"</td>";
+                                }
+                                else {
+                                    html_thmb += "<td style='text-align: center;'>N/A</td>";
+                                }
+
+                                issues_total += parseFloat(tran.ad_amount);
+                                html_thmb += "<td style='text-align: right;'>"+ tran.ad_amount +"</td>";
+                                html_thmb += "<td style='text-align: center;'>";
                                 html_thmb += "<a class='btn btn-danger' data-target = '"+ tran.d_uid +"' id = 'd_delete' title='Delete'><i class='fa fa-trash'></i></a>";
                                 html_thmb += "</td>";
                                 html_thmb += "</tr>";
@@ -589,6 +588,20 @@
                         }
 
                         $('table#digital_issue_table > tbody').empty().prepend(html_thmb);
+                        $('#issues_total').empty().text(numeral(issues_total).format('0,0.00'));
+
+                        var issues_discount = 0;
+                        $('#issues_discount').empty().text(numeral(issues_discount).format('0,0.00'));
+
+                        var issues_sub_total = issues_total;
+                        $('#issues_sub_total').empty().text(numeral(issues_sub_total).format('0,0.00'));
+
+                        var discretionary_discount = 0;
+                        $('#discretionary_discount').empty().text(numeral(discretionary_discount).format('0,0.00'));
+
+                        var issues_total_amount = issues_sub_total;
+                        $('#issues_total_amount').empty().text(numeral(issues_total).format('0,0.00'));
+
                     }
                 });
             }
