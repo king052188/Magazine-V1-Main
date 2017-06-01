@@ -98,23 +98,40 @@ class bookingController extends Controller
     }
 
     public function booking_digital_list() {
-        $query = "SELECT 
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
 
-                    digital.*,
-                    
-                    (SELECT is_member FROM client_table WHERE Id = digital.client_id) AS is_member,
-                    
-                    ( SELECT magazine_name FROM magazine_table WHERE Id = digital.magazine_id ) AS mag_name,
-                    
-                    ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = digital.sales_rep_id ) AS sales_rep_name,
-                    
-                    ( SELECT company_name FROM client_table WHERE Id = digital.client_id AND status = 2 AND type != 2 ) AS client_name
-                    
-                FROM magazine_digital_transaction_table AS digital;
-                ";
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
 
-        $data = DB::SELECT($query);
-        return $data;
+        return view('booking.digital.booking_digital_list', compact('filter_publication', 'filter_sales_rep', 'filter_client', 'filter_status', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales', 'nav_payment','nav_reports','nav_users'));
+    }
+
+    public function api_get_booking_digital_list(){
+        if(!AssemblyClass::check_cookies()) {
+            return redirect("/logout_process");
+        }
+
+        $get = DB::SELECT("
+                SELECT 
+                aa.*,
+                (SELECT magazine_name FROM magazine_table WHERE Id = aa.magazine_id) as magazine_name,
+                (SELECT company_name FROM client_table WHERE Id = aa.client_id) as company_name
+                FROM magazine_digital_transaction_table as aa
+        ");
+
+        if(COUNT($get) > 0){
+            return array("Code" => 200, "Result" => $get);
+        }
+
+        return array("Code" => 404, "Result" => "No Result Found");
     }
 
     public function booking_list_filter($filter_publication, $filter_sales_rep, $filter_client, $filter_status)
