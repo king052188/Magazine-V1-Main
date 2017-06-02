@@ -37,7 +37,8 @@
                     <ul class="nav nav-second-level collapse">
                         {{--<li><a href="{{ url('/booking/add-booking') }}"> <span class="nav-label">Book an Ad</span></a></li>--}}
                         <li><a href="{{ url('/booking/checkpoint') }}"> <span class="nav-label">Book an Ad</span></a></li>
-                        <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">List of Booked Ads</span></a></li>
+                        <li><a href="{{ url('/booking/booking-list') }}"> <span class="nav-label">List of Print Ads</span></a></li>
+                        <li><a href="{{ url('/booking/digital-list') }}"> <span class="nav-label">List of Digital Ads</span></a></li>
                     </ul>
                 </li>
             @else
@@ -62,7 +63,8 @@
                 <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Sales</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
                     <li><a href="{{ url('/booking/checkpoint') }}"> <span class="nav-label">Book an Ad</span></a></li>
-                    <li><a href="{{ url('booking/booking-list') }}"> <span class="nav-label">List of Booked Ads</span></a></li>
+                    <li><a href="{{ url('/booking/booking-list') }}"> <span class="nav-label">List of Print Ads</span></a></li>
+                    <li><a href="{{ url('/booking/digital-list') }}"> <span class="nav-label">List of Digital Ads</span></a></li>
                 </ul>
             </li>
 
