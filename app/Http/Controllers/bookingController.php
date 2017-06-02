@@ -102,6 +102,12 @@ class bookingController extends Controller
             return redirect("/logout_process");
         }
 
+        $filter_publication = 0;
+        $publication = DB::table('magazine_table')->where('status', '=', 2)->get();
+
+        $filter_client = 0;
+        $clients = DB::table('client_table')->where('status', '=', 2)->get();
+
         $nav_dashboard = "";
         $nav_clients = "";
         $nav_publisher = "";
@@ -111,13 +117,24 @@ class bookingController extends Controller
         $nav_reports = "";
         $nav_users = "";
 
-        return view('booking.digital.booking_digital_list', compact('filter_publication', 'filter_sales_rep', 'filter_client', 'filter_status', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales', 'nav_payment','nav_reports','nav_users'));
+        return view('booking.digital.booking_digital_list', compact('filter_publication', 'publication', 'filter_client', 'clients', 'filter_status', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales', 'nav_payment','nav_reports','nav_users'));
     }
 
-    public function api_get_booking_digital_list(){
-        if(!AssemblyClass::check_cookies()) {
-            return redirect("/logout_process");
+    public function api_get_booking_digital_list($publication, $client){
+        
+        if($publication != 0){
+            $pub = " AND aa.magazine_id = {$publication}";
+        }else{
+            $pub = "";
         }
+
+        if($client != 0){
+            $cli = " AND aa.client_id = {$client}";
+        }else{
+            $cli = "";
+        }
+
+        $filter_process = $pub . $cli;
 
         $get = DB::SELECT("
                 SELECT 
@@ -125,6 +142,7 @@ class bookingController extends Controller
                 (SELECT magazine_name FROM magazine_table WHERE Id = aa.magazine_id) as magazine_name,
                 (SELECT company_name FROM client_table WHERE Id = aa.client_id) as company_name
                 FROM magazine_digital_transaction_table as aa
+                WHERE aa.Id != 0 {$filter_process}
         ");
 
         if(COUNT($get) > 0){
