@@ -25,9 +25,9 @@ class bookingController extends Controller
         $filter_status = 0;
 
         if($_COOKIE['role'] == 3){
-            $filter_sales_rep = "WHERE booked.sales_rep_code = {$_COOKIE['Id']}";
+            $filter_sales_rep = "WHERE mag.magazine_type = 1 AND booked.sales_rep_code = {$_COOKIE['Id']};";
         }else{
-            $filter_sales_rep = "";
+            $filter_sales_rep = "WHERE mag.magazine_type = 1;";
         }
 
         $booking = DB::SELECT("
@@ -81,7 +81,7 @@ class bookingController extends Controller
             
             ");
 
-        $publication = DB::table('magazine_table')->where('status', '=', 2)->get();
+        $publication = DB::table('magazine_table')->where('status', '=', 2)->where('magazine_type', '=', 1)->get();
         $clients = DB::table('client_table')->where('status', '=', 2)->get();
         $sales_rep = DB::table('user_account')->where('status', '=', 2)->get();
 
@@ -103,7 +103,7 @@ class bookingController extends Controller
         }
 
         $filter_publication = 0;
-        $publication = DB::table('magazine_table')->where('status', '=', 2)->get();
+        $publication = DB::table('magazine_table')->where('status', '=', 2)->where('magazine_type', '=', 2)->get();
 
         $filter_client = 0;
         $clients = DB::table('client_table')->where('status', '=', 2)->get();
@@ -138,11 +138,46 @@ class bookingController extends Controller
 
         $get = DB::SELECT("
                 SELECT 
-                aa.*,
-                (SELECT magazine_name FROM magazine_table WHERE Id = aa.magazine_id) as magazine_name,
-                (SELECT company_name FROM client_table WHERE Id = aa.client_id) as company_name
-                FROM magazine_digital_transaction_table as aa
-                WHERE aa.Id != 0 {$filter_process}
+
+                    booked.Id,
+                
+                    booked.client_id,
+                
+                    booked.agency_id,
+                
+                    mag.Id as pub_uid,
+                
+                    (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
+                
+                    booked.trans_num,
+                
+                    (null) AS invoice_num,
+                
+                    ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
+                
+                    ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = booked.sales_rep_code ) AS sales_rep_name,
+                
+                    ( SELECT company_name FROM client_table WHERE Id = booked.client_id AND status = 2 AND type != 2 ) AS client_name,
+                
+                    ( SELECT COUNT(*) AS lineItems FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
+                
+                    ( SELECT SUM(amount) AS lineItems FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
+                
+                    booked.status,
+                
+                    booked.created_at
+                    
+                FROM booking_sales_table AS booked
+                
+                INNER JOIN magazine_transaction_table AS trans
+                
+                ON booked.Id = trans.transaction_id
+                
+                INNER JOIN magazine_table as mag
+                
+                ON mag.Id = trans.magazine_id
+                
+                WHERE mag.magazine_type = 2
         ");
 
         if(COUNT($get) > 0){
@@ -158,7 +193,6 @@ class bookingController extends Controller
         $filter_sales_rep = (int)$filter_sales_rep;
         $filter_client = (int)$filter_client;
         $filter_status = (int)$filter_status;
-
 
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
@@ -197,7 +231,7 @@ class bookingController extends Controller
             $filter_status_tran = "booked.status LIKE '%'";
         }
 
-        $filter_process = "WHERE " . $filter_publication_tran . ' AND ' . $filter_sales_rep_tran . ' AND ' . $filter_client_tran . ' AND ' . $filter_status_tran;
+        $filter_process = "WHERE mag.magazine_type = 1 AND " . $filter_publication_tran . ' AND ' . $filter_sales_rep_tran . ' AND ' . $filter_client_tran . ' AND ' . $filter_status_tran;
 
         $booking = DB::SELECT("
             SELECT 
@@ -623,7 +657,6 @@ class bookingController extends Controller
             //remove country
             return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $client_id);
         }
-
     }
 
     public function show_transaction_mag($trans_uid, $which_country, $client_id) {
@@ -805,7 +838,6 @@ class bookingController extends Controller
 
     public function add_issue_digital($mag_trans_uid, $client_id)
     {
-
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
@@ -814,7 +846,9 @@ class bookingController extends Controller
         $ad_p = DB::table('price_package_table')->where('status','=',2)->get();
 
         $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
+
         $booking_trans_num = DB::table('booking_sales_table')->where('Id','=',$transaction_uid[0]->transaction_id)->get();
+
         $mag_name = DB::table('magazine_table')->where('Id','=',$transaction_uid[0]->magazine_id)->get();
 
         $ad_c = DB::SELECT("
@@ -858,12 +892,13 @@ class bookingController extends Controller
         return array("Code" => 404, "Description" => "No Data Found.");
     }
 
-    public function digital_add_issue_save($mag_id, $client_id, $position_id, $month_id, $year, $week_id, $amount){
+    public function digital_add_issue_save($trans_id, $mag_id, $client_id, $position_id, $month_id, $year, $week_id, $amount){
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
 
         $mit = new MagazineDigitalTransaction();
+        $mit->magazine_trans_id = (int)$trans_id;
         $mit->magazine_id = $mag_id;
         $mit->client_id = $client_id;
         $mit->position_id = $position_id;

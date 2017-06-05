@@ -66,14 +66,14 @@
                             <table id="tbl_booking_digital_lists" class="footable table" data-sorting="true" data-page-size="10">
                                 <thead>
                                     <tr>
-                                        <th style='text-align: left;'>#</th>
-                                        <th style='text-align: left;'>Publication</th>
-                                        <th style='text-align: left;'>Client Name</th>
-                                        <th style='text-align: left;'>Position ID</th>
-                                        <th style='text-align: left;'>Month ID</th>
-                                        <th style='text-align: left;'>Week ID</th>
-                                        <th style='text-align: left;'>Year</th>
-                                        <th style='text-align: left;'>Amount</th>
+                                        <th style='text-align: center; width: 40px;'>#</th>
+                                        <th style='text-align: center;'>Publication</th>
+                                        <th style='text-align: center; width: 200px;'>Sales</th>
+                                        <th style='text-align: center; width: 200px;'>Client</th>
+                                        <th style='text-align: center; width: 200px;'>Line Items</th>
+                                        <th style='text-align: right; width: 90px;'>Amount</th>
+                                        <th style='text-align: center; width: 140px;'>Date Created</th>
+                                        <th style='text-align: center; width: 150px;'>Status/Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -134,36 +134,18 @@
                     if(json.Code == 200){
                         $(json.Result).each(function(i, tran){
 
-                            var month;
-                            var monthly = tran.month_id;
-                            switch (monthly) {
-                                case 1: month = "January"; break;
-                                case 2: month = "February"; break;
-                                case 3: month = "March"; break;
-                                case 4: month = "April"; break;
-                                case 5: month = "May"; break;
-                                case 6: month = "June"; break;
-                                case 7: month = "July"; break;
-                                case 8: month = "August"; break;
-                                case 9: month = "September"; break;
-                                case 10: month = "October"; break;
-                                case 11: month = "November"; break;
-                                case 12: month = "December"; break;
-                                default: month = "--";
-                            }
-
-                            var weekly = tran.week_id == 0 ? '--' : 'Week ' + tran.week_id;
-
-
                             table += '<tr>';
-                            table += '<td>'+ count++ +'</td>';
-                            table += '<td>'+ tran.magazine_name +'</td>';
-                            table += '<td>'+ tran.company_name +'</td>';
-                            table += '<td>'+ tran.position_id +'</td>';
-                            table += '<td>'+ month +'</td>';
-                            table += '<td>'+ weekly +'</td>';
-                            table += '<td>'+ tran.year +'</td>';
-                            table += '<td>'+ tran.amount +'</td>';
+                            table += '<td style="text-align: center;">'+ count++ +'</td>';
+                            table += '<td style="text-align: center;">'+ tran.mag_name +'</td>';
+                            table += '<td style="text-align: center;">'+ tran.sales_rep_name +'</td>';
+                            table += '<td style="text-align: center;">'+ tran.client_name +'</td>';
+                            table += '<td style="text-align: center;">'+ tran.line_item +'</td>';
+                            table += '<td style="text-align: right;">'+ tran.amount +'</td>';
+                            table += '<td style="text-align: center;">'+ tran.created_at +'</td>';
+
+                            var url = "/booking/digital/add_issue/" + tran.Id+ "/" +tran.client_id;
+
+                            table += '<td style="text-align: center;">Pending | <a href="'+url+'" class="btn btn-primary" style="padding: 5px 7px 5px 7px; "><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a></td>';
                             table += '</tr>';
                         })
 

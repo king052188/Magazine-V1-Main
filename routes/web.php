@@ -142,8 +142,11 @@ Route::post('/booking/digital/save-magazine-transaction/{trans_id}/{client_id}',
 
 Route::get('/booking/add_issue/{mag_trans_uid}/{client_id}', 'bookingController@add_issue');
 Route::get('/booking/digital/add_issue/{mag_trans_uid}/{client_id}', 'bookingController@add_issue_digital');
+
 Route::get('/api/api_get_digital_price/{digital_price_uid}', 'bookingController@api_get_digital_price');
-Route::get('/booking/digital/add_issue/save/{mag_id}/{client_id}/{position_id}/{month_id}/{year}/{week_id}/{amount}', 'bookingController@digital_add_issue_save');
+
+Route::get('/booking/digital/add_issue/save/{trans_id}/{mag_id}/{client_id}/{position_id}/{month_id}/{year}/{week_id}/{amount}', 'bookingController@digital_add_issue_save');
+
 Route::get('/api/api_get_digital_transaction/{mag_id}/{client_id}', 'bookingController@api_get_digital_transaction');
 Route::get('/api/api_delete_digital_transaction/{d_uid}', 'bookingController@api_delete_digital_transaction');
 
@@ -195,3 +198,4 @@ Route::get('/sales_report/get_filter_data_invoice/{i_invoice_number}/{i_publicat
 
 
 //Route::get('/ph/developers', 'DeveloperClass@index');
+

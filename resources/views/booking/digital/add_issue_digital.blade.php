@@ -498,6 +498,7 @@
 
             $("#save_digital_issue").click(function(){
 
+                var mag_trans_uid = '{{ $mag_trans_uid }}';
                 var d_client_id = '{{ $is_member[0]->Id }}';
                 var d_mag_id = '{{ $mag_name[0]->Id }}';
                 var d_position = $("#position").val();
@@ -510,9 +511,9 @@
                 var url = "";
                 if(d_issue == 1){ //1 = Monthly
                     d_weekly = 0;
-                    url = "/booking/digital/add_issue/save/" + d_mag_id + "/" + d_client_id + "/" + d_position + "/" + d_monthly + "/" + d_year + "/" + d_weekly + "/" + d_amount;
+                    url = "/booking/digital/add_issue/save/" + mag_trans_uid + "/" + d_mag_id + "/" + d_client_id + "/" + d_position + "/" + d_monthly + "/" + d_year + "/" + d_weekly + "/" + d_amount;
                 }else if(d_issue == 2){ //2 = Weekly
-                    url = "/booking/digital/add_issue/save/" + d_mag_id + "/" + d_client_id + "/" + d_position + "/" + d_monthly + "/" + d_year + "/" + d_weekly + "/" + d_amount;
+                    url = "/booking/digital/add_issue/save/" + mag_trans_uid + "/" + d_mag_id + "/" + d_client_id + "/" + d_position + "/" + d_monthly + "/" + d_year + "/" + d_weekly + "/" + d_amount;
                 }
 
                 $.ajax({

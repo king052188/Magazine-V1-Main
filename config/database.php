@@ -48,7 +48,7 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => 'api.lesterdigital.com', //client.lesterdigital.com
+            'host' => 'api.magazine.com', //client.lesterdigital.com
             'port' => '80',
         ],
 
@@ -60,11 +60,11 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'web.lesterdigital.com'), //client.lesterdigital.com
+            'host' => env('DB_HOST', 'localhost'), //client.lesterdigital.com
             'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'mag3_magazine_v1'), //sd
-            'username' => env('DB_USERNAME', 'su_lester'), //march2016
-            'password' => env('DB_PASSWORD', 'MAG12mag'), //7cVsNzxEBjp1huRo
+            'database' => env('DB_DATABASE', 'db_magazine_v1'), //sd
+            'username' => env('DB_USERNAME', 'root'), //march2016
+            'password' => env('DB_PASSWORD', 'ABC12abc'), //7cVsNzxEBjp1huRo
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix' => '',
