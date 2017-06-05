@@ -284,7 +284,7 @@ class bookingController extends Controller
             
             ");
 
-        $publication = DB::table('magazine_table')->where('status', '=', 2)->get();
+        $publication = DB::table('magazine_table')->where('status', '=', 2)->where('magazine_type', '=', 1)->get();
         $clients = DB::table('client_table')->where('status', '=', 2)->get();
         $sales_rep = DB::table('user_account')->where('status', '=', 2)->get();
 
