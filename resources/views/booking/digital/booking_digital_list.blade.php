@@ -143,7 +143,7 @@
                             table += '<td style="text-align: right;">'+ tran.amount +'</td>';
                             table += '<td style="text-align: center;">'+ tran.created_at +'</td>';
 
-                            var url = "/booking/digital/add_issue/" + tran.Id+ "/" +tran.client_id;
+                            var url = "/booking/digital/add_issue/" + tran.mag_trans_id+ "/" +tran.client_id;
 
                             table += '<td style="text-align: center;">Pending | <a href="'+url+'" class="btn btn-primary" style="padding: 5px 7px 5px 7px; "><i class="fa fa-list-alt"></i>&nbsp;&nbsp;View</a></td>';
                             table += '</tr>';

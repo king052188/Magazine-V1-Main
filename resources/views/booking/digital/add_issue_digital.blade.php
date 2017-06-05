@@ -76,9 +76,11 @@
                                                     <label for="ex2">Position</label>
                                                     <select class="form-control" name = "position" id = "position">
                                                         <option value = "" disabled selected>select</option>
-                                                        @for($i = 0; $i < COUNT($ad_c); $i++)
-                                                            <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->ad_type . " " . $ad_c[$i]->ad_size }}</option>
-                                                        @endfor
+                                                        @if($ad_c != null)
+                                                            @for($i = 0; $i < COUNT($ad_c); $i++)
+                                                                <option value = "{{ $ad_c[$i]->Id }}">{{ $ad_c[$i]->ad_type . " " . $ad_c[$i]->ad_size }}</option>
+                                                            @endfor
+                                                        @endif
                                                     </select>
                                                 </div>
                                             </div>
@@ -159,14 +161,16 @@
                     <div class="col-lg-9" id = "once_approved_bb">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>Company: <b>{{ $is_member[0]->company_name }}</b> |
+                                @if($is_member != null)
+                                    <h5>Company: <b>{{ $is_member[0]->company_name }}</b> |
                                     <h5>Type: <b>{{  $is_member[0]->is_member == 1 ? "MEMBER" : "NON" }}</b> |
-                                        <h5>Magazine: <b>{{ $mag_name[0]->magazine_name }} </b></h5>
-                                        <div class="ibox-tools">
-                                            <a class="collapse-link">
-                                                <i class="fa fa-chevron-up"></i>
-                                            </a>
-                                        </div>
+                                    <h5>Magazine: <b>{{ $mag_name[0]->magazine_name }} </b></h5>
+                                    <div class="ibox-tools">
+                                        <a class="collapse-link">
+                                            <i class="fa fa-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                             <div class="ibox-content">
                                 <div class="row">

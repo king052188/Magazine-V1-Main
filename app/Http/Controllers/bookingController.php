@@ -140,6 +140,8 @@ class bookingController extends Controller
                 SELECT 
 
                     booked.Id,
+                    
+                    ( SELECT Id FROM magazine_transaction_table WHERE transaction_id = booked.Id ) AS mag_trans_id,
                 
                     booked.client_id,
                 
@@ -705,7 +707,6 @@ class bookingController extends Controller
 
         $disabled = ["set" => ""];
         $booking_uid = (int)$trans_uid;
-        //$w_country = (int)$which_country;
 
         $mag_l = DB::SELECT("
                     SELECT * FROM magazine_table as mag
@@ -713,6 +714,7 @@ class bookingController extends Controller
                     ON mag_t.magazine_id = mag.Id
                     WHERE mag_t.transaction_id = {$booking_uid}
                     ");
+
         if(count($mag_l) > 0) {
             return redirect("/booking/digital/add_issue/" . $mag_l[0]->Id . "/" . $client_id);
         }
@@ -763,6 +765,7 @@ class bookingController extends Controller
             // not allow
             return redirect("/booking/digital/magazine-transaction/". $booking_uid ."/". $client_id)->with("message", "1 magazine only");
         }
+
         $mt = new MagazineTransaction();
         $mt->magazine_id = $request['magazine_id'];
         $mt->transaction_id = $booking_uid;
@@ -842,21 +845,29 @@ class bookingController extends Controller
             return redirect("/logout_process");
         }
 
-//        $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
         $ad_p = DB::table('price_package_table')->where('status','=',2)->get();
 
         $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
+
+        $ad_c = null;
+
+        $is_member = null;
+
+        if( COUNT($transaction_uid) == 0 ) {
+
+            return array("code" => 404, "message" => "No Records Found.");
+        }
 
         $booking_trans_num = DB::table('booking_sales_table')->where('Id','=',$transaction_uid[0]->transaction_id)->get();
 
         $mag_name = DB::table('magazine_table')->where('Id','=',$transaction_uid[0]->magazine_id)->get();
 
         $ad_c = DB::SELECT("
-                SELECT *
-                FROM magzine_digital_price_table
-                WHERE mag_id = {$transaction_uid[0]->magazine_id}
-                ORDER BY ad_type, ad_size ASC
-        ");
+                    SELECT *
+                    FROM magzine_digital_price_table
+                    WHERE mag_id = {$transaction_uid[0]->magazine_id}
+                    ORDER BY ad_type, ad_size ASC
+            ");
 
         $is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
 
