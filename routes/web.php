@@ -106,7 +106,7 @@ Route::get('/transaction/all', 'transactionController@index');
 Route::get('/booking/booking-list', 'bookingController@booking_list');
 Route::get('/booking/digital-list', 'bookingController@booking_digital_list');
 
-Route::get('/api/booking/get/digital-list/{publication}/{client}', 'bookingController@api_get_booking_digital_list');
+Route::get('/mjt/booking/get/digital-list/{publication}/{client}', 'bookingController@api_get_booking_digital_list');
 
 
 Route::get('/booking/booking-list-filter/{filter_publication}/{filter_sales_rep}/{filter_client}/{filter_status}', 'bookingController@booking_list_filter');

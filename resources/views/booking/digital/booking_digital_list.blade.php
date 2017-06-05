@@ -115,7 +115,7 @@
             var count = 1;
 
             $.ajax({
-                url: "/api/booking/get/digital-list/" + publication + "/" + client,
+                url: "/mjt/booking/get/digital-list/" + publication + "/" + client,
                 dataType: "text",
                 beforeSend: function(){
                     $('table#tbl_booking_digital_lists > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
@@ -123,6 +123,8 @@
                 success: function(data) {
                     var json = $.parseJSON(data);
                     if(json == null) return false;
+
+                    console.log(json);
 
                     if(json.Code == 404){
                         $('table#tbl_booking_digital_lists > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center; font-size: 20px;"> No Result Found</td> </tr>');
