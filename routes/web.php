@@ -108,6 +108,8 @@ Route::get('/booking/digital-list', 'bookingController@booking_digital_list');
 
 Route::get('/mjt/booking/get/digital-list/{publication}/{client}', 'bookingController@api_get_booking_digital_list');
 
+Route::get('/mjt/update/digital/status/{digital_status}/{booking_sales_uid}', 'bookingController@api_update_digital_status');
+
 
 Route::get('/booking/booking-list-filter/{filter_publication}/{filter_sales_rep}/{filter_client}/{filter_status}', 'bookingController@booking_list_filter');
 Route::get('/booking/booking-list_api/{filter?}', 'bookingController@booking_list_api');

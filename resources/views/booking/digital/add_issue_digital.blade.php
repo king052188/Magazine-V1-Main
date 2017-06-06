@@ -222,6 +222,8 @@
                                         </section>
                                     </div>
                                 </div>
+                                <a href = "#" id = "btn_digital_preview" style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>
+                                <a href = "{{ URL('/booking/digital-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>
                                 <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px;"> </div>
                                 <div id="approval_discretionary_discount" style="width: 100%; margin-top: 10px; display: none; ">
                                     <h3>Discretionary Discount</h3>
@@ -461,6 +463,7 @@
         }
     </style>
     <script>
+
         var is_member = {{ $is_member[0]->is_member }};
 
         $(document).ready(function(){
@@ -569,6 +572,9 @@
 
                             $(json.Result).each(function(i, tran){
 
+                                var trans_number = tran.trans_num;
+
+
                                 html_thmb += "<tr>";
                                 html_thmb += "<td style='text-align: center;'>"+ tran.d_num +"</td>";
                                 html_thmb += "<td style='text-align: left;'>"+ tran.mag_name +"</td>";
@@ -589,7 +595,16 @@
                                 html_thmb += "<a class='btn btn-danger' data-target = '"+ tran.d_uid +"' id = 'd_delete' title='Delete'><i class='fa fa-trash'></i></a>";
                                 html_thmb += "</td>";
                                 html_thmb += "</tr>";
+
+                                $("#btn_digital_preview").click(function(){
+                                    open_preview(trans_number);
+                                });
                             });
+
+                            function open_preview(trans_number) {
+                                window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/DIGITAL",
+                                        "mywindow","location=1,status=1,scrollbars=1,width=800,height=760");
+                            }
                         }
 
                         $('table#digital_issue_table > tbody').empty().prepend(html_thmb);

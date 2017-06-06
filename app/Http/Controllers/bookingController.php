@@ -123,13 +123,13 @@ class bookingController extends Controller
     public function api_get_booking_digital_list($publication, $client){
         
         if($publication != 0){
-            $pub = " AND aa.magazine_id = {$publication}";
+            $pub = " AND trans.magazine_id = {$publication}";
         }else{
             $pub = "";
         }
 
         if($client != 0){
-            $cli = " AND aa.client_id = {$client}";
+            $cli = " AND booked.client_id = {$client}";
         }else{
             $cli = "";
         }
@@ -179,7 +179,7 @@ class bookingController extends Controller
                 
                 ON mag.Id = trans.magazine_id
                 
-                WHERE mag.magazine_type = 2
+                WHERE mag.magazine_type = 2 {$filter_process}
         ");
 
         if(COUNT($get) > 0){
@@ -187,6 +187,15 @@ class bookingController extends Controller
         }
 
         return array("Code" => 404, "Result" => "No Result Found");
+    }
+
+    public function api_update_digital_status($digital_status, $booking_sales_uid){
+        Booking::where('Id', '=', $booking_sales_uid)
+            ->update([
+                'status' => $digital_status
+            ]);
+
+        return array("Code" => 200, "Result" => "Success");
     }
 
     public function booking_list_filter($filter_publication, $filter_sales_rep, $filter_client, $filter_status)
@@ -935,8 +944,13 @@ class bookingController extends Controller
                     (SELECT ad_type FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_type,
                     (SELECT ad_size FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_size,
                     (SELECT ad_amount FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_amount,
-                    (SELECT ad_issue FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_issue
-                    FROM magazine_digital_transaction_table as aa
+                    (SELECT ad_issue FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_issue,
+                    (
+                      SELECT bb.trans_num FROM magazine_transaction_table as cc
+                      INNER JOIN booking_sales_table as bb ON bb.Id = cc.transaction_id
+                      WHERE cc.Id = 237
+                    ) as trans_num
+                    FROM magazine_digital_transaction_table as aa 
                     WHERE aa.magazine_id = {$mag_id} AND client_id = {$client_id}
         ");
 
@@ -980,6 +994,7 @@ class bookingController extends Controller
                 }
 
                 $result[] = array(
+                    "trans_num" => $get[$i]->trans_num,
                     "d_uid" => $get[$i]->d_uid,
                     "d_num" => $n++,
                     "mag_name" => $get[$i]->mag_name,
