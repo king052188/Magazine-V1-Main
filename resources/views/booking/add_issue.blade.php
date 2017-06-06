@@ -32,6 +32,7 @@
         </ol>
     </div>
 </div>
+
 <div class="wrapper wrapper-content animated fadeInRight">
 
     <div class="container">
@@ -168,6 +169,7 @@
                                                     {{ Session::get('fail') }}
                                                 </div>
                                             @endif
+
                                             <table class="table table-striped table-bordered table-hover dataTables-example" id="issue_reports">
                                                 <thead>
                                                     <tr>
@@ -187,6 +189,7 @@
                                                 </thead>
                                                 <tbody></tbody>
                                             </table>
+
                                             <div id="total_result" style="margin-top: 15px;" class="pull-right">
                                                 <style>
                                                     .issues_amount_table tr td { font-size: 1em; font-weight: 600; padding: 2px; text-align: right; }
@@ -215,6 +218,7 @@
                                                 </table>
                                             </div>
                                             <div id="show_button" style="margin-top: 45px;" class="pull-left"></div>
+
                                         </section>
                                     </div>
                                  </div>
