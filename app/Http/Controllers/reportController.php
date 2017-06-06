@@ -14,9 +14,9 @@ class reportController extends Controller
             return redirect("/logout_process");
         }
         
-        $publication = DB::table('magazine_table')->where('status', '=', 2)->get();
-        $clients = DB::table('client_table')->where('status', '=', 2)->get();
-        $sales_rep = DB::table('user_account')->where('status', '=', 2)->get();
+        $publication = DB::table('magazine_table')->where('status', '=', 2)->orderBy('magazine_name', 'ASC')->get();
+        $clients = DB::table('client_table')->where('status', '=', 2)->orderBy('company_name', 'ASC')->get();
+        $sales_rep = DB::table('user_account')->where('status', '=', 2)->orderBy('first_name', 'ASC')->get();
 
         $nav_dashboard = "";
         $nav_clients = "";
