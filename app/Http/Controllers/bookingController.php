@@ -948,7 +948,7 @@ class bookingController extends Controller
                     (
                       SELECT bb.trans_num FROM magazine_transaction_table as cc
                       INNER JOIN booking_sales_table as bb ON bb.Id = cc.transaction_id
-                      WHERE cc.Id = {$mag_id}
+                      WHERE cc.Id = aa.magazine_trans_id
                     ) as trans_num
                     FROM magazine_digital_transaction_table as aa 
                     WHERE aa.magazine_id = {$mag_id} AND client_id = {$client_id}
