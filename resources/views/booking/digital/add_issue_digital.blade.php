@@ -182,9 +182,9 @@
                                                 <th style="width: 60px; text-align: center;">ITEM#</th>
                                                 <th style="text-align: left;">MAGAZINE</th>
                                                 <th style="width: 200px; text-align: center;">SIZE</th>
-                                                <th style="width: 100px; text-align: center;">MONTH</th>
+                                                <th style="width: 100px; text-align: center;">MODE</th>
+                                                <th style="width: 180px; text-align: center;">ISSUE</th>
                                                 <th style="width: 100px; text-align: center;">YEAR</th>
-                                                <th style="width: 100px; text-align: center;">WEEK</th>
                                                 <th style="width: 100px; text-align: right;">AMOUNT</th>
                                                 <th style="width: 30px; text-align: center;">ACTION</th>
                                             </tr>
@@ -464,10 +464,12 @@
     </style>
     <script>
 
+        var mag_trans_uid = '{{ $mag_trans_uid }}';
+        var d_client_id = '{{ $is_member[0]->Id }}';
+        var d_mag_id = '{{ $mag_name[0]->Id }}';
         var is_member = {{ $is_member[0]->is_member }};
 
         $(document).ready(function(){
-            api_get_digital_transaction({{ $mag_name[0]->Id }},{{ $is_member[0]->Id }});
 
             $('#position').on('change',function(){
                 var position_uid = $(this).val();
@@ -505,9 +507,6 @@
 
             $("#save_digital_issue").click(function(){
 
-                var mag_trans_uid = '{{ $mag_trans_uid }}';
-                var d_client_id = '{{ $is_member[0]->Id }}';
-                var d_mag_id = '{{ $mag_name[0]->Id }}';
                 var d_position = $("#position").val();
                 var d_monthly = $("#ad_monthly").val();
                 var d_year = $("#ad_year").val();
@@ -546,86 +545,6 @@
                     }
                 });
             });
-
-            function api_get_digital_transaction(mag_id, client_id){
-
-                var issues_total = 0.0;
-
-                var html_thmb = "";
-
-                $.ajax({
-                    url: "/api/api_get_digital_transaction/" + mag_id + "/" + client_id,
-                    dataType: "text",
-                    beforeSend: function () {
-                        $('table#digital_issue_table > tbody').empty().prepend('<tr> <td colspan="9" style="text-align: center; font-size: 15px; padding-top: 20px;"> <img src="{{ asset('img/ripple.gif') }}"  /> <br /> Fetching All Data... Please wait...</td> </tr>');
-                    },
-                    success: function(data) {
-                        var json = $.parseJSON(data);
-                        if(json == null)
-                            return false;
-
-                        if(json.Code == 404){
-                            html_thmb += '<tr> <td colspan="9" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available </td> </tr>';
-                        }
-
-                        if(json.Code == 200){
-
-                            $(json.Result).each(function(i, tran){
-
-                                var trans_number = tran.trans_num;
-
-
-                                html_thmb += "<tr>";
-                                html_thmb += "<td style='text-align: center;'>"+ tran.d_num +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.mag_name +"</td>";
-                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_type + "-" + tran.ad_size +"</td>";
-                                html_thmb += "<td style='text-align: center;'>"+ tran.ad_months +"</td>";
-                                html_thmb += "<td style='text-align: center;'>"+ tran.ad_year +"</td>";
-
-                                if(tran.ad_weeks != "") {
-                                    html_thmb += "<td style='text-align: center;'>"+ tran.ad_weeks +"</td>";
-                                }
-                                else {
-                                    html_thmb += "<td style='text-align: center;'>N/A</td>";
-                                }
-
-                                issues_total += parseFloat(tran.ad_amount);
-                                html_thmb += "<td style='text-align: right;'>"+ tran.ad_amount +"</td>";
-                                html_thmb += "<td style='text-align: center;'>";
-                                html_thmb += "<a class='btn btn-danger' data-target = '"+ tran.d_uid +"' id = 'd_delete' title='Delete'><i class='fa fa-trash'></i></a>";
-                                html_thmb += "</td>";
-                                html_thmb += "</tr>";
-
-                                $("#btn_digital_preview").click(function(){
-                                    open_preview(trans_number);
-                                });
-                            });
-
-                            function open_preview(trans_number) {
-                                window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/DIGITAL",
-                                        "mywindow","location=1,status=1,scrollbars=1,width=800,height=760");
-                            }
-                        }
-
-                        $('table#digital_issue_table > tbody').empty().prepend(html_thmb);
-                        $('#issues_total').empty().text(numeral(issues_total).format('0,0.00'));
-
-                        var issues_discount = 0;
-                        $('#issues_discount').empty().text(numeral(issues_discount).format('0,0.00'));
-
-                        var issues_sub_total = issues_total;
-                        $('#issues_sub_total').empty().text(numeral(issues_sub_total).format('0,0.00'));
-
-                        var discretionary_discount = 0;
-                        $('#discretionary_discount').empty().text(numeral(discretionary_discount).format('0,0.00'));
-
-                        var issues_total_amount = issues_sub_total;
-                        $('#issues_total_amount').empty().text(numeral(issues_total).format('0,0.00'));
-
-                    }
-                });
-            }
-
 
             $("#digital_issue_table").on("click", "#d_delete", function(){
                 var d_uid = $(this).attr("data-target");
@@ -755,7 +674,6 @@
                             html_thmb += "<b style = 'margin-left: 50px; margin-right: 10px;'>Date </b>" + tran.created_at;
                             html_thmb += "</td>";
                             html_thmb += "</tr>";
-
                         });
 
                         $("#notes_modal_content").animate({ scrollTop: $(document).height() }, "slow");
@@ -767,8 +685,6 @@
                         html_thmb += "<td style='text-align: left;'>No Notes Available<td/>";
                         html_thmb += "</tr>";
                     }
-
-
                     $('table#notes_lists > tbody').empty().prepend(html_thmb);
                 }
             });
@@ -787,291 +703,117 @@
                 return false;
         }
         var trans_id = {{ $transaction_uid[0]->transaction_id }};
+
         console.log(trans_id);
-        populate_issues_transaction(trans_id);
-        function populate_issues_transaction(uid) {
+
+        api_get_digital_transaction(trans_id);
+
+        function api_get_digital_transaction(trans_id){
+
+            var issues_total = 0.0;
+
             var html_thmb = "";
-            var isFirstLoad = true;
+
+            var booking_trans = "";
 
             $(document).ready( function() {
-                var hasDiscount = 0;
-                var BaseTotalAmount = 0;
                 $.ajax({
-                    url: "http://"+report_url_api+"/kpa/work/magazine-issue-lists/"+uid,
+                    url: "http://"+report_url_api+"/kpa/work/magazine-digital-lists/"+trans_id,
                     dataType: "text",
                     beforeSend: function () {
-                        if(isFirstLoad) {
-                            isFirstLoad = false;
-                            $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
-                        }
+                        $('table#digital_issue_table > tbody').empty().prepend('<tr> <td colspan="9" style="text-align: center; font-size: 15px; padding-top: 20px;"> <img src="{{ asset('img/ripple.gif') }}"  /> <br /> Fetching All Data... Please wait...</td> </tr>');
                     },
                     success: function(data) {
                         var json = $.parseJSON(data);
                         if(json == null)
                             return false;
 
-                        //$("#count_line_item").val(json.Count);
-                        //json.Issue_Discounts[0]['Total_Issue']
-                        var issue_discount_new = 0;
-                        if(json.Count != 0)
-                        {
-                            issue_discount_new = json.Count;
-                        }
+                        console.log(json);
 
-                        {{--console.log("Transaction ID: " + {{ $transaction_uid[0]->transaction_id }});--}}
-                        {{--console.log("Mag UID: " + json.Mag_Uid);--}}
-                        {{--console.log("Line Issue Count: " + issue_discount_new);--}}
-                        {{--console.log("Trans Num: " + '{{ $booking_trans_num[0]->trans_num }}');--}}
+                        if(json.Count > 0) {
 
-                        $("#mag_id_for_discount").val(json.Mag_Uid);
-                        $("#line_issue_count").val(issue_discount_new);
-                        $("#trans_num_for_discount").val('{{ $booking_trans_num[0]->trans_num }}');
+                            booking_trans = json.Bookings[0].trans_num;
 
-                        if(json.Status == 404) {
-                            $('table#issue_reports > tbody').empty().prepend('<tr> <td colspan="8">' + json.Message + '</td> </tr>');
-                            return;
-                        }
-                        $('#mag_trans_container').empty().prepend('<h3>'+ json.Magazine_Name +' [ <span>'+ json.Mag_Code +'</span> ] | '+ json.Mag_Country +' </h3>');
+                            $(json.Data).each(function(i, tran){
 
-                        var total_with_discount = 0;
-                        var item_count = 1;
-                        var i_sub_total = 0;
-                        var i_discount = 0;
-                        var i_total_less_discount = 0;
-                        var i_total = 0;
+                                var trans_number = tran.Id;
 
-                        $(json.Data).each(function(i, tran){
-                            html_thmb += "<tr>";
-                            html_thmb += "<td style='text-align: center;'>"+item_count+"</td>";
-                            html_thmb += "<td style='text-align: left;'>"+tran.ad_color+"</td>";
-                            html_thmb += "<td style='text-align: left;'>"+tran.ad_size+"</td>";
-                            html_thmb += "<td style='text-align: center;'> IS"+tran.quarter_issued+"</td>";
-                            html_thmb += "<td style='text-align: center;'> "+tran.line_item_qty+"</td>";
+                                html_thmb += "<tr>";
+                                html_thmb += "<td style='text-align: center;'>"+ tran.Id +"</td>";
+                                html_thmb += "<td style='text-align: left;'>"+ tran.mag_name +"</td>";
+                                html_thmb += "<td style='text-align: left;'>"+ tran.ad_size +"</td>";
 
-                            var discount = 0;
-                            var qty_discount = tran.total_discount_by_percent;
-                            var new_price = tran.total_amount_with_discount;
-                            if(qty_discount == null) {
-                                new_price = tran.sub_total_amount;
-                            }
+                                var month = getMonth(tran.month_id);
 
-                            if(is_member > 0) {
-                                discount = new_price * 0.15;
-                                new_price = new_price - (new_price * 0.15);
-                            }
-
-                            html_thmb += "<td style='text-align: center;'> Member: "+numeral(discount).format('0,0.00')+"</td>";
-
-                            var n_status = "Void";
-                            var p_status = parseInt(tran.status);
-                            if(p_status == 1){
-                                n_status = "Pending";
-                            }else if(p_status == 2){
-                                n_status = "For Approval";
-                            }else if(p_status == 3){
-                                n_status = "Approved";
-                            }else if(p_status == 4){
-                                n_status = "Declined";
-                            }
-                            html_thmb += "<td style='text-align: right;'>"+ numeral(new_price).format('0,0.00') +"</td>";
-                            html_thmb += "<td style='text-align: center;'>";
-                            if({{ $booking_trans_num[0]->status }} != 1)
-                            {
-                                html_thmb += "";
-                            }else{
-                                html_thmb += "<a id = 'once_approved_cc' onclick='return ConfirmDelete();' href = '{{ URL("/booking/delete_issue") ."/" }}"+ tran.id + "/" + tran.magazine_trans_id +"/{{ $client_id }}' class='btn btn-danger' data-toggle='trashbin' title='Delete'><i class='fa fa-trash'></i></a>";
-                            }
-                            html_thmb += "</td>";
-
-                            html_thmb += "</tr>";
-                            item_count++;
-                            total_with_discount += parseFloat(new_price);
-                        });
-
-                        $("#issues_total").text(numeral(total_with_discount).format('0,0.00'));
-                        $("#approval_total").text(numeral(total_with_discount).format('0,0.00'));
-                        $(json.Issue_Discounts).each(function(i, issue){
-                            if(issue.Total_Issue > 1) {
-                                if(issue.Total_Issue_Discount != null) {
-                                    var issues_discount_origin = parseFloat(issue.Total_Issue_Discount);
-                                    var issues_discount = total_with_discount * issues_discount_origin;
-                                    total_with_discount = total_with_discount - issues_discount;
-                                    $("#issues_discount").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
-                                    $("#issues_discount2").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
-
-                                    var get_percentage = issues_discount_origin * 100;
-                                    $("#issues_discount_label").text(numeral(get_percentage).format('0.00') + "% Issue Discount:");
-                                    $("#issues_discount_label2").text(numeral(get_percentage).format('0.00') + "% Issue Discount:");
+                                if(tran.week_id > 0) {
+                                    html_thmb += "<td style='text-align: center;'>WEEK</td>";
+                                    html_thmb += "<td style='text-align: center;'> "+month +" | Week"+ tran.week_id +"</td>";
                                 }
                                 else {
-                                    $("#issues_discount").text( "(" + numeral(0).format('0,0.00') + ")");
-                                    $("#issues_discount2").text( "(" + numeral(0).format('0,0.00') + ")");
-
-                                    $("#issues_discount_label").text(numeral(0).format('0.00') + "% Issue Discount:");
-                                    $("#issues_discount_label2").text(numeral(0).format('0.00') + "% Issue Discount:");
-                                }
-                            }
-                            else {
-                                $("#issues_discount").text( "(" + numeral(0).format('0,0.00') + ")");
-                                $("#issues_discount2").text( "(" + numeral(0).format('0,0.00') + ")");
-                            }
-                        });
-
-                        //issues_discount
-                        $("#approval_discount_label").text("0%");
-
-                        $('table#issue_reports > tbody').empty().prepend(html_thmb);
-
-                        $('#issues_sub_total').text(numeral(total_with_discount).format('0,0.00'));
-
-                        $.ajax({
-                            url: "/booking/get_discount_transaction/" + '{{ $booking_trans_num[0]->trans_num }}',
-                            dataType: "text",
-                            success: function(data) {
-                                var json = $.parseJSON(data);
-                                if (json.status == 202) {
-
-                                    $(json.result).each(function(i, discount) {
-
-                                        i_sub_total = total_with_discount;
-                                        i_discount = discount.discount_percent / 100;
-                                        i_total_less_discount = (i_sub_total * i_discount);
-                                        i_total = i_sub_total - i_total_less_discount;
-
-                                        if(Role > 1) {
-
-                                            $("#discretionary_discount").text( "(" + numeral(i_total_less_discount).format('0.00') + ")");
-                                            $("#issues_total_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0.00'));
-                                            if(parseInt( discount.status ) == 2) {
-                                                $('#status_discretionary_discount').show();
-                                                var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid green; padding: 5px; border-radius: 5px;'>";
-                                                x_wrapper += "<h3 style='color: green;'>Discretionary Discount has been Approved</h3>";
-                                                x_wrapper += "</div>";
-                                                $('#status_discretionary_discount').empty().append(x_wrapper);
-                                            }
-                                            else if(parseInt( discount.status ) == 3) {
-                                                $('#status_discretionary_discount').show();
-                                                var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid red; padding: 5px; border-radius: 5px;'>";
-                                                x_wrapper += "<h3 style='color: red;'>Discretionary Discount has been Declined</h3>";
-                                                x_wrapper += "</div>";
-                                                $('#status_discretionary_discount').empty().append(x_wrapper);
-                                            }
-                                            else {
-                                                $('#status_discretionary_discount').show();
-                                                var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid #1976D2; padding: 5px; border-radius: 5px;'>";
-                                                x_wrapper += "<h3 style='color: #1976D2;'>Discretionary Discount is not yet Approved</h3>";
-                                                x_wrapper += "</div>";
-                                                $('#status_discretionary_discount').empty().append(x_wrapper);
-                                            }
-                                        }
-                                        else {
-                                            $('#approval_discretionary_discount').show();
-                                            $('#total_result').hide();
-                                            $("#approval_discount_label").text(numeral(discount.discount_percent).format('0,0.00') + "%");
-                                            $("#approval_sales_rep").text(discount.sales_rep_name);
-                                            $("#sls_rep").val(discount.sales_rep_id);
-                                            $("#sls_rep_dec").val(discount.sales_rep_id);
-                                            $("#approval_date").text(discount.created_at);
-                                            $("#approval_remarks").text(discount.remarks);
-                                            $("#approval_sub_total").text(numeral(total_with_discount).format('0,0.00'));
-                                            $("#approval_discount").text( "(" + numeral(i_total_less_discount).format('0,0.00') + ")");
-                                            $("#approval_amount").text(numeral(i_total).format('0,0.00'));
-
-                                            if(parseInt( discount.status ) == 2) {
-                                                $("#button_approve").hide();
-                                                $("#text_status").text("Approved Discount");
-                                                $("#text_status").attr("style", "color: green;");
-                                            }
-                                            else if(parseInt( discount.status ) == 3) {
-                                                $("#button_approve").hide();
-                                                $("#text_status").text("Declined Discount");
-                                                $("#text_status").attr("style", "color: red;");
-                                            }
-                                            else {
-                                                $("#text_status").hide();
-                                            }
-                                        }
-                                    });
-
-                                    $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
-                                    $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                                    $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
-                                    $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
-
-                                }
-                                else {
-                                    $('#discretionary_discount').text("(" + numeral("0").format('0,0.00') + ")");
-                                    $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
-                                    if({{ $booking_trans_num[0]->status }} != 1) {
-                                        $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
-                                        $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                                        $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
-                                        $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
-                                    }else {
-                                        $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
-                                        $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>');
-                                        $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                                        $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
-                                        $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
-                                    }
+                                    html_thmb += "<td style='text-align: center;'>MONTH</td>";
+                                    html_thmb += "<td style='text-align: center;'>"+ month +"</td>";
                                 }
 
-                                $("#btn_artwork_modal").click(function(){
-                                    var book_trans_num = '{{ $booking_trans_num[0]->trans_num }}';
-                                    populate_get_artwork(book_trans_num);
+                                html_thmb += "<td style='text-align: center;'>"+ tran.year +"</td>";
+                                issues_total += parseFloat(tran.amount);
+                                html_thmb += "<td style='text-align: right;'>"+ tran.amount +"</td>";
+                                html_thmb += "<td style='text-align: center;'>";
+                                html_thmb += "<a class='btn btn-danger' data-target = '"+ tran.Id +"' id = 'd_delete' title='Delete'><i class='fa fa-trash'></i></a>";
+                                html_thmb += "</td>";
+                                html_thmb += "</tr>";
+
+                                $("#btn_digital_preview").click(function(){
+                                    open_preview(booking_trans);
                                 });
-                            }
-                        });
-                        BaseTotalAmount = total_with_discount;
-                        $('#txtBaseAmount').val(numeral(BaseTotalAmount).format('0,0.00'));
-                        $('#txtBaseAmountHidden').val(BaseTotalAmount);
-                    }
-                });
-
-                $('#txtAmount').val("0.00");
-                $('#txtDiscount').on('keyup', function(){
-                    var origin_amount = BaseTotalAmount;
-                    var value = $(this).val();
-                    if(value != "") {
-                        var orig_amount = (parseFloat(origin_amount) * parseFloat(value)) / 100;
-                        var new_amount = parseFloat(origin_amount) - orig_amount;
-                        $('#txtAmount').val(numeral(new_amount).format('0,0.00'));
-                    }
-                    else {
-                        $('#txtAmount').val("0.00");
-                    }
-                });
-
-            }); //add semi colon
-        }
-
-        function populate_get_artwork(book_trans_num) {
-            $(document).ready( function() {
-                $.ajax({
-                    url: "/booking/get_artwork/" + book_trans_num,
-                    dataType: "text",
-                    beforeSend: function () {
-                    },
-                    success: function(data) {
-                        var json = $.parseJSON(data);
-                        if(json == null)
-                            return false;
-
-                        if(json.Code == 200)
-                        {
-                            $(json.result).each(function(i, tran){
-                                $("#selArtwork").val(tran.artwork);
-                                $("#txtDirections").val(tran.directions);
                             });
                         }
-                        else if(json.Code == 404)
-                        {
-                            $("#selArtwork").val();
-                            $("#txtDirections").val();
+                        else {
+                            html_thmb += '<tr> <td colspan="9" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available </td> </tr>';
                         }
+
+                        function open_preview(trans_number) {
+                            window.open("http://"+ report_url_api +"/kpa/work/transaction/generate/insertion-order-contract/" + trans_number + "/DIGITAL",
+                                    "mywindow","location=1,status=1,scrollbars=1,width=800,height=760");
+                        }
+
+                        $('table#digital_issue_table > tbody').empty().prepend(html_thmb);
+
+                        $('#issues_total').empty().text(numeral(issues_total).format('0,0.00'));
+
+                        var issues_discount = 0;
+                        $('#issues_discount').empty().text(numeral(issues_discount).format('0,0.00'));
+
+                        var issues_sub_total = issues_total;
+                        $('#issues_sub_total').empty().text(numeral(issues_sub_total).format('0,0.00'));
+
+                        var discretionary_discount = 0;
+                        $('#discretionary_discount').empty().text(numeral(discretionary_discount).format('0,0.00'));
+
+                        var issues_total_amount = issues_sub_total;
+                        $('#issues_total_amount').empty().text(numeral(issues_total).format('0,0.00'));
+
                     }
                 });
             })
+
+
+        }
+
+        function getMonth(id) {
+            switch (id) {
+                case 1 : return "January";
+                case 2 : return "February";
+                case 3 : return "March";
+                case 4 : return "April";
+                case 5 : return "May";
+                case 6 : return "June";
+                case 7 : return "July";
+                case 8 : return "August";
+                case 9 : return "September";
+                case 10 : return "October";
+                case 11 : return "November";
+                case 12 : return "December";
+            }
         }
     </script>
 

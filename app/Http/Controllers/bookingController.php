@@ -937,21 +937,67 @@ class bookingController extends Controller
             return redirect("/logout_process");
         }
 
+//        $get = DB::SELECT("
+//                    SELECT 
+//                    aa.*, aa.Id as d_uid,
+//                    (SELECT magazine_name FROM magazine_table WHERE Id = aa.magazine_id) as mag_name,
+//                    (SELECT ad_type FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_type,
+//                    (SELECT ad_size FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_size,
+//                    (SELECT ad_amount FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_amount,
+//                    (SELECT ad_issue FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_issue,
+//                    (
+//                      SELECT bb.trans_num FROM magazine_transaction_table as cc
+//                      INNER JOIN booking_sales_table as bb ON bb.Id = cc.transaction_id
+//                      WHERE cc.Id = aa.magazine_trans_id
+//                    ) as trans_num
+//                    FROM magazine_digital_transaction_table as aa 
+//                    WHERE aa.magazine_trans_id = {$mag_id} AND client_id = {$client_id}
+//        ");
+        
         $get = DB::SELECT("
                     SELECT 
-                    aa.*, aa.Id as d_uid,
-                    (SELECT magazine_name FROM magazine_table WHERE Id = aa.magazine_id) as mag_name,
-                    (SELECT ad_type FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_type,
-                    (SELECT ad_size FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_size,
-                    (SELECT ad_amount FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_amount,
-                    (SELECT ad_issue FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_issue,
-                    (
-                      SELECT bb.trans_num FROM magazine_transaction_table as cc
-                      INNER JOIN booking_sales_table as bb ON bb.Id = cc.transaction_id
-                      WHERE cc.Id = aa.magazine_trans_id
-                    ) as trans_num
-                    FROM magazine_digital_transaction_table as aa 
-                    WHERE aa.magazine_id = {$mag_id} AND client_id = {$client_id}
+
+                            booked.Id,
+                            
+                            ( SELECT Id FROM magazine_transaction_table WHERE transaction_id = booked.Id ) AS mag_trans_id,
+                        
+                            booked.client_id,
+                        
+                            booked.agency_id,
+                        
+                            mag.Id as pub_uid,
+                        
+                            (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
+                        
+                            booked.trans_num,
+                        
+                            (null) AS invoice_num,
+                        
+                            ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
+                        
+                            ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = booked.sales_rep_code ) AS sales_rep_name,
+                        
+                            ( SELECT company_name FROM client_table WHERE Id = booked.client_id AND status = 2 AND type != 2 ) AS client_name,
+                        
+                            ( SELECT COUNT(*) AS lineItems FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
+                        
+                            ( SELECT SUM(amount) AS lineItems FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
+                        
+                            booked.status,
+                        
+                            booked.created_at
+                            
+                        FROM booking_sales_table AS booked
+                        
+                        INNER JOIN magazine_transaction_table AS trans
+                        
+                        ON booked.Id = trans.transaction_id
+                        
+                        INNER JOIN magazine_table as mag
+                        
+                        ON mag.Id = trans.magazine_id
+                        
+                        WHERE mag.magazine_type = 2 WHERE aa.magazine_trans_id = {$mag_id} AND client_id = {$client_id}
         ");
 
         if(COUNT($get) > 0){
