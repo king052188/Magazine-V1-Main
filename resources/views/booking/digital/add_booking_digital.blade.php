@@ -1,7 +1,7 @@
 @extends('layout.magazine_main')
 
 @section('title')
-    Add New Magazine
+    Add New Product
 @endsection
 
 @section('styles')
@@ -18,7 +18,7 @@
                     <a href="{{ url('/booking/booking-list') }}">Booking List</a>
                 </li>
                 <li class="active">
-                    <strong>Add Booking</strong>
+                    <strong>Add Product</strong>
                 </li>
             </ol>
         </div>
@@ -38,13 +38,13 @@
                         <li class="disabled">
                             <a href="#step-2" style="padding: 0px 20px 0px 25px;">
                                 <h4 class="list-group-item-heading">Step 2</h4>
-                                <p class="list-group-item-text">Select Magazine</p>
+                                <p class="list-group-item-text">Select Product</p>
                             </a>
                         </li>
                         <li class="disabled">
                             <a href="#step-3" style="padding: 0px 20px 0px 25px;">
                                 <h4 class="list-group-item-heading">Step 3</h4>
-                                <p class="list-group-item-text">Add Issue</p>
+                                <p class="list-group-item-text">Add Schedule</p>
                             </a>
                         </li>
                     </ul>

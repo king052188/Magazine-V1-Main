@@ -1,7 +1,7 @@
 @extends('layout.magazine_main')
 
 @section('title')
-    All Clients
+    Add Product
 @endsection
 
 @section('styles')
@@ -17,7 +17,7 @@
                 <a href="#">Booking List</a>
             </li>
             <li class="active">
-                <strong>Add Magazine</strong>
+                <strong>Add Product</strong>
             </li>
         </ol>
     </div>
@@ -35,11 +35,11 @@
                     </a></li>
                     <li class="active"><a href="#step-2">
                         <h4 class="list-group-item-heading">Step 2</h4>
-                        <p class="list-group-item-text">Select Magazine</p>
+                        <p class="list-group-item-text">Select Product</p>
                     </a></li>
                     <li class="disabled"><a href="#step-3">
                         <h4 class="list-group-item-heading">Step 3</h4>
-                        <p class="list-group-item-text">Add Issue</p>
+                        <p class="list-group-item-text">Add Schedule</p>
                     </a></li>
                 </ul>
             </div>
@@ -60,8 +60,8 @@
                         <thead>
                         <tr>
                             <th style="width: 30px; text-align: center;">#</th>
-                            <th style="width: 250px; text-align: center;">Magazine Code</th>
-                            <th style="text-align: center;">Magazine Name</th>
+                            <th style="width: 250px; text-align: center;">Product Code</th>
+                            <th style="text-align: center;">Product Name</th>
                             <th style="width: 100px; text-align: center;">Country</th>
                             <th style="width: 90px; text-align: center;">Action</th>
                         </tr>
@@ -88,7 +88,7 @@
 
                     <form role="form" action="{{ url('/booking/save-magazine-transaction/'. $booking_uid .'/'. $which_country . '/' . $client_id) }}" method="post">
                         <div class="form-group">
-                            <label for="ex2">Select Magazine</label>
+                            <label for="ex2">Select Product</label>
                             <select class="form-control" name = "magazine_id">
                                 @for($i = 0; $i < COUNT($mag_list); $i++)
                                     <option value = "{{ $mag_list[$i]->Id }}">{{ $mag_list[$i]->magazine_name }}</option>

@@ -55,7 +55,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group" id = "hidden">
-                                    <label>Type of Magazine</label>
+                                        <label>Type of Publication</label>
                                     <select class='form-control' name='type_of_magazine' id = 'type_of_magazine' required>
                                         <option value = "0">-- Select Type --</option>
                                         <option value = "1">Print</option>

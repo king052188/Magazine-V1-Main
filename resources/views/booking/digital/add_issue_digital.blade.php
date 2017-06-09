@@ -1,7 +1,7 @@
 @extends('layout.magazine_main')
 
 @section('title')
-    Add New Contract
+    Add Product
 @endsection
 
 @section('styles')
@@ -24,10 +24,10 @@
                     <a href="{{ url('/booking/booking-list') }}">Booking List</a>
                 </li>
                 <li>
-                    <a href="#">Add Magazine</a>
+                    <a href="#">Add Product</a>
                 </li>
                 <li class="active">
-                    <strong>Add Issue</strong>
+                    <strong>Add Schedule</strong>
                 </li>
             </ol>
         </div>
@@ -45,11 +45,11 @@
                             </a></li>
                         <li class="disabled"><a href="#step-2">
                                 <h4 class="list-group-item-heading">Step 2</h4>
-                                <p class="list-group-item-text">Select Magazine</p>
+                                <p class="list-group-item-text">Select Product</p>
                             </a></li>
                         <li class="active"><a href="#step-3">
                                 <h4 class="list-group-item-heading">Step 3</h4>
-                                <p class="list-group-item-text">Add Issue</p>
+                                <p class="list-group-item-text">Add Schedule</p>
                             </a></li>
                     </ul>
                 </div>
@@ -60,7 +60,7 @@
                     <div class="col-lg-3" id = "once_approved_aa">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>Add Issue <small> *all fields are required</small></h5>
+                                <h5>Add Schedule <small> *all fields are required</small></h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>
@@ -164,7 +164,7 @@
                                 @if($is_member != null)
                                     <h5>Company: <b>{{ $is_member[0]->company_name }}</b> |
                                     <h5>Type: <b>{{  $is_member[0]->is_member == 1 ? "MEMBER" : "NON" }}</b> |
-                                    <h5>Magazine: <b>{{ $mag_name[0]->magazine_name }} </b></h5>
+                                    <h5>Product: <b>{{ $mag_name[0]->magazine_name }} </b></h5>
                                     <div class="ibox-tools">
                                         <a class="collapse-link">
                                             <i class="fa fa-chevron-up"></i>

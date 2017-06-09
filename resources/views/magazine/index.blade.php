@@ -252,18 +252,18 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">Edit Magazine</h4>
+                    <h4 class="modal-title" id="myModalLabel">Edit Product</h4>
                 </div>
 
                 <div class="col-lg-12">
                     <div class="modal-body form group">
                         <div class="form-group">
-                            <label>Magazine Code</label>
+                            <label>Product Code</label>
                             <input type="hidden" placeholder="Magazine Code" name="magazine_uid" id="magazine_uid">
                             <input type="text" placeholder="Magazine Code" class="form-control" name="magcode" id="magcode" readonly>
                         </div>
                         <div class="form-group">
-                            <label>Magazine Name</label>
+                            <label>Product Name</label>
                             <input type="text" placeholder="Magazine Name" class="form-control" name="magname" id="magname">
                         </div>
                         <div class="form-group">
