@@ -1420,30 +1420,36 @@ class bookingController extends Controller
         return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id);
     }
 
-    public function save_discount(Request $request, $booking_trans_num, $mag_trans_uid, $client_id)
+    public function save_discount(Request $request, $booking_trans_num, $mag_trans_uid, $client_id, $IsDigital = null)
     {
         $des_discount = (float)$request['txtDiscount'];
+        $base_amount = (float)$request['txtBaseAmountHidden'];
 
         $discount = new DiscountTransaction();
         $discount->trans_id = $booking_trans_num;
         $discount->sales_rep_id = $_COOKIE['Id'];
-        $discount->amount = $request['txtBaseAmountHidden'];
+        $discount->amount = $base_amount;
         $discount->discount_percent = $des_discount;
         $discount->remarks = $request['txtRemarks'];
         $discount->type = 1; //1 = Discretionary Discount
         $discount->status = 1; //1 = For Approval
         $discount->save();
 
+        $urls = "/booking/add_issue/";
+        if($IsDigital != null) {
+            $urls = "/booking/digital/add_issue/";
+        }
+
         $notif = new Notification();
         $notif->role = 1; // default administrator
         $notif->from_user_uid = $_COOKIE['Id'];
         $notif->to_user_uid = -1; // undecided purposes
         $notif->noti_desc = "gives " . number_format($des_discount, 0, '.', ',') . "% discretionary discount.";
-        $notif->noti_url = "/booking/add_issue/" . $mag_trans_uid . "/" . $client_id;
+        $notif->noti_url = $urls . $mag_trans_uid . "/" . $client_id;
         $notif->noti_flag = 1;
         $notif->save();
 
-        return redirect("/booking/add_issue/". $mag_trans_uid ."/". $client_id)->with('success', 'Add Successful');
+        return redirect($urls . $mag_trans_uid ."/". $client_id)->with('success', 'Added Discretionary Discount Successful');
     }
 
     public function save_artwork(Request $request, $booking_trans_num, $mag_trans_uid, $client_id)

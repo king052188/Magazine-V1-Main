@@ -176,6 +176,18 @@
                                 <div class="row">
                                     <div class="col-sm-12">
 
+                                        @if(Session::has('success'))
+                                            <div class="alert alert-success alert-dismissable">
+                                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                                {{ Session::get('success') }}
+                                            </div>
+                                        @elseif(Session::has('fail'))
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                                                {{ Session::get('fail') }}
+                                            </div>
+                                        @endif
+
                                         <table class="table table-striped table-bordered table-hover dataTables-example" id="digital_issue_table">
                                             <thead>
                                             <tr>
@@ -201,14 +213,6 @@
                                                     <td><span id="issues_total"></span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><span id="issues_discount_label">Issue Discount:</span></td>
-                                                    <td><span id="issues_discount"></span></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border-top: 1px solid #C7C7C7;">Sub Total:</td>
-                                                    <td style="border-top: 1px solid #C7C7C7;"><span id="issues_sub_total"></span></td>
-                                                </tr>
-                                                <tr>
                                                     <td><span id = "discretionary_discount_label">0% Discretionary Discount:</span></td>
                                                     <td><span id="discretionary_discount"></span></td>
                                                 </tr>
@@ -222,6 +226,7 @@
                                         </section>
                                     </div>
                                 </div>
+                                <a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>
                                 <a href = "#" id = "btn_digital_preview" style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>
                                 <a href = "{{ URL('/booking/digital-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>
                                 <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px;"> </div>
@@ -245,16 +250,12 @@
                                             <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; font-weight: 600;"> <span id="approval_total"></span> </td>
                                         </tr>
                                         <tr>
-                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"><span id="issues_discount_label2">Issue Discount:</span></td>
-                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; color: red; font-weight: 600;"><span id="issues_discount2"></span></td>
+                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"> <span id="approval_discount_label"></span> Discretionary Discount: </td>
+                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; color: red; font-weight: 600;"> <span id="approval_discount"></span> </td>
                                         </tr>
                                         <tr>
                                             <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"> Sub Total: </td>
                                             <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; font-weight: 600;"> <span id="approval_sub_total"></span> </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width: 250px; padding: 5px; border-bottom: 1px solid #C7C7C7;"> <span id="approval_discount_label"></span> Discretionary Discount: </td>
-                                            <td style="text-align: right; padding: 5px; border-bottom: 1px solid #C7C7C7; color: red; font-weight: 600;"> <span id="approval_discount"></span> </td>
                                         </tr>
                                         <tr>
                                             <td style="width: 250px; padding: 5px;"> Total Amount: </td>
@@ -280,11 +281,10 @@
     </div>
 
     <div class="bd-example">
-
         {{--discount modal area--}}
         <div class="modal fade" id="discount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
-                <form method="post" action = "{{ url('/booking/save/discount') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
+                <form method="post" action = "{{ url('/booking/save/discount') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id . '/digital' }}">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -299,7 +299,7 @@
                                 <input type="hidden" class="form-control" id="txtBaseAmountHidden" name = "txtBaseAmountHidden" readonly>
                             </div>
                             <div class="form-group">
-                                <label for="recipient-name" class="form-control-label">Discount: <i>by percentage</i></label>
+                                <label for="recipient-name" class="form-control-label">Discount: <i>by percentage (1-100)</i></label>
                                 <input type="number" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
                             </div>
                             <div class="form-group">
@@ -469,6 +469,9 @@
         var d_mag_id = '{{ $mag_name[0]->Id }}';
         var is_member = {{ $is_member[0]->is_member }};
 
+        var discretionary_discount = 0.0;
+        var issues_total_amount = 0.0;
+
         $(document).ready(function(){
 
             $('#position').on('change',function(){
@@ -571,7 +574,6 @@
                 })
             });
 
-
             function delete_d_confirm(d_uid) {
                 var url = "/api/api_delete_digital_transaction/" + d_uid;
                 $(document).ready(function () {
@@ -649,8 +651,19 @@
                 });
             });
 
-            //$("#notes_modal_content").animate({scrollTop: position}).anchor.position().top + $("#notes_modal_content").scrollTop()
-
+            $('#txtAmount').val("0.00");
+            $('#txtDiscount').on('keyup', function(){
+                var origin_amount = issues_total_amount;
+                var value = $(this).val();
+                if(value != "") {
+                    var orig_amount = (parseFloat(origin_amount) * parseFloat(value)) / 100;
+                    var new_amount = parseFloat(origin_amount) - orig_amount;
+                    $('#txtAmount').val(numeral(new_amount).format('0,0.00'));
+                }
+                else {
+                    $('#txtAmount').val("0.00");
+                }
+            });
         });
 
         function populate_notes(n_book_trans_num)
@@ -702,9 +715,8 @@
             else
                 return false;
         }
-        var trans_id = {{ $transaction_uid[0]->transaction_id }};
 
-        console.log(trans_id);
+        var trans_id = {{ $transaction_uid[0]->transaction_id }};
 
         api_get_digital_transaction(trans_id);
 
@@ -731,20 +743,14 @@
                         console.log(json);
 
                         if(json.Count > 0) {
-
                             booking_trans = json.Bookings[0].trans_num;
-
                             $(json.Data).each(function(i, tran){
-
                                 var trans_number = tran.Id;
-
                                 html_thmb += "<tr>";
                                 html_thmb += "<td style='text-align: center;'>"+ tran.Id +"</td>";
                                 html_thmb += "<td style='text-align: left;'>"+ tran.mag_name +"</td>";
                                 html_thmb += "<td style='text-align: left;'>"+ tran.ad_size +"</td>";
-
                                 var month = getMonth(tran.month_id);
-
                                 if(tran.week_id > 0) {
                                     html_thmb += "<td style='text-align: center;'>WEEK</td>";
                                     html_thmb += "<td style='text-align: center;'> "+month +" | Week"+ tran.week_id +"</td>";
@@ -753,7 +759,6 @@
                                     html_thmb += "<td style='text-align: center;'>MONTH</td>";
                                     html_thmb += "<td style='text-align: center;'>"+ month +"</td>";
                                 }
-
                                 html_thmb += "<td style='text-align: center;'>"+ tran.year +"</td>";
                                 issues_total += parseFloat(tran.amount);
                                 html_thmb += "<td style='text-align: right;'>"+ tran.amount +"</td>";
@@ -761,7 +766,6 @@
                                 html_thmb += "<a class='btn btn-danger' data-target = '"+ tran.Id +"' id = 'd_delete' title='Delete'><i class='fa fa-trash'></i></a>";
                                 html_thmb += "</td>";
                                 html_thmb += "</tr>";
-
                                 $("#btn_digital_preview").click(function(){
                                     open_preview(booking_trans);
                                 });
@@ -778,25 +782,21 @@
 
                         $('table#digital_issue_table > tbody').empty().prepend(html_thmb);
 
+                        discretionary_discount = json.Discounted_Amount;
+
                         $('#issues_total').empty().text(numeral(issues_total).format('0,0.00'));
 
-                        var issues_discount = 0;
-                        $('#issues_discount').empty().text(numeral(issues_discount).format('0,0.00'));
+                        var d_discount = issues_total - discretionary_discount;
+                        $('#discretionary_discount').empty().text("(" + numeral(d_discount).format('0,0.00') + ")");
 
-                        var issues_sub_total = issues_total;
-                        $('#issues_sub_total').empty().text(numeral(issues_sub_total).format('0,0.00'));
-
-                        var discretionary_discount = 0;
-                        $('#discretionary_discount').empty().text(numeral(discretionary_discount).format('0,0.00'));
-
-                        var issues_total_amount = issues_sub_total;
-                        $('#issues_total_amount').empty().text(numeral(issues_total).format('0,0.00'));
+                        issues_total_amount = discretionary_discount;
+                        $('#issues_total_amount').empty().text(numeral(issues_total_amount).format('0,0.00'));
+                        $('#txtBaseAmountHidden').val(issues_total_amount);
+                        $('#txtBaseAmount').val(numeral(issues_total_amount).format('0,0.00'));
 
                     }
                 });
             })
-
-
         }
 
         function getMonth(id) {
