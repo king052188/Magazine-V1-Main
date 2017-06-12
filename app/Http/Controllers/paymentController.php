@@ -241,28 +241,12 @@ class paymentController extends Controller
         return view('payment.invoice', compact('clients', 'magazine','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
-    public function invoice_list()
+    public function invoice_list($IsDigital = null)
     {
-//        $result = DB::SELECT("
-//                        SELECT aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name
-//                        FROM invoice_table as aa
-//                        INNER JOIN user_account as bb ON bb.Id = aa.account_executive
-//        ");
-
-//        $result = DB::SELECT("
-//                    SELECT
-//                    aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name,
-//                    (
-//                        SELECT magazine_name
-//                        FROM magazine_table as xx
-//                        INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
-//                        INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
-//                        WHERE zz.trans_num = aa.booking_trans
-//                    )
-//                    as mag_name
-//                    FROM invoice_table as aa
-//                    INNER JOIN user_account as bb ON bb.Id = aa.account_executive
-//        ");
+        $magazine_type = 1;
+        if($IsDigital != null) {
+            $magazine_type = 2;
+        }
 
         $result = DB::SELECT("
                     SELECT 
@@ -275,7 +259,7 @@ class paymentController extends Controller
                             FROM magazine_table as xx
                             INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
                             INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
-                            WHERE zz.trans_num = aa.booking_trans
+                            WHERE zz.trans_num = aa.booking_trans AND xx.magazine_type = {$magazine_type}
                         ) as mag_name,
                         
                         (

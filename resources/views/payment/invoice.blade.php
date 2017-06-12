@@ -216,7 +216,7 @@
                 var html_thmb = "";
                 var isFirstLoad = true;
                 $.ajax({
-                    url: "/payment/invoice/list",
+                    url: "/payment/invoice/list", // kapag PRINT "/payment/invoice/list", kapag DIGITAl "/payment/invoice/list/digital"
                     dataType: "text",
                     beforeSend: function () {
                         if(isFirstLoad) {
