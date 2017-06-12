@@ -249,19 +249,61 @@ class paymentController extends Controller
 //                        INNER JOIN user_account as bb ON bb.Id = aa.account_executive
 //        ");
 
+//        $result = DB::SELECT("
+//                    SELECT
+//                    aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name,
+//                    (
+//                        SELECT magazine_name
+//                        FROM magazine_table as xx
+//                        INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
+//                        INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
+//                        WHERE zz.trans_num = aa.booking_trans
+//                    )
+//                    as mag_name
+//                    FROM invoice_table as aa
+//                    INNER JOIN user_account as bb ON bb.Id = aa.account_executive
+//        ");
+
         $result = DB::SELECT("
                     SELECT 
-                    aa.*, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name,
-                    (
-                        SELECT magazine_name 
-                        FROM magazine_table as xx
-                        INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
-                        INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
-                        WHERE zz.trans_num = aa.booking_trans
-                    ) 
-                    as mag_name
+                        aa.*, 
+                        
+                        concat(bb.first_name, ' ', bb.last_name) as sales_rep_name,
+                        
+                        (
+                            SELECT magazine_name 
+                            FROM magazine_table as xx
+                            INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
+                            INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
+                            WHERE zz.trans_num = aa.booking_trans
+                        ) as mag_name,
+                        
+                        (
+                            SELECT 
+                                CASE WHEN amount > 0 THEN
+                                    (amount - (amount * (discount_percent / 100)))
+                                ELSE 
+                                    (
+                                        SELECT SUM(amount) AS t_amount
+                                        FROM magazine_issue_transaction_table
+                                        WHERE magazine_trans_id = (
+                                            SELECT t.Id 
+                                            FROM booking_sales_table AS b
+                                            INNER JOIN magazine_transaction_table AS t
+                                            ON b.Id = t.transaction_id
+                                            WHERE b.trans_num = aa.booking_trans
+                                        ) AND quarter_issued = aa.issue LIMIT 1
+                                    )
+                                END AS amount 
+                            FROM discount_transaction_table 
+                            WHERE trans_id = aa.booking_trans AND status = 2 LIMIT 1
+                        ) AS i_amount
+                        
                     FROM invoice_table as aa
-                    INNER JOIN user_account as bb ON bb.Id = aa.account_executive
+                    
+                    INNER JOIN user_account as bb 
+                    
+                    ON bb.Id = aa.account_executive
         ");
 
         if($result != null)
@@ -282,7 +324,8 @@ class paymentController extends Controller
                     "created_at" => $result[$i]->created_at,
                     "time_ago" => $ago,
                     "sales_rep_name" => $result[$i]->sales_rep_name,
-                    "mag_name" => $result[$i]->mag_name
+                    "mag_name" => $result[$i]->mag_name,
+                    "invoice_amount" => (float)$result[$i]->i_amount,
                 );
             }
 

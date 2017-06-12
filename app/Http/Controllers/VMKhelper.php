@@ -247,5 +247,27 @@ class VMKhelper extends Controller
 
     }
 
-    
+    public static function get_total_discount_amount($Id) {
+
+        $sql = "
+            SELECT (amount - (amount * (discount_percent / 100))) AS amount 
+            FROM discount_transaction_table 
+            WHERE trans_id = 
+                (
+                    SELECT book.trans_num 
+                    FROM magazine_transaction_table AS trans
+                    INNER JOIN booking_sales_table AS book
+                    ON trans.transaction_id = book.Id
+                    WHERE trans.Id = {$Id}
+                )  AND status = 2;
+        ";
+
+        $data = DB::select($sql);
+
+        if(count($data) > 0) {
+            return (float)$data[0]->amount;
+        }
+
+        return 0;
+    }
 }

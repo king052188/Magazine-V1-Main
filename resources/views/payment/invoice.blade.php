@@ -129,6 +129,7 @@
                                                     <th style='text-align: center; width: 100px;'>Issue</th>
                                                     <th style='text-align: center; width: 100px;'>Year</th>
                                                     <th style='text-align: center;'>Executive Account</th>
+                                                    {{--<th style='text-align: right; width: 150px;'>Amount</th>--}}
                                                     <th style='text-align: center; width: 200px;'>Invoice Created</th>
                                                     <th style='text-align: center; width: 150px;'>Due Date</th>
                                                     <th style='text-align: center; width: 80px;'>Action</th>
@@ -239,6 +240,7 @@
                             var get_created_date = stripped_date_time(tran.created_at);
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[0] +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
+//                            html_thmb += "<td style='text-align: right;'>"+ numeral(tran.invoice_amount).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] + " | " + tran.time_ago +"</td>";
 
                             var get_due_date = stripped_date_time(tran.created_at);
