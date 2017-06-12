@@ -183,9 +183,12 @@ Route::get('/payment/search_invoice_number_api/{inv_num}', 'paymentController@se
 Route::get('/payment/save_payment_transaction/{inv_num}/{line_item}/{ref_number}/{method_payment}/{date_payment}/{amount}/{remarks}', 'paymentController@save_payment_transaction');
 Route::get('/payment/view/transaction/{inv_num}/{line_item}', 'paymentController@view_payment_transaction');
 Route::get('/payment/invoice/generate/{generate_issue}/{generate_year}/{generate_company_name}/{generate_magazine_name}', 'paymentController@invoice_generate');
+Route::get('/payment/invoice/generate/digital/{client_name}/{publication_name}/{year}/{monthly}/{weekly}', 'paymentController@invoice_generate_digital');
 Route::get('/payment/invoice/print', 'paymentController@invoice');
+Route::get('/payment/invoice/digital', 'paymentController@invoice_digital');
 Route::get('/payment/invoice/list/{digital?}', 'paymentController@invoice_list');
 Route::get('/payment/latest/invoice/list/{generate_issue}/{generate_year}/{generate_company_name}/{generate_magazine_name}', 'paymentController@latest_invoice_list');
+Route::get('/payment/latest/invoice/list/digital/{client_name}/{publication_name}/{yearly}/{monthly}/{weekly}', 'paymentController@latest_invoice_list_digital');
 
 // Search Routes
 Route::get('/execute/search/booking-and-sales', 'searchController@search_function');

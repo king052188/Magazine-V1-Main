@@ -8,6 +8,7 @@ use App\Contracts;
 use App\Invoice;
 use App\PaymentTransaction;
 use App\MagIssueTransaction;
+use App\MagazineDigitalTransaction;
 use App\Booking;
 use Carbon\Carbon;
 
@@ -224,7 +225,7 @@ class paymentController extends Controller
         $magazine = DB::SELECT("
                     SELECT *
                     FROM magazine_table
-                    WHERE status = 2 ORDER BY magazine_name ASC
+                    WHERE status = 2 AND magazine_type = 1 ORDER BY magazine_name ASC
     	 ");
 
         //$is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
@@ -239,6 +240,34 @@ class paymentController extends Controller
         $nav_users = "";
 
         return view('payment.invoice', compact('clients', 'magazine','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
+    }
+
+    public function invoice_digital()
+    {
+        $clients = DB::SELECT("
+                    SELECT *
+                    FROM client_table
+                    WHERE status = 2 AND type != 2 ORDER BY company_name ASC
+    	 ");
+
+        $magazine = DB::SELECT("
+                    SELECT *
+                    FROM magazine_table
+                    WHERE status = 2 AND magazine_type = 2 ORDER BY magazine_name ASC
+    	 ");
+
+        //$is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "active";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('payment.invoice-digital', compact('clients', 'magazine','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function invoice_list($IsDigital = null)
@@ -285,9 +314,15 @@ class paymentController extends Controller
                         
                     FROM invoice_table as aa
                     
-                    INNER JOIN user_account as bb 
+                    INNER JOIN user_account as bb ON bb.Id = aa.account_executive
                     
-                    ON bb.Id = aa.account_executive
+                    INNER JOIN booking_sales_table as cc ON cc.trans_num = aa.booking_trans
+                    
+                    INNER JOIN magazine_transaction_table as dd ON dd.transaction_id = cc.Id
+                    
+                    INNER JOIN magazine_table as ee ON ee.Id = dd.magazine_id
+                    
+                    WHERE ee.magazine_type = {$magazine_type}
         ");
 
         if($result != null)
@@ -296,11 +331,36 @@ class paymentController extends Controller
             {
                 $ago = Carbon::parse($result[$i]->created_at)->diffForHumans();
 
+                $m = $result[$i]->digital_month;
+
+                if($m == 1){ $d_month = "Jan";
+                }elseif($m == 2){ $d_month = "Feb"; }
+                elseif($m == 3){ $d_month = "Mar"; }
+                elseif($m == 4){ $d_month = "Apr"; }
+                elseif($m == 5){ $d_month = "May"; }
+                elseif($m == 6){ $d_month = "Jun"; }
+                elseif($m == 7){ $d_month = "Jul"; }
+                elseif($m == 8){ $d_month = "Aug"; }
+                elseif($m == 9){ $d_month = "Sept"; }
+                elseif($m == 10){ $d_month = "Oct"; }
+                elseif($m == 11){ $d_month = "Nov"; }
+                elseif($m == 12){ $d_month = "Dec"; }
+                else { $d_month = "--"; }
+
+                $w = $result[$i]->digital_week;
+                if($w == 0){
+                    $d_week = "--";
+                }else{
+                    $d_week = "Wk " . $w;
+                }
+
                 $data[] = array(
                     "Id" => $result[$i]->Id,
                     "invoice_num" => $result[$i]->invoice_num,
                     "booking_trans" => $result[$i]->booking_trans,
                     "issue" => $result[$i]->issue,
+                    "month" => $d_month,
+                    "week" => $d_week,
                     "due_date" => $result[$i]->due_date,
                     "account_executive" => $result[$i]->account_executive,
                     "status" => $result[$i]->status,
@@ -412,6 +472,121 @@ class paymentController extends Controller
         return array("status" => 404, "description" => "No Result Found!");
     }
 
+    public function latest_invoice_list_digital($client_name, $publication_name, $yearly, $monthly, $weekly)
+    {
+        $result = DB::SELECT("
+                    SELECT 
+                        aa.*, aa.Id as i_invoice_uid, aa.invoice_num as i_invoice_num, aa.booking_trans as i_booking_trans, aa.issue as i_issue,
+                        
+                        aa.status as i_status, aa.updated_at as i_updated_at, aa.created_at as i_created_at,
+                        
+                        ee.magazine_type, ff.magazine_id as magazine_id, ff.client_id as client_id,
+                        
+                        concat(bb.first_name, ' ', bb.last_name) as sales_rep_name,
+                        
+                        (
+                            SELECT magazine_name 
+                            FROM magazine_table as xx
+                            INNER JOIN  magazine_transaction_table as yy ON yy.magazine_id = xx.Id
+                            INNER JOIN booking_sales_table as zz ON zz.Id = yy.transaction_id
+                            WHERE zz.trans_num = aa.booking_trans AND xx.magazine_type = 2
+                        ) as mag_name,
+                        
+                        (
+                            SELECT 
+                                CASE WHEN amount > 0 THEN
+                                    (amount - (amount * (discount_percent / 100)))
+                                ELSE 
+                                    (
+                                        SELECT SUM(amount) AS t_amount
+                                        FROM magazine_issue_transaction_table
+                                        WHERE magazine_trans_id = (
+                                            SELECT t.Id 
+                                            FROM booking_sales_table AS b
+                                            INNER JOIN magazine_transaction_table AS t
+                                            ON b.Id = t.transaction_id
+                                            WHERE b.trans_num = aa.booking_trans
+                                        ) AND quarter_issued = aa.issue LIMIT 1
+                                    )
+                                END AS amount 
+                            FROM discount_transaction_table 
+                            WHERE trans_id = aa.booking_trans AND status = 2 LIMIT 1
+                        ) AS i_amount
+                        
+                    FROM invoice_table as aa
+                    
+                    INNER JOIN user_account as bb ON bb.Id = aa.account_executive
+                    
+                    INNER JOIN booking_sales_table as cc ON cc.trans_num = aa.booking_trans
+                    
+                    INNER JOIN magazine_transaction_table as dd ON dd.transaction_id = cc.Id
+                    
+                    INNER JOIN magazine_digital_transaction_table as ff ON ff.magazine_trans_id = dd.Id
+                    
+                    INNER JOIN magazine_table as ee ON ee.Id = dd.magazine_id
+                    
+                    WHERE ee.magazine_type = 2 AND ff.magazine_id = {$publication_name} AND ff.client_id = {$client_name} AND ff.year = {$yearly} AND aa.digital_month = {$monthly} AND aa.digital_week = {$weekly} 
+                    
+                    GROUP BY aa.Id
+        ");
+
+        if($result != null)
+        {
+            for($i = 0; $i < COUNT($result); $i++)
+            {
+                $ago = Carbon::parse($result[$i]->created_at)->diffForHumans();
+
+                $m = $result[$i]->digital_month;
+
+                if($m == 1){ $d_month = "Jan";
+                }elseif($m == 2){ $d_month = "Feb"; }
+                elseif($m == 3){ $d_month = "Mar"; }
+                elseif($m == 4){ $d_month = "Apr"; }
+                elseif($m == 5){ $d_month = "May"; }
+                elseif($m == 6){ $d_month = "Jun"; }
+                elseif($m == 7){ $d_month = "Jul"; }
+                elseif($m == 8){ $d_month = "Aug"; }
+                elseif($m == 9){ $d_month = "Sept"; }
+                elseif($m == 10){ $d_month = "Oct"; }
+                elseif($m == 11){ $d_month = "Nov"; }
+                elseif($m == 12){ $d_month = "Dec"; }
+                else { $d_month = "--"; }
+
+                $w = $result[$i]->digital_week;
+                if($w == 0){
+                    $d_week = "--";
+                }else{
+                    $d_week = "Wk " . $w;
+                }
+
+                $data[] = array(
+                    "Id" => $result[$i]->i_invoice_uid,
+                    "invoice_num" => $result[$i]->i_invoice_num,
+                    "booking_trans" => $result[$i]->i_booking_trans,
+                    "issue" => $result[$i]->i_issue,
+                    "month" => $d_month,
+                    "week" => $d_week,
+                    "due_date" => $result[$i]->due_date,
+                    "account_executive" => $result[$i]->account_executive,
+                    "status" => $result[$i]->i_status,
+                    "updated_at" => $result[$i]->i_updated_at,
+                    "created_at" => $result[$i]->i_created_at,
+                    "time_ago" => $ago,
+                    "sales_rep_name" => $result[$i]->sales_rep_name,
+                    "mag_name" => $result[$i]->mag_name
+                );
+            }
+
+            return array(
+                "status" => 202,
+                "list" => $data
+            );
+        }
+
+//        $.cookie("Id",mem.Id,{expires: 365});
+        return array("status" => 404, "description" => "No Result Found!");
+    }
+
     public function invoice_generate($generate_issue, $generate_year, $generate_company_name, $generate_magazine_name)
     {
         $quarter_issue = (int)$generate_issue;
@@ -462,7 +637,7 @@ class paymentController extends Controller
                 $result = DB::SELECT("SELECT * FROM invoice_table WHERE booking_trans = '{$chk_trans_num}' AND issue = {$quarter_issue}");
                 if(COUNT($result) == 0)
                 {
-                    MagIssueTransaction::where('Id', '=', $process[$i]->r_uid)->update(['status' => 3]);
+                    MagIssueTransaction::where('Id', '=', $process[$i]->r_uid)->update(['status' => 3]); //Invoice Already Released
                     Booking::where('trans_num', '=', $chk_trans_num)->update(['status' => 6]); //6 = Approved/Invoiced
 
                     $current = Carbon::now();
@@ -495,6 +670,84 @@ class paymentController extends Controller
                 "generate_year" => $generate_year,
                 "generate_company_name" => $generate_company_name,
                 "generate_magazine_name" => $generate_magazine_name
+            );
+        }
+    }
+
+    public function invoice_generate_digital($client_name, $publication_name, $year, $monthly, $weekly)
+    {
+        $client_name = (int)$client_name;
+        $publication_name = (int)$publication_name;
+        $year = (int)$year;
+        $monthly = (int)$monthly;
+        $weekly = (int)$weekly;
+
+        $client_name_aa = ($client_name != 0 ? " AND aa.client_id = {$client_name}" : "");
+        $publication_name_aa = ($publication_name != 0 ? " AND aa.magazine_id = {$publication_name}" : "");
+        $year_aa = ($year != 0 ? " AND aa.year = {$year}" : "");
+        $monthly_aa = ($monthly != 0 ? " AND aa.month_id = {$monthly}" : "");
+        $weekly_aa = ($weekly != 0 ? " AND aa.week_id = {$weekly}" : " AND aa.week_id = 0");
+
+        $execute = $client_name_aa . $publication_name_aa . $year_aa . $monthly_aa . $weekly_aa;
+
+        $process = DB::SELECT("
+                    SELECT
+                    aa.Id as r_uid, cc.trans_num as r_trans_num, cc.sales_rep_code as r_sales_rep_code
+                    FROM
+                    magazine_digital_transaction_table as aa
+                    INNER JOIN magazine_transaction_table as bb ON bb.Id = aa.magazine_trans_id
+                    INNER JOIN booking_sales_table as cc ON cc.Id = bb.transaction_id
+                    WHERE aa.status = 2 AND cc.status IN (3, 6) {$execute}
+        ");
+
+        if(COUNT($process) == 0)
+        {
+            return array("status" => 404, "description" => "No Available Invoice");
+        }
+        else
+        {
+            for($i = 0; $i < COUNT($process); $i++)
+            {
+                $chk_trans_num = $process[$i]->r_trans_num;
+                $result = DB::SELECT("SELECT * FROM invoice_table WHERE booking_trans = '{$chk_trans_num}' AND issue = 0 AND digital_month = {$monthly} AND digital_week = {$weekly}");
+                if(COUNT($result) == 0)
+                {
+                    MagazineDigitalTransaction::where('Id', '=', $process[$i]->r_uid)->update(['status' => 3]); //Invoice Already Released
+                    Booking::where('trans_num', '=', $chk_trans_num)->update(['status' => 6]); //6 = Approved/Invoiced
+
+                    $current = Carbon::now();
+                    $due_date = $current->addDays(30);
+
+                    $a = 0;
+                    for ($x = 0; $x<4; $x++){
+                        $a .= mt_rand(0,9);
+                    }
+
+                    $invoice = new Invoice();
+                    $invoice->invoice_num = date('Y') . '-' . $a;
+                    $invoice->booking_trans = $process[$i]->r_trans_num;
+                    $invoice->issue = 0; //0 this is for print only
+                    $invoice->digital_month = $monthly;
+                    $invoice->digital_week = $weekly;
+                    $invoice->due_date = $current;
+                    $invoice->account_executive = $process[$i]->r_sales_rep_code;
+                    $invoice->status = 2;
+                    $invoice->save();
+                }
+                else
+                {
+                    return array("status" => 404, "description" => "No Available Invoice");
+                }
+            }
+
+            return array(
+                "status" => 202,
+                "description" => "Invoice Successfully Generated.",
+                "client_name" => $client_name,
+                "publication_name" => $publication_name,
+                "yearly" => $year,
+                "monthly" => $monthly,
+                "weekly" => $weekly
             );
         }
     }
