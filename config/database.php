@@ -48,8 +48,8 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => 'api.magazine.com', //client.lesterdigital.com
-            'port' => '80',
+            'host' => 'cktech.ddns.net', //client.lesterdigital.com
+            'port' => '8000',
         ],
 
         'sqlite' => [
