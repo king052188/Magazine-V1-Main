@@ -183,7 +183,7 @@ Route::get('/payment/search_invoice_number_api/{inv_num}', 'paymentController@se
 Route::get('/payment/save_payment_transaction/{inv_num}/{line_item}/{ref_number}/{method_payment}/{date_payment}/{amount}/{remarks}', 'paymentController@save_payment_transaction');
 Route::get('/payment/view/transaction/{inv_num}/{line_item}', 'paymentController@view_payment_transaction');
 Route::get('/payment/invoice/generate/{generate_issue}/{generate_year}/{generate_company_name}/{generate_magazine_name}', 'paymentController@invoice_generate');
-Route::get('/payment/invoice', 'paymentController@invoice');
+Route::get('/payment/invoice/print', 'paymentController@invoice');
 Route::get('/payment/invoice/list', 'paymentController@invoice_list');
 Route::get('/payment/latest/invoice/list/{generate_issue}/{generate_year}/{generate_company_name}/{generate_magazine_name}', 'paymentController@latest_invoice_list');
 
