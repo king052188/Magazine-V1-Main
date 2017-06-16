@@ -229,8 +229,10 @@
                                 <a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>
                                 <a href = "#" id = "btn_digital_preview" style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>
                                 <a href = "{{ URL('/booking/digital-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>
-                                <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px;"> </div>
-                                <div id="approval_discretionary_discount" style="width: 100%; margin-top: 10px; display: none; ">
+
+
+                                <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px; display: none;"> </div>
+                                <div id="approval_discretionary_discount" style="width: 100%; margin-top: 10px; display: none;">
                                     <h3>Discretionary Discount</h3>
                                     <table style="width: 100%; padding: 10px;" border="0" cellspacing="0" cellpadding="0">
                                         <tr>
@@ -278,8 +280,8 @@
                 </div>
             </div>
         </div>
+        <div style = "clear: both;"></div>
     </div>
-
     <div class="bd-example">
         {{--discount modal area--}}
         <div class="modal fade" id="discount" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -323,7 +325,7 @@
 
         {{--approve modal area--}}
         <div class="modal fade" id="approved_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelApprove" aria-hidden="true">
-            <form method="post" action = "{{ url('/booking/issue/discount/approve') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
+            <form method="post" action = "{{ url('/booking/digital/discount/approve') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <input type = "hidden" id = "sls_rep" name = "sls_rep">
@@ -352,7 +354,7 @@
 
         {{--declined modal area--}}
         <div class="modal fade" id="declined_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelDecline" aria-hidden="true">
-            <form method="post" action = "{{ url('/booking/issue/discount/decline') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
+            <form method="post" action = "{{ url('/booking/digital/discount/decline') . '/' . $booking_trans_num[0]->trans_num . '/' . $mag_trans_uid . '/' . $client_id }}">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <input type = "hidden" id = "sls_rep_dec" name = "sls_rep">
@@ -788,6 +790,104 @@
 
                         var d_discount = issues_total - discretionary_discount;
                         $('#discretionary_discount').empty().text("(" + numeral(d_discount).format('0,0.00') + ")");
+
+                        console.log('{{ $booking_trans_num[0]->trans_num }}');
+
+                        $.ajax({
+                            url: "/booking/get_discount_transaction/" + '{{ $booking_trans_num[0]->trans_num }}',
+                            dataType: "text",
+                            success: function(data) {
+                                var json = $.parseJSON(data);
+                                if (json.status == 202) {
+
+                                    $(json.result).each(function(i, discount) {
+
+                                        //i_sub_total = total_with_discount;
+                                        //i_discount = discount.discount_percent / 100;
+                                        //i_total_less_discount = (i_sub_total * i_discount);
+                                        //i_total = i_sub_total - i_total_less_discount;
+
+                                        if(Role > 1) {
+
+                                            //$("#discretionary_discount").text( "(" + numeral(i_total_less_discount).format('0.00') + ")");
+                                            //$("#issues_total_amount").text(numeral(i_sub_total - i_total_less_discount).format('0,0.00'));
+                                            if(parseInt( discount.status ) == 2) {
+                                                $('#status_discretionary_discount').show();
+                                                var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid green; padding: 5px; border-radius: 5px;'>";
+                                                x_wrapper += "<h3 style='color: green;'>Discretionary Discount has been Approved</h3>";
+                                                x_wrapper += "</div>";
+                                                $('#status_discretionary_discount').empty().append(x_wrapper);
+                                            }
+                                            else if(parseInt( discount.status ) == 3) {
+                                                $('#status_discretionary_discount').show();
+                                                var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid red; padding: 5px; border-radius: 5px;'>";
+                                                x_wrapper += "<h3 style='color: red;'>Discretionary Discount has been Declined</h3>";
+                                                x_wrapper += "</div>";
+                                                $('#status_discretionary_discount').empty().append(x_wrapper);
+                                            }
+                                            else {
+                                                $('#status_discretionary_discount').show();
+                                                var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid #1976D2; padding: 5px; border-radius: 5px;'>";
+                                                x_wrapper += "<h3 style='color: #1976D2;'>Discretionary Discount is not yet Approved</h3>";
+                                                x_wrapper += "</div>";
+                                                $('#status_discretionary_discount').empty().append(x_wrapper);
+                                            }
+                                        }
+                                        else {
+                                            $('#approval_discretionary_discount').show();
+                                            $('#total_result').hide();
+                                            $("#approval_discount_label").text(numeral(discount.discount_percent).format('0,0.00') + "%");
+                                            $("#approval_sales_rep").text(discount.sales_rep_name);
+                                            $("#sls_rep").val(discount.sales_rep_id);
+                                            $("#sls_rep_dec").val(discount.sales_rep_id);
+                                            $("#approval_date").text(discount.created_at);
+                                            $("#approval_remarks").text(discount.remarks);
+                                            //$("#approval_sub_total").text(numeral(total_with_discount).format('0,0.00'));
+                                            //$("#approval_discount").text( "(" + numeral(i_total_less_discount).format('0,0.00') + ")");
+                                            //$("#approval_amount").text(numeral(i_total).format('0,0.00'));
+
+                                            if(parseInt( discount.status ) == 2) {
+                                                $("#button_approve").hide();
+                                                $("#text_status").text("Approved Discount");
+                                                $("#text_status").attr("style", "color: green;");
+                                            }
+                                            else if(parseInt( discount.status ) == 3) {
+                                                $("#button_approve").hide();
+                                                $("#text_status").text("Declined Discount");
+                                                $("#text_status").attr("style", "color: red;");
+                                            }
+                                            else {
+                                                $("#text_status").hide();
+                                            }
+                                        }
+                                    });
+
+                                    {{--$('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');--}}
+                                    {{--$('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');--}}
+                                    {{--$('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');--}}
+                                    {{--$('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');--}}
+
+                                }
+                                else
+                                {
+                                    //$('#discretionary_discount').text("(" + numeral("0").format('0,0.00') + ")");
+                                    //$('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
+                                    {{--if({{ $booking_trans_num[0]->status }} != 1) {--}}
+                                        {{--$('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');--}}
+                                        {{--$('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');--}}
+                                        {{--$('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');--}}
+                                        {{--$('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');--}}
+                                    {{--}else {--}}
+                                        {{--$('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');--}}
+                                        {{--$('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>');--}}
+                                        {{--$('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');--}}
+                                        {{--$('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');--}}
+                                        {{--$('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');--}}
+                                    {{--}--}}
+                                }
+
+                            }
+                        });
 
                         issues_total_amount = discretionary_discount;
                         $('#issues_total_amount').empty().text(numeral(issues_total_amount).format('0,0.00'));

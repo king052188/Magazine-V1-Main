@@ -164,8 +164,10 @@ Route::post('/booking/save/artwork/{booking_trans_num}/{mag_trans_uid}/{client_i
 Route::get('/booking/get_artwork/{booking_trans_num}', 'bookingController@get_artwork');
 
 Route::post('/booking/issue/discount/approve/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@approve_discount');
-
 Route::post('/booking/issue/discount/decline/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@decline_discount');
+
+Route::post('/booking/digital/discount/approve/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@approve_digital_discount');
+Route::post('/booking/digital/discount/decline/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@decline_digital_discount');
 
 Route::get('/transaction/update/row/{trans_id}/{trans_status}', 'bookingController@trans_selected_row_update');
 

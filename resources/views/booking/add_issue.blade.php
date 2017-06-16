@@ -591,8 +591,7 @@ $(document).ready(function(){
 
 });
 
-function populate_notes(n_book_trans_num)
-{
+function populate_notes(n_book_trans_num){
     var html_thmb = "";
     $.ajax({
         url: "/booking/notes/get/" + n_book_trans_num,
