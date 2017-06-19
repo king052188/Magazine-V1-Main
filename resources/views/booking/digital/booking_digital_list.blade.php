@@ -99,11 +99,7 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
-
             get_digital_transaction(0, 0);
-
-            console.log("ok");
-
             $("#btn_filter_display").click(function(){
                 var publication = $("#filter_publication").val();
                 var client = $("#filter_client").val();
