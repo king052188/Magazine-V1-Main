@@ -651,7 +651,8 @@
 
             $('#txtAmount').val("0.00");
             $('#txtDiscount').on('keyup', function(){
-                var origin_amount = issues_total_amount;
+                //var origin_amount = issues_total_amount;
+                var origin_amount = $("#txtBaseAmountHidden").val();
                 var value = $(this).val();
                 if(value != "") {
                     var orig_amount = (parseFloat(origin_amount) * parseFloat(value)) / 100;
@@ -719,6 +720,8 @@
         api_get_digital_transaction(trans_id);
 
         function api_get_digital_transaction(trans_id){
+
+            console.log(trans_id);
 
             var issues_total = 0.0;
 
