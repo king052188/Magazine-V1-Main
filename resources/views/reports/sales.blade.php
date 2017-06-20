@@ -104,6 +104,16 @@
                                 </select>
                             </td>
                         </tr>
+                        <tr>
+                            <td style = "width: 200px;">Type</td>
+                            <td>
+                                <select class="form-control" style="background-color: #2f4050; color: #FFFFFF;" id = "type">
+                                    <option value = "0">All</option>
+                                    <option value = "1">Print</option>
+                                    <option value = "2">Digital</option>
+                                </select>
+                            </td>
+                        </tr>
                     </table>
                     <br /><br />
                     <table border = "0" id = "table_booking">
