@@ -229,6 +229,7 @@
                                 <a href = "#" id="btnDDiscount" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>
                                 <a href = "#" id = "btn_digital_preview" style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>
                                 <a href = "{{ URL('/booking/digital-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>
+                                <a data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</a>
 
 
                                 <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px; display: none;"> </div>
