@@ -30,10 +30,16 @@ class reportController extends Controller
         return view('/reports/sales', compact('publication', 'clients', 'sales_rep', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
-    public function get_filter_data($f_publication, $f_sales_rep, $f_client, $f_status, $f_date_from, $f_date_to, $f_operator)
+    public function get_filter_data($magazine_type_booking, $f_publication, $f_sales_rep, $f_client, $f_status, $f_date_from, $f_date_to, $f_operator)
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
+        }
+
+        if($magazine_type_booking == 0){
+            $filter_mag_type = "mag.magazine_type LIKE '%'";
+        }else{
+            $filter_mag_type = "mag.magazine_type = {$magazine_type_booking}";
         }
 
         if($f_publication != 0){
@@ -84,10 +90,8 @@ class reportController extends Controller
             }
         }
 
-
-        $filter_process = "WHERE " . $filter_publication_tran . ' AND ' . $filter_sales_rep_tran . ' AND ' . $filter_client_tran . ' AND ' . $filter_status_tran . ' AND ' . $filter_date_from;
-
-
+        $filter_process = "WHERE " . $filter_mag_type . ' AND ' . $filter_publication_tran . ' AND ' . $filter_sales_rep_tran . ' AND ' . $filter_client_tran . ' AND ' . $filter_status_tran . ' AND ' . $filter_date_from;
+        
         $booking = DB::SELECT("
             SELECT 
 
@@ -177,10 +181,16 @@ class reportController extends Controller
 
     }
 
-    public function get_filter_data_invoice($i_invoice_number, $i_publication, $i_issue, $i_year, $i_sales_rep, $i_date_from, $i_date_to, $i_operator)
+    public function get_filter_data_invoice($magazine_type_invoice, $i_invoice_number, $i_publication, $i_issue, $i_year, $i_sales_rep, $i_date_from, $i_date_to, $i_operator)
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
+        }
+
+        if($magazine_type_invoice == 0){
+            $filter_mag_type = "xx.magazine_type LIKE '%'";
+        }else{
+            $filter_mag_type = "mag.magazine_type = {$magazine_type_invoice}";
         }
 
         if($i_invoice_number != 0){
@@ -237,7 +247,7 @@ class reportController extends Controller
             }
         }
 
-        $filter_process = "WHERE " . $i_invoice_number_tran . ' AND ' . $i_publication_tran . ' AND ' . $i_issue_tran . ' AND ' . $i_year_tran . ' AND ' . $i_sales_rep_tran . ' AND ' . $i_date_from_tran;
+        $filter_process = "WHERE " . $filter_mag_type . ' AND ' . $i_invoice_number_tran . ' AND ' . $i_publication_tran . ' AND ' . $i_issue_tran . ' AND ' . $i_year_tran . ' AND ' . $i_sales_rep_tran . ' AND ' . $i_date_from_tran;
 
         $invoice = DB::SELECT("
             SELECT 

@@ -107,7 +107,12 @@
                         <tr>
                             <td style = "width: 200px;">Type</td>
                             <td>
-                                <select class="form-control" style="background-color: #2f4050; color: #FFFFFF;" id = "type">
+                                <select class="form-control" style="background-color: #2f4050; color: #FFFFFF;" id = "magazine_type_booking">
+                                    <option value = "0">All</option>
+                                    <option value = "1">Print</option>
+                                    <option value = "2">Digital</option>
+                                </select>
+                                <select class="form-control" style="background-color: #2f4050; color: #FFFFFF; display: none; " id = "magazine_type_invoice">
                                     <option value = "0">All</option>
                                     <option value = "1">Print</option>
                                     <option value = "2">Digital</option>
@@ -341,15 +346,21 @@
                     $("#btn_search").show();
                     $("#table_invoice").hide();
                     $("#btn_search_invoice").hide();
+                    $("#magazine_type_booking").show();
+                    $("#magazine_type_invoice").hide();
                 }else{
                     $("#table_booking").hide();
                     $("#btn_search").hide();
                     $("#table_invoice").show();
                     $("#btn_search_invoice").show();
+                    $("#magazine_type_booking").hide();
+                    $("#magazine_type_invoice").show();
                 }
             });
 
             $("#btn_search").click(function(){
+                var magazine_type_booking = $("#magazine_type_booking").val();
+
                 var f_publication = $("#filter_m_publication").val();
                 var f_sales_rep = $("#filter_m_sales_rep").val();
                 var f_client = $("#filter_m_client").val();
@@ -367,15 +378,7 @@
 
                 var f_operator = $("#filter_m_operator").val();
 
-                console.log("Publication " + f_publication);
-                console.log("Sales Rep " + f_sales_rep);
-                console.log("Client " + f_client);
-                console.log("Status " + f_status);
-                console.log("Operator " + f_operator);
-                console.log("Date From " + f_date_from);
-                console.log("Date To " + f_date_to);
-
-                get_filter_data(f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator);
+                get_filter_data(magazine_type_booking, f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator);
 
                 $("#filter_modal").modal('hide');
 
@@ -384,6 +387,7 @@
             });
 
             $("#btn_search_invoice").click(function(){
+                var magazine_type_invoice = $("#magazine_type_invoice").val();
                 var i_invoice_num = $("#filter_i_invoice_number").val();
                 var i_invoice_number = i_invoice_num;
                 if(i_invoice_num == ""){
@@ -415,7 +419,7 @@
                 console.log("i_date_from " + i_date_from);
                 console.log("i_date_to " + i_date_to);
 
-                get_filter_data_invoice(i_invoice_number, i_publication, i_issue, i_year, i_sales_rep, i_date_from, i_date_to, i_operator);
+                get_filter_data_invoice(magazine_type_invoice, i_invoice_number, i_publication, i_issue, i_year, i_sales_rep, i_date_from, i_date_to, i_operator);
 
                 $("#filter_modal").modal('hide');
                 $("#tbl_invoice_lists").show();
@@ -448,13 +452,22 @@
             });
         });
 
-        function get_filter_data(f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator){
+        function get_filter_data(magazine_type_booking, f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator){
+
+//            console.log("Mag Type " + magazine_type_booking);
+//            console.log("Publication " + f_publication);
+//            console.log("Sales Rep " + f_sales_rep);
+//            console.log("Client " + f_client);
+//            console.log("Status " + f_status);
+//            console.log("Operator " + f_operator);
+//            console.log("Date From " + f_date_from);
+//            console.log("Date To " + f_date_to);
 
             $(".dataTables-invoice").DataTable().destroy();
             $(".dataTables-booking").DataTable().destroy();
 
             $('.dataTables-booking').DataTable( {
-                ajax: "/sales_report/get_filter_data/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
+                ajax: "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
                 columns: [
                     { data: 'reports_set' },
                     { data: 'mag_name' },
@@ -491,13 +504,13 @@
             });
         }
 
-        function get_filter_data_invoice(i_invoice_number, i_publication, i_issue, i_year, i_sales_rep, i_date_from, i_date_to, i_operator){
+        function get_filter_data_invoice(magazine_type_invoice, i_invoice_number, i_publication, i_issue, i_year, i_sales_rep, i_date_from, i_date_to, i_operator){
 
             $(".dataTables-booking").DataTable().destroy();
             $(".dataTables-invoice").DataTable().destroy();
 
             $('.dataTables-invoice').DataTable( {
-                ajax: "/sales_report/get_filter_data_invoice/" + i_invoice_number + "/" + i_publication + "/" + i_issue + "/" + i_year + "/" + i_sales_rep + "/" + i_date_from + "/" + i_date_to + "/" + i_operator,
+                ajax: "/sales_report/get_filter_data_invoice/" + magazine_type_invoice + "/" + i_invoice_number + "/" + i_publication + "/" + i_issue + "/" + i_year + "/" + i_sales_rep + "/" + i_date_from + "/" + i_date_to + "/" + i_operator,
                 columns: [
                     { data: 'reports_set' },
                     { data: 'invoice_number' },
