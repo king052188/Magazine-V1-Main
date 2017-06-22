@@ -792,6 +792,9 @@
                             $("#issues_total_amount").text(numeral(issues_total).format('0,0.00'));
                         }
                         else {
+
+
+
                             $(json.Issue_Discounts).each(function(i, dis_discount) {
 
                                 $('#btnDDiscount').hide();
@@ -827,6 +830,8 @@
                                         x_wrapper += "</div>";
                                         $('#status_discretionary_discount').empty().append(x_wrapper);
                                     }
+
+                                    $("#issues_total_amount").text(numeral(total_amount).format('0,0.00'));
                                 }
                                 else {
                                     $('#approval_discretionary_discount').show();
