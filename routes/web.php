@@ -93,7 +93,7 @@ Route::post('/magazine/update/save', 'magazineController@magazine_update_save');
 Route::get('/magazine/list/publisher/{publisher_uid}', 'magazineController@list_publishers');
 Route::get('/magazine/set/inactive/status/publisher/{publisher_uid}', 'magazineController@set_inactive_publishers');
 Route::get('/magazine/set/active/status/publisher/{publisher_uid}', 'magazineController@set_active_publishers');
-//Route::post('/magazine/update/save', 'magazineController@edit_publishers');
+Route::post('/magazine/publisher/update/save', 'magazineController@edit_publishers');
 
 // Transaction Routes
 Route::get('/transaction/create', 'transactionController@create');

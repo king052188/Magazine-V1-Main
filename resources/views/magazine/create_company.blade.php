@@ -270,7 +270,7 @@
 
     <div class="modal fade" id="edit_publisher_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
-            <form role="form" action="{{ url('/magazine/update/save') }}" method="post">
+            <form role="form" action="{{ url('/magazine/publisher/update/save') }}" method="post">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
