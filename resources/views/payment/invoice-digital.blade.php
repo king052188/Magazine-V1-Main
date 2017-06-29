@@ -395,7 +395,7 @@
                 var value =  $(this).attr('get-val');
                 var inv_num = value;
 
-                window.open("http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+ inv_num  +"",
+                window.open("http://"+ report_url_api +"/kpa/work/transaction/invoice-order/"+ inv_num  +"/DIGITAL",
                         "mywindow","location=1,status=1,scrollbars=1,width=755,height=760");
 
 //                console.log(inv_num);
