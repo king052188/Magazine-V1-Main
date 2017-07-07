@@ -7,8 +7,6 @@
 @section('styles')
     {{--<link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">--}}
     <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
-    <link href="{{  asset('css/plugins/dataTables/datatables.min.css')  }}" rel="stylesheet">
-    <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet">
 @endsection
 
 @section('magazine_content')
@@ -65,7 +63,7 @@
                         @endif
                         <div class="table-responsive">
                             {{--<table id="tbl_booking_lists" class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" >--}}
-                            <table id="tbl_booking_digital_lists" class="table display nowrap dataTables-booking" data-sorting="true" data-page-size="10">
+                            <table id="tbl_booking_digital_lists" class="footable table" data-sorting="true" data-page-size="10">
                                 <thead>
                                     <tr>
                                         <th style='text-align: center; width: 40px;'>#</th>
@@ -75,12 +73,19 @@
                                         <th style='text-align: center; width: 200px;'>Line Items</th>
                                         <th style='text-align: right; width: 90px;'>Amount</th>
                                         <th style='text-align: center; width: 140px;'>Date Created</th>
-                                        <th style='text-align: right; width: 150px;'>Status</th>
-                                        <th style='text-align: right; width: 100px;'>Action</th>
+                                        <th style='text-align: right; width: 150px;'>Status/Action</th>
+                                        <th style='text-align: right; width: 100px;'></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td colspan="11">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -92,36 +97,8 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
-    <script src="https://cdn.datatables.net/buttons/1.0.3/js/buttons.colVis.js"></script>
     <script>
         $(document).ready(function(){
-            $(".dataTables-booking").DataTable().destroy();
-            $('.dataTables-booking').DataTable( {
-                dom: 'Bfrtip',
-                buttons: [
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'pdf',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    'colvis'
-                ]
-            });
-            
             get_digital_transaction(0, 0);
             $("#btn_filter_display").click(function(){
                 var publication = $("#filter_publication").val();

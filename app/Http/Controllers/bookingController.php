@@ -257,6 +257,8 @@ class bookingController extends Controller
                 
                 booked.trans_num,
                 
+                booked.agency_id,
+                
                 (null) AS invoice_num,
                 
                 ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
@@ -297,7 +299,16 @@ class bookingController extends Controller
         $clients = DB::table('client_table')->where('status', '=', 2)->get();
         $sales_rep = DB::table('user_account')->where('status', '=', 2)->get();
 
-        return view('booking.booking_list', compact('booking', 'publication', 'clients', 'sales_rep', 'filter_publication', 'filter_sales_rep', 'filter_client', 'filter_status'))->with('success', 'Booking details successful added!');
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "active";
+        $nav_payment = "";
+        $nav_reports = "";
+        $nav_users = "";
+
+        return view('booking.booking_list', compact('booking', 'publication', 'clients', 'sales_rep', 'filter_publication', 'filter_sales_rep', 'filter_client', 'filter_status', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales', 'nav_payment','nav_reports','nav_users'))->with('success', 'Booking details successful added!');
     }
 
     public function booking_checkpoint(){

@@ -339,6 +339,31 @@
         $(document).ready(function(){
             //get_all_data();
 
+            $('.dataTables-booking').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'colvis'
+                ]
+            });
+
             $("#reports_by").change(function(){
                 console.log($(this).val());
                 if($(this).val() == 1){

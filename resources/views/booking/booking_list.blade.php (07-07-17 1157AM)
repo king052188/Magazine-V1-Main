@@ -7,8 +7,6 @@
 @section('styles')
 {{--<link href="{{ asset('css/plugins/dataTables/datatables.min.css') }}" rel="stylesheet">--}}
 <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
-<link href="{{  asset('css/plugins/dataTables/datatables.min.css')  }}" rel="stylesheet">
-<link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet">
 @endsection
 
 @section('magazine_content')
@@ -96,7 +94,7 @@
                 @endif
                 <div class="table-responsive">
                     {{--<table id="tbl_booking_lists" class="footable table table-stripped toggle-arrow-tiny" data-page-size="10" >--}}
-                    <table id="tbl_booking_lists" class="table display nowrap dataTables-booking" data-sorting="true" data-page-size="10">
+                    <table id="tbl_booking_lists" class="table" data-sorting="true" data-page-size="10">
                         <thead>
                             <tr>
                                 <th style='text-align: center; width: 50px;'>#</th>
@@ -108,8 +106,8 @@
                                 <th style='text-align: center; width: 100px;'>Qty</th>
                                 <th style='text-align: right; width: 100px;'>Amount</th>
                                 <th style='text-align: center; width: 130px;'>Date Created</th>
-                                <th style='text-align: center; width: 80px;'>Status</th>
-                                <th style='text-align: center; width: 50px;'>Action</th>
+                                <th style='text-align: center; width: 80px;'>Status/Action</th>
+                                <th style='text-align: center; width: 50px;'></th>
                             </tr>
                         </thead>
                             <tbody>
@@ -257,6 +255,13 @@
                                         <tr><td colspan = "10" style = "text-align: center;"><h3>No Records Found</h3></td></tr>
                                     @endif
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="11">
+                                        <ul class="pagination pull-right"></ul>
+                                    </td>
+                                </tr>
+                            </tfoot>
                     </table>
                     <div id="btn_lists" style="border: 1px solid; height: 25px; margin-top: -10px; display: none;">
                         <span style="text-align: right; position: absolute; right: 220px; color: #983014; margin-top: 6px;">Click SAVE to continue Or Click CANCEL to discard.</span>
@@ -273,8 +278,7 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
-    <script src="https://cdn.datatables.net/buttons/1.0.3/js/buttons.colVis.js"></script>
+
 <script>
 
     function open_preview(trans_number) {
@@ -286,32 +290,6 @@
     }
 
     $(document).ready( function() {
-
-        $(".dataTables-booking").DataTable().destroy();
-        $('.dataTables-booking').DataTable( {
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                'colvis'
-            ]
-        });
 
         $("#btn_filter_display").on('click', function(){
 
