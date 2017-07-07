@@ -112,7 +112,7 @@ class bookingController extends Controller
         $nav_clients = "";
         $nav_publisher = "";
         $nav_publication = "";
-        $nav_sales = "";
+        $nav_sales = "active";
         $nav_payment = "";
         $nav_reports = "";
         $nav_users = "";
