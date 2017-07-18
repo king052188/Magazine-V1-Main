@@ -10,6 +10,7 @@ use App\Booking;
 use App\MagazineTransaction;
 use App\MagIssueTransaction;
 use App\DiscountTransaction;
+use App\DigitalDiscountTransaction;
 use App\Notification;
 use App\ArtworkTable;
 use App\Notes;
@@ -1437,19 +1438,30 @@ class bookingController extends Controller
         $des_discount = (float)$request['txtDiscount'];
         $base_amount = (float)$request['txtBaseAmountHidden'];
 
-        $discount = new DiscountTransaction();
-        $discount->trans_id = $booking_trans_num;
-        $discount->sales_rep_id = $_COOKIE['Id'];
-        $discount->amount = $base_amount;
-        $discount->discount_percent = $des_discount;
-        $discount->remarks = $request['txtRemarks'];
-        $discount->type = 1; //1 = Discretionary Discount
-        $discount->status = 1; //1 = For Approval
-        $discount->save();
-
-        $urls = "/booking/add_issue/";
         if($IsDigital != null) {
             $urls = "/booking/digital/add_issue/";
+            $base_item_id = (int)$request['txtItemIdHidden'];
+            $discount = new DigitalDiscountTransaction();
+            $discount->booking_trans_num = $booking_trans_num;
+            $discount->item_id = $base_item_id;
+            $discount->sales_rep_id = $_COOKIE['Id'];
+            $discount->amount = $base_amount;
+            $discount->discount_percent = $des_discount;
+            $discount->remarks = $request['txtRemarks'];
+            $discount->status = 1; //1 = For Approval
+            $discount->save();
+        }
+        else {
+            $urls = "/booking/add_issue/";
+            $discount = new DiscountTransaction();
+            $discount->trans_id = $booking_trans_num;
+            $discount->sales_rep_id = $_COOKIE['Id'];
+            $discount->amount = $base_amount;
+            $discount->discount_percent = $des_discount;
+            $discount->remarks = $request['txtRemarks'];
+            $discount->type = 1; //1 = Discretionary Discount
+            $discount->status = 1; //1 = For Approval
+            $discount->save();
         }
 
         $notif = new Notification();

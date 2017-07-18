@@ -198,7 +198,9 @@
                                                 <th style="width: 180px; text-align: center;">ISSUE</th>
                                                 <th style="width: 100px; text-align: center;">YEAR</th>
                                                 <th style="width: 100px; text-align: right;">AMOUNT</th>
-                                                <th style="width: 30px; text-align: center;">ACTION</th>
+                                                <th style="width: 100px; text-align: right;">DISCOUNT</th>
+                                                <th style="width: 100px; text-align: right;">TOTAL</th>
+                                                <th style="width: 130px; text-align: center;">ACTION</th>
                                             </tr>
                                             </thead>
                                             <tbody></tbody>
@@ -209,15 +211,15 @@
                                             </style>
                                             <table class="issues_amount_table" style="width: 240px" border="0" cellpadding="0" cellspacing="0">
                                                 <tr>
-                                                    <td>Total:</td>
+                                                    <td>Amount:</td>
                                                     <td><span id="issues_total"></span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td><span id = "discretionary_discount_label">0% Discretionary Discount:</span></td>
+                                                    <td><span id = "discretionary_discount_label">Discount:</span></td>
                                                     <td><span id="discretionary_discount"></span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="border-top: 1px solid #C7C7C7;">Total Amount:</td>
+                                                    <td style="border-top: 1px solid #C7C7C7;">Total:</td>
                                                     <td style="border-top: 1px solid #C7C7C7;"><span id="issues_total_amount"></span></td>
                                                 </tr>
                                             </table>
@@ -226,11 +228,11 @@
                                         </section>
                                     </div>
                                 </div>
-                                <a href = "#" id="btnDDiscount" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>
+
+                                {{--<a href = "#" id="btnDDiscount" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>--}}
                                 <a href = "#" id = "btn_digital_preview" style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>
                                 <a href = "{{ URL('/booking/digital-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>
                                 <a data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</a>
-
 
                                 <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px; display: none;"> </div>
                                 <div id="approval_discretionary_discount" style="width: 100%; margin-top: 10px; display: none;">
@@ -295,6 +297,7 @@
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">Base Amount:</label>
                                 <input type="text" class="form-control" id="txtBaseAmount" name = "txtBaseAmount" readonly>
+                                <input type="hidden" class="form-control" id="txtItemIdHidden" name = "txtItemIdHidden" readonly>
                                 <input type="hidden" class="form-control" id="txtBaseAmountHidden" name = "txtBaseAmountHidden" readonly>
                             </div>
                             <div class="form-group">
@@ -303,8 +306,23 @@
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">Remarks: <i>300 Characters</i> </label>
-                                <textarea type="number" class="form-control" id="txtRemarks" name = "txtRemarks" placeholder="Enter remarks" maxlength="300" rows="4"></textarea>
+                                <textarea type="number" class="form-control" id="txtRemarks" name = "txtRemarks" placeholder="Enter remarks" maxlength="300" rows="3"></textarea>
                             </div>
+
+                            <div id="discounts_table_div" class="form-group" style="display: none;">
+                                <label for="recipient-name" class="form-control-label">Discounts Table: </label>
+                                <table id="discounts_table" style="width: 100%; ">
+                                    <thead>
+                                        <th style="text-align: center;">Sales</th>
+                                        <th style="text-align: center; width: 100px;">Percent</th>
+                                        <th style="text-align: center; width: 200px;">Date</th>
+                                        <th style="text-align: center; width: 30px;">Action</th>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">Total Amount:</label>
                                 <input type="text" class="form-control" id="txtAmount" disabled>
@@ -661,10 +679,74 @@
                     $('#txtAmount').val(numeral(new_amount).format('0,0.00'));
                 }
                 else {
-                    $('#txtAmount').val("0.00");
+                    $('#txtAmount').val(numeral(origin_amount).format('0,0.00'));
                 }
             });
         });
+
+        function onCallDiscount(item_id, item_amount) {
+            $(document).ready(function(){
+                $('#discount').modal({
+                    show: 'true'
+                });
+
+                $('#discounts_table_div').show();
+
+                $('#exampleModalLabel').text("Discretionary Discount for ITEM#: " + item_id);
+                $('#txtItemIdHidden').val(item_id);
+                $('#txtBaseAmountHidden').val(item_amount);
+                $('#txtBaseAmount').val(numeral(item_amount).format('0,0.00'));
+                $('#txtAmount').val(numeral(item_amount).format('0,0.00'));
+
+                var html_thmb = "";
+
+                $.ajax({
+                    url: "http://"+report_url_api+"/kpa/work/magazine-digital-discount-item//"+item_id,
+                    dataType: "text",
+                    beforeSend: function () {
+                        $('table#discounts_table > tbody').empty().prepend('<tr> <td colspan="9" style="text-align: center; font-size: 15px; padding-top: 20px;"> <img src="{{ asset('img/ripple.gif') }}"  /> <br /> Fetching All Data... Please wait...</td> </tr>');
+                    },
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+                        if(json == null)
+                            return false;
+
+                        var total_discount = 0;
+
+                        if(json.Count > 0) {
+
+                            $(json.Data).each(function(i, item){
+
+                                var total_discount_item = parseFloat(item.discount_percent);
+                                total_discount += total_discount_item;
+
+                                html_thmb += "<tr>";
+                                html_thmb += "<td style='text-align: center; padding: 5px;'>"+ item.sales_name +"</td>";
+                                html_thmb += "<td style='text-align: right; padding: 5px;'>"+ numeral(total_discount_item).format('0,0.00') +"</td>";
+                                html_thmb += "<td style='text-align: center; padding: 5px;'>"+ item.created_at +"</td>";
+                                html_thmb += "<td style='text-align: center; padding: 5px;'>";
+                                html_thmb += "<a class='btn btn-danger' data-target = '"+ item.Id +"' id = 'd_delete' title='Delete'><i class='fa fa-trash'></i></a>";
+                                html_thmb += "</td>";
+                                html_thmb += "</tr>";
+                            });
+
+                            html_thmb += "<tr>";
+                            html_thmb += "<td style='text-align: right; padding: 5px; font-weight: 600;'>Total Discount</td>";
+                            html_thmb += "<td style='text-align: right; padding: 5px; font-weight: 600;'>"+ numeral(total_discount).format('0,0.00') +"</td>";
+                            html_thmb += "<td style='text-align: center; padding: 5px;'>&nbsp;</td>";
+                            html_thmb += "<td style='text-align: center; padding: 5px;'>&nbsp;</td>";
+                            html_thmb += "</tr>";
+
+                            $('#discounts_table_div').show();
+                            $('table#discounts_table > tbody').empty().prepend(html_thmb);
+                        }
+                        else {
+                            $('#discounts_table_div').hide();
+                        }
+                    }
+                });
+            })
+        }
 
         function populate_notes(n_book_trans_num)
         {
@@ -724,6 +806,8 @@
 
             console.log(trans_id);
 
+            var issues_amount = 0.0;
+            var issues_discount = 0.0;
             var issues_total = 0.0;
 
             var html_thmb = "";
@@ -741,8 +825,6 @@
                         var json = $.parseJSON(data);
                         if(json == null)
                             return false;
-
-                        console.log(json);
 
                         if(json.Count > 0) {
                             booking_trans = json.Bookings[0].trans_num;
@@ -762,9 +844,31 @@
                                     html_thmb += "<td style='text-align: center;'>"+ month +"</td>";
                                 }
                                 html_thmb += "<td style='text-align: center;'>"+ tran.year +"</td>";
-                                issues_total += parseFloat(tran.amount);
-                                html_thmb += "<td style='text-align: right;'>"+ tran.amount +"</td>";
+
+
+                                var amount = parseFloat(tran.amount);
+                                var discount = tran.dollar_discount != null ? parseFloat(tran.dollar_discount) : 0.00;
+                                var total_discount = amount * discount;
+                                var total = amount - total_discount;
+
+                                issues_amount += amount;
+
+                                issues_discount += total_discount;
+
+                                issues_total += total;
+
+                                html_thmb += "<td style='text-align: right;'>"+ numeral(amount).format('0,0.00') +"</td>";
+
+                                if(total_discount > 0) {
+                                    html_thmb += "<td style='text-align: right;'>-"+ numeral(total_discount).format('0,0.00') +"<br />"+ numeral(discount * 100).format('0.00') +"%</td>";
+                                }
+                                else {
+                                    html_thmb += "<td style='text-align: right;'>"+ numeral(total_discount).format('0,0.00') +"</td>";
+                                }
+
+                                html_thmb += "<td style='text-align: right;'>"+ numeral(total).format('0,0.00') +"</td>";
                                 html_thmb += "<td style='text-align: center;'>";
+                                html_thmb += "<a href='#' class='btn btn-success' data-value = '"+ tran.Id +"' id = 'd_discount"+ tran.Id +"' title='Discount' onclick='onCallDiscount("+ tran.Id +", "+ tran.amount +")'><i class='fa fa-handshake-o'></i></a> ";
                                 html_thmb += "<a class='btn btn-danger' data-target = '"+ tran.Id +"' id = 'd_delete' title='Delete'><i class='fa fa-trash'></i></a>";
                                 html_thmb += "</td>";
                                 html_thmb += "</tr>";
@@ -786,14 +890,12 @@
 
                         if(json.Issue_Discounts.length == 0) {
                             $('#total_result').show();
-                            $('#issues_total').empty().text(numeral(issues_total).format('0,0.00'));
-                            $('#discretionary_discount').empty().text("(0.00)");
+                            $('#issues_total').empty().text(numeral(issues_amount).format('0,0.00'));
+                          $('#discretionary_discount').empty().text("(" + numeral(issues_discount).format('0,0.00') + ")");
                             $("#approval_discount_label").text("0%");
                             $("#issues_total_amount").text(numeral(issues_total).format('0,0.00'));
                         }
                         else {
-
-
 
                             $(json.Issue_Discounts).each(function(i, dis_discount) {
 
@@ -864,9 +966,6 @@
                                 }
                             })
                         }
-
-                        $('#txtBaseAmountHidden').val(issues_total);
-                        $('#txtBaseAmount').val(numeral(issues_total).format('0,0.00'));
                     }
                 });
             })
