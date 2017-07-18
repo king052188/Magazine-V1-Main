@@ -1468,12 +1468,56 @@ class bookingController extends Controller
         $notif->role = 1; // default administrator
         $notif->from_user_uid = $_COOKIE['Id'];
         $notif->to_user_uid = -1; // undecided purposes
-        $notif->noti_desc = "gives " . number_format($des_discount, 0, '.', ',') . "% discretionary discount.";
+        $notif->noti_desc = "gives " . number_format($des_discount, 2) . "% discretionary discount.";
         $notif->noti_url = $urls . $mag_trans_uid . "/" . $client_id;
         $notif->noti_flag = 1;
         $notif->save();
 
         return redirect($urls . $mag_trans_uid ."/". $client_id)->with('success', 'Added Discretionary Discount Successful');
+    }
+
+    public function cancel_discretionary_discount($trans_num, $salesperson_uid, $mag_trans_uid, $client_id){
+        $chk = DB::SELECT("SELECT sales_rep_id, discount_percent FROM discount_transaction_table WHERE trans_id = '{$trans_num}' AND sales_rep_id = {$salesperson_uid}");
+        if(COUNT($chk) > 0){
+
+            $urls = "/booking/add_issue/";
+            $notif = new Notification();
+            $notif->role = 1; // default administrator
+            $notif->from_user_uid = $_COOKIE['Id'];
+            $notif->to_user_uid = -1; // undecided purposes
+            $notif->noti_desc = "cancelled " . number_format($chk[0]->discount_percent, 2) . "% discretionary discount.";
+            $notif->noti_url = $urls . $mag_trans_uid . "/" . $client_id;
+            $notif->noti_flag = 1;
+            $notif->save();
+
+            DB::SELECT("DELETE FROM discount_transaction_table WHERE trans_id = '{$trans_num}' AND sales_rep_id = {$salesperson_uid} AND type = 1"); //type = 1 (Discretionary Discount)
+
+            return array("Code" => 200, "Description" => "Cancel Successful");
+        }else{
+            return array("Code" => 404, "Description" => "This is not your discretionary discount");
+        }
+    }
+
+    public function revoke_discretionary_discount($trans_num, $salesperson_uid, $mag_trans_uid, $client_id){
+        $chk = DB::SELECT("SELECT sales_rep_id, discount_percent FROM discount_transaction_table WHERE trans_id = '{$trans_num}' AND sales_rep_id = {$salesperson_uid}");
+        if(COUNT($chk) > 0){
+
+            $urls = "/booking/add_issue/";
+            $notif = new Notification();
+            $notif->role = 3; // salesperson
+            $notif->from_user_uid = $_COOKIE['Id'];
+            $notif->to_user_uid = $salesperson_uid; // undecided purposes
+            $notif->noti_desc = "revoke " . number_format($chk[0]->discount_percent, 2) . "% discretionary discount.";
+            $notif->noti_url = $urls . $mag_trans_uid . "/" . $client_id;
+            $notif->noti_flag = 1;
+            $notif->save();
+
+            DB::SELECT("DELETE FROM discount_transaction_table WHERE trans_id = '{$trans_num}' AND sales_rep_id = {$salesperson_uid} AND type = 1"); //type = 1 (Discretionary Discount)
+
+            return array("Code" => 200, "Description" => "Cancel Successful");
+        }else{
+            return array("Code" => 404, "Description" => "This is not your discretionary discount");
+        }
     }
 
     public function save_artwork(Request $request, $booking_trans_num, $mag_trans_uid, $client_id)

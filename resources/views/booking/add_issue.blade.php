@@ -298,7 +298,7 @@
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="form-control-label">Discount: <i>by percentage</i></label>
-                            <input type="number" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
+                            <input type="text" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="form-control-label">Remarks: <i>300 Characters</i> </label>
@@ -816,9 +816,72 @@ function populate_issues_transaction(uid) {
                                         $('#status_discretionary_discount').show();
                                         var x_wrapper = "<div id='wrapper_discretionary_discount' style='text-align: center; border: 2px solid #1976D2; padding: 5px; border-radius: 5px;'>";
                                         x_wrapper += "<h3 style='color: #1976D2;'>Discretionary Discount is not yet Approved</h3>";
-                                        x_wrapper += "</div>";
+                                        x_wrapper += "</div> <br /> <a id = 'cancel_discretionary_discount' class='btn btn-xs btn-danger'><span class='glyphicon glyphicon-remove-sign'></span> Click here if you want to cancel discretionary discount.</a>";
                                         $('#status_discretionary_discount').empty().append(x_wrapper);
                                     }
+
+                                    $("#cancel_discretionary_discount").click(function(){
+
+                                        var salesperson_uid = $.cookie("Id");
+                                        var trans_num = '{{ $booking_trans_num[0]->trans_num }}';
+                                        var mag_trans_uid = '{{ $mag_trans_uid }}';
+                                        var client_id = '{{ $client_id }}';
+
+                                        swal({
+                                            title: '',
+                                            text: "Are you sure do you want to cancel?",
+                                            type: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Yes',
+                                            cancelButtonText: 'Cancel'
+                                        }).then(function() {
+
+                                            $.ajax({
+                                                url: "/cancel_discretionary_discount/" + trans_num + "/" + salesperson_uid + "/" + mag_trans_uid + "/" + client_id,
+                                                dataType: "text",
+                                                success: function(data){
+                                                    var json = $.parseJSON(data);
+                                                    if(json.Code == 404){
+                                                        swal({
+                                                            title: "",
+                                                            text: "This is not your discretionary discount.",
+                                                            type: "warning"
+                                                        }).then(
+                                                            function() {
+                                                                location.reload();
+                                                            }
+                                                        )
+                                                        return false;
+                                                    }
+
+                                                    if(json.Code == 200){
+                                                        swal({
+                                                            title: "",
+                                                            text: "You have successfully cancelled discretionary discount.",
+                                                            type: "success"
+                                                        }).then(
+                                                                function() {
+                                                                    location.reload();
+                                                                }
+                                                        )
+                                                        return false;
+                                                    }
+                                                }
+                                            });
+
+                                        }, function(dismiss) {
+                                            if (dismiss === 'cancel') {
+                                                swal(
+                                                    '',
+                                                    'Cancelled',
+                                                    'error'
+                                                )
+                                            }
+                                        })
+
+                                    });
                                 }
                                 else {
                                     $('#approval_discretionary_discount').show();
@@ -834,18 +897,84 @@ function populate_issues_transaction(uid) {
                                     $("#approval_amount").text(numeral(i_total).format('0,0.00'));
 
                                     if(parseInt( discount.status ) == 2) {
+
                                         $("#button_approve").hide();
                                         $("#text_status").text("Approved Discount");
                                         $("#text_status").attr("style", "color: green;");
+                                        $("#text_status").append(" <br /><br /> <a id = 'revoke_discretionary_discount' class='btn btn-xs btn-danger'><span class='glyphicon glyphicon-remove-sign'></span> Click here if you want to revoke discretionary discount.</a>");
                                     }
                                     else if(parseInt( discount.status ) == 3) {
                                         $("#button_approve").hide();
                                         $("#text_status").text("Declined Discount");
                                         $("#text_status").attr("style", "color: red;");
+                                        $("#text_status").append(" <br /><br /> <a id = 'revoke_discretionary_discount' class='btn btn-xs btn-danger'><span class='glyphicon glyphicon-remove-sign'></span> Click here if you want to revoke discretionary discount.</a>");
                                     }
                                     else {
                                         $("#text_status").hide();
                                     }
+
+                                    $("#revoke_discretionary_discount").click(function(){
+
+                                        var salesperson_uid = discount.sales_rep_id;
+                                        var trans_num = '{{ $booking_trans_num[0]->trans_num }}';
+                                        var mag_trans_uid = '{{ $mag_trans_uid }}';
+                                        var client_id = '{{ $client_id }}';
+
+                                        swal({
+                                            title: '',
+                                            text: "Are you sure do you want to revoke?",
+                                            type: 'warning',
+                                            showCancelButton: true,
+                                            confirmButtonColor: '#3085d6',
+                                            cancelButtonColor: '#d33',
+                                            confirmButtonText: 'Yes',
+                                            cancelButtonText: 'Cancel'
+                                        }).then(function() {
+
+                                            $.ajax({
+                                                url: "/revoke_discretionary_discount/" + trans_num + "/" + salesperson_uid + "/" + mag_trans_uid + "/" + client_id,
+                                                dataType: "text",
+                                                success: function(data){
+                                                    var json = $.parseJSON(data);
+                                                    if(json.Code == 404){
+                                                        swal({
+                                                            title: "",
+                                                            text: "This is not your discretionary discount.",
+                                                            type: "warning"
+                                                        }).then(
+                                                                function() {
+                                                                    location.reload();
+                                                                }
+                                                        )
+                                                        return false;
+                                                    }
+
+                                                    if(json.Code == 200){
+                                                        swal({
+                                                            title: "",
+                                                            text: "You have successfully revoke discretionary discount.",
+                                                            type: "success"
+                                                        }).then(
+                                                                function() {
+                                                                    location.reload();
+                                                                }
+                                                        )
+                                                        return false;
+                                                    }
+                                                }
+                                            });
+
+                                        }, function(dismiss) {
+                                            if (dismiss === 'cancel') {
+                                                swal(
+                                                        '',
+                                                        'Cancelled',
+                                                        'error'
+                                                )
+                                            }
+                                        })
+
+                                    });
                                 }
                             });
 
