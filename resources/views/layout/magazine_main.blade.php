@@ -360,7 +360,7 @@
 
                             html_notif += "<li>";
                             html_notif += "<div class='text-center link-block'>";
-                            html_notif += "<a href='#'>";
+                            html_notif += "<a href='/notifications'>";
                             html_notif += "<strong>See All Alerts</strong> ";
                             html_notif += "<i class='fa fa-angle-right'></i>";
                             html_notif += "</a>";

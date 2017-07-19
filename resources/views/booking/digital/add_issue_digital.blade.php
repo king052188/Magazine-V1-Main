@@ -798,7 +798,8 @@
                 return false;
         }
 
-        var trans_id = {{ $transaction_uid[0]->transaction_id }};
+        var trans_id = '{{ $transaction_uid[0]->transaction_id }}';
+
 
         api_get_digital_transaction(trans_id);
 

@@ -270,4 +270,31 @@ class VMKhelper extends Controller
 
         return 0;
     }
+
+    public function api_notifications(){
+
+        $role = $_COOKIE['role'];
+
+        $get = DB::SELECT("SELECT a.*, b.first_name, b.last_name FROM notifications_table as a INNER JOIN user_account as b ON b.Id = a.from_user_uid WHERE a.role = {$role} ORDER BY a.Id DESC");
+        if(COUNT($get) > 0){
+            return array("Code" => 200, "Data" => $get);
+        }
+
+        return array("Code" => 404, "Data" => "No Result Found!");
+    }
+
+    public function notifications(){
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "";
+        $nav_reports = "active";
+        $nav_users = "";
+
+        //return view("reports.notifications");
+        return view('reports.notifications', compact('nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
+    }
 }
