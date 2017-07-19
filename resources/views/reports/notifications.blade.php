@@ -87,20 +87,17 @@
 
                                 var unread = notif.noti_flag == 1 ? "class='unread'" : "class='read'";
                                 html_notif += "" +
-                                        "<li "+ unread +" onclick=notif_read(" + notif.Id + ") style = 'margin: 5px; border: 1px solid #2f4050;'>" +
+                                        "<li "+ unread +" onclick=notif_read(" + notif.Id + ") style = 'height: 30px; margin: 5px; border: 1px solid #2f4050;'>" +
                                             "<div class='dropdown-messages-box'>" +
                                             "   <a href = "+  notif.noti_url +">" +
-                                                    "<div style='float: left; margin-left: 0px; width: 45px;'>" +
-                                                    "   <i class='fa fa-flag' style='font-size:30px; margin-left: 7px;'></i>" +
+                                                    "<div style='float: left; margin-left: 0px; margin-top: -10px; width: 45px;'>" +
+                                                    "   <i class='fa fa-flag' style='font-size:20px; margin-left: 7px;'></i>" +
                                                     "</div>" +
                                                     "<div style='float: left;'>" +
-                                                    "       <div style='margin-top: 0px; padding: 2px;'>" +
+                                                    "       <div style='margin-top: -10px; padding: 2px;'>" +
                                                     "           <strong style='font-size: 1em;'> " + from_name + "</strong>" +
-                                                    "           <small style='font-size: 1em;'>" + notif.noti_desc + "</small>" +
+                                                    "           <small style='font-size: 1em;'>" + notif.noti_desc + "</small> <small style = 'font-style: italic;'>10 mins ago</small>" +
                                                     "           </div>" +
-                                                    "       <div style='padding: 2px;'>" +
-                                                    "           <small>10 mins ago</small>" +
-                                                    "       </div>" +
                                                     "</div>" +
                                             "   </a>" +
                                             "</div>" +
@@ -113,7 +110,7 @@
                     }
                 });
             }
-            setInterval(general_notification, 1000);
+            //setInterval(general_notification, 1000);
 
         } );
     </script>
