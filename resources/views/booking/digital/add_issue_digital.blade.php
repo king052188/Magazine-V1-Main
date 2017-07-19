@@ -489,6 +489,8 @@
         var discretionary_discount = 0.0;
         var issues_total_amount = 0.0;
 
+        var trans_id = '{{ $transaction_uid[0]->transaction_id }}';
+
         $(document).ready(function(){
 
             $('#position').on('change',function(){
@@ -782,8 +784,9 @@
 
                         if(json.Code == 200){
                             onCallDiscount(item_id, item_amount);
-                        }
 
+                            api_get_digital_transaction(trans_id);
+                        }
                     }
                 });
             });
@@ -837,9 +840,6 @@
             else
                 return false;
         }
-
-        var trans_id = '{{ $transaction_uid[0]->transaction_id }}';
-
 
         api_get_digital_transaction(trans_id);
 
