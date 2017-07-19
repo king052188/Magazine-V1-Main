@@ -302,7 +302,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">Discount: <i>by percentage (1-100)</i></label>
-                                <input type="number" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
+                                <input type="text" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">Remarks: <i>300 Characters</i> </label>
@@ -722,17 +722,17 @@
 
                                 html_thmb += "<tr>";
                                 html_thmb += "<td style='text-align: center; padding: 5px;'>"+ item.sales_name +"</td>";
-                                html_thmb += "<td style='text-align: right; padding: 5px;'>"+ numeral(total_discount_item).format('0,0.00') +"</td>";
+                                html_thmb += "<td style='text-align: right; padding: 5px;'>"+ total_discount_item +"%</td>";
                                 html_thmb += "<td style='text-align: center; padding: 5px;'>"+ item.created_at +"</td>";
                                 html_thmb += "<td style='text-align: center; padding: 5px;'>";
-                                html_thmb += "<a class='btn btn-danger' data-target = '"+ item.Id +"' id = 'd_delete' title='Delete'><i class='fa fa-trash'></i></a>";
+                                html_thmb += "<a class='btn btn-danger' data-target = '"+ item.Id +"' data-target-aa = '"+ item_id +"' data-target-bb = '"+ item.amount +"' id = 'd_delete_x' title='Delete'><i class='fa fa-trash'></i></a>";
                                 html_thmb += "</td>";
                                 html_thmb += "</tr>";
                             });
 
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: right; padding: 5px; font-weight: 600;'>Total Discount</td>";
-                            html_thmb += "<td style='text-align: right; padding: 5px; font-weight: 600;'>"+ numeral(total_discount).format('0,0.00') +"</td>";
+                            html_thmb += "<td style='text-align: right; padding: 5px; font-weight: 600;'>"+ total_discount +"%</td>";
                             html_thmb += "<td style='text-align: center; padding: 5px;'>&nbsp;</td>";
                             html_thmb += "<td style='text-align: center; padding: 5px;'>&nbsp;</td>";
                             html_thmb += "</tr>";
@@ -748,8 +748,48 @@
             })
         }
 
-        function populate_notes(n_book_trans_num)
-        {
+        $("#discounts_table_div").on("click", "#d_delete_x", function(){
+            var d_uid = $(this).attr("data-target");
+            var item_id = $(this).attr("data-target-aa");
+            var item_amount = $(this).attr("data-target-bb");
+
+            console.log(item_id + "-" + item_amount);
+
+            bootbox.confirm({
+                size: "small",
+                title: "Confirm",
+                message: "Are you sure do you want to delete?",
+                callback: function(result){
+                    /* result is a boolean; true = OK, false = Cancel*/
+                    if(result == true){
+                        delete_discount_confirm(d_uid, item_id, item_amount);
+                    }
+                }
+            });
+
+        });
+
+        function delete_discount_confirm(d_uid, item_id, item_amount){
+            var url = "/delete/discount/" + d_uid;
+            $(document).ready( function() {
+                $.ajax({
+                    url: url,
+                    dataType: "text",
+                    beforeSend: function () {
+                    },
+                    success: function(data) {
+                        var json = $.parseJSON(data);
+
+                        if(json.Code == 200){
+                            onCallDiscount(item_id, item_amount);
+                        }
+
+                    }
+                });
+            });
+        }
+
+        function populate_notes(n_book_trans_num){
             var html_thmb = "";
             $.ajax({
                 url: "/booking/notes/get/" + n_book_trans_num,
@@ -861,7 +901,7 @@
                                 html_thmb += "<td style='text-align: right;'>"+ numeral(amount).format('0,0.00') +"</td>";
 
                                 if(total_discount > 0) {
-                                    html_thmb += "<td style='text-align: right;'>-"+ numeral(total_discount).format('0,0.00') +"<br />"+ numeral(discount * 100).format('0.00') +"%</td>";
+                                    html_thmb += "<td style='text-align: right;'>-"+ numeral(total_discount).format('0,0.00') +"<br />"+ numeral(discount * 100).format('0,0.0') +"%</td>";
                                 }
                                 else {
                                     html_thmb += "<td style='text-align: right;'>"+ numeral(total_discount).format('0,0.00') +"</td>";
@@ -989,5 +1029,8 @@
             }
         }
     </script>
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+
 
 @endsection

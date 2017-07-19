@@ -206,6 +206,8 @@ Route::get('/sales_report/get_filter_data_invoice/{magazine_type_invoice}/{i_inv
 Route::get('/notifications', 'VMKhelper@notifications');
 Route::get('/api/notifications', 'VMKhelper@api_notifications');
 
+Route::get('/delete/discount/{d_uid}', 'bookingController@delete_discount');
+
 
 //Route::get('/ph/developers', 'DeveloperClass@index');
 
