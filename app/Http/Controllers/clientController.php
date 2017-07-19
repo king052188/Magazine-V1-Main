@@ -375,31 +375,34 @@ class clientController extends Controller
                 'status' => 2
             ]);
 
-        $field = array('', 'p_', 's_', 'b_');
-        $branch_name = array('', '0001', '0002', $request['b_branch_name']);
 
-        for($i = 1; $i < 4; $i++)
-        {
-            ClientContact::where('client_id', '=', $company_uid)
-                ->where('type', '=', $i)
-                ->update([
-                    'branch_name' => $branch_name[$i],
-                    'first_name' => $request[$field[$i].'first_name'],
-                    'middle_name' => $request[$field[$i].'middle_name'],
-                    'last_name' => $request[$field[$i].'last_name'],
-                    'address_1' => $request[$field[$i].'address_1'],
-                    'city' => $request[$field[$i].'city'],
-                    'state' => $request[$field[$i].'state'],
-                    'zip_code' => $request[$field[$i].'zip_code'],
-                    'email' => $request[$field[$i].'email'],
-                    'landline' => $request[$field[$i].'landline'],
-                    'mobile' => $request[$field[$i].'mobile'],
-                    'position' => $request[$field[$i].'position'],
-                    'type_designation' => $request[$field[$i].'type_designation'],
-                    'type' => $i,
-                    'synched' => 1
-                ]);
-        }
+        //COMMENT FOR NOW 07-19-2017 10:48PM - MJT
+
+//        $field = array('', 'p_', 's_', 'b_');
+//        $branch_name = array('', '0001', '0002', $request['b_branch_name']);
+//
+//        for($i = 1; $i < 4; $i++)
+//        {
+//            ClientContact::where('client_id', '=', $company_uid)
+//                ->where('type', '=', $i)
+//                ->update([
+//                    'branch_name' => $branch_name[$i],
+//                    'first_name' => $request[$field[$i].'first_name'],
+//                    'middle_name' => $request[$field[$i].'middle_name'],
+//                    'last_name' => $request[$field[$i].'last_name'],
+//                    'address_1' => $request[$field[$i].'address_1'],
+//                    'city' => $request[$field[$i].'city'],
+//                    'state' => $request[$field[$i].'state'],
+//                    'zip_code' => $request[$field[$i].'zip_code'],
+//                    'email' => $request[$field[$i].'email'],
+//                    'landline' => $request[$field[$i].'landline'],
+//                    'mobile' => $request[$field[$i].'mobile'],
+//                    'position' => $request[$field[$i].'position'],
+//                    'type_designation' => $request[$field[$i].'type_designation'],
+//                    'type' => $i,
+//                    'synched' => 1
+//                ]);
+//        }
 
         return redirect('client/update/' . $company_uid)->with('success', 'Successfully Updated.');
     }
