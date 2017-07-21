@@ -652,22 +652,43 @@
             populate_notes('{{ $booking_trans_num[0]->trans_num }}');
             $("#btn_notes_save").click(function(){
                 var notes = $("#txtNotes").val();
-                $.ajax({
-                    url: "/booking/notes/save/" + '{{ $booking_trans_num[0]->trans_num }}' + "/" + notes,
-                    dataType: 'text',
-                    success: function(data)
-                    {
-                        var json = $.parseJSON(data);
-                        if(json == null)
-                            return false;
 
-                        if(json.Code == 200)
-                        {
-                            $("#txtNotes").val("");
-                            populate_notes(json.trans_num);
-                        }
+                var isValid = true;
+                $('#txtNotes').each(function() {
+                    if ($.trim($(this).val()) == '') {
+                        isValid = false;
+                        $(this).css({
+                            "border": "1px solid red",
+                            "background": "#FFCECE"
+                        });
+                    }
+                    else {
+                        $(this).css({
+                            "border": "",
+                            "background": ""
+                        });
                     }
                 });
+
+                if (isValid == true){
+                    $.ajax({
+                        url: "/booking/notes/save/" + '{{ $booking_trans_num[0]->trans_num }}' + "/" + notes,
+                        dataType: 'text',
+                        success: function(data)
+                        {
+                            var json = $.parseJSON(data);
+                            if(json == null)
+                                return false;
+
+                            if(json.Code == 200)
+                            {
+                                $("#txtNotes").val("");
+                                populate_notes(json.trans_num);
+                            }
+                        }
+                    });
+                }
+
             });
 
             $('#txtAmount').val("0.00");

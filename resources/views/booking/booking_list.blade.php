@@ -141,7 +141,7 @@
                                             <form class="form-inline">
                                                 <div class="form-group">
                                                     <span id="span_select_loading_{{ $booking[$i]->Id }}" style = "text-align: center; margin-top: 0px;"></span>
-                                                    <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}" >
+                                                    <select style = "padding: 5px;" class="form-control update_me" id="ddlStatus_{{ $booking[$i]->Id }}" >
                                                         <optgroup label="-- Status --"> -- Status -- </optgroup>
                                                         @if($booking[$i]->status == 6)
                                                             <option value="0">Approved/Invoiced</option>
@@ -214,7 +214,7 @@
                                                 </ul>
                                                     <span id="span_select_loading_{{ $booking[$i]->Id }}" style = "text-align: center; margin-top: 0px;"></span>
                                                     @if($booking[$i]->status == 6)
-                                                        <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                        <select style = "padding: 5px;" class="form-control update_me" id="ddlStatus_{{ $booking[$i]->Id }}">
                                                             <option value="0">Approved/Invoiced</option>
                                                             <optgroup label="-- Action --"> -- Action -- </optgroup>
                                                             <option value = "-1:{{ $booking[$i]->trans_num }}">View Insertion Order</option>
@@ -226,7 +226,7 @@
                                                             </optgroup>
                                                         </select>
                                                     @else
-                                                        <select style = "padding: 5px;" class="form-control" id="ddlStatus_{{ $booking[$i]->Id }}">
+                                                        <select style = "padding: 5px;" class="form-control update_me" id="ddlStatus_{{ $booking[$i]->Id }}">
                                                             <optgroup label="-- Status --"> -- Status -- </optgroup>
                                                                 <option {{ $booking[$i]->status == 1 ? "selected=true" : "" }} value = "1:{{ $booking[$i]->status == 1 ? 1 : 0 }}">Pending</option>
                                                                 <option {{ $booking[$i]->status == 2 ? "selected=true" : "" }} value = "2:{{ $booking[$i]->status == 2 ? 1 : 0 }}">For Approval</option>
@@ -328,10 +328,14 @@
             window.location.href = "/booking/booking-list-filter/" + filter_publication + "/" + filter_sales_rep + "/" + filter_client + "/" + filter_status;
         });
 
-        $("#tbl_booking_lists > tbody  > tr").change(function(){
-//        $("#tbl_booking_lists > tbody  > tr").on('change', '#ddlStatus_190', function(){
-            var selected =  $(this).find('select:first');
-            var value =  selected.val();
+//        $("#tbl_booking_lists > tbody  > tr").change(function(){
+        $("#tbl_booking_lists").on('change', '.update_me', function(){
+
+//            var selected =  $(this).find('select:first');
+//            var value =  $(this).val();
+
+            var selected = $(this);
+            var value =  $(this).val();
 
             var values = value.split(":");
 

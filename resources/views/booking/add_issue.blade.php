@@ -433,7 +433,7 @@
                     </div>
                     <div class="form-group">
                         <label for="recipient-name" class="form-control-label">Notes</label>
-                        <textarea class="form-control" id="txtNotes"  placeholder="Enter Your Notes" maxlength="300" rows="4"></textarea>
+                        <textarea class="form-control" id="txtNotes" placeholder="Enter Your Notes" maxlength="300" rows="4"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -569,22 +569,44 @@ $(document).ready(function(){
     populate_notes('{{ $booking_trans_num[0]->trans_num }}');
     $("#btn_notes_save").click(function(){
         var notes = $("#txtNotes").val();
-        $.ajax({
-            url: "/booking/notes/save/" + '{{ $booking_trans_num[0]->trans_num }}' + "/" + notes,
-            dataType: 'text',
-            success: function(data)
-            {
-                var json = $.parseJSON(data);
-                if(json == null)
-                    return false;
 
-                if(json.Code == 200)
-                {
-                    $("#txtNotes").val("");
-                    populate_notes(json.trans_num);
-                }
+        var isValid = true;
+        $('#txtNotes').each(function() {
+            if ($.trim($(this).val()) == '') {
+                isValid = false;
+                $(this).css({
+                    "border": "1px solid red",
+                    "background": "#FFCECE"
+                });
+            }
+            else {
+                $(this).css({
+                    "border": "",
+                    "background": ""
+                });
             }
         });
+
+        if (isValid == true){
+            $.ajax({
+                url: "/booking/notes/save/" + '{{ $booking_trans_num[0]->trans_num }}' + "/" + notes,
+                dataType: 'text',
+                success: function(data)
+                {
+                    var json = $.parseJSON(data);
+                    if(json == null)
+                        return false;
+
+                    if(json.Code == 200)
+                    {
+                        $("#txtNotes").val("");
+                        populate_notes(json.trans_num);
+                    }
+                }
+            });
+        }
+
+
     });
 
     //$("#notes_modal_content").animate({scrollTop: position}).anchor.position().top + $("#notes_modal_content").scrollTop()

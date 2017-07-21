@@ -1732,16 +1732,16 @@ class bookingController extends Controller
 //        {
 //
 //        }
+        if($notes){
+            $n = new Notes();
+            $n->book_trans = $booking_trans_num;
+            $n->sales_rep = $_COOKIE['Id'];
+            $n->notes = $notes;
+            $n->status = 2;
+            $n->save();
 
-        $n = new Notes();
-        $n->book_trans = $booking_trans_num;
-        $n->sales_rep = $_COOKIE['Id'];
-        $n->notes = $notes;
-        $n->status = 2;
-        $n->save();
-
-        return array("Code" => 200, "Description" => "Success Save", "trans_num" => $booking_trans_num);
-
+            return array("Code" => 200, "Description" => "Success Save", "trans_num" => $booking_trans_num);
+        }
     }
 
     public function notes_get($booking_trans_num)
