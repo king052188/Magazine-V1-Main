@@ -230,9 +230,10 @@
                                 </div>
 
                                 {{--<a href = "#" id="btnDDiscount" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>--}}
-                                <a href = "#" id = "btn_digital_preview" style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>
-                                <a href = "{{ URL('/booking/digital-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>
+                                <button data-toggle="modal" id = "btn_payment_method_modal" data-target="#payment_method_modal" class="btn btn-primary" style="margin-right: 5px;">Payment Method</button>
                                 <a data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</a>
+                                <a href = "{{ URL('/booking/digital-list') }}" class="btn btn-primary" style="margin-right: 5px; background-color: #5cb85c; border-color: #4cae4c; color: #fff;">Done</a>
+                                <a href = "#" id = "btn_digital_preview" style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>
 
                                 <div id="status_discretionary_discount" style="height: 35px; margin-top: 10px; display: none;"> </div>
                                 <div id="approval_discretionary_discount" style="width: 100%; margin-top: 10px; display: none;">

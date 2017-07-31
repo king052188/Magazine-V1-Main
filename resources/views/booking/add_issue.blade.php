@@ -35,7 +35,7 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
-    <div class="container">
+    <div class="container col-md-12">
     
         <div class="row form-group mb0 mrl15">
             <div class="col-xs-12">
@@ -434,6 +434,110 @@
                     <div class="form-group">
                         <label for="recipient-name" class="form-control-label">Notes</label>
                         <textarea class="form-control" id="txtNotes" placeholder="Enter Your Notes" maxlength="300" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                    <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <button class="btn btn-primary" id = "btn_notes_save">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="payment_method_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelPaymentMethod" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Bank Accounts and Credit Cards <div class = "pull-right">Company: <b style = "font-weight: bold; margin-right: 10px;">{{ $is_member[0]->company_name }}</b></div></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="panel-group payments-method" id="accordion">
+                        {{--CREDIT CARD FORM--}}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="pull-right">
+                                    <i class="fa fa-cc-amex text-success"></i>
+                                    <i class="fa fa-cc-mastercard text-warning"></i>
+                                    <i class="fa fa-cc-discover text-danger"></i>
+                                </div>
+                                <h5 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Credit Card</a>
+                                </h5>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse in">
+                                <div class="panel-body">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>CARD NUMBER</label>
+                                                        <div class="input-group">
+                                                            <input type="text" class="form-control" name="Number" placeholder="Valid Card Number" required />
+                                                            <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-7 col-md-7">
+                                                    <div class="form-group">
+                                                        <label>EXPIRATION DATE</label>
+                                                        <input type="text" class="form-control" name="Expiry" placeholder="MM / YY"  required/>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-5 col-md-5 pull-right">
+                                                    <div class="form-group">
+                                                        <label>CV CODE</label>
+                                                        <input type="text" class="form-control" name="CVC" placeholder="CVC"  required/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="form-group">
+                                                        <label>NAME OF CARD</label>
+                                                        <input type="text" class="form-control" name="nameCard" placeholder="NAME AND SURNAME"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{--LIST OF BANK ACCOUNTS--}}
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="pull-right">
+
+                                </div>
+                                <h5 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">List of Bank Accounts</a>
+                                </h5>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse">
+                                <div class="panel-body">
+
+                                    <div class="row">
+                                        <div class="col-md-10">
+
+                                            table list here
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -1001,9 +1105,10 @@ function populate_issues_transaction(uid) {
                             });
 
                             $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
-                            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                            $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
+                            $('#show_button').append('<button data-toggle="modal" id = "btn_payment_method_modal" data-target="#payment_method_modal" class="btn btn-primary" style="margin-right: 5px;">Payment Method</button>');
                             $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
+                            $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-success" style="margin-right: 5px; background-color: #5cb85c; border-color: #4cae4c; color: #fff;">Done</a>');
+                            $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
 
                         }
                         else {
@@ -1011,15 +1116,18 @@ function populate_issues_transaction(uid) {
                             $('#issues_total_amount').text(numeral(total_with_discount).format('0,0.00'));
                             if({{ $booking_trans_num[0]->status }} != 1) {
                                 $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
-                                $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
+                                $('#show_button').append('<button data-toggle="modal" id = "btn_payment_method_modal" data-target="#payment_method_modal" class="btn btn-primary" style="margin-right: 5px;">Payment Method</button>');
                                 $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
+                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-success" style="margin-right: 5px; background-color: #5cb85c; border-color: #4cae4c; color: #fff;">Done</a>');
+                                $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                             }else {
                                 $('#show_button').append('<button data-toggle="modal" id = "btn_artwork_modal" data-target="#artwork_modal" class="btn btn-primary" style="margin-right: 5px;">Artwork</button>');
-                                $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-warning hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>');
-                                $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
-                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-primary" style="margin-right: 5px;">Done</a>');
+                                $('#show_button').append('<a href = "#" style="margin-right: 5px;" class="btn btn-primary hide_if_approved" data-toggle="modal" data-target="#discount">Discount</a>');
+                                $('#show_button').append('<button data-toggle="modal" id = "btn_payment_method_modal" data-target="#payment_method_modal" class="btn btn-primary" style="margin-right: 5px;">Payment Method</button>');
+
                                 $('#show_button').append('<button data-toggle="modal" id = "btn_notes_modal" data-target="#notes_modal" class="btn btn-warning" style="margin-right: 5px;">Notes</button>');
+                                $('#show_button').append('<a href = "{{ URL('/booking/booking-list') }}" class="btn btn-success" style="margin-right: 5px; background-color: #5cb85c; border-color: #4cae4c; color: #fff;">Done</a>');
+                                $('#show_button').append('<a href = "#" onclick=open_preview("{{ $booking_trans_num[0]->trans_num }}"); style="margin-right: 5px;" class = "btn btn-preview-kpa">Preview</a>');
                             }
                         }
 
