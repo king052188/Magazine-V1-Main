@@ -15,6 +15,7 @@ use App\Notification;
 use App\ArtworkTable;
 use App\Notes;
 use App\MagazineDigitalTransaction;
+use App\CreditCardInfo;
 
 class bookingController extends Controller
 {
@@ -1778,5 +1779,31 @@ class bookingController extends Controller
     public function delete_discount($d_uid){
         DB::SELECT("DELETE FROM magazine_digital_discount_transaction_table WHERE Id = {$d_uid}");
         return array("Code" => 200, "Result" => "Delete Success");
+    }
+
+    public function credit_card_info($client_id, $bank_name, $card_number, $expiry_date, $cvc_code, $card_holder_name){
+
+        $expiry_date = str_replace("-", "/", $expiry_date);
+
+        $n = new CreditCardInfo();
+        $n->client_id = $client_id;
+        $n->card_bank = $bank_name;
+        $n->card_number = $card_number;
+        $n->card_holder_name = $card_holder_name;
+        $n->card_validity = $expiry_date;
+        $n->card_pin= $cvc_code;
+        $n->status = 2;
+        $n->save();
+
+        return array("Code" => 200, "Result" => "Success");
+    }
+
+    public function cc_info_list($client_id){
+        $list = DB::SELECT("SELECT * FROM client_credit_card_info WHERE client_id = {$client_id}");
+        if(COUNT($list) > 0){
+            return array("Code" => 200, "Result" => $list);
+        }
+
+        return array("Code" => 404, "Result" => "No Data Result");
     }
 }
