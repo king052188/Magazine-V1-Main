@@ -825,7 +825,7 @@ function credit_card_info(){
 
             if(json.Code == 404){
                 html_thmb += '<tr> <td colspan="5" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available </td> </tr>';
-                return false;
+                //return false;
             }
 
             if(json.Code == 200){
