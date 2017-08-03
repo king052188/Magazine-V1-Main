@@ -210,6 +210,7 @@ Route::get('/delete/discount/{d_uid}', 'bookingController@delete_discount');
 
 Route::get('/api/credit_card_info/{client_id}/{bank_name}/{card_number}/{expiry_date}/{cvc_code}/{card_holder_name}', 'bookingController@credit_card_info');
 Route::get('/api/cc_info/list/{client_id}', 'bookingController@cc_info_list');
+Route::get('/api/cc_set_primary/{cc_uid}', 'bookingController@cc_set_primary');
 
 //Route::get('/ph/developers', 'DeveloperClass@index');
 

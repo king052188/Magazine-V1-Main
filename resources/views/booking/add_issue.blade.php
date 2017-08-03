@@ -473,7 +473,7 @@
                                     <i class="fa fa-cc-discover text-danger"></i>
                                 </div>
                                 <h5 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Credit Card</a>
+                                    <a data-toggle="collapse" class = "cc_form" data-parent="#accordion" href="#collapseTwo">Credit Card</a>
                                 </h5>
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse in">
@@ -535,7 +535,7 @@
 
                                 </div>
                                 <h5 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">List of Bank Accounts</a>
+                                    <a data-toggle="collapse" class = "list_of_bank" data-parent="#accordion" href="#collapseOne">List of Bank Accounts</a>
                                 </h5>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse">
@@ -553,14 +553,15 @@
                                                     <th style = "text-align: center;">Card Holder Name</th>
                                                     <th style = "text-align: center;">Card Validity</th>
                                                     <th style = "text-align: center;">Card Pin</th>
+                                                    <th style = "text-align: center;">Set Primary</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr><td colspan = '5'></td></tr>
+                                                <tr><td colspan = '6'></td></tr>
                                                 </tbody>
                                                 <tfoot>
                                                 <tr>
-                                                    <td colspan="5">
+                                                    <td colspan="6">
                                                         <ul class="pagination pull-right"></ul>
                                                     </td>
                                                 </tr>
@@ -754,6 +755,14 @@ $(document).ready(function(){
 
 });
 
+$(".cc_form").click(function(){
+    $("#btn_cc_save").show();
+});
+
+$(".list_of_bank").click(function(){
+    $("#btn_cc_save").hide();
+});
+
 $("#btn_cc_save").click(function(){
 
     var client_id = {{ $client_id }};
@@ -816,7 +825,7 @@ function credit_card_info(){
         url: "/api/cc_info/list/" + client_id,
         dataType: "text",
         beforeSend: function () {
-            $('table#cc_table > tbody').empty().prepend('<tr> <td colspan="5" style="text-align: center; font-size: 15px; padding-top: 20px;"> <img src="{{ asset('img/ripple.gif') }}"  /> <br /> Fetching All Data... Please wait...</td> </tr>');
+            //$('table#cc_table > tbody').empty().prepend('<tr> <td colspan="5" style="text-align: center; font-size: 15px; padding-top: 20px;"> <img src="{{ asset('img/ripple.gif') }}"  /> <br /> Fetching All Data... Please wait...</td> </tr>');
         },
         success: function(data) {
             var json = $.parseJSON(data);
@@ -831,18 +840,56 @@ function credit_card_info(){
             if(json.Code == 200){
                 $(json.Result).each(function(i, tran){
 
-
+                    var on = '';
+                    if(tran.status == 1){
+                        on = 'checked';
+                    }
+                    
                     html_thmb += "<tr>";
                     html_thmb += "<td style='text-align: left;'>"+ tran.card_bank +"</td>";
                     html_thmb += "<td style='text-align: center;'>"+ tran.card_number +"</td>";
                     html_thmb += "<td style='text-align: center;'>"+ tran.card_holder_name +"</td>";
                     html_thmb += "<td style='text-align: center;'>"+ tran.card_validity +"</td>";
                     html_thmb += "<td style='text-align: center;'>"+ tran.card_pin +"</td>";
+                    html_thmb += "<td style='text-align: center;'>";
+                    html_thmb += '<div class="switch">';
+                    html_thmb +=    '<div class="onoffswitch">';
+                    html_thmb +=        '<input type="checkbox" '+ on +' class="onoffswitch-checkbox set_primary" data-target = "'+ tran.Id +'" id="example1_'+ tran.Id +'">';
+                    html_thmb +=            '<label class="onoffswitch-label" for="example1_'+ tran.Id +'">';
+                    html_thmb +=            '<span class="onoffswitch-inner"></span>';
+                    html_thmb +=            '<span class="onoffswitch-switch"></span>';
+                    html_thmb +=        '</label>';
+                    html_thmb +=    '</div>';
+                    html_thmb += '</div>';
+                    html_thmb += "</td>";
                     html_thmb += "</tr>";
                 });
             }
 
             $('table#cc_table > tbody').empty().prepend(html_thmb);
+        }
+    });
+}
+
+$("#cc_table").on("click", ".set_primary", function(){
+    var cc_uid = $(this).attr("data-target");
+    credit_card_set_primary(cc_uid)
+});
+
+function credit_card_set_primary(cc_uid){
+
+    $.ajax({
+        url: "/api/cc_set_primary/" + cc_uid,
+        dataType: "text",
+        success: function(data) {
+            var json = $.parseJSON(data);
+            if(json == null)
+                return false;
+
+            if(json.Code == 200){
+                credit_card_info();
+            }
+
         }
     });
 }

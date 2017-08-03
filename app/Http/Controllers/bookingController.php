@@ -1783,17 +1783,53 @@ class bookingController extends Controller
 
     public function credit_card_info($client_id, $bank_name, $card_number, $expiry_date, $cvc_code, $card_holder_name){
 
-        $expiry_date = str_replace("-", "/", $expiry_date);
+        $chk = DB::SELECT("SELECT * FROM client_credit_card_info WHERE client_id = {$client_id}");
+        if(COUNT($chk) > 0){
+            CreditCardInfo::where('client_id', '=', $client_id)
+                ->update([
+                    'status' => 2 //1 = primary | 2 = secondary
+                ]);
 
-        $n = new CreditCardInfo();
-        $n->client_id = $client_id;
-        $n->card_bank = $bank_name;
-        $n->card_number = $card_number;
-        $n->card_holder_name = $card_holder_name;
-        $n->card_validity = $expiry_date;
-        $n->card_pin= $cvc_code;
-        $n->status = 2;
-        $n->save();
+            $expiry_date = str_replace("-", "/", $expiry_date);
+            $n = new CreditCardInfo();
+            $n->client_id = $client_id;
+            $n->card_bank = $bank_name;
+            $n->card_number = $card_number;
+            $n->card_holder_name = $card_holder_name;
+            $n->card_validity = $expiry_date;
+            $n->card_pin= $cvc_code;
+            $n->status = 1; //set as primary
+            $n->save();
+        }else{
+
+            $expiry_date = str_replace("-", "/", $expiry_date);
+            $n = new CreditCardInfo();
+            $n->client_id = $client_id;
+            $n->card_bank = $bank_name;
+            $n->card_number = $card_number;
+            $n->card_holder_name = $card_holder_name;
+            $n->card_validity = $expiry_date;
+            $n->card_pin= $cvc_code;
+            $n->status = 1; //set as primary
+            $n->save();
+        }
+
+        return array("Code" => 200, "Result" => "Success");
+    }
+
+    public function cc_set_primary($cc_uid){
+
+        $get_client_id = DB::SELECT("SELECT client_id FROM client_credit_card_info WHERE Id= {$cc_uid} LIMIT 1");
+
+        CreditCardInfo::where('client_id', '=', $get_client_id[0]->client_id)
+            ->update([
+                'status' => 2 //1 = primary | 2 = secondary
+            ]);
+
+        CreditCardInfo::where('Id', '=', $cc_uid)
+            ->update([
+                'status' => 1 //1 = primary | 2 = secondary
+            ]);
 
         return array("Code" => 200, "Result" => "Success");
     }
