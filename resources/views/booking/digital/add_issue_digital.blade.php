@@ -464,6 +464,147 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="payment_method_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelPaymentMethod" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLabel">Bank Accounts and Credit Cards <div class = "pull-right">Company: <b style = "font-weight: bold; margin-right: 10px;">{{ $is_member[0]->company_name }}</b></div></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="panel-group payments-method" id="accordion">
+                            <div class="alert alert-success alert-dismissable" id ="cc_success" style = "display:none;">
+                                Add Successful
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                            </div>
+                            <div class="alert alert-danger alert-dismissable" id = "cc_failed" style = "display:none;">
+                                Add Failed
+                                <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                            </div>
+                            {{--CREDIT CARD FORM--}}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="pull-right">
+                                        <i class="fa fa-cc-amex text-success"></i>
+                                        <i class="fa fa-cc-mastercard text-warning"></i>
+                                        <i class="fa fa-cc-discover text-danger"></i>
+                                    </div>
+                                    <h5 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Credit Card</a>
+                                    </h5>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label>BANK NAME</label>
+                                                            <input type="text" class="form-control cc_info" name="bank_name" id = "bank_name" placeholder="BANK NAME"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label>CARD NUMBER</label>
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control cc_info" name="Number" id = "card_number" placeholder="Valid Card Number" required />
+                                                                <span class="input-group-addon"><i class="fa fa-credit-card"></i></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-7 col-md-7">
+                                                        <div class="form-group">
+                                                            <label>EXPIRATION DATE</label>
+                                                            <input type="text" class="form-control cc_info" id = "expiry_date" name="Expiry" placeholder="MM / YY"  required/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-5 col-md-5 pull-right">
+                                                        <div class="form-group">
+                                                            <label>CV CODE</label>
+                                                            <input type="text" class="form-control cc_info" id = "cvc_code" name="CVC" placeholder="CVC"  required/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="form-group">
+                                                            <label>CARD HOLDER NAME</label>
+                                                            <input type="text" class="form-control cc_info" name="card_holder_name" id = "card_holder_name" placeholder="NAME AND SURNAME"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{--LIST OF BANK ACCOUNTS--}}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <div class="pull-right">
+
+                                    </div>
+                                    <h5 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">List of Bank Accounts</a>
+                                    </h5>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse">
+                                    <div class="panel-body">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+
+                                                <input type="text" class="form-control input-sm m-b-xs" style = "border-color: #aaaaaa; width: 300px;" id="filter" placeholder="Search in table">
+                                                <table class="footable table table-stripped" id = "cc_table" data-page-size="10" data-filter=#filter>
+                                                    <thead>
+                                                    <tr>
+                                                        <th style = "text-align: left;">Card Bank</th>
+                                                        <th style = "text-align: center;">Card #</th>
+                                                        <th style = "text-align: center;">Card Holder Name</th>
+                                                        <th style = "text-align: center;">Card Validity</th>
+                                                        <th style = "text-align: center;">Card Pin</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr><td colspan = '5'></td></tr>
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <tr>
+                                                        <td colspan="5">
+                                                            <ul class="pagination pull-right"></ul>
+                                                        </td>
+                                                    </tr>
+                                                    </tfoot>
+                                                </table>
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                        <button class="btn btn-primary" id = "btn_cc_save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection
@@ -1049,6 +1190,101 @@
                 case 11 : return "November";
                 case 12 : return "December";
             }
+        }
+
+        console.log({{ $client_id }});
+
+        $("#btn_cc_save").click(function(){
+
+            var client_id = {{ $client_id }};
+
+            var bank_name = $("#bank_name").val();
+            var card_number = $("#card_number").val();
+            var expiry_date = $("#expiry_date").val();
+            var expiry_date = expiry_date.replace(/\//g, "-");
+            var cvc_code = $("#cvc_code").val();
+            var card_holder_name = $("#card_holder_name").val();
+
+            var isValid = true;
+            $('.cc_info').each(function() {
+                if ($.trim($(this).val()) == '') {
+                    isValid = false;
+                    $(this).css({
+                        "border": "1px solid red",
+                        "background": "#FFCECE"
+                    });
+                }
+                else {
+                    $(this).css({
+                        "border": "",
+                        "background": ""
+                    });
+                }
+            });
+
+            if (isValid == true){
+                $.ajax({
+                    url: "/api/credit_card_info/" + client_id + "/" + bank_name + "/" + card_number + "/" + expiry_date + "/" + cvc_code + "/" + card_holder_name,
+                    dataType: 'text',
+                    success: function(data)
+                    {
+                        var json = $.parseJSON(data);
+                        if(json == null)
+                            return false;
+
+                        if(json.Code == 200)
+                        {
+                            $("#cc_success").show();
+                            $("#cc_failed").hide();
+                            $('.cc_info').val("");
+                            credit_card_info();
+                        }else{
+                            $("#cc_failed").show();
+                            $("#cc_success").hide();
+                        }
+
+                    }
+                });
+            }
+
+        });
+        credit_card_info();
+        function credit_card_info(){
+            var client_id = {{ $client_id }};
+            var html_thmb = "";
+            $.ajax({
+                url: "/api/cc_info/list/" + client_id,
+                dataType: "text",
+                beforeSend: function () {
+                    $('table#cc_table > tbody').empty().prepend('<tr> <td colspan="5" style="text-align: center; font-size: 15px; padding-top: 20px;"> <img src="{{ asset('img/ripple.gif') }}"  /> <br /> Fetching All Data... Please wait...</td> </tr>');
+                },
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json == null)
+                        return false;
+
+                    if(json.Code == 404){
+                        html_thmb += '<tr> <td colspan="5" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available </td> </tr>';
+                        //return false;
+                    }
+
+                    if(json.Code == 200){
+                        $(json.Result).each(function(i, tran){
+
+
+                            html_thmb += "<tr>";
+                            html_thmb += "<td style='text-align: left;'>"+ tran.card_bank +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.card_number +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.card_holder_name +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.card_validity +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.card_pin +"</td>";
+                            html_thmb += "</tr>";
+                        });
+                    }
+
+                    $('table#cc_table > tbody').empty().prepend(html_thmb);
+                }
+            });
         }
     </script>
     <!-- JavaScript -->
