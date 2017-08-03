@@ -833,7 +833,7 @@ function credit_card_info(){
                 return false;
 
             if(json.Code == 404){
-                html_thmb += '<tr> <td colspan="5" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available </td> </tr>';
+                html_thmb += '<tr> <td colspan="6" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available </td> </tr>';
                 //return false;
             }
 
@@ -844,7 +844,7 @@ function credit_card_info(){
                     if(tran.status == 1){
                         on = 'checked';
                     }
-                    
+
                     html_thmb += "<tr>";
                     html_thmb += "<td style='text-align: left;'>"+ tran.card_bank +"</td>";
                     html_thmb += "<td style='text-align: center;'>"+ tran.card_number +"</td>";

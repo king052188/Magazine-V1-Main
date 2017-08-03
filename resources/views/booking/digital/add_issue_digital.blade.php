@@ -1271,7 +1271,7 @@
                         return false;
 
                     if(json.Code == 404){
-                        html_thmb += '<tr> <td colspan="5" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available </td> </tr>';
+                        html_thmb += '<tr> <td colspan="6" style="text-align: center; font-size: 15px; padding-top: 20px;"> No Data Available </td> </tr>';
                         //return false;
                     }
 
