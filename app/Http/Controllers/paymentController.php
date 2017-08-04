@@ -699,7 +699,7 @@ class paymentController extends Controller
                     INNER JOIN booking_sales_table as cc ON cc.Id = bb.transaction_id
                     WHERE aa.status = 2 AND cc.status IN (3, 6) {$execute}
         ");
-
+        
         if(COUNT($process) == 0)
         {
             return array("status" => 404, "description" => "No Available Invoice");
@@ -726,6 +726,7 @@ class paymentController extends Controller
                     $invoice = new Invoice();
                     $invoice->invoice_num = date('Y') . '-' . $a;
                     $invoice->booking_trans = $process[$i]->r_trans_num;
+                    $invoice->item_id = $process[$i]->r_uid;
                     $invoice->issue = 0; //0 this is for print only
                     $invoice->digital_month = $monthly;
                     $invoice->digital_week = $weekly;
