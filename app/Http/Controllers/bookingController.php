@@ -1776,6 +1776,16 @@ class bookingController extends Controller
         return array("Code" => 404, "Description" => "No Result Found.");
     }
 
+    public function edit_notes_save($note_uid, $notes)
+    {
+        Notes::where('Id', '=', $note_uid)
+            ->update([
+                'notes' => $notes
+            ]);
+
+        return array("Code" => 200, "Description" => "Success");
+    }
+
     public function delete_discount($d_uid){
         DB::SELECT("DELETE FROM magazine_digital_discount_transaction_table WHERE Id = {$d_uid}");
         return array("Code" => 200, "Result" => "Delete Success");

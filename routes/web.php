@@ -161,6 +161,8 @@ Route::get('/revoke_discretionary_discount/{trans_num}/{salesperson_uid}/{mag_tr
 Route::get('/booking/get_discount_transaction/{booking_trans_num}', 'bookingController@get_discount_transaction');
 Route::get('/booking/notes/save/{booking_trans_num}/{notes}', 'bookingController@notes_save')->where('notes', '(.*)');
 Route::get('/booking/notes/get/{booking_trans_num}', 'bookingController@notes_get');
+//Route::get('/booking/edit/notes/{note_uid}', 'bookingController@edit_notes');
+Route::get('/booking/edit/notes/save/{note_uid}/{notes}', 'bookingController@edit_notes_save')->where('notes', '(.*)');
 
 Route::post('/booking/save/artwork/{booking_trans_num}/{mag_trans_uid}/{client_id}', 'bookingController@save_artwork');
 Route::get('/booking/get_artwork/{booking_trans_num}', 'bookingController@get_artwork');

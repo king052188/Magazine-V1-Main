@@ -48,8 +48,8 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => 'api.lesterdigital.dev', //client.lesterdigital.com
-            'port' => '80',
+            'host' => 'cktech.ddns.net', //client.lesterdigital.com
+            'port' => '8000',
         ],
 
         'sqlite' => [
@@ -60,7 +60,7 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', 'localhost'), //client.lesterdigital.com
+            'host' => env('DB_HOST', 'cktech.ddns.net'), //client.lesterdigital.com
             'port' => env('DB_PORT', '3306'),
             'database' => env('DB_DATABASE', 'mag3_magazine_v1'), //sd
             'username' => env('DB_USERNAME', 'root'), //march2016
