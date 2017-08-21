@@ -720,6 +720,8 @@
                         if(json == null)
                             return false;
 
+                        console.log(json);
+
                         if(json.Code == 200){
                             swal(
                                 '',
@@ -727,7 +729,7 @@
                                 'success'
                             ).then(
                                 function () {
-                                    api_get_digital_transaction(d_mag_id, d_client_id);
+                                    api_get_digital_transaction(trans_id);
                                 }
                             )
                         }
@@ -777,7 +779,7 @@
                                         'success'
                                 ).then(
                                         function () {
-                                            api_get_digital_transaction({{ $mag_name[0]->Id }},{{ $is_member[0]->Id }});
+                                            api_get_digital_transaction(trans_id);
                                         }
                                 )
                             }
@@ -1103,7 +1105,7 @@
 
         function api_get_digital_transaction(trans_id){
 
-            console.log(trans_id);
+//            console.log(trans_id);
 
             var issues_amount = 0.0;
             var issues_discount = 0.0;
@@ -1187,10 +1189,10 @@
 
                         $('table#digital_issue_table > tbody').empty().prepend(html_thmb);
 
-                        if(json.Issue_Discounts.length == 0) {
+                        if(json.Issue_Discounts[0] == null) {
                             $('#total_result').show();
                             $('#issues_total').empty().text(numeral(issues_amount).format('0,0.00'));
-                          $('#discretionary_discount').empty().text("(" + numeral(issues_discount).format('0,0.00') + ")");
+                            $('#discretionary_discount').empty().text("(" + numeral(issues_discount).format('0,0.00') + ")");
                             $("#approval_discount_label").text("0%");
                             $("#issues_total_amount").text(numeral(issues_total).format('0,0.00'));
                         }
