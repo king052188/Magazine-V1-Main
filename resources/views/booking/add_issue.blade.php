@@ -931,12 +931,20 @@ function populate_notes(n_book_trans_num){
 
             if(json.Code == 200)
             {
+                var sales_red_uid = {{ $_COOKIE['Id'] }};
+
                 $(json.result).each(function(i, tran){
+
+                    var pencil_update = "";
+                    if(sales_red_uid == tran.sales_rep_id){
+                        pencil_update = "<a class = 'edit_notes' data-target = '"+ tran.Id +"' data-target-notes = '"+ tran.notes +"' title = 'Edit your notes'><i class='fa fa-pencil' aria-hidden='true'></i></a>";
+                    }
+
                     html_thmb += "<tr>";
                     html_thmb += "<td style='text-align: left;'>" + tran.notes;
                     html_thmb += "<br /><br /><b style = 'margin-right: 10px;'>Sales Rep </b>" + tran.sales_rep_name;
                     html_thmb += "<b style = 'margin-left: 50px; margin-right: 10px;'>Date </b>" + tran.created_at;
-                    html_thmb += "</td><td><a class = 'edit_notes' data-target = '"+ tran.Id +"' data-target-notes = '"+ tran.notes +"'><i class='fa fa-pencil' aria-hidden='true'></i></a></td>";
+                    html_thmb += "</td><td>"+ pencil_update +"</td>";
                     html_thmb += "</tr>";
 
                 });

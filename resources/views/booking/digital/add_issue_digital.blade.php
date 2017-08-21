@@ -465,6 +465,30 @@
             </div>
         </div>
 
+        <div class="modal fade" id="edit_notes_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelNotes" aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="exampleModalLabel">Edit Notes <b class = "pull-right" style = "font-weight: 600; margin-right: 10px;">Booking Ref. {{ $booking_trans_num[0]->trans_num }}</b></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="recipient-name" class="form-control-label">Notes</label>
+                            <textarea class="form-control" id="edit_txtNotes" placeholder="Enter Your Notes" maxlength="300" rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
+                        <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                        <button class="btn btn-primary" id = "btn_edit_notes_save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="modal fade" id="payment_method_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelPaymentMethod" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -969,12 +993,20 @@
 
                     if(json.Code == 200)
                     {
+                        var sales_red_uid = {{ $_COOKIE['Id'] }};
+
                         $(json.result).each(function(i, tran){
+
+                            var pencil_update = "";
+                            if(sales_red_uid == tran.sales_rep_id){
+                                pencil_update = "<a class = 'edit_notes' data-target = '"+ tran.Id +"' data-target-notes = '"+ tran.notes +"' title = 'Edit your notes'><i class='fa fa-pencil' aria-hidden='true'></i></a>";
+                            }
+
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: left;'>" + tran.notes;
                             html_thmb += "<br /><br /><b style = 'margin-right: 10px;'>Sales Rep </b>" + tran.sales_rep_name;
                             html_thmb += "<b style = 'margin-left: 50px; margin-right: 10px;'>Date </b>" + tran.created_at;
-                            html_thmb += "</td>";
+                            html_thmb += "</td><td>"+ pencil_update +"</td>";
                             html_thmb += "</tr>";
                         });
 
@@ -989,6 +1021,68 @@
                     }
                     $('table#notes_lists > tbody').empty().prepend(html_thmb);
                 }
+            });
+
+            $("#notes_lists").on("click", ".edit_notes", function(){
+                var note_uid = $(this).attr("data-target");
+                var notes = $(this).attr("data-target-notes");
+
+                $("#edit_txtNotes").val(notes);
+
+                $('#edit_notes_modal').modal({
+                    show: true
+                });
+
+                $('#notes_modal').modal('hide');
+
+                $("#btn_edit_notes_save").click(function(){
+
+                    var updated_notes = $("#edit_txtNotes").val();
+
+                    var isValid = true;
+                    $('#edit_txtNotes').each(function() {
+                        if ($.trim($(this).val()) == '') {
+                            isValid = false;
+                            $(this).css({
+                                "border": "1px solid red",
+                                "background": "#FFCECE"
+                            });
+                        }
+                        else {
+                            $(this).css({
+                                "border": "",
+                                "background": ""
+                            });
+                        }
+                    });
+
+                    if (isValid == true){
+                        $.ajax({
+                            url: "/booking/edit/notes/save/" + note_uid + "/" + updated_notes,
+                            dataType: 'text',
+                            success: function(data)
+                            {
+                                var json = $.parseJSON(data);
+                                if(json == null)
+                                    return false;
+
+                                if(json.Code == 200)
+                                {
+                                    $('#edit_notes_modal').modal('hide');
+
+                                    $('#notes_modal').modal({
+                                        show: true
+                                    });
+
+                                    populate_notes(n_book_trans_num);
+                                }
+
+                            }
+                        });
+                    }
+
+                });
+
             });
         }
 

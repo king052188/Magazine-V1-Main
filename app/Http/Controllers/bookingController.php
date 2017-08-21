@@ -1764,6 +1764,7 @@ class bookingController extends Controller
                 $date_created = \Carbon\Carbon::parse($notes_lists[$i]->created_at);
                 $data[] = array(
                     "Id" => $notes_lists[$i]->Id,
+                    "sales_rep_id" => $notes_lists[$i]->sales_rep,
                     "sales_rep_name" => $notes_lists[$i]->sales_rep_name,
                     "book_trans" => $notes_lists[$i]->book_trans,
                     "notes" => $notes_lists[$i]->notes,
