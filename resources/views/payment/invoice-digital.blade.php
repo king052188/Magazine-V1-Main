@@ -33,6 +33,7 @@
                     </div>
 
                     <div class="ibox-content">
+
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="col-sm-12 form-inline">

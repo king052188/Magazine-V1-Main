@@ -80,6 +80,7 @@
                 <ul class="nav nav-second-level collapse">
                     <li><a href="{{ url('payment/invoice/print') }}"> <span class="nav-label">Invoice for PRINT</span></a></li>
                     <li><a href="{{ url('payment/invoice/digital') }}"> <span class="nav-label">Invoice for DIGITAL</span></a></li>
+                    <li><a href="{{ url('payment/invoice/send-bulk') }}"> <span class="nav-label">Send Bulk Invoice</span></a></li>
                     <li><a href="{{ url('payment/payment_list') }}"> <span class="nav-label">Receiving</span></a></li>
                 </ul>
             </li>

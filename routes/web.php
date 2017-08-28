@@ -192,6 +192,8 @@ Route::get('/payment/invoice/generate/{generate_issue}/{generate_year}/{generate
 Route::get('/payment/invoice/generate/digital/{client_name}/{publication_name}/{year}/{monthly}/{weekly}', 'paymentController@invoice_generate_digital');
 Route::get('/payment/invoice/print', 'paymentController@invoice');
 Route::get('/payment/invoice/digital', 'paymentController@invoice_digital');
+Route::get('/payment/invoice/send-bulk', 'paymentController@send_bulk_invoice');
+
 Route::get('/payment/invoice/list/{digital?}', 'paymentController@invoice_list');
 Route::get('/payment/latest/invoice/list/{generate_issue}/{generate_year}/{generate_company_name}/{generate_magazine_name}', 'paymentController@latest_invoice_list');
 Route::get('/payment/latest/invoice/list/digital/{client_name}/{publication_name}/{yearly}/{monthly}/{weekly}', 'paymentController@latest_invoice_list_digital');

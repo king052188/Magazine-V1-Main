@@ -15,6 +15,22 @@ use Carbon\Carbon;
 
 class paymentController extends Controller
 {
+
+    public function send_bulk_invoice() {
+
+        $nav_dashboard = "";
+        $nav_clients = "";
+        $nav_publisher = "";
+        $nav_publication = "";
+        $nav_sales = "";
+        $nav_payment = "active";
+        $nav_reports = "";
+        $nav_users = "";
+        
+        return view('payment.send_bulk', compact('booking', 'magazine', 'filter', 'clients','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Booking details successful added!');
+    }
+
+
     public function payment_list($filter = null)
     {
         if(!AssemblyClass::check_cookies()) {
