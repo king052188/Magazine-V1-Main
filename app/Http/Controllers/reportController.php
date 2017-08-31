@@ -91,7 +91,7 @@ class reportController extends Controller
         }
 
         $filter_process = "WHERE " . $filter_mag_type . ' AND ' . $filter_publication_tran . ' AND ' . $filter_sales_rep_tran . ' AND ' . $filter_client_tran . ' AND ' . $filter_status_tran . ' AND ' . $filter_date_from;
-        
+
         $booking = DB::SELECT("
             SELECT 
 
@@ -143,6 +143,7 @@ class reportController extends Controller
 
         if(COUNT($booking) > 0)
         {
+            $overall_total = 0;
             for($i = 0; $i < COUNT($booking); $i++)
             {
                 $date_created = \Carbon\Carbon::parse($booking[$i]->created_at);
@@ -171,9 +172,11 @@ class reportController extends Controller
                     "created_at" => $date_created->format('F d, Y')
 
                 );
+
+                $overall_total += $amount;
             }
 
-            return array("Code" => 200, "data" => $booking_result);
+            return array("Code" => 200, "overall_total" => number_format($overall_total, 2), "data" => $booking_result);
         }
 
         $booking_result = 0;

@@ -54,6 +54,8 @@
                                 <tbody>
 
                                 </tbody>
+                                <tfoot>
+
                                 </tfoot>
                             </table>
 
@@ -73,9 +75,12 @@
                                 <tbody>
 
                                 </tbody>
+                                <tfoot>
+
                                 </tfoot>
                             </table>
                         </div>
+                        <div id = "booking_overall_total"></div>
                     </div>
 
                 </div>
@@ -488,6 +493,8 @@
 //            console.log("Date From " + f_date_from);
 //            console.log("Date To " + f_date_to);
 
+            $("#booking_overall_total").empty().append("<b style = 'font-size: 15px;'>Total Amount: 0.00</b>");
+
             $(".dataTables-invoice").DataTable().destroy();
             $(".dataTables-booking").DataTable().destroy();
 
@@ -527,9 +534,28 @@
                     'colvis'
                 ]
             });
+
+            get_invoice_overall_total(magazine_type_booking, f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator);
+        }
+
+        function get_invoice_overall_total(magazine_type_booking, f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator) {
+            $.ajax({
+                url: "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
+                dataType: "text",
+                beforeSend: function () {},
+                success: function(data) {
+                    var json = $.parseJSON(data);
+                    if(json.Code == 200)
+                    {
+                        $("#booking_overall_total").empty().append("<b style = 'font-size: 15px;'>Total Amount: " + json.overall_total + "</b>");
+                    }
+                }
+            });
         }
 
         function get_filter_data_invoice(magazine_type_invoice, i_invoice_number, i_publication, i_issue, i_year, i_sales_rep, i_date_from, i_date_to, i_operator){
+
+            console.log("INVOICE: /sales_report/get_filter_data_invoice/" + magazine_type_invoice + "/" + i_invoice_number + "/" + i_publication + "/" + i_issue + "/" + i_year + "/" + i_sales_rep + "/" + i_date_from + "/" + i_date_to + "/" + i_operator);
 
             $(".dataTables-booking").DataTable().destroy();
             $(".dataTables-invoice").DataTable().destroy();
