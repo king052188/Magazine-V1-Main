@@ -326,7 +326,13 @@ class paymentController extends Controller
                                 END AS amount 
                             FROM discount_transaction_table 
                             WHERE trans_id = aa.booking_trans AND status = 2 LIMIT 1
-                        ) AS i_amount
+                        ) AS i_amount,
+                        
+                        ff.company_name as company_name,
+                        
+                        (
+                          SELECT branch_name FROM client_contacts_table as gg WHERE gg.client_id = ff.Id AND gg.role = 3 
+                        ) as bill_to_contact
                         
                     FROM invoice_table as aa
                     
@@ -337,6 +343,8 @@ class paymentController extends Controller
                     INNER JOIN magazine_transaction_table as dd ON dd.transaction_id = cc.Id
                     
                     INNER JOIN magazine_table as ee ON ee.Id = dd.magazine_id
+                    
+                    INNER JOIN client_table as ff ON ff.Id = cc.client_id
                     
                     WHERE ee.magazine_type = {$magazine_type}
         ");
@@ -386,6 +394,8 @@ class paymentController extends Controller
                     "sales_rep_name" => $result[$i]->sales_rep_name,
                     "mag_name" => $result[$i]->mag_name,
                     "invoice_amount" => (float)$result[$i]->i_amount,
+                    "company_name" => $result[$i]->company_name,
+                    "bill_to_contact" => $result[$i]->bill_to_contact
                 );
             }
 

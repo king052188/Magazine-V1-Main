@@ -86,7 +86,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <div id = "btn_generate_invoice_container">
+                                    <div id = "btn_generate_invoice_container" style = "display: none;">
                                         <button type="submit" class="btn btn-primary" id = "btn_generate_invoice">
                                             <i class="fa fa-ticket"></i> Generate Invoice
                                         </button>
@@ -128,6 +128,11 @@
                                                     <th style='text-align: center; width: 150px;'>Publication</th>
                                                     <th style='text-align: center; width: 100px;'>Issue</th>
                                                     <th style='text-align: center; width: 100px;'>Year</th>
+                                                    <th style='text-align: center; width: 100px;'>Company Name</th>
+                                                    <th style='text-align: center; width: 100px;'>Amount(Net)</th>
+                                                    <th style='text-align: center; width: 100px;'>Bill To(Contact)</th>
+                                                    <th style='text-align: center; width: 100px;'>Contract Date</th>
+                                                    <th style='text-align: center; width: 100px;'>Size</th>
                                                     <th style='text-align: center;'>Executive Account</th>
                                                     {{--<th style='text-align: right; width: 150px;'>Amount</th>--}}
                                                     <th style='text-align: center; width: 200px;'>Invoice Created</th>
@@ -194,15 +199,18 @@
     <script>
         $(document).ready(function(){
 
-
             populate_invoice_list();
 
             $("#filter_container").hide();
-            $("#btn_generate_invoice").click(function(){
-//                $("#filter_container").attr("style", "display:block;");
-                $("#filter_container").show();
-                $("#btn_generate_invoice_container").hide();
-            });
+
+            $("#filter_container").show();
+            $("#btn_generate_invoice_container").hide();
+
+//            $("#btn_generate_invoice").click(function(){
+////                $("#filter_container").attr("style", "display:block;");
+//                $("#filter_container").show();
+//                $("#btn_generate_invoice_container").hide();
+//            });
 
 //            $("#latest_invoice_press").click(function(){
 //                populate_latest_invoice_list();
@@ -221,7 +229,7 @@
                     beforeSend: function () {
                         if(isFirstLoad) {
                             isFirstLoad = false;
-                            $('table#tbl_all_invoice_list > tbody').empty().prepend('<tr> <td colspan="7" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
+                            $('table#tbl_all_invoice_list > tbody').empty().prepend('<tr> <td colspan="12" style="text-align: center;"> <img src="{{ asset('img/ripple.gif') }}" style="width: 90px;"  />  Fetching All Transactions... Please wait...</td> </tr>');
                         }
                     },
                     success: function(data) {
@@ -231,7 +239,7 @@
 
                         $(json.list).each(function(i, tran){
 
-                            //console.log(json);
+//                            console.log(json);
 
                             html_thmb += "<tr>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.invoice_num +"</td>";
@@ -239,6 +247,12 @@
                             html_thmb += "<td style='text-align: center;'>"+ tran.issue +"</td>";
                             var get_created_date = stripped_date_time(tran.created_at);
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[0] +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.company_name +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ numeral(tran.invoice_amount).format('0,0.00') +"</td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.bill_to_contact +"</td>";
+                            html_thmb += "<td style='text-align: center;'></td>";
+                            html_thmb += "<td style='text-align: center;'></td>";
+                            html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ tran.sales_rep_name +"</td>";
 //                            html_thmb += "<td style='text-align: right;'>"+ numeral(tran.invoice_amount).format('0,0.00') +"</td>";
                             html_thmb += "<td style='text-align: center;'>"+ get_created_date[1] + " | " + tran.time_ago +"</td>";
