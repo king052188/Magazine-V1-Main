@@ -217,7 +217,7 @@ class magazineController extends Controller
         }
 
         $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
-        $ad_s = DB::table('price_package_table')->where('status','=',2)->get();
+        $ad_s = DB::table('price_package_table')->where('status','=',2)->orderBy('package_name', 'ASC')->get();
 
         $nav_dashboard = "";
         $nav_clients = "";
