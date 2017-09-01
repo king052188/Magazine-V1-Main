@@ -162,7 +162,7 @@
                         <tr>
                             <td>Issue</td>
                             <td>
-                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_i_issue">
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_issue">
                                     <option value="0">-- select --</option>
                                     @for($i = 1; $i < 13; $i++)
                                         <option value='{{ $i }}'>{{ $i }}</option>
@@ -173,7 +173,7 @@
                         <tr>
                             <td>Year</td>
                             <td>
-                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_i_year">
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_year">
                                     <option value="0">-- select --</option>
                                     @for($i = date('Y') - 4; $i < date('Y'); $i++)
                                         <option value='{{ $i }}'>{{ $i }}</option>
@@ -419,16 +419,13 @@
 //                    $("#magazine_type_booking").hide();
 //                    $("#magazine_type_invoice").show();
                 }
-                else if(order == 3){
-                    $("#table_booking").show();
-                    $("#btn_search").show();
+                else{
+                    $("#table_booking").hide();
+//                    $("#btn_search").show();
                     $("#table_invoice").hide();
-                    $("#btn_search_invoice").hide();
+//                    $("#btn_search_invoice").hide();
 //                    $("#magazine_type_booking").show();
 //                    $("#magazine_type_invoice").hide();
-                }
-                else{
-
                 }
             });
 
@@ -438,6 +435,8 @@
                 var f_publication = $("#filter_m_publication").val();
                 var f_sales_rep = $("#filter_m_sales_rep").val();
                 var f_client = $("#filter_m_client").val();
+                var f_issue = $("#filter_m_issue").val();
+                var f_year = $("#filter_m_year").val();
                 var f_status = $("#filter_m_status").val();
                 var f_d_from = $("#filter_m_date_from").val();
                 var f_date_from = f_d_from;
@@ -452,7 +451,7 @@
 
                 var f_operator = $("#filter_m_operator").val();
 
-                get_filter_data(magazine_type_booking, f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator);
+                get_filter_data(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator);
 
                 $("#filter_modal").modal('hide');
 
@@ -526,12 +525,12 @@
             });
         });
 
-        function get_filter_data(magazine_type_booking, f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator){
+        function get_filter_data(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator){
             $("#booking_overall_total").empty().append("<b style = 'font-size: 15px;'>Total Amount: 0.00</b>");
             $(".dataTables-invoice").DataTable().destroy();
             $(".dataTables-booking").DataTable().destroy();
             $('.dataTables-booking').DataTable( {
-                ajax: "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
+                ajax: "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_issue + "/" + f_year + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
                 columns: [
                     { data: 'reports_set' },
                     { data: 'mag_name' },
@@ -567,12 +566,12 @@
                 ]
             });
 
-            get_invoice_overall_total(magazine_type_booking, f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator);
+            get_invoice_overall_total(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator);
         }
 
-        function get_invoice_overall_total(magazine_type_booking, f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator) {
+        function get_invoice_overall_total(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator) {
             $.ajax({
-                url: "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
+                url: "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_issue + "/" + f_year + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
                 dataType: "text",
                 beforeSend: function () {},
                 success: function(data) {

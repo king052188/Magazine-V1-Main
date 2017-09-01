@@ -30,7 +30,7 @@ class reportController extends Controller
         return view('/reports/sales', compact('publication', 'clients', 'sales_rep', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
-    public function get_filter_data($magazine_type_booking, $f_publication, $f_sales_rep, $f_client, $f_status, $f_date_from, $f_date_to, $f_operator)
+    public function get_filter_data($magazine_type_booking, $f_publication, $f_sales_rep, $f_client, $f_issue, $f_year, $f_status, $f_date_from, $f_date_to, $f_operator)
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
@@ -67,6 +67,29 @@ class reportController extends Controller
             $filter_client_tran = "booked.client_id LIKE '%'";
         }
 
+        if($f_issue != 0){
+            $filter_issue_tran = "quarter_issued = {$f_issue}";
+        }else{
+            $filter_issue_tran = "quarter_issued LIKE '%'";
+        }
+
+        if($f_year != 0){
+            $filter_year_tran = "YEAR(created_at) = {$f_year}";
+        }else{
+            $filter_year_tran = "YEAR(created_at) LIKE '%'";
+        }
+
+        if($magazine_type_booking == 1){
+            $select_issue_and_year = "( SELECT quarter_issued FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id AND {$filter_issue_tran}) as issue, 
+            ( SELECT created_at FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id AND {$filter_year_tran}) as year,";
+        }elseif($magazine_type_booking == 2){
+            $select_issue_and_year = "( SELECT position_id FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id AND {$filter_issue_tran}) as issue, 
+            ( SELECT year FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id AND {$filter_year_tran}) as year,";
+        }else{
+            $select_issue_and_year = "";
+        }
+        
+
         if($f_status != 0){
             $filter_status_tran = "booked.status = {$f_status}";
         }else{
@@ -94,51 +117,31 @@ class reportController extends Controller
 
         $booking = DB::SELECT("
             SELECT 
-
                 booked.Id,
-                
                 booked.client_id,
-                
                 mag.Id as pub_uid,
-                
                 (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
-                
                 booked.trans_num,
-                
                 (null) AS invoice_num,
-                
                 ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
-                
                 ( SELECT magazine_country FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_country,
-                
                 ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = booked.sales_rep_code ) AS sales_rep_name,
-                
                 ( SELECT company_name FROM client_table WHERE Id = booked.client_id AND status = 2 AND type != 2 ) AS client_name,
-                
                 ( SELECT COUNT(*) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
-                
                 ( SELECT CASE WHEN SUM(line_item_qty) > 0 THEN SUM(line_item_qty) ELSE 0 END AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS qty,
-                
                 ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
-                
                 ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num  AND type = 1 AND status = 2 ) AS new_amount,
                 
-                booked.status,
+                {$select_issue_and_year}
                 
+                booked.status,
                 booked.created_at
-                    
             FROM booking_sales_table AS booked
-            
             INNER JOIN magazine_transaction_table AS trans
-            
             ON booked.Id = trans.transaction_id
-            
             INNER JOIN magazine_table as mag
-
             ON mag.Id = trans.magazine_id
-            
             {$filter_process}
-            
             ");
 
         if(COUNT($booking) > 0)
@@ -169,7 +172,9 @@ class reportController extends Controller
                     "qty" => $booking[$i]->qty,
                     "new_amount" => number_format($amount, 2),
                     "status" => $status,
-                    "created_at" => $date_created->format('F d, Y')
+                    "created_at" => $date_created->format('F d, Y'),
+                    "issue" => "",
+                    "year" => ""
 
                 );
 
