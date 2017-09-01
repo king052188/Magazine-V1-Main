@@ -345,203 +345,235 @@ class magazineController extends Controller
 
     public function add_issue_discount($mag_id, $discount_2, $discount_3, $discount_4, $discount_5, $discount_6, $discount_7, $discount_8, $discount_9, $discount_10, $discount_11, $discount_12)
     {
-        if($discount_2 != 0){
-            $chk_2 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 2");
-            if(COUNT($chk_2) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 2)->update(['percent' => $discount_2]);
+        $m_uid = (int)$mag_id;
+        $discounts = [
+            (int)$discount_2,
+            (int)$discount_3,
+            (int)$discount_4,
+            (int)$discount_5,
+            (int)$discount_6,
+            (int)$discount_7,
+            (int)$discount_8,
+            (int)$discount_9,
+            (int)$discount_10,
+            (int)$discount_11,
+            (int)$discount_12,
+        ];
+        
+        $type = 2;
+        for($i = 0; $i < COUNT($discounts); $i++) {
+            $discount = $discounts[$i];
+            $chk_point = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$m_uid} AND type = {$type};");
+            if(COUNT($chk_point) > 0){
+                MagazineIssueDiscount::where('magazine_id', '=', $m_uid)->where('type', '=', $type)->update(['percent' => $discount]);
             }else{
-                $d_2 = new MagazineIssueDiscount();
-                $d_2->magazine_id = $mag_id;
-                $d_2->percent = $discount_2;
-                $d_2->type = 2;
-                $d_2->status = 2;
-                $d_2->save();
+                $db = new MagazineIssueDiscount();
+                $db->magazine_id = $m_uid;
+                $db->percent = $discount;
+                $db->type = $type;
+                $db->status = 2;
+                $db->save();
             }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 2)->update(['percent' => 0]);
+            $type++;
         }
 
-        if($discount_3 != 0){
-            $chk_3 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 3");
-            if(COUNT($chk_3) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 3)->update(['percent' => $discount_3]);
-            }else{
-                $d_3 = new MagazineIssueDiscount();
-                $d_3->magazine_id = $mag_id;
-                $d_3->percent = $discount_3;
-                $d_3->type = 3;
-                $d_3->status = 2;
-                $d_3->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 3)->update(['percent' => 0]);
-        }
-
-        if($discount_4 != 0){
-            $chk_4 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 4");
-            if(COUNT($chk_4) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 4)->update(['percent' => $discount_4]);
-            }else{
-                $d_4 = new MagazineIssueDiscount();
-                $d_4->magazine_id = $mag_id;
-                $d_4->percent = $discount_4;
-                $d_4->type = 4;
-                $d_4->status = 2;
-                $d_4->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 4)->update(['percent' => 0]);
-        }
-
-        if($discount_5 != 0){
-            $chk_5 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 5");
-            if(COUNT($chk_5) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 5)->update(['percent' => $discount_5]);
-            }else{
-                $d_5 = new MagazineIssueDiscount();
-                $d_5->magazine_id = $mag_id;
-                $d_5->percent = $discount_5;
-                $d_5->type = 5;
-                $d_5->status = 2;
-                $d_5->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 5)->update(['percent' => 0]);
-        }
-
-        if($discount_6 != 0){
-            $chk_6 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 6");
-            if(COUNT($chk_6) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 6)->update(['percent' => $discount_6]);
-            }else{
-                $d_6 = new MagazineIssueDiscount();
-                $d_6->magazine_id = $mag_id;
-                $d_6->percent = $discount_6;
-                $d_6->type = 6;
-                $d_6->status = 2;
-                $d_6->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 6)->update(['percent' => 0]);
-        }
-
-        if($discount_7 != 0){
-            $chk_7 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 7");
-            if(COUNT($chk_7) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 7)->update(['percent' => $discount_7]);
-            }else{
-                $d_5 = new MagazineIssueDiscount();
-                $d_5->magazine_id = $mag_id;
-                $d_5->percent = $discount_7;
-                $d_5->type = 7;
-                $d_5->status = 2;
-                $d_5->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 7)->update(['percent' => 0]);
-        }
-
-        if($discount_8 != 0){
-            $chk_8 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 8");
-            if(COUNT($chk_8) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 8)->update(['percent' => $discount_8]);
-            }else{
-                $d_8 = new MagazineIssueDiscount();
-                $d_8->magazine_id = $mag_id;
-                $d_8->percent = $discount_8;
-                $d_8->type = 8;
-                $d_8->status = 2;
-                $d_8->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 8)->update(['percent' => 0]);
-        }
-
-        if($discount_9 != 0){
-            $chk_9 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 9");
-            if(COUNT($chk_9) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 9)->update(['percent' => $discount_9]);
-            }else{
-                $d_9 = new MagazineIssueDiscount();
-                $d_9->magazine_id = $mag_id;
-                $d_9->percent = $discount_9;
-                $d_9->type = 9;
-                $d_9->status = 2;
-                $d_9->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 9)->update(['percent' => 0]);
-        }
-
-        if($discount_10 != 0){
-            $chk_10 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 10");
-            if(COUNT($chk_10) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 10)->update(['percent' => $discount_10]);
-            }else{
-                $d_10 = new MagazineIssueDiscount();
-                $d_10->magazine_id = $mag_id;
-                $d_10->percent = $discount_10;
-                $d_10->type = 10;
-                $d_10->status = 2;
-                $d_10->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 10)->update(['percent' => 0]);
-        }
-
-        if($discount_11 != 0){
-            $chk_11 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 11");
-            if(COUNT($chk_11) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 11)->update(['percent' => $discount_11]);
-            }else{
-                $d_11 = new MagazineIssueDiscount();
-                $d_11->magazine_id = $mag_id;
-                $d_11->percent = $discount_11;
-                $d_11->type = 11;
-                $d_11->status = 2;
-                $d_11->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 11)->update(['percent' => 0]);
-        }
-
-        if($discount_12 != 0){
-            $chk_12 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 12");
-            if(COUNT($chk_12) > 0){
-                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 12)->update(['percent' => $discount_12]);
-            }else{
-                $d_12 = new MagazineIssueDiscount();
-                $d_12->magazine_id = $mag_id;
-                $d_12->percent = $discount_12;
-                $d_12->type = 12;
-                $d_12->status = 2;
-                $d_12->save();
-            }
-        }
-        else
-        {
-            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 12)->update(['percent' => 0]);
-        }
+//        if($discount_2 != 0){
+//            $chk_2 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 2");
+//            if(COUNT($chk_2) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 2)->update(['percent' => $discount_2]);
+//            }else{
+//                $d_2 = new MagazineIssueDiscount();
+//                $d_2->magazine_id = $mag_id;
+//                $d_2->percent = $discount_2;
+//                $d_2->type = 2;
+//                $d_2->status = 2;
+//                $d_2->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 2)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_3 != 0){
+//            $chk_3 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 3");
+//            if(COUNT($chk_3) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 3)->update(['percent' => $discount_3]);
+//            }else{
+//                $d_3 = new MagazineIssueDiscount();
+//                $d_3->magazine_id = $mag_id;
+//                $d_3->percent = $discount_3;
+//                $d_3->type = 3;
+//                $d_3->status = 2;
+//                $d_3->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 3)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_4 != 0){
+//            $chk_4 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 4");
+//            if(COUNT($chk_4) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 4)->update(['percent' => $discount_4]);
+//            }else{
+//                $d_4 = new MagazineIssueDiscount();
+//                $d_4->magazine_id = $mag_id;
+//                $d_4->percent = $discount_4;
+//                $d_4->type = 4;
+//                $d_4->status = 2;
+//                $d_4->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 4)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_5 != 0){
+//            $chk_5 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 5");
+//            if(COUNT($chk_5) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 5)->update(['percent' => $discount_5]);
+//            }else{
+//                $d_5 = new MagazineIssueDiscount();
+//                $d_5->magazine_id = $mag_id;
+//                $d_5->percent = $discount_5;
+//                $d_5->type = 5;
+//                $d_5->status = 2;
+//                $d_5->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 5)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_6 != 0){
+//            $chk_6 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 6");
+//            if(COUNT($chk_6) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 6)->update(['percent' => $discount_6]);
+//            }else{
+//                $d_6 = new MagazineIssueDiscount();
+//                $d_6->magazine_id = $mag_id;
+//                $d_6->percent = $discount_6;
+//                $d_6->type = 6;
+//                $d_6->status = 2;
+//                $d_6->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 6)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_7 != 0){
+//            $chk_7 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 7");
+//            if(COUNT($chk_7) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 7)->update(['percent' => $discount_7]);
+//            }else{
+//                $d_5 = new MagazineIssueDiscount();
+//                $d_5->magazine_id = $mag_id;
+//                $d_5->percent = $discount_7;
+//                $d_5->type = 7;
+//                $d_5->status = 2;
+//                $d_5->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 7)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_8 != 0){
+//            $chk_8 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 8");
+//            if(COUNT($chk_8) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 8)->update(['percent' => $discount_8]);
+//            }else{
+//                $d_8 = new MagazineIssueDiscount();
+//                $d_8->magazine_id = $mag_id;
+//                $d_8->percent = $discount_8;
+//                $d_8->type = 8;
+//                $d_8->status = 2;
+//                $d_8->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 8)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_9 != 0){
+//            $chk_9 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 9");
+//            if(COUNT($chk_9) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 9)->update(['percent' => $discount_9]);
+//            }else{
+//                $d_9 = new MagazineIssueDiscount();
+//                $d_9->magazine_id = $mag_id;
+//                $d_9->percent = $discount_9;
+//                $d_9->type = 9;
+//                $d_9->status = 2;
+//                $d_9->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 9)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_10 != 0){
+//            $chk_10 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 10");
+//            if(COUNT($chk_10) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 10)->update(['percent' => $discount_10]);
+//            }else{
+//                $d_10 = new MagazineIssueDiscount();
+//                $d_10->magazine_id = $mag_id;
+//                $d_10->percent = $discount_10;
+//                $d_10->type = 10;
+//                $d_10->status = 2;
+//                $d_10->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 10)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_11 != 0){
+//            $chk_11 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 11");
+//            if(COUNT($chk_11) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 11)->update(['percent' => $discount_11]);
+//            }else{
+//                $d_11 = new MagazineIssueDiscount();
+//                $d_11->magazine_id = $mag_id;
+//                $d_11->percent = $discount_11;
+//                $d_11->type = 11;
+//                $d_11->status = 2;
+//                $d_11->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 11)->update(['percent' => 0]);
+//        }
+//
+//        if($discount_12 != 0){
+//            $chk_12 = DB::SELECT("SELECT * FROM magazine_issue_discount_table WHERE magazine_id = {$mag_id} AND type = 12");
+//            if(COUNT($chk_12) > 0){
+//                MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 12)->update(['percent' => $discount_12]);
+//            }else{
+//                $d_12 = new MagazineIssueDiscount();
+//                $d_12->magazine_id = $mag_id;
+//                $d_12->percent = $discount_12;
+//                $d_12->type = 12;
+//                $d_12->status = 2;
+//                $d_12->save();
+//            }
+//        }
+//        else
+//        {
+//            MagazineIssueDiscount::where('magazine_id', '=', $mag_id)->where('type', '=', 12)->update(['percent' => 0]);
+//        }
         
         return array(
             "status" => 200

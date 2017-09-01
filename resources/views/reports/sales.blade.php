@@ -99,25 +99,22 @@
                     <h4 class="modal-title" id="exampleModalLabel">Filter Reports</h4>
                 </div>
                 <div class="modal-body">
-                    <table border = "0">
+                    <table border = "0" style="width: 100%;">
                         <tr>
-                            <td style = "width: 200px;">Reports by</td>
+                            <td style="width: 270px;">Reports by</td>
                             <td>
                                 <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "reports_by">
                                     <option value = "1">Booking</option>
                                     <option value = "2">Invoice</option>
+                                    <option value = "3">Commission</option>
+                                    <option value = "4">Tax</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td style = "width: 200px;">Type</td>
+                            <td>Type</td>
                             <td>
                                 <select class="form-control" style="background-color: #2f4050; color: #FFFFFF;" id = "magazine_type_booking">
-                                    <option value = "0">All</option>
-                                    <option value = "1">Print</option>
-                                    <option value = "2">Digital</option>
-                                </select>
-                                <select class="form-control" style="background-color: #2f4050; color: #FFFFFF; display: none; " id = "magazine_type_invoice">
                                     <option value = "0">All</option>
                                     <option value = "1">Print</option>
                                     <option value = "2">Digital</option>
@@ -125,10 +122,12 @@
                             </td>
                         </tr>
                     </table>
+
                     <br /><br />
-                    <table border = "0" id = "table_booking">
+
+                    <table border = "0" style="width: 100%;" id = "table_booking">
                         <tr>
-                            <td style = "width: 200px;">Publication</td>
+                            <td style="width: 270px;">Publication</td>
                             <td>
                                 <select class="form-control chosen-select filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_publication">
                                     <option value = "0">-- select --</option>
@@ -141,7 +140,7 @@
                         <tr>
                             <td>Sales Rep</td>
                             <td>
-                                <select class="form-control filter_click" id = "filter_m_sales_rep" style = "background-color: #2f4050; height:30px; color: #FFFFFF;">
+                                <select class="form-control filter_click" id = "filter_m_sales_rep" style = "background-color: #2f4050; color: #FFFFFF;">
                                     <option value = "0">-- select --</option>
                                     @for($i = 0; $i < COUNT($sales_rep); $i++)
                                         <option value = "{{ $sales_rep[$i]->Id }}">{{ $sales_rep[$i]->first_name . " " . $sales_rep[$i]->last_name }}</option>
@@ -156,6 +155,32 @@
                                     <option value = "0">-- select --</option>
                                     @for($i = 0; $i < COUNT($clients); $i++)
                                         <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Issue</td>
+                            <td>
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_i_issue">
+                                    <option value="0">-- select --</option>
+                                    @for($i = 1; $i < 13; $i++)
+                                        <option value='{{ $i }}'>{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Year</td>
+                            <td>
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_i_year">
+                                    <option value="0">-- select --</option>
+                                    @for($i = date('Y') - 4; $i < date('Y'); $i++)
+                                        <option value='{{ $i }}'>{{ $i }}</option>
+                                    @endfor
+
+                                    @for($i = date('Y'); $i < 2026; $i++)
+                                        <option value='{{ $i }}'>{{ $i }}</option>
                                     @endfor
                                 </select>
                             </td>
@@ -201,15 +226,15 @@
                         </tr>
                     </table>
 
-                    <table border = "0" id = "table_invoice" style = "display: none;">
+                    <table border = "0" id = "table_invoice" style = "width: 100%; display: none;">
                         <tr>
-                            <td style = "width: 200px;">Invoice #</td>
+                            <td style = "width: 270px;">Invoice #</td>
                             <td>
                                 <input type = "text" style="background-color: #2f4050; height: 30px; color: #FFFFFF;" id = "filter_i_invoice_number">
                             </td>
                         </tr>
                         <tr>
-                            <td style = "width: 200px;">Publication</td>
+                            <td>Publication</td>
                             <td>
                                 <select class="form-control chosen-select filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_i_publication">
                                     <option value = "0">-- select --</option>
@@ -220,7 +245,18 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style = "width: 200px;">Issue</td>
+                            <td>Client/Company</td>
+                            <td>
+                                <select class="form-control chosen-select filter_click" id = "filter_i_client">
+                                    <option value = "0">-- select --</option>
+                                    @for($i = 0; $i < COUNT($clients); $i++)
+                                        <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Issue</td>
                             <td>
                                 <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_i_issue">
                                     <option value="0">Select</option>
@@ -231,11 +267,15 @@
                             </td>
                         </tr>
                         <tr>
-                            <td style = "width: 200px;">Year</td>
+                            <td>Year</td>
                             <td>
                                 <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_i_year">
                                     <option value="0">Select</option>
-                                    @for($i = 2017; $i < 2026; $i++)
+                                    @for($i = date('Y') - 4; $i < date('Y'); $i++)
+                                        <option value='{{ $i }}'>{{ $i }}</option>
+                                    @endfor
+
+                                    @for($i = date('Y'); $i < 2026; $i++)
                                         <option value='{{ $i }}'>{{ $i }}</option>
                                     @endfor
                                 </select>
@@ -299,6 +339,7 @@
             $("#filter_i_publication_chosen").width(250);
 
             $("#filter_m_client_chosen").width(250);
+            $("#filter_i_client_chosen").width(250);
 
             $("#filter_m_sales_rep").width(225);
             $("#filter_i_sales_rep").width(225);
@@ -331,15 +372,6 @@
     </script>
     <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
     <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
-    {{--<script src="//code.jquery.com/jquery-1.12.4.js"></script>--}}
-    {{--<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>--}}
-    {{--<script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>--}}
-    {{--<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.flash.min.js"></script>--}}
-    {{--<script src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>--}}
-    {{--<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/pdfmake.min.js"></script>--}}
-    {{--<script src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.24/build/vfs_fonts.js"></script>--}}
-    {{--<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.html5.min.js"></script>--}}
-    {{--<script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.print.min.js"></script>--}}
     <script>
         $(document).ready(function(){
             //get_all_data();
@@ -370,21 +402,33 @@
             });
 
             $("#reports_by").change(function(){
-                console.log($(this).val());
-                if($(this).val() == 1){
+                var order = parseInt($(this).val());
+                if(order == 1){
                     $("#table_booking").show();
                     $("#btn_search").show();
                     $("#table_invoice").hide();
                     $("#btn_search_invoice").hide();
-                    $("#magazine_type_booking").show();
-                    $("#magazine_type_invoice").hide();
-                }else{
+//                    $("#magazine_type_booking").show();
+//                    $("#magazine_type_invoice").hide();
+                }
+                else if(order == 2){
                     $("#table_booking").hide();
                     $("#btn_search").hide();
                     $("#table_invoice").show();
                     $("#btn_search_invoice").show();
-                    $("#magazine_type_booking").hide();
-                    $("#magazine_type_invoice").show();
+//                    $("#magazine_type_booking").hide();
+//                    $("#magazine_type_invoice").show();
+                }
+                else if(order == 3){
+                    $("#table_booking").show();
+                    $("#btn_search").show();
+                    $("#table_invoice").hide();
+                    $("#btn_search_invoice").hide();
+//                    $("#magazine_type_booking").show();
+//                    $("#magazine_type_invoice").hide();
+                }
+                else{
+
                 }
             });
 
@@ -483,21 +527,9 @@
         });
 
         function get_filter_data(magazine_type_booking, f_publication, f_sales_rep, f_client, f_status, f_date_from, f_date_to, f_operator){
-
-//            console.log("Mag Type " + magazine_type_booking);
-//            console.log("Publication " + f_publication);
-//            console.log("Sales Rep " + f_sales_rep);
-//            console.log("Client " + f_client);
-//            console.log("Status " + f_status);
-//            console.log("Operator " + f_operator);
-//            console.log("Date From " + f_date_from);
-//            console.log("Date To " + f_date_to);
-
             $("#booking_overall_total").empty().append("<b style = 'font-size: 15px;'>Total Amount: 0.00</b>");
-
             $(".dataTables-invoice").DataTable().destroy();
             $(".dataTables-booking").DataTable().destroy();
-
             $('.dataTables-booking').DataTable( {
                 ajax: "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
                 columns: [

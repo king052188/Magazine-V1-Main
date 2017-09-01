@@ -156,57 +156,57 @@
                                 <div class="form-group ">
                                     <div class="col-sm-6">
                                         <label>2x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_2" name = "discount_2">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_2" name = "discount_2" value="0">
                                     </div>
                                     <div class="col-sm-6">
                                         <label>3x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_3" name = "discount_3">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_3" name = "discount_3" value="0">
                                     </div>
                                 </div>
                                 <div class="form-group ">
                                     <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>4x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_4" name = "discount_4">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_4" name = "discount_4" value="0">
                                     </div>
                                     <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>5x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_5" name = "discount_5">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_5" name = "discount_5" value="0">
                                     </div>
                                 </div>
                                 <div class="form-group ">
                                     <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>6x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_6" name = "discount_6">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_6" name = "discount_6" value="0">
                                     </div>
                                     <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>7x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_7" name = "discount_7">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_7" name = "discount_7" value="0">
                                     </div>
                                 </div>
                                 <div class="form-group ">
                                     <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>8x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_8" name = "discount_8">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_8" name = "discount_8" value="0">
                                     </div>
                                     <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>9x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_9" name = "discount_9">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_9" name = "discount_9" value="0">
                                     </div>
                                 </div>
                                 <div class="form-group ">
                                     <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>10x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_10" name = "discount_10">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_10" name = "discount_10" value="0">
                                     </div>
                                     <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>11x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_11" name = "discount_11">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_11" name = "discount_11" value="0">
                                     </div>
                                 </div>
                                 <div class="form-group ">
                                     <div class="col-sm-6" style = "margin-top: 10px;">
                                         <label>12x Percent Discount</label>
-                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_12" name = "discount_12">
+                                        <input type="text" placeholder="Enter Discount" class="form-control" id = "discount_12" name = "discount_12" value="0">
                                     </div>
                                 </div>
                                 {{--<div class="col-sm-12 m-t-sm">--}}
@@ -475,14 +475,12 @@
             if(d_11 == ""){ d_11 = 0;}
             if(d_12 == ""){ d_12 = 0;}
 
-            {{--console.log({{ $mag_uid }});--}}
-            {{--console.log(d_2);--}}
-            {{--console.log(d_3);--}}
-            {{--console.log(d_4);--}}
-            {{--console.log(d_5);--}}
+            var url = "/magazine/add-issue-discount/" + {{ $mag_uid }} + "/" + d_2 + "/" + d_3 + "/" + d_4 + "/" + d_5 + "/" + d_6 + "/" + d_7 + "/" + d_8 + "/" + d_9 + "/" + d_10 + "/" + d_11 + "/" + d_12;
+
+            console.log(url);
 
             $.ajax({
-                url: "/magazine/add-issue-discount/" + {{ $mag_uid }} + "/" + d_2 + "/" + d_3 + "/" + d_4 + "/" + d_5 + "/" + d_6 + "/" + d_7 + "/" + d_8 + "/" + d_9 + "/" + d_10 + "/" + d_11 + "/" + d_12,
+                url: url,
                 dataType: "text",
                 beforeSend: function(){},
                 success: function(data){

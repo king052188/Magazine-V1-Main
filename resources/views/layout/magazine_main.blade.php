@@ -217,6 +217,10 @@
         }
     </script>
     @yield('styles')
+
+    <style>
+       select { text-transform: capitalize; }
+    </style>
 </head> 
 
 <body>

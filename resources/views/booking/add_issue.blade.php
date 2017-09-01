@@ -1145,11 +1145,17 @@ function populate_issues_transaction(uid) {
                 $("#issues_total").text(numeral(total_with_discount).format('0,0.00'));
                 $("#approval_total").text(numeral(total_with_discount).format('0,0.00'));
                 $(json.Issue_Discounts).each(function(i, issue){
-                    if(issue.Total_Issue > 1) {
-                        if(issue.Total_Issue_Discount != null) {
-                            var issues_discount_origin = parseFloat(issue.Total_Issue_Discount);
+
+                    if(issue.Issue_Total > 1) {
+                        if(issue.Issue_Percent > 0) {
+                            var issues_discount_origin = parseFloat(issue.Issue_Percent);
                             var issues_discount = total_with_discount * issues_discount_origin;
                             total_with_discount = total_with_discount - issues_discount;
+
+                            console.log(issues_discount_origin);
+                            console.log(issues_discount);
+                            console.log(total_with_discount);
+
                             $("#issues_discount").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
                             $("#issues_discount2").text( "(" + numeral(issues_discount).format('0,0.00') + ")");
 
