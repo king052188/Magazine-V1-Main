@@ -37,26 +37,29 @@
 
                     <div class="ibox-content">
                         <div class="table-responsive">
-                            <table id="tbl_booking_lists" class="table display nowrap dataTables-booking" cellspacing="0" width="100%">
+
+                            <div style="width: 100%;">
+                                <div style="float: left; text-align: left;">
+                                    <h3 id="total_items" style="margin: 0; padding: 0;">0</h3> <b>Total Items</b>
+                                </div>
+                                <div style="float: right; text-align: right;">
+                                    <h3 id="over_all_total" style="margin: 0; padding: 0;">0</h3> <b>Over All Total</b>
+                                </div>
+                            </div>
+
+                            <table id="tbl_booking_lists" class="table display nowrap" cellspacing="0" width="100%">
                                 <thead>
-                                <tr>
-                                    <th style='text-align: left;'>Reports</th>
-                                    <th style='text-align: left;'>Publication</th>
-                                    <th style='text-align: left; width: 150px;'>Sales Rep</th>
-                                    <th style='text-align: left; width: 150px;'>Client</th>
-                                    <th style='text-align: left; width: 100px;'>Line Items</th>
-                                    <th style='text-align: left; width: 100px;'>Qty</th>
-                                    <th style='text-align: left; width: 100px;'>Amount</th>
-                                    <th style='text-align: left; width: 100px;'>Status</th>
-                                    <th style='text-align: left; width: 130px;'>Date Created</th>
-                                </tr>
+                                    <tr>
+                                        <th style='text-align: left;'>Publication</th>
+                                        <th style='text-align: left;'>Client</th>
+                                        <th style='text-align: left; width: 300px;'>Sales Rep</th>
+                                        <th style='text-align: left; width: 100px;'>Year</th>
+                                        <th style='text-align: left; width: 100px;'>Amount</th>
+                                        <th style='text-align: left; width: 180px;'>Date Created</th>
+                                        <th style='text-align: left; width: 130px;'>View</th>
+                                    </tr>
                                 </thead>
-                                <tbody>
-
-                                </tbody>
-                                <tfoot>
-
-                                </tfoot>
+                                <tbody> </tbody>
                             </table>
 
                             <table id="tbl_invoice_lists" class="table display nowrap dataTables-invoice" style = "display: none;" cellspacing="0" width="100%">
@@ -79,6 +82,7 @@
 
                                 </tfoot>
                             </table>
+
                         </div>
                         <div id = "booking_overall_total"></div>
                     </div>
@@ -373,8 +377,12 @@
     <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
     <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
     <script>
+
+        var over_all_total = 0;
+
+        var trans_id = [];
+
         $(document).ready(function(){
-            //get_all_data();
 
             $('.dataTables-booking').DataTable( {
                 dom: 'Bfrtip',
@@ -431,30 +439,19 @@
 
             $("#btn_search").click(function(){
                 var magazine_type_booking = $("#magazine_type_booking").val();
-
                 var f_publication = $("#filter_m_publication").val();
                 var f_sales_rep = $("#filter_m_sales_rep").val();
                 var f_client = $("#filter_m_client").val();
                 var f_issue = $("#filter_m_issue").val();
                 var f_year = $("#filter_m_year").val();
                 var f_status = $("#filter_m_status").val();
-                var f_d_from = $("#filter_m_date_from").val();
-                var f_date_from = f_d_from;
-                    if(f_d_from == ""){
-                        f_date_from = 0;
-                    }
-                var f_d_to = $("#filter_m_date_to").val();
-                var f_date_to = f_d_to;
-                if(f_d_to == ""){
-                    f_date_to = 0;
-                }
-
+                var f_d_from = $("#filter_m_date_from").val() != "" ? $("#filter_m_date_from").val() : "null";
+                var f_d_to = $("#filter_m_date_to").val() != "" ? $("#filter_m_date_to").val() : "null";
                 var f_operator = $("#filter_m_operator").val();
 
-                get_filter_data(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator);
+                get_booking(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_d_from, f_d_to, f_operator);
 
                 $("#filter_modal").modal('hide');
-
                 $("#tbl_invoice_lists").hide();
                 $("#tbl_booking_lists").show();
             });
@@ -525,12 +522,76 @@
             });
         });
 
+
+        function get_booking(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator) {
+            var url = "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_issue + "/" + f_year + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator;
+            $.ajax({
+                url: url,
+                dataType: "JSON",
+                beforeSend: function () {
+                    var html = "";
+                    html += "<tr>";
+                    html += "<td colspan='7' style='text-align: center;'>Please wait...</td>";
+                    html += "</tr>";
+                    $("#tbl_booking_lists > tbody").empty().prepend(html);
+                    $("#total_items").text("Calculating...");
+                    $("#over_all_total").text("Calculating...");
+                },
+                success: function(json) {
+                    console.log(json);
+                    var view_url = "http://" + report_url_api + "/kpa/work/transaction/generate/insertion-order-contract/";
+                    var html = "";
+                    var t_id = 0;
+                    $(json.data).each(function(k, d) {
+                        trans_id.push(d.trans_num);
+                        html += "<tr>";
+                        html += "<td>"+d.mag_name+"</td>";
+                        html += "<td>"+d.client_name+"</td>";
+                        html += "<td>"+d.sales_rep_name+"</td>";
+                        html += "<td>"+d.issue_year+"</td>";
+                        html += "<td style='text-align: right;'><span id='amount_"+d.trans_num+"'>Calculating...</span></td>";
+                        html += "<td>"+d.created_at+"</td>";
+                        html += "<td><a href='"+view_url+"/"+d.trans_num+"/preview' target='_blank'>Insertion Order</a></td>";
+                        html += "</tr>";
+                    })
+
+                    $("#tbl_booking_lists > tbody").empty().prepend(html);
+                }
+            }).done(function () {
+                for (var i = 0; i < trans_id.length; i++) {
+                    get_amount_each_item(trans_id[i]);
+                }
+                $("#total_items").text(numeral(trans_id.length).format('0,0'));
+            })
+        }
+
+        function get_amount_each_item(trans_) {
+            var url = "http://" + report_url_api + "/kpa/work/booking/report/" + trans_ + "/1";
+            $.ajax({
+                url: url,
+                dataType: "JSON",
+                beforeSend: function () {
+                    $("#amount_" + trans_).text("Calculating...");
+                },
+                success: function(json) {
+                    $("#amount_" + trans_).text(numeral(json.Total).format('0,0.00'));
+                    over_all_total = over_all_total + parseFloat(json.Total);
+                    $("#over_all_total").text(numeral(over_all_total).format('0,0.00'));
+                }
+            })
+        }
+
         function get_filter_data(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator){
+
+            var url = "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_issue + "/" + f_year + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator;
+
+            console.log(url)
+
             $("#booking_overall_total").empty().append("<b style = 'font-size: 15px;'>Total Amount: 0.00</b>");
             $(".dataTables-invoice").DataTable().destroy();
             $(".dataTables-booking").DataTable().destroy();
             $('.dataTables-booking').DataTable( {
-                ajax: "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_issue + "/" + f_year + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator,
+                ajax: url,
                 columns: [
                     { data: 'reports_set' },
                     { data: 'mag_name' },
@@ -538,7 +599,7 @@
                     { data: 'client_name' },
                     { data: 'line_item' },
                     { data: 'qty' },
-                    { data: 'new_amount' },
+                    { data: 'amount' },
                     { data: 'status' },
                     { data: 'created_at' }
                 ],

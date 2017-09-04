@@ -8,6 +8,8 @@ use DB;
 
 class reportController extends Controller
 {
+    public static $API_URL = "http://api.magazine.com/kpa/work/booking/report/";
+
     public function viewSalesReport() {
 
         if(!AssemblyClass::check_cookies()) {
@@ -30,94 +32,66 @@ class reportController extends Controller
         return view('/reports/sales', compact('publication', 'clients', 'sales_rep', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
-    public function get_filter_data($magazine_type_booking, $f_publication, $f_sales_rep, $f_client, $f_issue, $f_year, $f_status, $f_date_from, $f_date_to, $f_operator)
+    public function get_filter_data($magazine_type_booking, $f_publication = 0, $f_sales_rep = 0, $f_client = 0, $f_issue = 0, $f_year = 0, $f_status = 0, $f_date_from = null, $f_date_to = null, $f_operator = 0)
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
 
-        if($magazine_type_booking == 0){
-            $filter_mag_type = "mag.magazine_type LIKE '%'";
-        }else{
-            $filter_mag_type = "mag.magazine_type = {$magazine_type_booking}";
+        $filters = null;
+
+        if($magazine_type_booking != "0"){
+            $filters .= "mag.magazine_type = {$magazine_type_booking}";
         }
 
-        if($f_publication != 0){
-            $filter_publication_tran = "mag.Id = {$f_publication}";
-        }else{
-            $filter_publication_tran = "mag.Id LIKE '%'";
+        if($f_publication != "0"){
+            $filters .= " AND mag.Id = {$f_publication}";
         }
 
         if($_COOKIE['role'] != 3)
         {
-            if($f_sales_rep != 0){
-                $filter_sales_rep_tran = "booked.sales_rep_code = {$f_sales_rep}";
-            }else{
-                $filter_sales_rep_tran = "booked.sales_rep_code LIKE '%'";
+            if($f_sales_rep != "0"){
+                $filters .= " AND booked.sales_rep_code = {$f_sales_rep}";
             }
         }
         else
         {
-            $filter_sales_rep_tran = "booked.sales_rep_code = {$_COOKIE['Id']}";
+            $filters .= " AND booked.sales_rep_code = {$_COOKIE['Id']}";
         }
 
-        if($f_client != 0){
-            $filter_client_tran = "booked.client_id = {$f_client}";
-        }else{
-            $filter_client_tran = "booked.client_id LIKE '%'";
+        if($f_client != "0") {
+            $filters .= " AND booked.client_id = {$f_client}";
         }
 
-        if($f_issue != 0){
-            $filter_issue_tran = "quarter_issued = {$f_issue}";
-        }else{
-            $filter_issue_tran = "quarter_issued LIKE '%'";
+        if($f_issue != "0") {
+            $filters .= " AND issue.quarter_issued = {$f_issue}";
         }
 
-        if($f_year != 0){
-            $filter_year_tran = "YEAR(created_at) = {$f_year}";
-        }else{
-            $filter_year_tran = "YEAR(created_at) LIKE '%'";
+        if($f_year != "0") {
+            $filters .= " AND YEAR(created_at) = {$f_year}";
         }
 
-        if($magazine_type_booking == 1){
-            $select_issue_and_year = "( SELECT quarter_issued FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id AND {$filter_issue_tran}) as issue, 
-            ( SELECT created_at FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id AND {$filter_year_tran}) as year,";
-        }elseif($magazine_type_booking == 2){
-            $select_issue_and_year = "( SELECT position_id FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id AND {$filter_issue_tran}) as issue, 
-            ( SELECT year FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id AND {$filter_year_tran}) as year,";
-        }else{
-            $select_issue_and_year = "";
-        }
-        
-
-        if($f_status != 0){
-            $filter_status_tran = "booked.status = {$f_status}";
-        }else{
-            $filter_status_tran = "booked.status LIKE '%'";
+        if($f_status != "0") {
+            $filters .= " AND booked.status = {$f_status}";
         }
 
-        if($f_operator == 1) //operator equal
+        if((int)$f_operator == 1) //operator equal
         {
-            if($f_date_from != 0){
-                $filter_date_from = "DATE_FORMAT(booked.created_at, '%Y-%m-%d') = '{$f_date_from}'";
-            }else{
-                $filter_date_from = "booked.created_at LIKE '%'";
+            if($f_date_from != "null"){
+                $filters .= " AND DATE_FORMAT(booked.created_at, '%Y-%m-%d') = DATE_FORMAT('{$f_date_from}', '%Y-%m-%d')";
             }
         }
-        elseif($f_operator == 2) //operator between
+        elseif((int)$f_operator == 2) //operator between
         {
-            if($f_date_from != 0 AND $f_date_to != 0){
-                $filter_date_from = "DATE_FORMAT(booked.created_at, '%Y-%m-%d') >= '{$f_date_from}' AND DATE_FORMAT(booked.created_at, '%Y-%m-%d') <= '{$f_date_to}'";
-            }else{
-                $filter_date_from = "booked.created_at LIKE '%'";
+            if($f_date_from != "null" AND $f_date_to != "null"){
+                $filters .= " AND DATE_FORMAT(booked.created_at, '%Y-%m-%d') BETWEEN DATE_FORMAT('{$f_date_from}', '%Y-%m-%d') AND DATE_FORMAT('{$f_date_to}', '%Y-%m-%d')";
             }
         }
-
-        $filter_process = "WHERE " . $filter_mag_type . ' AND ' . $filter_publication_tran . ' AND ' . $filter_sales_rep_tran . ' AND ' . $filter_client_tran . ' AND ' . $filter_status_tran . ' AND ' . $filter_date_from;
 
         $booking = DB::SELECT("
             SELECT 
                 booked.Id,
+                trans.Id AS trans_id,
                 booked.client_id,
                 mag.Id as pub_uid,
                 (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
@@ -131,9 +105,7 @@ class reportController extends Controller
                 ( SELECT CASE WHEN SUM(line_item_qty) > 0 THEN SUM(line_item_qty) ELSE 0 END AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS qty,
                 ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
                 ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num  AND type = 1 AND status = 2 ) AS new_amount,
-                
-                {$select_issue_and_year}
-                
+                DATE_FORMAT(booked.created_at, '%Y') AS issue_year,
                 booked.status,
                 booked.created_at
             FROM booking_sales_table AS booked
@@ -141,51 +113,45 @@ class reportController extends Controller
             ON booked.Id = trans.transaction_id
             INNER JOIN magazine_table as mag
             ON mag.Id = trans.magazine_id
-            {$filter_process}
+           
+            {$filters}
             ");
 
-        if(COUNT($booking) > 0)
+        $list_data[] = [];
+        $items = COUNT($booking);
+//        for($i = 0; $i < $items; $i++) {
+//            $total_amount = $this->do_curl(reportController::$API_URL . $booking[$i]->trans_id . "/1");
+//            if($i == 0) {
+//                unset($list_data);
+//            }
+//            $data = array(
+//                "ID" => $booking[$i]->Id,
+//                "TRANS_ID" => $booking[$i]->trans_id,
+//                "PUD_ID" => $booking[$i]->pub_uid,
+//                "CLIENT_ID" => $booking[$i]->client_id,
+//                "MEMBER" => $booking[$i]->is_member,
+//                "TRANS_NUM" => $booking[$i]->trans_num,
+//                "INVOICE_NUM" => $booking[$i]->invoice_num,
+//                "MAG_NAME" => $booking[$i]->mag_name,
+//                "MAG_COUNTRY" => $booking[$i]->mag_country,
+//                "SALES_PERSON" => $booking[$i]->sales_rep_name,
+//                "CLIENT_NAME" => $booking[$i]->client_name,
+//                "LINE_ITEM" => $booking[$i]->line_item,
+//                "QTY" => (int)$booking[$i]->qty,
+//                "AMOUNT" => $total_amount["Total"],
+//                "STATUS" => $booking[$i]->status,
+//                "CREATED" => $booking[$i]->created_at,
+//            );
+//
+//            $list_data[] = $data;
+//        }
+
+        if($items > 0)
         {
-            $overall_total = 0;
-            for($i = 0; $i < COUNT($booking); $i++)
-            {
-                $date_created = \Carbon\Carbon::parse($booking[$i]->created_at);
-                if($booking[$i]->status == 1){
-                    $status = "Pending";
-                }elseif($booking[$i]->status == 2){
-                    $status = "For Approval";
-                }elseif($booking[$i]->status == 3){
-                    $status = "Approved";
-                }elseif($booking[$i]->status == 5){
-                    $status = "Void";
-                }elseif($booking[$i]->status == 6){
-                    $status = "Approved/Invoiced";
-                }
-                $amount = $booking[$i]->new_amount != null ? $booking[$i]->new_amount : $booking[$i]->amount;
-
-                $booking_result[] = array(
-                    "reports_set" => "Booking",
-                    "mag_name" => $booking[$i]->mag_name,
-                    "sales_rep_name" => $booking[$i]->sales_rep_name,
-                    "client_name" => $booking[$i]->client_name,
-                    "line_item" => $booking[$i]->line_item,
-                    "qty" => $booking[$i]->qty,
-                    "new_amount" => number_format($amount, 2),
-                    "status" => $status,
-                    "created_at" => $date_created->format('F d, Y'),
-                    "issue" => "",
-                    "year" => ""
-
-                );
-
-                $overall_total += $amount;
-            }
-
-            return array("Code" => 200, "overall_total" => number_format($overall_total, 2), "data" => $booking_result);
+            return array("Code" => 200, "overall_total" => number_format($items, 2), "data" => $booking);
         }
 
-        $booking_result = 0;
-        return array("Code" => 404, "data" => $booking_result);
+        return array("Code" => 404, "data" => null);
 
     }
 
@@ -294,5 +260,15 @@ class reportController extends Controller
         $invoice_result = 0;
         return array("Code" => 404, "data" => $invoice_result);
 
+    }
+
+
+    public function do_curl($url) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $data = json_decode(curl_exec($ch), true);
+        curl_close($ch);
+        return $data;
     }
 }
