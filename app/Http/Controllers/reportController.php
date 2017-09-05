@@ -39,19 +39,27 @@ class reportController extends Controller
         }
 
         $filters = null;
-
         if($magazine_type_booking != "0"){
-            $filters .= "mag.magazine_type = {$magazine_type_booking}";
+            $filters .= "WHERE mag.magazine_type = {$magazine_type_booking}";
+        }
+        else {
+            $filters .= "WHERE mag.magazine_type LIKE '%'";
         }
 
         if($f_publication != "0"){
             $filters .= " AND mag.Id = {$f_publication}";
+        }
+        else {
+            $filters .= " AND mag.Id LIKE '%'";
         }
 
         if($_COOKIE['role'] != 3)
         {
             if($f_sales_rep != "0"){
                 $filters .= " AND booked.sales_rep_code = {$f_sales_rep}";
+            }
+            else {
+                $filters .= " AND booked.sales_rep_code LIKE '%'";
             }
         }
         else
@@ -62,17 +70,22 @@ class reportController extends Controller
         if($f_client != "0") {
             $filters .= " AND booked.client_id = {$f_client}";
         }
-
-        if($f_issue != "0") {
-            $filters .= " AND issue.quarter_issued = {$f_issue}";
+        else {
+            $filters .= " AND booked.client_id LIKE '%'";
         }
 
         if($f_year != "0") {
-            $filters .= " AND YEAR(created_at) = {$f_year}";
+            $filters .= " AND YEAR(booked.created_at) = {$f_year}";
+        }
+        else {
+            $filters .= " AND YEAR(booked.created_at) LIKE '%'";
         }
 
         if($f_status != "0") {
             $filters .= " AND booked.status = {$f_status}";
+        }
+        else {
+            $filters .= " AND booked.status LIKE '%'";
         }
 
         if((int)$f_operator == 1) //operator equal
@@ -94,6 +107,7 @@ class reportController extends Controller
                 trans.Id AS trans_id,
                 booked.client_id,
                 mag.Id as pub_uid,
+                mag.magazine_type,
                 (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
                 booked.trans_num,
                 (null) AS invoice_num,
@@ -113,46 +127,15 @@ class reportController extends Controller
             ON booked.Id = trans.transaction_id
             INNER JOIN magazine_table as mag
             ON mag.Id = trans.magazine_id
-           
             {$filters}
             ");
 
-        $list_data[] = [];
         $items = COUNT($booking);
-//        for($i = 0; $i < $items; $i++) {
-//            $total_amount = $this->do_curl(reportController::$API_URL . $booking[$i]->trans_id . "/1");
-//            if($i == 0) {
-//                unset($list_data);
-//            }
-//            $data = array(
-//                "ID" => $booking[$i]->Id,
-//                "TRANS_ID" => $booking[$i]->trans_id,
-//                "PUD_ID" => $booking[$i]->pub_uid,
-//                "CLIENT_ID" => $booking[$i]->client_id,
-//                "MEMBER" => $booking[$i]->is_member,
-//                "TRANS_NUM" => $booking[$i]->trans_num,
-//                "INVOICE_NUM" => $booking[$i]->invoice_num,
-//                "MAG_NAME" => $booking[$i]->mag_name,
-//                "MAG_COUNTRY" => $booking[$i]->mag_country,
-//                "SALES_PERSON" => $booking[$i]->sales_rep_name,
-//                "CLIENT_NAME" => $booking[$i]->client_name,
-//                "LINE_ITEM" => $booking[$i]->line_item,
-//                "QTY" => (int)$booking[$i]->qty,
-//                "AMOUNT" => $total_amount["Total"],
-//                "STATUS" => $booking[$i]->status,
-//                "CREATED" => $booking[$i]->created_at,
-//            );
-//
-//            $list_data[] = $data;
-//        }
-
         if($items > 0)
         {
             return array("Code" => 200, "overall_total" => number_format($items, 2), "data" => $booking);
         }
-
-        return array("Code" => 404, "data" => null);
-
+        return array("Code" => 404, "overall_total" => number_format(0, 2), "data" => null);
     }
 
     public function get_filter_data_invoice($magazine_type_invoice, $i_invoice_number, $i_publication, $i_issue, $i_year, $i_sales_rep, $i_date_from, $i_date_to, $i_operator)
@@ -161,105 +144,86 @@ class reportController extends Controller
             return redirect("/logout_process");
         }
 
-        if($magazine_type_invoice == 0){
-            $filter_mag_type = "xx.magazine_type LIKE '%'";
+        $filters = null;
+        if((int)$magazine_type_invoice == 0) {
+            $filters .= "WHERE aa.issue LIKE '%'";
+        }
+        else if((int)$magazine_type_invoice == 1){
+            $filters .= "WHERE aa.issue > 0";
+
         }else{
-            $filter_mag_type = "mag.magazine_type = {$magazine_type_invoice}";
+            $filters .= "WHERE aa.issue = 0";
         }
 
         if($i_invoice_number != 0){
-            $i_invoice_number_tran = "invoice_num = '{$i_invoice_number}'";
+            $filters .= " AND invoice_num = '{$i_invoice_number}'";
         }else{
-            $i_invoice_number_tran = "invoice_num LIKE '%'";
+            $filters .= " AND invoice_num LIKE '%'";
         }
 
         if($i_publication != 0){
-            $i_publication_tran = "xx.Id = {$i_publication}";
+            $filters .= " AND xx.Id = {$i_publication}";
         }else{
-            $i_publication_tran = "xx.Id LIKE '%'";
-        }
-
-        if($i_issue != 0){
-            $i_issue_tran = "issue = {$i_issue}";
-        }else{
-            $i_issue_tran = "issue LIKE '%'";
+            $filters .= " AND xx.Id LIKE '%'";
         }
 
         if($i_year != 0){
-            $i_year_tran = "YEAR(aa.created_at) = '{$i_year}'";
+            $filters .= " AND YEAR(aa.created_at) = '{$i_year}'";
         }else{
-            $i_year_tran = "aa.created_at LIKE '%'";
+            $filters .= " AND aa.created_at LIKE '%'";
         }
 
         if($_COOKIE['role'] != 3)
         {
             if($i_sales_rep != 0){
-                $i_sales_rep_tran = "aa.account_executive = {$i_sales_rep}";
+                $filters .= " AND aa.account_executive = {$i_sales_rep}";
             }else{
-                $i_sales_rep_tran = "aa.account_executive LIKE '%'";
+                $filters .= " AND aa.account_executive LIKE '%'";
             }
         }
         else
         {
-            $i_sales_rep_tran = "aa.account_executive = {$_COOKIE['Id']}";
+            $filters .= " AND aa.account_executive = {$_COOKIE['Id']}";
         }
 
         if($i_operator == 1) //operator equal
         {
             if($i_date_from != 0){
-                $i_date_from_tran = "DATE_FORMAT(aa.created_at, '%Y-%m-%d') = '{$i_date_from}'";
+                $filters .= " AND DATE_FORMAT(aa.created_at, '%Y-%m-%d') = DATE_FORMAT('{$i_date_from}', '%Y-%m-%d')";
             }else{
-                $i_date_from_tran = "aa.created_at LIKE '%'";
+                $filters .= " AND aa.created_at LIKE '%'";
             }
         }
         elseif($i_operator == 2) //operator between
         {
             if($i_date_from != 0 AND $i_date_to != 0){
-                $i_date_from_tran = "DATE_FORMAT(aa.created_at, '%Y-%m-%d') >= '{$i_date_from}' AND DATE_FORMAT(aa.created_at, '%Y-%m-%d') <= '{$i_date_to}'";
+                $filters .= " AND DATE_FORMAT(aa.created_at, '%Y-%m-%d') BETWEEN DATE_FORMAT('{$i_date_from}', '%Y-%m-%d') AND DATE_FORMAT('{$i_date_to}', '%Y-%m-%d')";
+
             }else{
-                $i_date_from_tran = "aa.created_at LIKE '%'";
+                $filters .= " AND aa.created_at LIKE '%'";
             }
         }
 
-        $filter_process = "WHERE " . $filter_mag_type . ' AND ' . $i_invoice_number_tran . ' AND ' . $i_publication_tran . ' AND ' . $i_issue_tran . ' AND ' . $i_year_tran . ' AND ' . $i_sales_rep_tran . ' AND ' . $i_date_from_tran;
-
         $invoice = DB::SELECT("
             SELECT 
-            aa.*, aa.created_at as invoice_created, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name, xx.Id as mag_uid, xx.magazine_name as mag_name
+            aa.*, DATE_FORMAT(aa.created_at, '%Y-%m-%d') as invoice_created, DATE_FORMAT(aa.due_date, '%Y-%m-%d') as invoice_due_date, DATE_FORMAT(aa.due_date, '%Y') as invoice_year, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name, xx.Id as mag_uid, xx.magazine_name as mag_name
             FROM invoice_table as aa
             INNER JOIN user_account as bb ON bb.Id = aa.account_executive
             INNER JOIN booking_sales_table as zz ON zz.trans_num = aa.booking_trans
             INNER JOIN magazine_transaction_table as yy ON yy.transaction_id = zz.Id
             INNER JOIN magazine_table as xx ON xx.Id = yy.magazine_id
             
-            {$filter_process}
+            {$filters}
             
             ");
 
-        if(COUNT($invoice) > 0)
+        $items = COUNT($invoice);
+        if($items > 0)
         {
-            for($i = 0; $i < COUNT($invoice); $i++)
-            {
-                $date_created = \Carbon\Carbon::parse($invoice[$i]->invoice_created);
-
-                $invoice_result[] = array(
-                    "reports_set" => "Invoice",
-                    "invoice_number" => $invoice[$i]->invoice_num,
-                    "publication" => $invoice[$i]->mag_name,
-                    "issue" => $invoice[$i]->issue,
-                    "year" => $date_created->format('Y'),
-                    "executive_account" => $invoice[$i]->sales_rep_name,
-                    "invoice_created" => $date_created->format('F d, Y'),
-                    "due_date" => $date_created->format('F d, Y')
-                );
-            }
-
-            return array("Code" => 200, "data" => $invoice_result);
+            return array("Code" => 200, "overall_total" => number_format($items, 2), "data" => $invoice);
         }
 
-        $invoice_result = 0;
-        return array("Code" => 404, "data" => $invoice_result);
-
+        return array("Code" => 404, "overall_total" => number_format(0, 2), "data" => null);
     }
 
 

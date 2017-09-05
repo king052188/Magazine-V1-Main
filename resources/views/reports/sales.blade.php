@@ -50,29 +50,32 @@
                             <table id="tbl_booking_lists" class="table display nowrap" cellspacing="0" width="100%">
                                 <thead>
                                     <tr>
+                                        <th style='text-align: left; width: 30px;'>#</th>
+                                        <th style='text-align: left; width: 100px;'>Trans#</th>
                                         <th style='text-align: left;'>Publication</th>
                                         <th style='text-align: left;'>Client</th>
                                         <th style='text-align: left; width: 300px;'>Sales Rep</th>
                                         <th style='text-align: left; width: 100px;'>Year</th>
                                         <th style='text-align: left; width: 100px;'>Amount</th>
-                                        <th style='text-align: left; width: 180px;'>Date Created</th>
+                                        <th style='text-align: left; width: 180px;'>Created</th>
+                                        <th style='text-align: left; width: 100px;'>Type</th>
                                         <th style='text-align: left; width: 130px;'>View</th>
                                     </tr>
                                 </thead>
                                 <tbody> </tbody>
                             </table>
 
-                            <table id="tbl_invoice_lists" class="table display nowrap dataTables-invoice" style = "display: none;" cellspacing="0" width="100%">
+                            <table id="tbl_invoice_lists" class="table display nowrap" style = "display: none;" cellspacing="0" width="100%">
                                 <thead>
                                 <tr>
-                                    <th style='text-align: left;'>Reports</th>
-                                    <th style='text-align: left;'>Invoice #</th>
-                                    <th style='text-align: left; width: 150px;'>Publication</th>
-                                    <th style='text-align: left; width: 150px;'>Issue</th>
+                                    <th style='text-align: left; width: 10px;'>#</th>
+                                    <th style='text-align: left; width: 100px;'>Invoice #</th>
+                                    <th style='text-align: left;'>Publication</th>
                                     <th style='text-align: left; width: 100px;'>Year</th>
-                                    <th style='text-align: left; width: 100px;'>Executive Account</th>
+                                    <th style='text-align: left;'>Executive Account</th>
                                     <th style='text-align: left; width: 100px;'>Invoice Created</th>
                                     <th style='text-align: left; width: 100px;'>Due Date</th>
+                                    <th style='text-align: left; width: 100px;'>View</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -153,7 +156,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>Client</td>
+                            <td>Client/Company</td>
                             <td>
                                 <select class="form-control chosen-select filter_click" id = "filter_m_client">
                                     <option value = "0">-- select --</option>
@@ -377,7 +380,6 @@
     <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
     <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
     <script>
-
         var over_all_total = 0;
 
         var trans_id = [];
@@ -522,7 +524,6 @@
             });
         });
 
-
         function get_booking(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator) {
             var url = "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_issue + "/" + f_year + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator;
             $.ajax({
@@ -531,11 +532,11 @@
                 beforeSend: function () {
                     var html = "";
                     html += "<tr>";
-                    html += "<td colspan='7' style='text-align: center;'>Please wait...</td>";
+                    html += "<td colspan='8' style='text-align: center;'>Please wait...</td>";
                     html += "</tr>";
                     $("#tbl_booking_lists > tbody").empty().prepend(html);
-                    $("#total_items").text("Calculating...");
-                    $("#over_all_total").text("Calculating...");
+                    $("#total_items").text("***calculating***");
+                    $("#over_all_total").text("***calculating***");
                 },
                 success: function(json) {
                     console.log(json);
@@ -545,36 +546,46 @@
                     $(json.data).each(function(k, d) {
                         trans_id.push(d.trans_num);
                         html += "<tr>";
+                        html += "<td>"+(t_id + 1)+"</td>";
+                        html += "<td>"+d.trans_num+"</td>";
                         html += "<td>"+d.mag_name+"</td>";
                         html += "<td>"+d.client_name+"</td>";
                         html += "<td>"+d.sales_rep_name+"</td>";
                         html += "<td>"+d.issue_year+"</td>";
-                        html += "<td style='text-align: right;'><span id='amount_"+d.trans_num+"'>Calculating...</span></td>";
+                        html += "<td style='text-align: right;'><span id='amount_"+t_id+"'>***calculating***</span></td>";
                         html += "<td>"+d.created_at+"</td>";
-                        html += "<td><a href='"+view_url+"/"+d.trans_num+"/preview' target='_blank'>Insertion Order</a></td>";
+                        if(parseInt(d.magazine_type) == 1) {
+                            html += "<td>PRINT</td>";
+                            html += "<td><a href='"+view_url+"/"+d.trans_num+"/PREVIEW' target='_blank'>Insertion Order</a></td>";
+                        }
+                        else {
+                            html += "<td>DIGITAL</td>";
+                            html += "<td><a href='"+view_url+"/"+d.trans_num+"/DIGITAL' target='_blank'>Insertion Order</a></td>";
+                        }
                         html += "</tr>";
+                        t_id++;
                     })
 
                     $("#tbl_booking_lists > tbody").empty().prepend(html);
                 }
             }).done(function () {
                 for (var i = 0; i < trans_id.length; i++) {
-                    get_amount_each_item(trans_id[i]);
+                    get_amount_each_item(trans_id[i], i);
                 }
                 $("#total_items").text(numeral(trans_id.length).format('0,0'));
             })
         }
 
-        function get_amount_each_item(trans_) {
+        function get_amount_each_item(trans_, i) {
             var url = "http://" + report_url_api + "/kpa/work/booking/report/" + trans_ + "/1";
             $.ajax({
                 url: url,
                 dataType: "JSON",
                 beforeSend: function () {
-                    $("#amount_" + trans_).text("Calculating...");
+                    $("#amount_" + i).text("***calculating***");
                 },
                 success: function(json) {
-                    $("#amount_" + trans_).text(numeral(json.Total).format('0,0.00'));
+                    $("#amount_" + i).text(numeral(json.Total).format('0,0.00'));
                     over_all_total = over_all_total + parseFloat(json.Total);
                     $("#over_all_total").text(numeral(over_all_total).format('0,0.00'));
                 }
@@ -647,46 +658,55 @@
 
         function get_filter_data_invoice(magazine_type_invoice, i_invoice_number, i_publication, i_issue, i_year, i_sales_rep, i_date_from, i_date_to, i_operator){
 
-            console.log("INVOICE: /sales_report/get_filter_data_invoice/" + magazine_type_invoice + "/" + i_invoice_number + "/" + i_publication + "/" + i_issue + "/" + i_year + "/" + i_sales_rep + "/" + i_date_from + "/" + i_date_to + "/" + i_operator);
+            var url = "/sales_report/get_filter_data_invoice/" + magazine_type_invoice + "/" + i_invoice_number + "/" + i_publication + "/" + i_issue + "/" + i_year + "/" + i_sales_rep + "/" + i_date_from + "/" + i_date_to + "/" + i_operator;
 
-            $(".dataTables-booking").DataTable().destroy();
-            $(".dataTables-invoice").DataTable().destroy();
+            console.log(url);
 
-            $('.dataTables-invoice').DataTable( {
-                ajax: "/sales_report/get_filter_data_invoice/" + magazine_type_invoice + "/" + i_invoice_number + "/" + i_publication + "/" + i_issue + "/" + i_year + "/" + i_sales_rep + "/" + i_date_from + "/" + i_date_to + "/" + i_operator,
-                columns: [
-                    { data: 'reports_set' },
-                    { data: 'invoice_number' },
-                    { data: 'publication' },
-                    { data: 'issue' },
-                    { data: 'year' },
-                    { data: 'executive_account' },
-                    { data: 'invoice_created' },
-                    { data: 'due_date' }
-                ],
-                dom: 'Bfrtip',
-                buttons: [
-                    {
-                        extend: 'excel',
-                        exportOptions: {
-                            columns: ':visible'
+            $.ajax({
+                url: url,
+                dataType: "JSON",
+                beforeSend: function () {
+                    var html = "";
+                    html += "<tr>";
+                    html += "<td colspan='8' style='text-align: center;'>Please wait...</td>";
+                    html += "</tr>";
+                    $("#tbl_invoice_lists > tbody").empty().prepend(html);
+                    $("#total_items").text("***calculating***");
+                    $("#over_all_total").text("***calculating***");
+                },
+                success: function(json) {
+                    console.log(json);
+                    var view_url = "http://" + report_url_api + "/kpa/work/transaction/invoice-order";
+                    var html = "";
+                    var t_id = 0;
+                    $(json.data).each(function(k, d) {
+                        trans_id.push(d.trans_num);
+                        html += "<tr>";
+                        html += "<td>"+(t_id + 1)+"</td>";
+                        html += "<td>"+d.invoice_num+"</td>";
+                        html += "<td>"+d.mag_name+"</td>";
+                        html += "<td>"+d.invoice_year+"</td>";
+                        html += "<td>"+d.sales_rep_name+"</td>";
+                        html += "<td>"+d.invoice_created+"</td>";
+                        html += "<td>"+d.invoice_due_date+"</td>";
+                        if(parseInt(d.issue) > 0) {
+                            html += "<td><a href='"+view_url+"/"+d.invoice_num+"' target='_blank'>Invoice</a></td>";
                         }
-                    },
-                    {
-                        extend: 'pdf',
-                        exportOptions: {
-                            columns: ':visible'
+                        else {
+                            html += "<td><a href='"+view_url+"/"+d.invoice_num+"/DIGITAL' target='_blank'>Invoice</a></td>";
                         }
-                    },
-                    {
-                        extend: 'print',
-                        exportOptions: {
-                            columns: ':visible'
-                        }
-                    },
-                    'colvis'
-                ]
-            });
+                        html += "</tr>";
+                        t_id++;
+                    })
+
+                    $("#tbl_invoice_lists > tbody").empty().prepend(html);
+                }
+            }).done(function () {
+                for (var i = 0; i < trans_id.length; i++) {
+                    get_amount_each_item(trans_id[i], i);
+                }
+                $("#total_items").text(numeral(trans_id.length).format('0,0'));
+            })
         }
 
         function get_publication() {
