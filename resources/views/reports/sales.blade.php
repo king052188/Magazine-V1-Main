@@ -544,7 +544,8 @@
                     var html = "";
                     var t_id = 0;
                     $(json.data).each(function(k, d) {
-                        trans_id.push(d.trans_num);
+                        var push_input = [d.trans_num, d.magazine_type];
+                        trans_id.push(push_input);
                         html += "<tr>";
                         html += "<td>"+(t_id + 1)+"</td>";
                         html += "<td>"+d.trans_num+"</td>";
@@ -569,15 +570,21 @@
                     $("#tbl_booking_lists > tbody").empty().prepend(html);
                 }
             }).done(function () {
+                over_all_total = 0;
+                $("#over_all_total").text(numeral(0).format('0,0.00'));
+                $("#total_items").text(numeral(0).format('0,0'));
                 for (var i = 0; i < trans_id.length; i++) {
                     get_amount_each_item(trans_id[i], i);
                 }
                 $("#total_items").text(numeral(trans_id.length).format('0,0'));
+                trans_id.length = 0;
+                trans_id = [];
             })
         }
 
         function get_amount_each_item(trans_, i) {
-            var url = "http://" + report_url_api + "/kpa/work/booking/report/" + trans_ + "/1";
+            var is_type = trans_[1] == 1 ? "print" : "digital";
+            var url = "http://" + report_url_api + "/kpa/work/booking/report/" + is_type + "/" + trans_[0];
             $.ajax({
                 url: url,
                 dataType: "JSON",
@@ -680,7 +687,7 @@
                     var html = "";
                     var t_id = 0;
                     $(json.data).each(function(k, d) {
-                        trans_id.push(d.trans_num);
+                        trans_id.push(d.invoice_num);
                         html += "<tr>";
                         html += "<td>"+(t_id + 1)+"</td>";
                         html += "<td>"+d.invoice_num+"</td>";
@@ -698,14 +705,10 @@
                         html += "</tr>";
                         t_id++;
                     })
-
                     $("#tbl_invoice_lists > tbody").empty().prepend(html);
                 }
             }).done(function () {
-                for (var i = 0; i < trans_id.length; i++) {
-                    get_amount_each_item(trans_id[i], i);
-                }
-                $("#total_items").text(numeral(trans_id.length).format('0,0'));
+
             })
         }
 
