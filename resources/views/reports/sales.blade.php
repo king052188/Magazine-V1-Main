@@ -33,6 +33,7 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title" style = "padding-top: 5px;">
                         <h5><button class = "btn btn-primary" data-toggle="modal" data-target="#filter_modal">Filter</button></h5>
+                        <h5 style="margin-left: 10px;"><button class = "btn btn-warning" id="btnExportToCSV">Export To CSV</button></h5>
                     </div>
 
                     <div class="ibox-content">
@@ -394,7 +395,6 @@
             $("#filter_i_operator").width(100);
         });
     </script>
-
     <!-- Chosen -->
     <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
     <script>
@@ -409,7 +409,9 @@
         }
     </script>
     <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('/js/table2csv.js') }}"></script>
     <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
+
     <script>
         var over_all_total = 0;
 
@@ -451,24 +453,16 @@
                     $("#btn_search").show();
                     $("#table_invoice").hide();
                     $("#btn_search_invoice").hide();
-//                    $("#magazine_type_booking").show();
-//                    $("#magazine_type_invoice").hide();
                 }
                 else if(order == 2){
                     $("#table_booking").hide();
                     $("#btn_search").hide();
                     $("#table_invoice").show();
                     $("#btn_search_invoice").show();
-//                    $("#magazine_type_booking").hide();
-//                    $("#magazine_type_invoice").show();
                 }
                 else{
                     $("#table_booking").hide();
-//                    $("#btn_search").show();
                     $("#table_invoice").hide();
-//                    $("#btn_search_invoice").hide();
-//                    $("#magazine_type_booking").show();
-//                    $("#magazine_type_invoice").hide();
                 }
             });
 
@@ -484,6 +478,14 @@
                     $("#digital_week").show();
                     $("#print_month").hide();
                 }
+            });
+
+            //btnExportToCSV
+
+            $("#btnExportToCSV").click(function(){
+                $("#tbl_booking_lists").table2csv({
+                    filename: 'booking_lists.csv'
+                });
             });
 
             $("#btn_search").click(function(){

@@ -153,7 +153,11 @@ class reportController extends Controller
             INNER JOIN magazine_table as mag
             ON mag.Id = trans.magazine_id
             {$inner_join}
+            INNER JOIN client_table AS company
+            ON booked.client_id = company.Id
             {$filters}
+             AND company.status = 2 AND company.type != 2
+            ORDER BY company.company_name ASC
         ";
 
         $booking = DB::SELECT($query);
@@ -234,15 +238,13 @@ class reportController extends Controller
 
         $invoice = DB::SELECT("
             SELECT 
-            aa.*, DATE_FORMAT(aa.created_at, '%Y-%m-%d') as invoice_created, DATE_FORMAT(aa.due_date, '%Y-%m-%d') as invoice_due_date, DATE_FORMAT(aa.due_date, '%Y') as invoice_year, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name, xx.Id as mag_uid, xx.magazine_name as mag_name
-            FROM invoice_table as aa
-            INNER JOIN user_account as bb ON bb.Id = aa.account_executive
-            INNER JOIN booking_sales_table as zz ON zz.trans_num = aa.booking_trans
-            INNER JOIN magazine_transaction_table as yy ON yy.transaction_id = zz.Id
-            INNER JOIN magazine_table as xx ON xx.Id = yy.magazine_id
-            
-            {$filters}
-            
+                aa.*, DATE_FORMAT(aa.created_at, '%Y-%m-%d') as invoice_created, DATE_FORMAT(aa.due_date, '%Y-%m-%d') as invoice_due_date, DATE_FORMAT(aa.due_date, '%Y') as invoice_year, concat_ws('',bb.first_name, ' ', bb.last_name) as sales_rep_name, xx.Id as mag_uid, xx.magazine_name as mag_name
+                FROM invoice_table as aa
+                INNER JOIN user_account as bb ON bb.Id = aa.account_executive
+                INNER JOIN booking_sales_table as zz ON zz.trans_num = aa.booking_trans
+                INNER JOIN magazine_transaction_table as yy ON yy.transaction_id = zz.Id
+                INNER JOIN magazine_table as xx ON xx.Id = yy.magazine_id
+                {$filters}
             ");
 
         $items = COUNT($invoice);
