@@ -38,7 +38,11 @@ class reportController extends Controller
             return redirect("/logout_process");
         }
 
+        $inner_join = null;
+        $field = null;
         $filters = null;
+        $tbl_trans = "INNER JOIN magazine_transaction_table AS trans ON booked.Id = trans.transaction_id";
+
         if($magazine_type_booking != "0"){
             $filters .= "WHERE mag.magazine_type = {$magazine_type_booking}";
         }
@@ -74,6 +78,28 @@ class reportController extends Controller
             $filters .= " AND booked.client_id LIKE '%'";
         }
 
+        if($f_issue != "0") {
+
+            if((int)$magazine_type_booking > 1) {
+                $d = explode(":", $f_issue);
+                $tbl_trans = "INNER JOIN magazine_digital_transaction_table AS trans ON booked.Id = trans.magazine_trans_id";
+                $field = " CONCAT(trans.month_id, '-', trans.week_id) AS issue,";
+                if($f_issue != "0:0") {
+                    $filters .= " AND trans.month_id = {$d[0]} AND trans.week_id = {$d[1]}";
+                }
+            }
+            else {
+                $tbl_trans = "INNER JOIN magazine_transaction_table AS trans ON booked.Id = trans.transaction_id";
+                $inner_join = "INNER JOIN magazine_issue_transaction_table AS issue ";
+                $inner_join .= "ON trans.Id = issue.magazine_trans_id ";
+                $field = " issue.quarter_issued AS issue,";
+                $filters .= " AND issue.quarter_issued = {$f_issue}";
+            }
+        }
+        else {
+            $field = " (-1) AS issue,";
+        }
+
         if($f_year != "0") {
             $filters .= " AND YEAR(booked.created_at) = {$f_year}";
         }
@@ -101,7 +127,7 @@ class reportController extends Controller
             }
         }
 
-        $booking = DB::SELECT("
+        $query = "
             SELECT 
                 booked.Id,
                 trans.Id AS trans_id,
@@ -118,17 +144,19 @@ class reportController extends Controller
                 ( SELECT COUNT(*) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
                 ( SELECT CASE WHEN SUM(line_item_qty) > 0 THEN SUM(line_item_qty) ELSE 0 END AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS qty,
                 ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
-                ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num  AND type = 1 AND status = 2 ) AS new_amount,
+                ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num  AND type = 1 AND status = 2 ) AS new_amount,{$field}
                 DATE_FORMAT(booked.created_at, '%Y') AS issue_year,
                 booked.status,
                 booked.created_at
             FROM booking_sales_table AS booked
-            INNER JOIN magazine_transaction_table AS trans
-            ON booked.Id = trans.transaction_id
+            {$tbl_trans}
             INNER JOIN magazine_table as mag
             ON mag.Id = trans.magazine_id
+            {$inner_join}
             {$filters}
-            ");
+        ";
+
+        $booking = DB::SELECT($query);
 
         $items = COUNT($booking);
         if($items > 0)

@@ -55,6 +55,7 @@
                                         <th style='text-align: left;'>Publication</th>
                                         <th style='text-align: left;'>Client</th>
                                         <th style='text-align: left; width: 300px;'>Sales Rep</th>
+                                        <th style='text-align: left; width: 100px;'>Issue</th>
                                         <th style='text-align: left; width: 100px;'>Year</th>
                                         <th style='text-align: left; width: 100px;'>Amount</th>
                                         <th style='text-align: left; width: 180px;'>Created</th>
@@ -122,7 +123,6 @@
                             <td>Type</td>
                             <td>
                                 <select class="form-control" style="background-color: #2f4050; color: #FFFFFF;" id = "magazine_type_booking">
-                                    <option value = "0">All</option>
                                     <option value = "1">Print</option>
                                     <option value = "2">Digital</option>
                                 </select>
@@ -166,7 +166,8 @@
                                 </select>
                             </td>
                         </tr>
-                        <tr>
+
+                        <tr id="print_month">
                             <td>Issue</td>
                             <td>
                                 <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_issue">
@@ -177,6 +178,36 @@
                                 </select>
                             </td>
                         </tr>
+
+                        {{--// digital --}}
+
+                        <tr id="digital_month" style="display: none;">
+                            <td>Month</td>
+                            <td>
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_month_issue">
+                                    <option value="0">-- select --</option>
+                                    <?php $months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];?>
+                                    @for($i = 0; $i < COUNT($months); $i++)
+                                        <option value='{{ $i + 1 }}'>{{ $months[$i] }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr id="digital_week" style="display: none;">
+                            <td>Week</td>
+                            <td>
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_week_issue">
+                                    <option value="0">-- select --</option>
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <option value='{{ $i }}'>Week {{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+
+                        {{--// digital --}}
+
                         <tr>
                             <td>Year</td>
                             <td>
@@ -411,6 +442,8 @@
                 ]
             });
 
+            //magazine_type_booking
+
             $("#reports_by").change(function(){
                 var order = parseInt($(this).val());
                 if(order == 1){
@@ -439,12 +472,34 @@
                 }
             });
 
+            $("#magazine_type_booking").change(function(){
+                var position_ = parseInt($(this).val());
+                if(position_ == 1) {
+                    $("#digital_month").hide();
+                    $("#digital_week").hide();
+                    $("#print_month").show();
+                }
+                else if(position_ == 2) {
+                    $("#digital_month").show();
+                    $("#digital_week").show();
+                    $("#print_month").hide();
+                }
+            });
+
             $("#btn_search").click(function(){
                 var magazine_type_booking = $("#magazine_type_booking").val();
                 var f_publication = $("#filter_m_publication").val();
                 var f_sales_rep = $("#filter_m_sales_rep").val();
                 var f_client = $("#filter_m_client").val();
+
                 var f_issue = $("#filter_m_issue").val();
+                var f_month_issue = $("#filter_m_month_issue").val();
+                var f_week_issue = $("#filter_m_week_issue").val();
+
+                if(parseInt(magazine_type_booking) > 1) {
+                    f_issue = f_month_issue + ":" + f_week_issue;
+                }
+
                 var f_year = $("#filter_m_year").val();
                 var f_status = $("#filter_m_status").val();
                 var f_d_from = $("#filter_m_date_from").val() != "" ? $("#filter_m_date_from").val() : "null";
@@ -526,6 +581,7 @@
 
         function get_booking(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator) {
             var url = "/sales_report/get_filter_data/" + magazine_type_booking + "/" + f_publication + "/" + f_sales_rep + "/" + f_client + "/" + f_issue + "/" + f_year + "/" + f_status + "/" + f_date_from + "/" + f_date_to + "/" + f_operator;
+            console.log(url);
             $.ajax({
                 url: url,
                 dataType: "JSON",
@@ -544,7 +600,7 @@
                     var html = "";
                     var t_id = 0;
                     $(json.data).each(function(k, d) {
-                        var push_input = [d.trans_num, d.magazine_type];
+                        var push_input = [d.trans_num, d.magazine_type, d.issue];
                         trans_id.push(push_input);
                         html += "<tr>";
                         html += "<td>"+(t_id + 1)+"</td>";
@@ -552,6 +608,7 @@
                         html += "<td>"+d.mag_name+"</td>";
                         html += "<td>"+d.client_name+"</td>";
                         html += "<td>"+d.sales_rep_name+"</td>";
+                        html += "<td>"+d.issue+"</td>";
                         html += "<td>"+d.issue_year+"</td>";
                         html += "<td style='text-align: right;'><span id='amount_"+t_id+"'>***calculating***</span></td>";
                         html += "<td>"+d.created_at+"</td>";
@@ -584,7 +641,9 @@
 
         function get_amount_each_item(trans_, i) {
             var is_type = trans_[1] == 1 ? "print" : "digital";
-            var url = "http://" + report_url_api + "/kpa/work/booking/report/" + is_type + "/" + trans_[0];
+            var url = "http://" + report_url_api + "/kpa/work/booking/report/" + is_type + "/" + trans_[0] + "/" + trans_[2];
+
+            console.log(url);
             $.ajax({
                 url: url,
                 dataType: "JSON",
