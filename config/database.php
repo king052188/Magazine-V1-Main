@@ -48,7 +48,7 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => 'api.lesterdigital.dev', //client.lesterdigital.com
+            'host' => 'api.magazine.com', //client.lesterdigital.com
             'port' => '80',
         ],
 

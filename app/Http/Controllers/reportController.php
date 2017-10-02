@@ -134,6 +134,7 @@ class reportController extends Controller
                 booked.client_id,
                 mag.Id as pub_uid,
                 mag.magazine_type,
+                booked.sales_rep_code,
                 (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
                 booked.trans_num,
                 (null) AS invoice_num,

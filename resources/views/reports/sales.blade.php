@@ -39,12 +39,17 @@
                     <div class="ibox-content">
                         <div class="table-responsive">
 
-                            <div style="width: 100%;">
+                            <div style="width: 100%; height: 45px;">
                                 <div style="float: left; text-align: left;">
-                                    <h3 id="total_items" style="margin: 0; padding: 0;">0</h3> <b>Total Items</b>
+                                    <h3 id="total_items" style="margin: 0; padding: 0;">0</h3> <b style="color: #A1A1A1;">Total Items</b>
                                 </div>
-                                <div style="float: right; text-align: right;">
-                                    <h3 id="over_all_total" style="margin: 0; padding: 0;">0</h3> <b>Over All Total</b>
+
+                                <div style="float: right; text-align: right; padding-left: 10px;">
+                                    <h3 id="over_all_commission" style="margin: 0; padding: 0;">0</h3> <b style="color: #A1A1A1;">Over All Commission</b>
+                                </div>
+
+                                <div style="float: right; text-align: right; padding-right: 10px; border-right: 1px solid #E7E7E7;">
+                                    <h3 id="over_all_total" style="margin: 0; padding: 0;">0</h3> <b style="color: #A1A1A1;">Over All Total</b>
                                 </div>
                             </div>
 
@@ -53,12 +58,13 @@
                                     <tr>
                                         <th style='text-align: left; width: 30px;'>#</th>
                                         <th style='text-align: left; width: 100px;'>Trans#</th>
-                                        <th style='text-align: left;'>Publication</th>
+                                        <th style='text-align: left; width: 180px;'>Publication</th>
                                         <th style='text-align: left;'>Client</th>
-                                        <th style='text-align: left; width: 300px;'>Sales Rep</th>
-                                        <th style='text-align: left; width: 100px;'>Issue</th>
-                                        <th style='text-align: left; width: 100px;'>Year</th>
-                                        <th style='text-align: left; width: 100px;'>Amount</th>
+                                        <th style='text-align: left; width: 180px;'>Sales Rep</th>
+                                        <th style='text-align: left; width: 80px;'>Issue</th>
+                                        <th style='text-align: left; width: 80px;'>Year</th>
+                                        <th style='text-align: right; width: 100px;'>Amount</th>
+                                        <th style='text-align: right; width: 120px;'>Commission</th>
                                         <th style='text-align: left; width: 180px;'>Created</th>
                                         <th style='text-align: left; width: 100px;'>Type</th>
                                         <th style='text-align: left; width: 130px;'>View</th>
@@ -108,6 +114,7 @@
                     <h4 class="modal-title" id="exampleModalLabel">Filter Reports</h4>
                 </div>
                 <div class="modal-body">
+
                     <table border = "0" style="width: 100%;">
                         <tr>
                             <td style="width: 270px;">Reports by</td>
@@ -134,28 +141,19 @@
                     <br /><br />
 
                     <table border = "0" style="width: 100%;" id = "table_booking">
+
                         <tr>
                             <td style="width: 270px;">Publication</td>
                             <td>
                                 <select class="form-control chosen-select filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_publication">
                                     <option value = "0">-- select --</option>
-                                    @for($i = 0; $i < COUNT($publication); $i++)
-                                        <option value = "{{ $publication[$i]->Id }}">{{ $publication[$i]->magazine_name }}</option>
+                                    @for($o = 0; $o < COUNT($publication); $o++)
+                                        <option value = "{{ $publication[$o]->Id }}">{{ $publication[$o]->magazine_name }}</option>
                                     @endfor
                                 </select>
                             </td>
                         </tr>
-                        <tr>
-                            <td>Sales Rep</td>
-                            <td>
-                                <select class="form-control filter_click" id = "filter_m_sales_rep" style = "background-color: #2f4050; color: #FFFFFF;">
-                                    <option value = "0">-- select --</option>
-                                    @for($i = 0; $i < COUNT($sales_rep); $i++)
-                                        <option value = "{{ $sales_rep[$i]->Id }}">{{ $sales_rep[$i]->first_name . " " . $sales_rep[$i]->last_name }}</option>
-                                    @endfor
-                                </select>
-                            </td>
-                        </tr>
+
                         <tr>
                             <td>Client/Company</td>
                             <td>
@@ -220,6 +218,17 @@
 
                                     @for($i = date('Y'); $i < 2026; $i++)
                                         <option value='{{ $i }}'>{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Sales Rep</td>
+                            <td>
+                                <select class="form-control filter_click" id = "filter_m_sales_rep" style = "background-color: #2f4050; color: #FFFFFF;">
+                                    <option value = "0">-- select --</option>
+                                    @for($i = 0; $i < COUNT($sales_rep); $i++)
+                                        <option value = "{{ $sales_rep[$i]->Id }}">{{ $sales_rep[$i]->first_name . " " . $sales_rep[$i]->last_name }}</option>
                                     @endfor
                                 </select>
                             </td>
@@ -360,6 +369,140 @@
                         </tr>
                     </table>
 
+                    <table border = "0" style="width: 100%; display: none;" id = "table_commission" >
+                        <tr>
+                            <td>Sales Rep</td>
+                            <td>
+                                <select class="form-control filter_click" id = "filter_m_sales_rep" style = "background-color: #2f4050; color: #FFFFFF;">
+                                    <option value = "0">-- select --</option>
+                                    @for($i = 0; $i < COUNT($sales_rep); $i++)
+                                        <option value = "{{ $sales_rep[$i]->Id }}">{{ $sales_rep[$i]->first_name . " " . $sales_rep[$i]->last_name }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="width: 270px;">Publication</td>
+                            <td>
+                                <select class="form-control chosen-select filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_comm_publication">
+                                    <option value = "0">-- select --</option>
+                                    @for($i = 0; $i < COUNT($publication); $i++)
+                                        <option value = "{{ $publication[$i]->Id }}">{{ $publication[$i]->magazine_name }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Client/Company</td>
+                            <td>
+                                <select class="form-control chosen-select filter_click" id = "filter_comm_client">
+                                    <option value = "0">-- select --</option>
+                                    @for($i = 0; $i < COUNT($clients); $i++)
+                                        <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr id="print_month_comm">
+                            <td>Issue</td>
+                            <td>
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_issue">
+                                    <option value="0">-- select --</option>
+                                    @for($i = 1; $i < 13; $i++)
+                                        <option value='{{ $i }}'>{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+
+                        {{--// digital --}}
+
+                        <tr id="digital_month_comm" style="display: none;">
+                            <td>Month</td>
+                            <td>
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_month_issue">
+                                    <option value="0">-- select --</option>
+                                    <?php $months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];?>
+                                    @for($i = 0; $i < COUNT($months); $i++)
+                                        <option value='{{ $i + 1 }}'>{{ $months[$i] }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr id="digital_week_comm" style="display: none;">
+                            <td>Week</td>
+                            <td>
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_week_issue">
+                                    <option value="0">-- select --</option>
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <option value='{{ $i }}'>Week {{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+
+                        {{--// digital --}}
+
+                        <tr>
+                            <td>Year</td>
+                            <td>
+                                <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "filter_m_year">
+                                    <option value="0">-- select --</option>
+                                    @for($i = date('Y') - 4; $i < date('Y'); $i++)
+                                        <option value='{{ $i }}'>{{ $i }}</option>
+                                    @endfor
+
+                                    @for($i = date('Y'); $i < 2026; $i++)
+                                        <option value='{{ $i }}'>{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Status</td>
+                            <td>
+                                <select class="form-control filter_click" id = "filter_m_status" style = "background-color: #2f4050; height: 30px; color: #FFFFFF;">
+                                    <option value = "0">-- select --</option>
+                                    <option value = "1">Pending</option>
+                                    <option value = "2">For Approval</option>
+                                    <option value = "3">Approved</option>
+                                    <option value = "5">Void</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan = "2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td colspan = "2" style = "font-weight: bold; size: 15px;">Booking Date Created</td>
+                        </tr>
+                        <tr>
+                            <td>Date Operator</td>
+                            <td>
+                                <select class="form-control filter_click" id = "filter_comm_operator" style = "background-color: #2f4050; height: 30px; color: #FFFFFF;">
+                                    <option value = "1">Equal</option>
+                                    <option value = "2">Between</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label style = "font-weight: normal;" id = "lbl_from">Date</label></td>
+                            <td>
+                                <input size="16" type="date" id = "filter_m_date_from_comm" value="" style = "background-color: #2f4050; height: 30px; color: #FFFFFF;">
+                            </td>
+                        </tr>
+                        <tr style = "display: none;" id = "date_to_area_comm">
+                            <td><label style = "font-weight: normal;" id = "lbl_to"></label></td>
+                            <td>
+                                <input size="16" type="date" id = "filter_m_date_to_comm" value="" style = "background-color: #2f4050; height: 30px; color: #FFFFFF;">
+                            </td>
+                        </tr>
+                    </table>
+
                 </div>
                 <div class="modal-footer">
                 <a type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
@@ -374,22 +517,24 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
-            $("#filter_m_publication_chosen").width(250);
-            $("#filter_i_publication_chosen").width(250);
+            $("#filter_m_publication_chosen").width(270);
+            $("#filter_i_publication_chosen").width(270);
+            $("#filter_comm_publication_chosen").width(270);
 
-            $("#filter_m_client_chosen").width(250);
-            $("#filter_i_client_chosen").width(250);
+            $("#filter_m_client_chosen").width(270);
+            $("#filter_i_client_chosen").width(270);
+            $("#filter_comm_client_chosen").width(270);
 
             $("#filter_m_sales_rep").width(225);
             $("#filter_i_sales_rep").width(225);
 
             $("#filter_m_status").width(225);
 
-            $("#filter_m_date_from").width(250);
-            $("#filter_i_date_from").width(250);
+            $("#filter_m_date_from").width(265);
+            $("#filter_i_date_from").width(265);
 
-            $("#filter_m_date_to").width(250);
-            $("#filter_i_date_to").width(250);
+            $("#filter_m_date_to").width(265);
+            $("#filter_i_date_to").width(265);
 
             $("#filter_m_operator").width(100);
             $("#filter_i_operator").width(100);
@@ -411,9 +556,8 @@
     <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('/js/table2csv.js') }}"></script>
     <script src="//cdn.datatables.net/buttons/1.2.4/js/buttons.colVis.min.js"></script>
-
     <script>
-        var over_all_total = 0;
+        var over_all_total = 0, over_all_commission = 0;
 
         var trans_id = [];
 
@@ -447,18 +591,31 @@
             //magazine_type_booking
 
             $("#reports_by").change(function(){
+
+                //btn_search_invoice
                 var order = parseInt($(this).val());
                 if(order == 1){
                     $("#table_booking").show();
                     $("#btn_search").show();
                     $("#table_invoice").hide();
+                    $("#table_commission").hide();
                     $("#btn_search_invoice").hide();
                 }
                 else if(order == 2){
                     $("#table_booking").hide();
                     $("#btn_search").hide();
                     $("#table_invoice").show();
+                    $("#table_commission").hide();
                     $("#btn_search_invoice").show();
+                }
+                else if(order == 3){
+                    $("#btn_search").hide();
+                    $("#table_booking").hide();
+                    $("#table_invoice").hide();
+                    $("#table_commission").show();
+                    $("#btn_search_invoice").show();
+                }
+                else if(order == 4) {
                 }
                 else{
                     $("#table_booking").hide();
@@ -472,11 +629,19 @@
                     $("#digital_month").hide();
                     $("#digital_week").hide();
                     $("#print_month").show();
+
+                    $("#digital_month_comm").hide();
+                    $("#digital_week_comm").hide();
+                    $("#print_month_comm").show();
                 }
                 else if(position_ == 2) {
                     $("#digital_month").show();
                     $("#digital_week").show();
                     $("#print_month").hide();
+
+                    $("#digital_month_comm").show();
+                    $("#digital_week_comm").show();
+                    $("#print_month_comm").hide();
                 }
             });
 
@@ -579,6 +744,18 @@
                     $("#lbl_i_to").text("");
                 }
             });
+
+            $("#filter_comm_operator").change(function(){
+                if($(this).val() == 2){
+                    $("#date_to_area_comm").show();
+                    $("#lbl_from_comm").text("From");
+                    $("#lbl_to_comm").text("To");
+                }else{
+                    $("#date_to_area_comm").hide();
+                    $("#lbl_from_comm").text("Date");
+                    $("#lbl_to_comm").text("");
+                }
+            });
         });
 
         function get_booking(magazine_type_booking, f_publication, f_sales_rep, f_client, f_issue, f_year, f_status, f_date_from, f_date_to, f_operator) {
@@ -595,6 +772,7 @@
                     $("#tbl_booking_lists > tbody").empty().prepend(html);
                     $("#total_items").text("***calculating***");
                     $("#over_all_total").text("***calculating***");
+                    $("#over_all_commission").text("***calculating***");
                 },
                 success: function(json) {
                     console.log(json);
@@ -613,6 +791,7 @@
                         html += "<td>"+d.issue+"</td>";
                         html += "<td>"+d.issue_year+"</td>";
                         html += "<td style='text-align: right;'><span id='amount_"+t_id+"'>***calculating***</span></td>";
+                        html += "<td style='text-align: right;'><span id='commission_"+t_id+"'>***calculating***</span></td>";
                         html += "<td>"+d.created_at+"</td>";
                         if(parseInt(d.magazine_type) == 1) {
                             html += "<td>PRINT</td>";
@@ -630,7 +809,9 @@
                 }
             }).done(function () {
                 over_all_total = 0;
+                over_all_commission = 0;
                 $("#over_all_total").text(numeral(0).format('0,0.00'));
+                $("#over_all_commission").text(numeral(0).format('0,0.00'));
                 $("#total_items").text(numeral(0).format('0,0'));
                 for (var i = 0; i < trans_id.length; i++) {
                     get_amount_each_item(trans_id[i], i);
@@ -651,11 +832,20 @@
                 dataType: "JSON",
                 beforeSend: function () {
                     $("#amount_" + i).text("***calculating***");
+                    $("#commission_" + i).text("***calculating***");
                 },
                 success: function(json) {
+
+                    console.log(json);
+
                     $("#amount_" + i).text(numeral(json.Total).format('0,0.00'));
+                    $("#commission_" + i).text(numeral(json.Sales_Commission).format('0,0.00'));
+
                     over_all_total = over_all_total + parseFloat(json.Total);
+                    over_all_commission = over_all_commission + parseFloat(json.Sales_Commission);
+
                     $("#over_all_total").text(numeral(over_all_total).format('0,0.00'));
+                    $("#over_all_commission").text(numeral(over_all_commission).format('0,0.00'));
                 }
             })
         }
