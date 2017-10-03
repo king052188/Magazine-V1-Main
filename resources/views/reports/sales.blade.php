@@ -6,8 +6,9 @@
 
 @section('styles')
     <link href="{{  asset('css/plugins/chosen/chosen.css')  }}" rel="stylesheet">
-    <link href="{{  asset('css/plugins/dataTables/datatables.min.css')  }}" rel="stylesheet">
-    <link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet">
+    {{--<link href="{{  asset('css/plugins/dataTables/datatables.min.css')  }}" rel="stylesheet">--}}
+    {{--<link href="{{  asset('css/theme.default.css')  }}" rel="stylesheet">--}}
+    {{--<link href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css" rel="stylesheet">--}}
 @endsection
 
 @section('magazine_content')
@@ -120,10 +121,10 @@
                             <td style="width: 270px;">Reports by</td>
                             <td>
                                 <select class="form-control filter_click" style="background-color: #2f4050; color: #FFFFFF;" id = "reports_by">
-                                    <option value = "1">Booking</option>
+                                    <option value = "1">Booking/Commission</option>
                                     <option value = "2">Invoice</option>
-                                    <option value = "3">Commission</option>
-                                    <option value = "4">Tax</option>
+                                    {{--<option value = "3">Commission</option>--}}
+                                    {{--<option value = "4">Tax</option>--}}
                                 </select>
                             </td>
                         </tr>
@@ -542,6 +543,8 @@
     </script>
     <!-- Chosen -->
     <script src="{{ asset('js/plugins/chosen/chosen.jquery.js') }}"></script>
+    <script src="{{ asset('js/jquery.tablesorter.js') }}"></script>
+    <script src="{{ asset('js/jquery.tablesorter.combined.js') }}"></script>
     <script>
         var config = {
             '.chosen-select'           : {},
@@ -552,6 +555,10 @@
         for (var selector in config) {
             $(selector).chosen(config[selector]);
         }
+
+//        $(document).ready(function(){
+//            $("#tbl_booking_lists").tablesorter();
+//        });
     </script>
     <script src="{{ asset('/js/plugins/dataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('/js/table2csv.js') }}"></script>
