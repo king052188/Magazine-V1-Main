@@ -9,6 +9,15 @@
 @endsection
 
 @section('magazine_content')
+<style>
+    .tab_container { padding: 10px 5px 10px 5px; }
+    .tab_container table tr td { font-weight: 600; padding: 8px; }
+
+    .goal { float: left; height: 34px; font-weight: 600; text-align: right; padding: 0 5px 0 5px; }
+    .goal_set_value { background-color: #921794;  color: #fff;  width: 100%; }
+    .goal_current_value { margin-top: -34px; background-color: #9FC90E; color: #fff; }
+</style>
+
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
         <h2>Users</h2>
@@ -52,19 +61,18 @@
                     <table class="table table-striped table-bordered table-hover UserListdataTables" >
                         <thead>
                         <tr>
-                            <th>First Name</th>
-                            <th>Middle Name</th>
-                            <th>Last Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
+                            <th>Sales Name (Last, First and Middle)</th>
+                            <th style="width: 150px;">Email</th>
+                            <th style="width: 100px;">Role</th>
+                            <th style="width: 150px;">Goal Statistic</th>
+                            <th style="width: 50px;">Action</th>
                         </tr>
                         </thead>
                         <tbody>
+                            <?php $count = 0; ?>
                             @foreach ($users as $u)
                                 <tr>
-                                    <td>{{ $u->first_name }}</td>
-                                    <td>{{ $u->middle_name }}</td>
-                                    <td>{{ $u->last_name }}</td>
+                                    <td>{{ $u->last_name .', '. $u->first_name .' '. $u->middle_name }}</td>
                                     <td>{{ $u->email }}</td>
                                     <td>
                                         <?php
@@ -77,9 +85,19 @@
                                             }
                                         ?>
                                     </td>
+                                    <td class="graph">
+                                      <?php
+                                        $set_A = 15000;
+                                        $set_B = 10000;
+                                        $set_C = ($set_B / $set_A) * 100;
+                                      ?>
+                                      <div id="goalStatsSet_{{ $count }}" class="goal goal_set_value"><span class="goal_span">{{ number_format($set_A, 2) }}</span></div>
+                                      <div id="goalStatsCur_{{ $count }}" class="goal goal_current_value" data-percent="{{ $set_C }}"><span>{{ $set_B }}</span></div>
+                                    </td>
+                                    <td><button class="btn btn-primary" onclick="show_settings({{ $u->Id }});"> <i class="fa fa-cogs" aria-hidden="true"></i> Settings</button></td>
                                 </tr>
+                                <?php $count++; ?>
                             @endforeach
-
                         </tbody>
                     </table>
                 </div>
@@ -88,22 +106,169 @@
     </div>
     </div>
 </div>
+
+<div class="modal fade" id="user_tab_settings" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Settings</h4>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <div class="col-lg-12">
+
+
+
+                      <div class="tabbable-panel">
+                        <div class="tabbable-line">
+                          <ul class="nav nav-tabs ">
+                            <li >
+                              <a href="#tab_default_1" data-toggle="tab">Edit Profile</a>
+                            </li>
+                            <li class="active">
+                              <a href="#tab_default_2" data-toggle="tab">Goal Settings</a>
+                            </li>
+                          </ul>
+
+                          <div class="tab-content">
+
+                            <div class="tab-pane" id="tab_default_1">
+                              <div class="tab_container">
+                                  <h3>It's being updated... </h3>
+                              </div>
+                            </div>
+
+                            <div class="tab-pane active" id="tab_default_2">
+                              <div class="tab_container">
+
+                                  <h3>GOAL SETTINGS</h3>
+
+                                  <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                                    <tr>
+                                      <td> Magazine: </td>
+                                      <td>
+                                        <select class="form-control" id = "filter" style = "margin-top: -7px;">
+                                            <option value = "0" {{ $filter == "" ? "selected" : "" }}>-- All --</option>
+                                        </select>
+                                      </td>
+                                    </tr>
+
+                                    <tr>
+                                      <td> Issue: </td>
+                                      <td>
+                                        <select class="form-control" id = "filter" style = "margin-top: -7px;">
+                                            <option value = "0" {{ $filter == "" ? "selected" : "" }}>-- All --</option>
+                                        </select>
+                                      </td>
+                                    </tr>
+
+                                    <tr>
+                                      <td> Year: </td>
+                                      <td>
+                                        <select class="form-control" id = "filter" style = "margin-top: -7px;">
+                                            <option value = "0" {{ $filter == "" ? "selected" : "" }}>-- All --</option>
+                                        </select>
+                                      </td>
+                                    </tr>
+
+                                    <tr>
+                                      <td> Amount: </td>
+                                      <td><input type="text" class="form-control input-sm" id="txtTempEmail" placeholder="Amount here..."></td>
+                                    </tr>
+
+                                  </table>
+
+                                  <button class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+                    </div>
+                </div>
+                <div style = "clear: both;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" style = "margin-right: 5px;"><i class="fa fa-ban" aria-hidden="true"></i> Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{{ asset('js/jquery-2.1.1.js')}}"></script>
+<script>
+  setInterval(reload, 2000);
+  function reload() {
+    $(document).ready( function() {
+      $('.graph > .goal_current_value').each(function() {
+         var data_per = $(this).data('percent');
+
+         var dp = Math.random() * 100;
+         console.log("Percent: " + dp);
+
+          $(this).empty().prepend("<span >"+ numeral(dp).format('0,0.0') +"%</span>");
+         $(this).css("width", dp + "%");
+      });
+    });
+  }
+</script>
+
 @endsection
 @section('scripts')
-
 <script src="{{ asset('js/plugins/dataTables/datatables.min.js') }}"></script>
 <script>
-
     $(document).ready( function() {
         $("#filter").on('change', function(){
             window.location.href = "/users/all/" + $(this).val();
         });
-
         $('.UserListdataTables').DataTable({
         dom: '<"html5buttons"B>lTfgitp',
         buttons: []
         });
 
+        // var users_count = {{ COUNT($users) }};
+        // for(var i = 0; i < users_count; i++) {
+        //
+        //   var rand_intA = get_dummy_number(600);
+        //
+        //   var rand_intB = get_dummy_number(500);
+        //
+        //   var rand_valC = get_times(rand_intB, rand_intA);
+        //
+        //   $("#goalStatsSet_" + i).empty().prepend("<span >"+ rand_intA +"</span>");
+        //
+        //   $("#goalStatsCur_" + i).empty().prepend("<span >"+ rand_intB +"</span>");
+        //
+        //   // console.log(rand_intA);
+        //   //
+        //   // console.log(rand_intB);
+        //
+        //   console.log(rand_valC);
+        //
+        //   $("#goalStatsCur_" + i).attr("style", "width: " + rand_valC + "%;");
+        //
+        // }
+
     });
+
+    function get_dummy_number(value) {
+      var rand_ = Math.random() * 100;
+      return Math.round(rand_ * value);
+    }
+
+    function get_times(a, b) {
+      var x = b / a;
+      return x * 100;
+    }
+
 </script>
 @endsection

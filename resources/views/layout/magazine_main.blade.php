@@ -3,7 +3,6 @@
 ?>
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,9 +20,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/checkbox.css') }}">
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
     <link href="{{ asset('css/plugins/steps/jquery.steps.css')}}" rel="stylesheet">
-
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.5.6/numeral.min.js"></script>
     <script>
+        var userIdSelected_ = 0;
+
         function do_flat() {
             $(document).ready(function () {
                 $('#product_flat_plan').modal({
@@ -39,17 +39,14 @@
                     },
                     success: function(data) {
                         var json = $.parseJSON(data);
-
                         var f_type = '<select class="form-control" id = "fp_type" name="fp_type">';
                         f_type += '<option value="0">-- Select --</option>';
                         f_type += '<option value="1">Existing Flat Plan</option>';
                         f_type += '<option value="2">Create New Flat PLan</option>';
                         f_type += '</select>';
                         $("#flat_plan_publication_type").empty().prepend(f_type);
-
                         $("#fp_type").change(function(){
                             var val = $(this).val();
-
                             if(val == 1){
                                 console.log("Existing");
                                 $("#fp_publication").show();
@@ -89,7 +86,6 @@
                         select += '</select>';
                         $("#flat_plan_publication").empty().prepend(select);
 
-
                         $("#fp_publication").change(function(){
                             var value = $(this).val();
                             var values = value.split(":");
@@ -105,27 +101,20 @@
                                 },
                                 success: function(data) {
                                     var json = $.parseJSON(data);
-
                                     if(json.Status == 404){
                                         $("#flat_table_wrapper").hide();
                                         $("#flat_plan_data_table").hide();
                                         $("#err_mes_table").text(' No Existing Flat Plan');
                                         return false;
                                     }
-
                                     if(json.Status == 200){
-
                                         $("#flat_table_wrapper").show();
                                         $("#flat_plan_data_table").show();
                                         $("#err_mes_table").text('');
-
                                         $(json.Result).each(function(a, tran){
-
                                             var mag_id = tran.magazine_id;
                                             var trans_number = tran.trans_number;
-
                                             var url_exists = "http://"+ report_url_api + "/kpa/work-v2/flat-plan/" + mag_id + "/" + trans_number;
-
                                             table_data += '<tr>';
                                             table_data += '<td>'+ tran.magazine_id +'</td>';
                                             table_data += '<td>'+ tran.trans_number +'</td>';
@@ -165,7 +154,6 @@
                         year_create += '</select></div>';
                         $("#flat_plan_year_create").empty().prepend(year_create);
 
-
                         var issue_create = '<div style = "width: 48%; float: right;"><label id = "issue_create_lbl" style = "display: none;">Issue</label><select class="form-control" id = "issue_create" name="issue_create" style = "margin-top: 10px; display: none;">';
                         issue_create += '@for($i = 1; $i < 13; $i++)';
                         issue_create += '<option value="{{ $i }}">{{ $i }}</option>';
@@ -175,11 +163,8 @@
 
                     }
                 });
-
-
             })
         }
-
 
         function do_proceed() {
             $(document).ready(function () {
@@ -190,7 +175,6 @@
                 var mag_id = $("#fp_publication_create").val();
                 var magazine_year = $("#year_create").val();
                 var magazine_issues = $("#issue_create").val();
-
 
                 if( parseInt(type) == 0 ) {
                     $("#err_mes_type").text(' Oops, Please select type');
@@ -203,7 +187,6 @@
                 }
 
                 if(parseInt(type) == 1){ //Existing Flat Plan
-
                     console.log("Existing Flat Plan");
                     var url = "http://" + report_url_api + "/kpa/work-v2/flat-plan/" + mag_id + "?year=" + magazine_year + "&issue=" + magazine_issues;
                 }
@@ -215,13 +198,19 @@
                 window.location.href=url;
             })
         }
+
+        function show_settings(id) {
+          userIdSelected_ = id;
+          $('#user_tab_settings').modal({
+              show: true
+          });
+        }
     </script>
     @yield('styles')
-
     <style>
        select { text-transform: capitalize; }
     </style>
-</head> 
+</head>
 
 <body>
     <div id="wrapper">
