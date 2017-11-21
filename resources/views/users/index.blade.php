@@ -120,8 +120,6 @@
                 <div class="col-lg-12">
                     <div class="col-lg-12">
 
-
-
                       <div class="tabbable-panel">
                         <div class="tabbable-line">
                           <ul class="nav nav-tabs ">
@@ -150,8 +148,11 @@
                                     <tr>
                                       <td> Magazine: </td>
                                       <td>
-                                        <select class="form-control" id = "filter" style = "margin-top: -7px;">
-                                            <option value = "0" {{ $filter == "" ? "selected" : "" }}>-- All --</option>
+                                        <select class="form-control" id = "ddlPublication" style = "margin-top: -7px;">
+                                            <option value = "0">-- All --</option>
+                                            @for($o = 0; $o < COUNT($publication); $o++)
+                                                <option value = "{{ $publication[$o]->Id }}">{{ $publication[$o]->magazine_name }}</option>
+                                            @endfor
                                         </select>
                                       </td>
                                     </tr>
@@ -159,8 +160,11 @@
                                     <tr>
                                       <td> Issue: </td>
                                       <td>
-                                        <select class="form-control" id = "filter" style = "margin-top: -7px;">
-                                            <option value = "0" {{ $filter == "" ? "selected" : "" }}>-- All --</option>
+                                        <select class="form-control" id = "ddlIssue" style = "margin-top: -7px;">
+                                            <option value = "0">-- All --</option>
+                                            @for($o = 1; $o <= 12; $o++)
+                                                <option value = "{{ $o }}">{{ $o }}</option>
+                                            @endfor
                                         </select>
                                       </td>
                                     </tr>
@@ -168,15 +172,18 @@
                                     <tr>
                                       <td> Year: </td>
                                       <td>
-                                        <select class="form-control" id = "filter" style = "margin-top: -7px;">
-                                            <option value = "0" {{ $filter == "" ? "selected" : "" }}>-- All --</option>
+                                        <select class="form-control" id = "ddlYear" style = "margin-top: -7px;">
+                                            <option value = "0">-- All --</option>
+                                            @for($o = 2014; $o <= date("Y"); $o++)
+                                                <option value = "{{ $o }}">{{ $o }}</option>
+                                            @endfor
                                         </select>
                                       </td>
                                     </tr>
 
                                     <tr>
                                       <td> Amount: </td>
-                                      <td><input type="text" class="form-control input-sm" id="txtTempEmail" placeholder="Amount here..."></td>
+                                      <td><input type="text" class="form-control input-sm" id="txtAmount" placeholder="Amount here..."></td>
                                     </tr>
 
                                   </table>
@@ -189,8 +196,6 @@
                           </div>
                         </div>
                       </div>
-
-
 
 
                     </div>
@@ -211,10 +216,8 @@
     $(document).ready( function() {
       $('.graph > .goal_current_value').each(function() {
          var data_per = $(this).data('percent');
-
          var dp = Math.random() * 100;
          console.log("Percent: " + dp);
-
           $(this).empty().prepend("<span >"+ numeral(dp).format('0,0.0') +"%</span>");
          $(this).css("width", dp + "%");
       });
