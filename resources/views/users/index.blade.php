@@ -188,7 +188,7 @@
 
                                   </table>
 
-                                  <button class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                                  <button id="btnAdGoalSettings" class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
 
                               </div>
                             </div>
@@ -211,7 +211,7 @@
 
 <script src="{{ asset('js/jquery-2.1.1.js')}}"></script>
 <script>
-  setInterval(reload, 2000);
+  // setInterval(reload, 2000);
   function reload() {
     $(document).ready( function() {
       $('.graph > .goal_current_value').each(function() {
@@ -223,6 +223,69 @@
       });
     });
   }
+
+  $(document).ready( function() {
+    $("#btnAdGoalSettings").click(function() {
+
+      var ddlPublication = $("#ddlPublication").val();
+      var ddlIssue = $("#ddlIssue").val();
+      var ddlYear = $("#ddlYear").val();
+      var txtAmount = $("#txtAmount").val();
+
+      var ddlPublication_parse = parseInt(ddlPublication);
+      var ddlIssue_parse = parseInt(ddlIssue);
+      var ddlYear_parse = parseInt(ddlYear);
+      var txtAmount_parse = parseFloat(txtAmount);
+
+      if(ddlPublication_parse == 0) {
+        alert("Please select a publication.");
+        return false;
+      }
+
+      if(ddlIssue_parse == 0) {
+        alert("Please the issue number.");
+        return false;
+      }
+
+      if(ddlYear_parse == 0) {
+        alert("Please the year.");
+        return false;
+      }
+      if(txtAmount_parse == 0) {
+        alert("Please enter the rigth amount.");
+        return false;
+      }
+
+      if(isNaN(txtAmount_parse)) {
+        alert("Characters is not allowed.");
+        return false;
+      }
+
+      var data = { user_id: userIdSelected_, magazine_id: ddlPublication_parse, issue: ddlIssue_parse, year: ddlYear_parse, amount: txtAmount_parse };
+
+      save_goal(data);
+
+    })
+  })
+
+  function save_goal(data) {
+    $(document).ready(function() {
+        $.ajax({
+            dataType: 'json',
+            type:'GET',
+            data: data,
+            url: '/users/goal/settings'
+        }).done(function(json){
+          if(json.Status == 200) {
+            alert("Goal Settings was saved.");
+            location.reload();
+            return false;
+          }
+          alert("Something went wrong, Please try again.");
+        });
+    })
+  }
+
 </script>
 
 @endsection

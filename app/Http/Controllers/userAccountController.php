@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\UserAccount;
+use App\Goal;
 use DB;
 
 class userAccountController extends Controller
@@ -72,5 +73,26 @@ class userAccountController extends Controller
         $user->save();
 
         return redirect('users/all')->with('success', 'Successfully Added New User.');
+    }
+
+    public function add_goal_settings(Request $request) {
+
+      $g = new Goal();
+      $g->user_id = $request->user_id;
+      $g->magazine_id = $request->magazine_id;
+      $g->issue = $request->issue;
+      $g->year = $request->year;
+      $g->amount = $request->amount;
+      $g->status = 1;
+      if($g->save()) {
+        return array(
+          "Status" => 200
+        );
+      }
+
+      return array(
+        "Status" => 500
+      );
+
     }
 }

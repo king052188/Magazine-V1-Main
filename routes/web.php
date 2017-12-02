@@ -61,6 +61,8 @@ Route::get('/users/create', 'userAccountController@create');
 Route::post('/users/store', 'userAccountController@store');
 Route::get('/users/all/{filter?}', 'userAccountController@index');
 
+Route::get('/users/goal/settings', 'userAccountController@add_goal_settings');
+
 // Contract Routes
 Route::get('/contract/create', 'contractController@create');
 Route::post('/contract/store', 'contractController@store');
@@ -217,4 +219,3 @@ Route::get('/api/cc_info/list/{client_id}', 'bookingController@cc_info_list');
 Route::get('/api/cc_set_primary/{cc_uid}', 'bookingController@cc_set_primary');
 
 //Route::get('/ph/developers', 'DeveloperClass@index');
-
