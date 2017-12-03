@@ -64,7 +64,7 @@
                             <th>Sales Name (Last, First and Middle)</th>
                             <th style="width: 150px;">Email</th>
                             <th style="width: 100px;">Role</th>
-                            <th style="width: 150px;">Goal Statistic</th>
+                            <!-- <th style="width: 150px;">Goal Statistic</th> -->
                             <th style="width: 50px;">Action</th>
                         </tr>
                         </thead>
@@ -85,16 +85,17 @@
                                             }
                                         ?>
                                     </td>
-                                    <td class="graph">
+                                    <!-- <td class="graph">
                                       <?php
                                         $set_A = 15000;
                                         $set_B = 10000;
                                         $set_C = ($set_B / $set_A) * 100;
+                                        $name =  $u->first_name  .' '. $u->last_name;
                                       ?>
                                       <div id="goalStatsSet_{{ $count }}" class="goal goal_set_value"><span class="goal_span">{{ number_format($set_A, 2) }}</span></div>
                                       <div id="goalStatsCur_{{ $count }}" class="goal goal_current_value" data-percent="{{ $set_C }}"><span>{{ $set_B }}</span></div>
-                                    </td>
-                                    <td><button class="btn btn-primary" onclick="show_settings({{ $u->Id }});"> <i class="fa fa-cogs" aria-hidden="true"></i> Settings</button></td>
+                                    </td> -->
+                                    <td><button class="btn btn-primary" id="btn_{{ $u->Id }}" onclick="show_settings({{ $u->Id }});" data-sales="{{ $name }}"> <i class="fa fa-cogs" aria-hidden="true"></i> Settings</button></td>
                                 </tr>
                                 <?php $count++; ?>
                             @endforeach
@@ -117,88 +118,110 @@
                 <h4 class="modal-title" id="myModalLabel">Settings</h4>
             </div>
             <div class="modal-body">
+              <h3 id="gaol_sales_name" style="margin: 0 0 30px 0;"></h3>
+
                 <div class="col-lg-12">
-                    <div class="col-lg-12">
+                  <div class="tabbable-panel">
+                    <div class="tabbable-line">
+                      <ul class="nav nav-tabs ">
+                        <li >
+                          <a href="#tab_default_1" data-toggle="tab">Edit Profile</a>
+                        </li>
+                        <li class="active">
+                          <a href="#tab_default_2" data-toggle="tab">Goal Settings</a>
+                        </li>
+                        <li >
+                          <a href="#tab_default_3" data-toggle="tab">Goal Lists</a>
+                        </li>
+                      </ul>
 
-                      <div class="tabbable-panel">
-                        <div class="tabbable-line">
-                          <ul class="nav nav-tabs ">
-                            <li >
-                              <a href="#tab_default_1" data-toggle="tab">Edit Profile</a>
-                            </li>
-                            <li class="active">
-                              <a href="#tab_default_2" data-toggle="tab">Goal Settings</a>
-                            </li>
-                          </ul>
+                      <div class="tab-content">
 
-                          <div class="tab-content">
 
-                            <div class="tab-pane" id="tab_default_1">
-                              <div class="tab_container">
-                                  <h3>It's being updated... </h3>
-                              </div>
-                            </div>
 
-                            <div class="tab-pane active" id="tab_default_2">
-                              <div class="tab_container">
+                        <div class="tab-pane" id="tab_default_1">
+                          <div class="tab_container">
+                              <h3>It's being updated... </h3>
+                          </div>
+                        </div>
 
-                                  <h3>GOAL SETTINGS</h3>
+                        <div class="tab-pane active" id="tab_default_2">
+                          <div class="tab_container">
 
-                                  <table style="width: 100%;" cellspacing="0" cellpadding="0">
-                                    <tr>
-                                      <td> Magazine: </td>
-                                      <td>
-                                        <select class="form-control" id = "ddlPublication" style = "margin-top: -7px;">
-                                            <option value = "0">-- All --</option>
-                                            @for($o = 0; $o < COUNT($publication); $o++)
-                                                <option value = "{{ $publication[$o]->Id }}">{{ $publication[$o]->magazine_name }}</option>
-                                            @endfor
-                                        </select>
-                                      </td>
-                                    </tr>
+                            <h3>GOAL SETTINGS</h3>
+                            <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                              <tr>
+                                <td> Magazine: </td>
+                                <td>
+                                  <select class="form-control" id = "ddlPublication" style = "margin-top: -7px;">
+                                      <option value = "0">-- All --</option>
+                                      @for($o = 0; $o < COUNT($publication); $o++)
+                                          <option value = "{{ $publication[$o]->Id }}">{{ $publication[$o]->magazine_name }}</option>
+                                      @endfor
+                                  </select>
+                                </td>
+                              </tr>
 
-                                    <tr>
-                                      <td> Issue: </td>
-                                      <td>
-                                        <select class="form-control" id = "ddlIssue" style = "margin-top: -7px;">
-                                            <option value = "0">-- All --</option>
-                                            @for($o = 1; $o <= 12; $o++)
-                                                <option value = "{{ $o }}">{{ $o }}</option>
-                                            @endfor
-                                        </select>
-                                      </td>
-                                    </tr>
+                              <tr>
+                                <td> Issue: </td>
+                                <td>
+                                  <select class="form-control" id = "ddlIssue" style = "margin-top: -7px;">
+                                      <option value = "0">-- All --</option>
+                                      @for($o = 1; $o <= 12; $o++)
+                                          <option value = "{{ $o }}">{{ $o }}</option>
+                                      @endfor
+                                  </select>
+                                </td>
+                              </tr>
 
-                                    <tr>
-                                      <td> Year: </td>
-                                      <td>
-                                        <select class="form-control" id = "ddlYear" style = "margin-top: -7px;">
-                                            <option value = "0">-- All --</option>
-                                            @for($o = 2014; $o <= date("Y"); $o++)
-                                                <option value = "{{ $o }}">{{ $o }}</option>
-                                            @endfor
-                                        </select>
-                                      </td>
-                                    </tr>
+                              <tr>
+                                <td> Year: </td>
+                                <td>
+                                  <select class="form-control" id = "ddlYear" style = "margin-top: -7px;">
+                                      <option value = "0">-- All --</option>
+                                      @for($o = 2014; $o <= date("Y"); $o++)
+                                          <option value = "{{ $o }}">{{ $o }}</option>
+                                      @endfor
+                                  </select>
+                                </td>
+                              </tr>
 
-                                    <tr>
-                                      <td> Amount: </td>
-                                      <td><input type="text" class="form-control input-sm" id="txtAmount" placeholder="Amount here..."></td>
-                                    </tr>
+                              <tr>
+                                <td> Amount: </td>
+                                <td><input type="text" class="form-control input-sm" id="txtAmount" placeholder="Amount here..."></td>
+                              </tr>
 
-                                  </table>
-
-                                  <button id="btnAdGoalSettings" class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
-
-                              </div>
-                            </div>
+                            </table>
+                            <button id="btnAdGoalSettings" class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
 
                           </div>
                         </div>
+
+                        <div class="tab-pane" id="tab_default_3">
+                          <div class="tab_container">
+
+                            <h3>GOAL LISTS</h3>
+                            <table id="tblGoalSettingsList" style="width: 100%;" cellspacing="0" cellpadding="0">
+                              <thead>
+                                <tr>
+                                  <th>Magazine</th>
+                                  <th style="width: 100px;">Issue</th>
+                                  <th style="width: 100px;">Year</th>
+                                  <th style="width: 130px;">Goal Amount</th>
+                                  <th style="width: 130px;">Achived Amount</th>
+                                  <th style="width: 130px;">Goal Percent</th>
+                                </th>
+                              </thead>
+                              <tbody></tbody>
+                            </table>
+
+                          </div>
+                        </div>
+
                       </div>
 
-
                     </div>
+                  </div>
                 </div>
                 <div style = "clear: both;"></div>
             </div>
@@ -218,7 +241,7 @@
          var data_per = $(this).data('percent');
          var dp = Math.random() * 100;
          console.log("Percent: " + dp);
-          $(this).empty().prepend("<span >"+ numeral(dp).format('0,0.0') +"%</span>");
+         $(this).empty().prepend("<span >"+ numeral(dp).format('0,0.0') +"%</span>");
          $(this).css("width", dp + "%");
       });
     });
@@ -226,7 +249,6 @@
 
   $(document).ready( function() {
     $("#btnAdGoalSettings").click(function() {
-
       var ddlPublication = $("#ddlPublication").val();
       var ddlIssue = $("#ddlIssue").val();
       var ddlYear = $("#ddlYear").val();
@@ -267,6 +289,66 @@
 
     })
   })
+
+  function get_goal_lists(data) {
+    $(document).ready(function() {
+        $.ajax({
+            dataType: 'json',
+            type:'GET',
+            data: data,
+            url: '/users/goal/lists'
+        }).done(function(json){
+          var html = "";
+          var count = 0;
+          caches_for_achived = [];
+          $(json.Data).each(function(a,b) {
+            html+="<tr>";
+            html+="<td>"+b.magazine_name+"</td>";
+            html+="<td>"+b.issue+"</td>";
+            html+="<td>"+b.year+"</td>";
+            html+="<td>"+numeral(b.amount).format('0,0.00')+"</td>";
+            html+="<td><span id='achives_"+count+"'></span></td>";
+            html+="<td><span id='achives_"+count+"_percent'></span></td>";
+            html+="</tr>";
+            var c_data = [b.magazine_id, b.issue, b.year, userIdSelected_, b.amount];
+            caches_for_achived.push(c_data);
+            count++;
+          })
+          $("#tblGoalSettingsList > tbody").empty().prepend(html);
+          for(var i = 0; i < caches_for_achived.length; i++) {
+            var url = "http://" + report_url_api + "/kpa/work/goal/report";
+            url += "/" + caches_for_achived[i][0];
+            url += "/" + caches_for_achived[i][1];
+            url += "/" + caches_for_achived[i][2];
+            url += "/" + caches_for_achived[i][3];
+            console.log(url);
+            var amount = caches_for_achived[i][4];
+            get_achives_amount(url, amount, i);
+          }
+        });
+    })
+  }
+
+  function get_achives_amount(url, amount, id) {
+    $(document).ready(function() {
+        $.ajax({
+            dataType: 'json',
+            type:'GET',
+            url: url,
+            beforeSend: function () {
+              $("#achives_"+id).text("***");
+            },
+        }).done(function(json){
+          $("#achives_"+id).text(numeral(json.Total_Amount).format('0,0.00'));
+          var get_percent = parseFloat(json.Total_Amount) / parseFloat(amount);
+          get_percent = get_percent * 100;
+            console.log(amount);
+            console.log(get_percent);
+          $("#achives_"+id+"_percent").empty().text(numeral(get_percent).format('0,0.00') + "%");
+
+        });
+    })
+  }
 
   function save_goal(data) {
     $(document).ready(function() {

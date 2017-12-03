@@ -61,6 +61,7 @@ Route::get('/users/create', 'userAccountController@create');
 Route::post('/users/store', 'userAccountController@store');
 Route::get('/users/all/{filter?}', 'userAccountController@index');
 
+Route::get('/users/goal/lists', 'userAccountController@get_goal_settings');
 Route::get('/users/goal/settings', 'userAccountController@add_goal_settings');
 
 // Contract Routes

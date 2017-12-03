@@ -75,6 +75,23 @@ class userAccountController extends Controller
         return redirect('users/all')->with('success', 'Successfully Added New User.');
     }
 
+    public function get_goal_settings(Request $request) {
+
+      $u_id = (int)$request->user_id;
+
+      $g = DB::select("
+        SELECT *,
+        (SELECT magazine_name FROM magazine_table WHERE id = magazine_id) AS magazine_name
+        FROM user_gaol_settings_table WHERE user_id = {$u_id};
+      ");
+
+      return array(
+        "Status" => 200,
+        "Data" => $g,
+      );
+
+    }
+
     public function add_goal_settings(Request $request) {
 
       $g = new Goal();

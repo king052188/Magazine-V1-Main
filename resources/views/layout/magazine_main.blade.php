@@ -22,7 +22,8 @@
     <link href="{{ asset('css/plugins/steps/jquery.steps.css')}}" rel="stylesheet">
     <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/1.5.6/numeral.min.js"></script>
     <script>
-        var userIdSelected_ = 0;
+        var userIdSelected_ = 0, userNameSelected = null;
+        var caches_for_achived = [];
 
         function do_flat() {
             $(document).ready(function () {
@@ -200,11 +201,17 @@
         }
 
         function show_settings(id) {
+          userNameSelected = $("#btn_"+id).data("sales");
+          $("#gaol_sales_name").empty().text("Sales Name: " +userNameSelected);
+          console.log(userNameSelected);
           userIdSelected_ = id;
           $('#user_tab_settings').modal({
               show: true
           });
+          var data = {user_id : id};
+          get_goal_lists(data);
         }
+
     </script>
     @yield('styles')
     <style>
