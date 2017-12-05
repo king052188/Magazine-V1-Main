@@ -128,7 +128,7 @@
                           <a href="#tab_default_1" data-toggle="tab">Edit Profile</a>
                         </li>
                         <li class="active">
-                          <a href="#tab_default_2" data-toggle="tab">Goal Settings</a>
+                          <a href="#tab_default_2" data-toggle="tab">Set Goal</a>
                         </li>
                         <li >
                           <a href="#tab_default_3" data-toggle="tab">Goal Lists</a>
@@ -205,11 +205,12 @@
                               <thead>
                                 <tr>
                                   <th>Magazine</th>
+                                  <th style="width: 180px;">Date Set</th>
                                   <th style="width: 100px;">Issue</th>
                                   <th style="width: 100px;">Year</th>
-                                  <th style="width: 130px;">Goal Amount</th>
-                                  <th style="width: 130px;">Achived Amount</th>
-                                  <th style="width: 130px;">Goal Percent</th>
+                                  <th style="width: 100px;">Goal Amount</th>
+                                  <th style="width: 100px;">Sale</th>
+                                  <th style="width: 100px;">Achievement</th>
                                 </th>
                               </thead>
                               <tbody></tbody>
@@ -304,6 +305,7 @@
           $(json.Data).each(function(a,b) {
             html+="<tr>";
             html+="<td>"+b.magazine_name+"</td>";
+            html+="<td>"+b.created_at+"</td>";
             html+="<td>"+b.issue+"</td>";
             html+="<td>"+b.year+"</td>";
             html+="<td>"+numeral(b.amount).format('0,0.00')+"</td>";
@@ -339,13 +341,20 @@
               $("#achives_"+id).text("***");
             },
         }).done(function(json){
-          $("#achives_"+id).text(numeral(json.Total_Amount).format('0,0.00'));
-          var get_percent = parseFloat(json.Total_Amount) / parseFloat(amount);
-          get_percent = get_percent * 100;
-            console.log(amount);
-            console.log(get_percent);
-          $("#achives_"+id+"_percent").empty().text(numeral(get_percent).format('0,0.00') + "%");
 
+          $("#achives_"+id).text(numeral(json.Total_Amount).format('0,0.00'));
+
+          console.log(amount);
+          console.log(get_percent);
+
+          if(parseFloat(json.Total_Amount) >= parseFloat(amount)) {
+            $("#achives_"+id+"_percent").empty().text(numeral(100).format('0,0.00') + "%");
+          }
+          else {
+            var get_percent = parseFloat(json.Total_Amount) / parseFloat(amount);
+            get_percent = get_percent * 100;
+            $("#achives_"+id+"_percent").empty().text(numeral(get_percent).format('0,0.00') + "%");
+          }
         });
     })
   }
