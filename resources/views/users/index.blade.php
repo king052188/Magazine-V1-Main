@@ -137,8 +137,6 @@
 
                       <div class="tab-content">
 
-
-
                         <div class="tab-pane" id="tab_default_1">
                           <div class="tab_container">
                               <h3>It's being updated... </h3>
@@ -201,7 +199,7 @@
                           <div class="tab_container">
 
                             <h3>GOAL LISTS</h3>
-                            <table id="tblGoalSettingsList" style="width: 100%;" cellspacing="0" cellpadding="0">
+                            <table id="tblGoalSettingsList" style="width: 100%; border:" cellspacing="0" cellpadding="0">
                               <thead>
                                 <tr>
                                   <th>Magazine</th>
@@ -254,7 +252,6 @@
       var ddlIssue = $("#ddlIssue").val();
       var ddlYear = $("#ddlYear").val();
       var txtAmount = $("#txtAmount").val();
-
       var ddlPublication_parse = parseInt(ddlPublication);
       var ddlIssue_parse = parseInt(ddlIssue);
       var ddlYear_parse = parseInt(ddlYear);
@@ -310,7 +307,8 @@
             html+="<td>"+b.year+"</td>";
             html+="<td>"+numeral(b.amount).format('0,0.00')+"</td>";
             html+="<td><span id='achives_"+count+"'></span></td>";
-            html+="<td><span id='achives_"+count+"_percent'></span></td>";
+            html+="<td><div id='achives_A"+count+"_percent' class='goal goal_set_value'><span class='goal_span'></span></div>";
+            html+="<div id='achives_B"+count+"_percent' class='goal goal_current_value'><span>2</span></div></td>";
             html+="</tr>";
             var c_data = [b.magazine_id, b.issue, b.year, userIdSelected_, b.amount];
             caches_for_achived.push(c_data);
@@ -341,19 +339,21 @@
               $("#achives_"+id).text("***");
             },
         }).done(function(json){
-
           $("#achives_"+id).text(numeral(json.Total_Amount).format('0,0.00'));
-
-          console.log(amount);
-          console.log(get_percent);
-
+          var get_percent = 0;
           if(parseFloat(json.Total_Amount) >= parseFloat(amount)) {
-            $("#achives_"+id+"_percent").empty().text(numeral(100).format('0,0.00') + "%");
+            $("#achives_B"+id+"_percent").empty().text(numeral(100).format('0,0.00') + "%");
+            $("#achives_B"+id+"_percent").attr("style", "width: 100%;");
           }
           else {
-            var get_percent = parseFloat(json.Total_Amount) / parseFloat(amount);
+            get_percent = parseFloat(json.Total_Amount) / parseFloat(amount);
             get_percent = get_percent * 100;
-            $("#achives_"+id+"_percent").empty().text(numeral(get_percent).format('0,0.00') + "%");
+            $("#achives_B"+id+"_percent").empty().text(numeral(get_percent).format('0,0.00') + "%");
+            $("#achives_B"+id+"_percent").attr("style", "width: "+get_percent+"%;");
+            if(get_percent == 0) {
+              $("#achives_A"+id+"_percent").empty().text(numeral(get_percent).format('0,0.00') + "%");
+              $("#achives_B"+id+"_percent").hide();
+            }
           }
         });
     })

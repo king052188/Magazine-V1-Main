@@ -303,7 +303,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">Discount: <i>by percentage (1-100)</i></label>
-                                <input type="text" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
+                                <input type="text" class="form-control" id="txtDiscountDollar" name = "txtDiscountDollar" placeholder="Enter discount. I.e: 2 / 12" >
+                                <input type="hidden" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
                             </div>
                             <div class="form-group">
                                 <label for="recipient-name" class="form-control-label">Remarks: <i>300 Characters</i> </label>
@@ -861,19 +862,35 @@
             });
 
             $('#txtAmount').val("0.00");
-            $('#txtDiscount').on('keyup', function(){
+            $('#txtDiscountDollar').on('keyup', function(){
                 //var origin_amount = issues_total_amount;
                 var origin_amount = $("#txtBaseAmountHidden").val();
                 var value = $(this).val();
                 if(value != "") {
-                    var orig_amount = (parseFloat(origin_amount) * parseFloat(value)) / 100;
-                    var new_amount = parseFloat(origin_amount) - orig_amount;
-                    $('#txtAmount').val(numeral(new_amount).format('0,0.00'));
+                  var new_amount = parseFloat(origin_amount) - parseFloat(value);
+                  var orig_amount_percentage = parseFloat(value) / parseFloat(origin_amount)
+                  orig_amount_percentage = orig_amount_percentage * 100;
+                  $('#txtDiscount').val(numeral(orig_amount_percentage).format('0.00'));
+                  $('#txtAmount').val(numeral(new_amount).format('0,0.00'));
                 }
                 else {
                     $('#txtAmount').val(numeral(origin_amount).format('0,0.00'));
                 }
             });
+
+            // $('#txtDiscount').on('keyup', function(){
+            //     //var origin_amount = issues_total_amount;
+            //     var origin_amount = $("#txtBaseAmountHidden").val();
+            //     var value = $(this).val();
+            //     if(value != "") {
+            //         var orig_amount = (parseFloat(origin_amount) * parseFloat(value)) / 100;
+            //         var new_amount = parseFloat(origin_amount) - orig_amount;
+            //         $('#txtAmount').val(numeral(new_amount).format('0,0.00'));
+            //     }
+            //     else {
+            //         $('#txtAmount').val(numeral(origin_amount).format('0,0.00'));
+            //     }
+            // });
         });
 
         function onCallDiscount(item_id, item_amount) {

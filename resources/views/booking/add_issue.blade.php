@@ -36,7 +36,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
 
     <div class="container col-md-12">
-    
+
         <div class="row form-group mb0 mrl15">
             <div class="col-xs-12">
                 <ul class="nav nav-pills nav-justified thumbnail setup-panel">
@@ -84,7 +84,7 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="row">
                                                     <div class="col-xs-12">
                                                         <label id = "package_label"></label>
@@ -297,8 +297,9 @@
                             <input type="hidden" class="form-control" id="txtBaseAmountHidden" name = "txtBaseAmountHidden" readonly>
                         </div>
                         <div class="form-group">
-                            <label for="recipient-name" class="form-control-label">Discount: <i>by percentage</i></label>
-                            <input type="text" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: 2 / 12" >
+                            <label for="recipient-name" class="form-control-label">Discount: <i>by dollar amount</i></label>
+                            <input type="text" class="form-control" id="txtDiscountDollar" name = "txtDiscountDollar" placeholder="Enter dollar amount. I.e: 10 or 750" >
+                            <input type="hidden" class="form-control" id="txtDiscount" name = "txtDiscount" placeholder="Enter discount. I.e: from 0.0100 to 1" >
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="form-control-label">Remarks: <i>300 Characters</i> </label>
@@ -1422,18 +1423,43 @@ function populate_issues_transaction(uid) {
         });
 
         $('#txtAmount').val("0.00");
-        $('#txtDiscount').on('keyup', function(){
+        $('#txtDiscountDollar').on('keyup', function(){
             var origin_amount = BaseTotalAmount;
             var value = $(this).val();
             if(value != "") {
-                var orig_amount = (parseFloat(origin_amount) * parseFloat(value)) / 100;
-                var new_amount = parseFloat(origin_amount) - orig_amount;
+                var new_amount = parseFloat(origin_amount) - parseFloat(value);
+                var orig_amount_percentage = parseFloat(value) / parseFloat(origin_amount)
+                orig_amount_percentage = orig_amount_percentage * 100;
+                $('#txtDiscount').val(numeral(orig_amount_percentage).format('0.00'));
                 $('#txtAmount').val(numeral(new_amount).format('0,0.00'));
             }
             else {
                 $('#txtAmount').val("0.00");
             }
         });
+
+        // $('#txtDiscount').on('keyup', function(){
+        //     var origin_amount = BaseTotalAmount;
+        //     var value = $(this).val();
+        //     if(value != "") {
+        //
+        //       // var orig_amount = (parseFloat(origin_amount) * parseFloat(value)) / 100;
+        //       // var new_amount = parseFloat(origin_amount) - orig_amount;
+        //
+        //         var orig_amount = parseFloat(value) / parseFloat(origin_amount)
+        //         orig_amount = orig_amount * 100;
+        //
+        //         console.log(orig_amount);
+        //
+        //         // var new_amount = parseFloat(origin_amount) - orig_amount;
+        //
+        //
+        //         $('#txtAmount').val(numeral(orig_amount).format('0,0.00'));
+        //     }
+        //     else {
+        //         $('#txtAmount').val("0.00");
+        //     }
+        // });
 
     }); //add semi colon
 }
