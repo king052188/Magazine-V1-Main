@@ -44,6 +44,8 @@ Route::get('/client/client_contacts/{company_uid}', 'clientController@client_con
 Route::get('/client/update/{company_uid}', 'clientController@client_update');
 Route::post('/client/update/save/{company_uid}', 'clientController@client_update_save');
 
+Route::get('/client/duplicate/{company_uid}', 'clientController@client_duplicate');
+
 Route::get('/contact/update/{contact_uid}', 'clientController@contact_update');
 Route::post('/client/save_update_contact', 'clientController@contact_update_save');
 

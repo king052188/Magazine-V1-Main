@@ -21,21 +21,27 @@ class clientController extends Controller
         $clients = DB::SELECT("SELECT * FROM client_table ORDER BY company_name ASC");
         return view('client/index', compact('clients'));
     }
-    
+
     public function create()
     {
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
 
-        $clients = Client::all();
+        $clients = DB::select("
+          SELECT C.*,
+          CASE WHEN M.magazine_name IS NULL THEN 'ALL' ELSE CONCAT(M.magazine_name, ', ALL') END AS magazine_name
+          FROM client_table AS C
+          LEFT JOIN magazine_table AS M
+          ON C.magazine_id = M.Id"
+        );
         $result = DB::table('client_reference_table')->get();
         $tax = DB::table('taxes_table')->get();
+        $nav_publication = DB::table('magazine_table')->where('status', '=', 2)->orderBy('magazine_name', 'ASC')->get();
 
         $nav_dashboard = "";
         $nav_clients = "active";
         $nav_publisher = "";
-        $nav_publication = "";
         $nav_sales = "";
         $nav_payment = "";
         $nav_reports = "";
@@ -51,14 +57,22 @@ class clientController extends Controller
         }else{
             $state = $request['c_state'];
         }
-        
+
+        $is_member = -1;
+        $m_magazine = 0;
+        if($request['c_is_member']) {
+          $is_member = 1;
+          $m_magazine = (int)$request['c_member_to'];
+        }
+
         $company = new Client();
         $company->company_name = $request['c_company_name'];
         $company->address = $request['c_address'];
         $company->city = $request['c_city'];
         $company->state = $state;
         $company->zip_code = $request['c_zip_code'];
-        $company->is_member = $request['c_is_member'] == false ? -1 : 1;
+        $company->is_member = $is_member;
+        $company->magazine_id = $m_magazine;
         $company->type = 1;
         $company->status = 2;
         $result = $company->save();
@@ -145,7 +159,7 @@ class clientController extends Controller
         }
 
         $result = DB::SELECT("SELECT * FROM group_list_table WHERE contact_id = {$contact_id} AND client_id = {$company_uid} AND group_id = {$group_id}");
-        
+
         if($result != null)
         {
             return array("status" => 404, "description" => "Contact is already in your group");
@@ -238,7 +252,7 @@ class clientController extends Controller
 
         $results = DB::table('client_table')->get(); //Subscriber
         $results == null ? null : $results;
-    
+
         return view('client.index', compact('results'));
     }
 
@@ -247,7 +261,7 @@ class clientController extends Controller
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
-        
+
         $ref = DB::table('client_reference_table')->get();
         $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
         $tax = DB::table('taxes_table')->get();
@@ -346,13 +360,19 @@ class clientController extends Controller
         }
 
         $tax = DB::table('taxes_table')->get();
-        $clients = Client::all();
+        $clients = DB::select("
+          SELECT C.*,
+          CASE WHEN M.magazine_name IS NULL THEN 'ALL' ELSE CONCAT(M.magazine_name, ', ALL') END AS magazine_name
+          FROM client_table AS C
+          LEFT JOIN magazine_table AS M
+          ON C.magazine_id = M.Id"
+        );
         $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
+        $nav_publication = DB::table('magazine_table')->where('status', '=', 2)->orderBy('magazine_name', 'ASC')->get();
 
         $nav_dashboard = "";
         $nav_clients = "active";
         $nav_publisher = "";
-        $nav_publication = "";
         $nav_sales = "";
         $nav_payment = "";
         $nav_reports = "";
@@ -363,17 +383,25 @@ class clientController extends Controller
 
     public function client_update_save(Request $request, $company_uid)
     {
-        Client::where('Id', '=', $company_uid)
-            ->update([
-                'company_name' => $request['c_company_name'],
-                'address' => $request['c_address'],
-                'city' => $request['c_city'],
-                'state' => $request['c_state'],
-                'zip_code' => $request['c_zip_code'],
-                'type' => 1,
-                'is_member' => $request['c_is_member'] == false ? -1 : 1,
-                'status' => 2
-            ]);
+      $is_member = -1;
+      $m_magazine = 0;
+      if($request['c_is_member']) {
+        $is_member = 1;
+        $m_magazine = (int)$request['c_member_to'];
+      }
+
+      Client::where('Id', '=', $company_uid)
+          ->update([
+              'company_name' => $request['c_company_name'],
+              'address' => $request['c_address'],
+              'city' => $request['c_city'],
+              'state' => $request['c_state'],
+              'zip_code' => $request['c_zip_code'],
+              'type' => 1,
+              'is_member' => $is_member,
+              'magazine_id' => $m_magazine,
+              'status' => 2
+          ]);
 
 
         //COMMENT FOR NOW 07-19-2017 10:48PM - MJT
@@ -405,6 +433,34 @@ class clientController extends Controller
 //        }
 
         return redirect('client/update/' . $company_uid)->with('success', 'Successfully Updated.');
+    }
+
+    public function client_duplicate($company_uid)
+    {
+      if(!AssemblyClass::check_cookies()) {
+          return redirect("/logout_process");
+      }
+
+      $tax = DB::table('taxes_table')->get();
+      $clients = DB::select("
+        SELECT C.*,
+        CASE WHEN M.magazine_name IS NULL THEN 'ALL' ELSE CONCAT(M.magazine_name, ', ALL') END AS magazine_name
+        FROM client_table AS C
+        LEFT JOIN magazine_table AS M
+        ON C.magazine_id = M.Id"
+      );
+      $company = DB::table('client_table')->where('Id', '=', $company_uid)->get();
+      $nav_publication = DB::table('magazine_table')->where('status', '=', 2)->orderBy('magazine_name', 'ASC')->get();
+
+      $nav_dashboard = "";
+      $nav_clients = "active";
+      $nav_publisher = "";
+      $nav_sales = "";
+      $nav_payment = "";
+      $nav_reports = "";
+      $nav_users = "";
+
+      return view('client.client_duplicate', compact('clients', 'company', 'tax','nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication','nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
     public function contact_update($contact_uid)

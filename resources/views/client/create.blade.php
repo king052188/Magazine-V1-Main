@@ -83,11 +83,20 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="checkbox checkbox-primary">
-                                        <input id="checkbox2" class="styled" type="checkbox" name="c_is_member" checked>
-                                        <label for="checkbox2">
+                                        <input id="c_is_member" class="styled" type="checkbox" name="c_is_member">
+                                        <label for="c_is_member">
                                             Member?
                                         </label>
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Member to</label>
+                                    <select class="form-control" name = "c_member_to" id = "c_member_to" disabled="disabled">
+                                        <option value = "0" selected>ALL</option>
+                                        @for($o = 0; $o < COUNT($nav_publication); $o++)
+                                            <option value = "{{ $nav_publication[$o]->Id }}">{{ $nav_publication[$o]->magazine_name }}</option>
+                                        @endfor
+                                    </select>
                                 </div>
                                 <div class="form-group" >
                                     <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
@@ -114,6 +123,7 @@
                                         <th style = "text-align: center;">City</th>
                                         <th style = "text-align: center;">State</th>
                                         <th style = "width:50px; text-align: center;">Member</th>
+                                        <th style = "width:50px; text-align: center;">Magazine</th>
                                         <th style="width:25px;">&nbsp;</th>
                                         <th style="width:25px;">&nbsp;</th>
                                     </tr>
@@ -132,6 +142,7 @@
                                                     <i class="fa fa-close text-red"></i>
                                                 @endif
                                             </td>
+                                            <td style="padding-top: 15px;">{{ $clients[$i]->magazine_name }}</td>
                                             <td><a href = "{{ URL('/client/update/' . $clients[$i]->Id) }}" class="btn btn-primary btn-sm"><i class="fa fa-edit" title = "Edit Company"></i>&nbsp;&nbsp;Edit</a></td>
                                             <td><a href = "{{ URL('/client/view_contacts/' . $clients[$i]->Id) }}" class="btn btn-info btn-sm" title="View Contacts"><i class="fa fa-eye"></i>&nbsp;&nbsp;View Contacts</a></td>
                                         </tr>
@@ -157,8 +168,17 @@
                 return false;
             });
 
-            $("#c_state").change(function(){
+            $( "#c_is_member" ).change(function() {
+              var $input = $( this );
+              if($input.prop( "checked" )) {
+                $("#c_member_to").removeAttr("disabled");
+              }
+              else {
+                $("#c_member_to").attr("disabled", "disabled");
+              }
+            }).change();
 
+            $("#c_state").change(function(){
                 if($(this).val() == 1)
                 {
                     $("#specify_province_code_area").show();

@@ -27,7 +27,7 @@
     </div>
 
     <div class="wrapper wrapper-content animated fadeInRight"> {{-- wrapper start --}}
-        <form role="form" action="{{ url('/client/update/save') .'/'. $company[0]->Id }}" method="post">{{-- form start --}}
+        <form role="form" action="{{ url('/client/save_company') }}" method="post">{{-- form start --}}
             <div class="row">{{-- row start --}}
                 @if(Session::has('success'))
                     <div class="alert alert-success alert-dismissable">
@@ -102,8 +102,7 @@
                                     </div>
                                     <div class="form-group" >
                                         <input type="hidden" name="_token" id="csrf-token" value="{{ Session::token() }}" />
-                                        <a href="/client/duplicate/{{ $company[0]->Id }}" class="btn btn-warning pull-left" >Duplicate</a>
-                                        <button id="btnUpdate" class="btn btn-primary pull-right" type="submit">Update</button>
+                                        <button id="btnDuplicate" class="btn btn-primary pull-right" type="submit">Duplicate</button>
                                     </div>
                                 </div>
                             </div>
