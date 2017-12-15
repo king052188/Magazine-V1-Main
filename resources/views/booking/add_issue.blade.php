@@ -142,9 +142,9 @@
                     <div class="col-lg-8" id = "once_approved_bb">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
-                                <h5>Company: <b>{{ $is_member[0]->company_name }}</b> |
-                                <h5>Type: <b>{{  $is_member[0]->is_member == 1 ? "MEMBER" : "NON" }}</b> |
-                                <h5>Product: <b>{{ $mag_name[0]->magazine_name }} </b></h5>
+                                <h5>Company: <b style="color: #bd154d;">{{ $is_member[0]->company_name }}</b> |
+                                <h5>Type: <b style="color: #bd154d;">{{  $is_member[0]->is_member == 1 ? "MEMBER - " . $is_member[0]->magazine_name : "NON" }}</b> |
+                                <h5>Product: <b style="color: #bd154d;">{{ $mag_name[0]->magazine_name }} </b></h5>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
                                         <i class="fa fa-chevron-up"></i>

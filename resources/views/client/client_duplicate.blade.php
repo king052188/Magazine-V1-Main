@@ -87,7 +87,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label>Member to</label>
+                                        <label>Apply Member Discount to</label>
                                         <select class="form-control" name = "c_member_to" id = "c_member_to" {{ $company[0]->is_member == 1 ? "" : "disabled='disabled'" }}>
                                             <option value = "0" selected>ALL</option>
                                             @for($o = 0; $o < COUNT($nav_publication); $o++)

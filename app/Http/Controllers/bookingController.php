@@ -33,54 +33,54 @@ class bookingController extends Controller
         }
 
         $booking = DB::SELECT("
-            SELECT 
+            SELECT
 
                 booked.Id,
-                
+
                 booked.client_id,
-                
+
                 booked.agency_id,
-                
+
                 mag.Id as pub_uid,
-                
+
                 (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
-                
+
                 booked.trans_num,
-                
+
                 (null) AS invoice_num,
-                
+
                 ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
-                
+
                 ( SELECT magazine_country FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_country,
-                
+
                 ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = booked.sales_rep_code ) AS sales_rep_name,
-                
+
                 ( SELECT company_name FROM client_table WHERE Id = booked.client_id AND status = 2 AND type != 2 ) AS client_name,
-                
+
                 ( SELECT COUNT(*) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
-                
+
                 ( SELECT CASE WHEN SUM(line_item_qty) > 0 THEN SUM(line_item_qty) ELSE 0 END AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS qty,
-                
+
                 ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
-                
+
                 ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num  AND type = 1 AND status = 2 ) AS new_amount,
-                
+
                 booked.status,
-                
+
                 booked.created_at
-                    
+
             FROM booking_sales_table AS booked
-            
+
             INNER JOIN magazine_transaction_table AS trans
-            
+
             ON booked.Id = trans.transaction_id
-            
+
             INNER JOIN magazine_table as mag
 
             ON mag.Id = trans.magazine_id
-            
+
             $filter_sales_rep
-            
+
             ");
 
         $publication = DB::table('magazine_table')->where('status', '=', 2)->where('magazine_type', '=', 1)->orderBy('magazine_name', 'ASC')->get();
@@ -123,7 +123,7 @@ class bookingController extends Controller
     }
 
     public function api_get_booking_digital_list($publication, $client){
-        
+
         if($publication != 0){
             $pub = " AND trans.magazine_id = {$publication}";
         }else{
@@ -139,48 +139,48 @@ class bookingController extends Controller
         $filter_process = $pub . $cli;
 
         $get = DB::SELECT("
-                SELECT 
+                SELECT
 
                     booked.Id,
-                    
+
                     ( SELECT Id FROM magazine_transaction_table WHERE transaction_id = booked.Id ) AS mag_trans_id,
-                
+
                     booked.client_id,
-                
+
                     booked.agency_id,
-                
+
                     mag.Id as pub_uid,
-                
+
                     (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
-                
+
                     booked.trans_num,
-                
+
                     (null) AS invoice_num,
-                
+
                     ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
-                
+
                     ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = booked.sales_rep_code ) AS sales_rep_name,
-                
+
                     ( SELECT company_name FROM client_table WHERE Id = booked.client_id AND status = 2 AND type != 2 ) AS client_name,
-                
+
                     ( SELECT COUNT(*) AS lineItems FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
-                
+
                     ( SELECT SUM(amount) AS lineItems FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
-                
+
                     booked.status,
-                
+
                     booked.created_at
-                    
+
                 FROM booking_sales_table AS booked
-                
+
                 INNER JOIN magazine_transaction_table AS trans
-                
+
                 ON booked.Id = trans.transaction_id
-                
+
                 INNER JOIN magazine_table as mag
-                
+
                 ON mag.Id = trans.magazine_id
-                
+
                 WHERE mag.magazine_type = 2 {$filter_process}
         ");
 
@@ -247,54 +247,54 @@ class bookingController extends Controller
         $filter_process = "WHERE mag.magazine_type = 1 AND " . $filter_publication_tran . ' AND ' . $filter_sales_rep_tran . ' AND ' . $filter_client_tran . ' AND ' . $filter_status_tran;
 
         $booking = DB::SELECT("
-            SELECT 
+            SELECT
 
                 booked.Id,
-                
+
                 booked.client_id,
-                
+
                 mag.Id as pub_uid,
-                
+
                 (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
-                
+
                 booked.trans_num,
-                
+
                 booked.agency_id,
-                
+
                 (null) AS invoice_num,
-                
+
                 ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
-                
+
                 ( SELECT magazine_country FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_country,
-                
+
                 ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = booked.sales_rep_code ) AS sales_rep_name,
-                
+
                 ( SELECT company_name FROM client_table WHERE Id = booked.client_id AND status = 2 AND type != 2 ) AS client_name,
-                
+
                 ( SELECT COUNT(*) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
-                
+
                 ( SELECT CASE WHEN SUM(line_item_qty) > 0 THEN SUM(line_item_qty) ELSE 0 END AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS qty,
-                
+
                 ( SELECT SUM(amount) AS lineItems FROM magazine_issue_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
-                
+
                 ( SELECT (amount - (amount * (discount_percent / 100))) new_amount FROM discount_transaction_table WHERE trans_id = booked.trans_num AND type = 1 AND status = 2 ) AS new_amount,
-                
+
                 booked.status,
-                
+
                 booked.created_at
-                    
+
             FROM booking_sales_table AS booked
-            
+
             INNER JOIN magazine_transaction_table AS trans
-            
+
             ON booked.Id = trans.transaction_id
-            
+
             INNER JOIN magazine_table as mag
 
             ON mag.Id = trans.magazine_id
 
             {$filter_process}
-            
+
             ");
 
         $publication = DB::table('magazine_table')->where('status', '=', 2)->where('magazine_type', '=', 1)->get();
@@ -338,16 +338,18 @@ class bookingController extends Controller
 
         $n_booking = \App\Http\Controllers\VMKhelper::get_new_contract();
 
-        $clients = DB::SELECT("
-                    SELECT *
-                    FROM client_table
-                    WHERE status = 2 AND type != 2 ORDER BY company_name ASC
-    	 ");
+        $clients = DB::select("
+          SELECT C.*,
+          CASE WHEN M.magazine_name IS NULL THEN 'ALL' ELSE CONCAT(M.magazine_name, ', ALL') END AS magazine_name
+          FROM client_table AS C
+          LEFT JOIN magazine_table AS M
+          ON C.magazine_id = M.Id"
+        );
 
         $subscriber = DB::SELECT("
-                    SELECT 
+                    SELECT
                         master.company_name, master.type, master.status, child.*, child.Id as child_uid
-                    FROM 
+                    FROM
                         client_table AS master
                     INNER JOIN
                         client_contacts_table AS child
@@ -358,9 +360,9 @@ class bookingController extends Controller
         ");
 
         $agency = DB::SELECT("
-                    SELECT 
+                    SELECT
                         master.company_name, master.type, master.status, child.*, child.Id as child_uid
-                    FROM 
+                    FROM
                         client_table AS master
                     INNER JOIN
                         client_contacts_table AS child
@@ -378,7 +380,7 @@ class bookingController extends Controller
         $nav_payment = "";
         $nav_reports = "";
         $nav_users = "";
-        
+
         return view('booking.add_booking', compact('n_booking','subscriber','agency', 'clients', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'))->with('success', 'Booking details successful added!');
     }
 
@@ -397,9 +399,9 @@ class bookingController extends Controller
     	 ");
 
         $subscriber = DB::SELECT("
-                    SELECT 
+                    SELECT
                         master.company_name, master.type, master.status, child.*, child.Id as child_uid
-                    FROM 
+                    FROM
                         client_table AS master
                     INNER JOIN
                         client_contacts_table AS child
@@ -410,9 +412,9 @@ class bookingController extends Controller
         ");
 
         $agency = DB::SELECT("
-                    SELECT 
+                    SELECT
                         master.company_name, master.type, master.status, child.*, child.Id as child_uid
-                    FROM 
+                    FROM
                         client_table AS master
                     INNER JOIN
                         client_contacts_table AS child
@@ -446,23 +448,23 @@ class bookingController extends Controller
             $g_category = $groups[$i]->category_id;
             $sqlQuery = "
                 SELECT
-        
+
                     trans.Id,
-                    
+
                     trans.group_id AS Group_Id,
-        
+
                     (SELECT category_id FROM group_table WHERE Id = trans.group_id) AS Group_Type,
-        
+
                     (SELECT group_name FROM group_table WHERE Id = trans.group_id) AS Group_Name,
-                    
+
                     (SELECT company_name FROM client_table WHERE Id = trans.client_id) AS Company_Name,
-        
+
                     (SELECT CONCAT(first_name,' ', last_name) AS fullname FROM client_contacts_table WHERE Id = trans.contact_id) AS Contact_Name,
-        
+
                     trans.role_id AS Role_Id
-        
+
                 FROM group_list_table AS trans
-        
+
                 WHERE client_id = {$c_uid} AND status = 2 AND trans.group_id = {$g_uid};
             ";
             $data = DB::SELECT("$sqlQuery");
@@ -557,18 +559,18 @@ class bookingController extends Controller
 //            $g_uid = $groups[$i]->Id;
 //
 //            $group_list = DB::SELECT("
-//                SELECT 
-//    
+//                SELECT
+//
 //                g_list.*,
-//                
+//
 //                (SELECT group_name FROM group_table WHERE Id = g_list.group_id) AS Group_Name,
-//                
+//
 //                (SELECT company_name FROM client_table WHERE Id = g_list.client_id) AS Company_Name,
-//                        
+//
 //                (SELECT CONCAT(first_name,' ', last_name) AS fullname FROM client_contacts_table WHERE Id = g_list.contact_id) AS Contact_Name
-//                
+//
 //                FROM db_magazine_v1.group_list_table AS g_list
-//                
+//
 //                WHERE group_id = {$g_uid}
 //            ");
 //
@@ -601,7 +603,7 @@ class bookingController extends Controller
                     WHERE xx.client_uid = {$client} AND xx.category_id = {$category}");
 
         $contact = DB::SELECT("
-                SELECT 
+                SELECT
                 aa.Id as group_id, aa.group_name, bb.contact_id, bb.role_id, cc.Id as contact_uid, concat_ws('',first_name, ' ', last_name) as name
                 FROM group_table as aa
                 INNER JOIN group_list_table as bb ON bb.group_id = aa.Id
@@ -624,7 +626,7 @@ class bookingController extends Controller
     public function get_bill_to_using_group_to($group_uid)
     {
         $bill_contact = DB::SELECT("
-                        SELECT 
+                        SELECT
                         aa.group_id, bb.Id as contact_uid, concat_ws('',bb.first_name, ' ', bb.last_name) as name
                         FROM group_list_table as aa
                         INNER JOIN client_contacts_table as bb ON bb.Id = aa.contact_id
@@ -830,7 +832,7 @@ class bookingController extends Controller
         if(!AssemblyClass::check_cookies()) {
             return redirect("/logout_process");
         }
-        
+
 //        $ad_c = DB::table('price_criteria_table')->where('status','=',2)->get();
         $ad_p = DB::table('price_package_table')->where('status','=',2)->get();
 
@@ -847,7 +849,16 @@ class bookingController extends Controller
                 GROUP BY c_uid, b.name ASC
         ");
 
-        $is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
+        // $is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
+
+        $is_member = DB::select("
+          SELECT C.*,
+          CASE WHEN M.magazine_name IS NULL THEN 'ALL' ELSE CONCAT(M.magazine_name, ', ALL') END AS magazine_name
+          FROM client_table AS C
+          LEFT JOIN magazine_table AS M
+          ON C.magazine_id = M.Id
+          WHERE C.Id = {$client_id};"
+        );
 
         $nav_dashboard = "";
         $nav_clients = "";
@@ -857,7 +868,7 @@ class bookingController extends Controller
         $nav_payment = "";
         $nav_reports = "";
         $nav_users = "";
-        
+
         return view('booking.add_issue', compact('mag_trans_uid', 'mag_name', 'ad_c', 'ad_p', 'client_id','transaction_uid','booking_trans_num', 'is_member', 'nav_dashboard','nav_clients', 'nav_publisher', 'nav_publication', 'nav_sales','nav_payment','nav_reports','nav_users'));
     }
 
@@ -871,7 +882,7 @@ class bookingController extends Controller
 
         $transaction_uid = DB::table('magazine_transaction_table')->where('Id','=',$mag_trans_uid)->get();
 
-        
+
         $ad_c = null;
 
         $is_member = null;
@@ -952,7 +963,7 @@ class bookingController extends Controller
         }
 
 //        $get = DB::SELECT("
-//                    SELECT 
+//                    SELECT
 //                    aa.*, aa.Id as d_uid,
 //                    (SELECT magazine_name FROM magazine_table WHERE Id = aa.magazine_id) as mag_name,
 //                    (SELECT ad_type FROM magzine_digital_price_table WHERE Id = aa.position_id) as ad_type,
@@ -964,53 +975,53 @@ class bookingController extends Controller
 //                      INNER JOIN booking_sales_table as bb ON bb.Id = cc.transaction_id
 //                      WHERE cc.Id = aa.magazine_trans_id
 //                    ) as trans_num
-//                    FROM magazine_digital_transaction_table as aa 
+//                    FROM magazine_digital_transaction_table as aa
 //                    WHERE aa.magazine_trans_id = {$mag_id} AND client_id = {$client_id}
 //        ");
-        
+
         $get = DB::SELECT("
-                    SELECT 
+                    SELECT
 
                             booked.Id,
-                            
+
                             ( SELECT Id FROM magazine_transaction_table WHERE transaction_id = booked.Id ) AS mag_trans_id,
-                        
+
                             booked.client_id,
-                        
+
                             booked.agency_id,
-                        
+
                             mag.Id as pub_uid,
-                        
+
                             (SELECT is_member FROM client_table WHERE Id = booked.client_id) AS is_member,
-                        
+
                             booked.trans_num,
-                        
+
                             (null) AS invoice_num,
-                        
+
                             ( SELECT magazine_name FROM magazine_table WHERE Id = trans.magazine_id ) AS mag_name,
-                        
+
                             ( SELECT CONCAT(first_name, ' ', last_name) FROM user_account WHERE Id = booked.sales_rep_code ) AS sales_rep_name,
-                        
+
                             ( SELECT company_name FROM client_table WHERE Id = booked.client_id AND status = 2 AND type != 2 ) AS client_name,
-                        
+
                             ( SELECT COUNT(*) AS lineItems FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id ) AS line_item,
-                        
+
                             ( SELECT SUM(amount) AS lineItems FROM magazine_digital_transaction_table WHERE magazine_trans_id = trans.Id ) AS amount,
-                        
+
                             booked.status,
-                        
+
                             booked.created_at
-                            
+
                         FROM booking_sales_table AS booked
-                        
+
                         INNER JOIN magazine_transaction_table AS trans
-                        
+
                         ON booked.Id = trans.transaction_id
-                        
+
                         INNER JOIN magazine_table as mag
-                        
+
                         ON mag.Id = trans.magazine_id
-                        
+
                         WHERE mag.magazine_type = 2 WHERE aa.magazine_trans_id = {$mag_id} AND client_id = {$client_id}
         ");
 
@@ -1426,7 +1437,7 @@ class bookingController extends Controller
             "status" => 500
         ];
     }
-    
+
     public function delete_issue($tran_issue_uid, $mag_trans_uid, $client_id)
     {
         MagIssueTransaction::where('id', $tran_issue_uid)->delete();
@@ -1584,13 +1595,13 @@ class bookingController extends Controller
     {
 //        $result = DB::table('discount_transaction_table')->where('trans_id','=',$booking_trans_num)->get();
         $result = DB::select("
-            SELECT *, 
+            SELECT *,
                 (
-                    SELECT CONCAT(first_name, ' ', last_name) 
-                    FROM user_account 
+                    SELECT CONCAT(first_name, ' ', last_name)
+                    FROM user_account
                     WHERE Id = sales_rep_id
                 ) AS sales_rep_name
-            FROM discount_transaction_table 
+            FROM discount_transaction_table
             WHERE trans_id = '{$booking_trans_num}' AND type = 1
         ");
 
