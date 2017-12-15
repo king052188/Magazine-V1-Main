@@ -64,7 +64,13 @@
                             <select class="form-control chosen-select" style = "background-color: #FFFFFF !important;" name = "client_id" id = "clientIdField" >
                                 <option value="0">Select</option>
                                 @for($i = 0; $i < COUNT($clients); $i++)
-                                    <option value = "{{ $clients[$i]->Id }}">{{ $clients[$i]->company_name }}</option>
+                                    <option value = "{{ $clients[$i]->Id }}">
+                                      @if($clients[$i]->is_member > 0)
+                                        {{ $clients[$i]->company_name . " - (" . $clients[$i]->magazine_name . ")" }}
+                                      @else
+                                        {{ $clients[$i]->company_name }}
+                                      @endif
+                                    </option>
                                 @endfor
                             </select>
                         </div>
@@ -125,7 +131,7 @@
                       <tbody id="searchResultClient">
                       </tbody>
                     </table>
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
