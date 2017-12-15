@@ -118,7 +118,7 @@
                 <h4 class="modal-title" id="myModalLabel">Settings</h4>
             </div>
             <div class="modal-body">
-              <h3 id="gaol_sales_name" style="margin: 0 0 30px 0;"></h3>
+                <h3 id="gaol_sales_name" style="margin: 0 0 30px 0;"></h3>
 
                 <div class="col-lg-12">
                   <div class="tabbable-panel">
@@ -223,6 +223,7 @@
                   </div>
                 </div>
                 <div style = "clear: both;"></div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" style = "margin-right: 5px;"><i class="fa fa-ban" aria-hidden="true"></i> Close</button>
