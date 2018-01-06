@@ -73,8 +73,21 @@
                                     <div class="col-sm-12">
                                         <form method="post" action = "{{ url('/booking/save_issue') . '/' . $mag_trans_uid . '/' . $client_id}}">
                                             <section class="panel">
-                                                <div class="row">
-                                                    <div class="col-xs-12">
+
+                                              <div class="row">
+                                                  <div class="col-xs-12">
+                                                      <label id = "quarter_issues_label">Issue</label>
+                                                      <select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>
+                                                        <option value = '' disabled selected>select</option>
+                                                        @for($i = 1; $i <= 12; $i++)
+                                                        <option value = "{{ $i }}">{{ $i }}</option>
+                                                        @endfor
+                                                      </select>
+                                                  </div>
+                                              </div>
+
+                                               <div class="row">
+                                                    <div class="col-xs-12"  style="margin: 20px 0 0 0;">
                                                         <label for="ex2">Ad Color</label>
                                                         <select class="form-control" name = "ad_criteria_id" id = "ad_criteria_id">
                                                             <option value = "" disabled selected>select</option>
@@ -86,25 +99,23 @@
                                                 </div>
 
                                                 <div class="row">
-                                                    <div class="col-xs-12">
+                                                    <div class="col-xs-12"  style="margin: 20px 0 0 0;">
                                                         <label id = "package_label"></label>
                                                         <div id = "ad_package_id"></div>
                                                     </div>
                                                 </div>
+
+
+
                                                 <div class="row">
-                                                    <div class="col-xs-12">
-                                                        <label id = "quarter_issues_label"></label>
-                                                        <div id = "quarter_issued_box"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-xs-12">
+                                                    <div class="col-xs-12" style="margin: 20px 0 0 0;">
                                                         <label id = "amount_label"></label>
                                                         <div id = "amount_box"></div>
                                                     </div>
                                                 </div>
+
                                                 <div class="row">
-                                                    <div class="col-xs-12">
+                                                    <div class="col-xs-12"  style="margin: 20px 0 0 0;">
                                                         <label id = "line_item_qty_label"></label>
                                                         <div id = "line_item_qty"></div>
                                                     </div>
@@ -671,33 +682,18 @@ $(document).ready(function(){
                     $('#amount_label').empty().append("Amount");
                     $('#amount_box').empty().append('<input type="hidden" value = "'+ ad_sizes[2] +'" name = "price_uid"><input type="hidden" value = "'+ ad_sizes[0] +'" name = "ad_p_split"><input type="text" value = "'+ ad_sizes[1] +'" name = "ad_amount" class="form-control" readonly>');
 
-                    $('#quarter_issues_label').empty().append("Issue");
-                    $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
-                    $('#quarter_issued_select').append("<option value = '' disabled selected>select</option>");
-                    for(i = 1; i <= 12; i++) {
-                        $('#quarter_issued_select').append("<option value = "+ i +"> " + i + "</option>");
-                    }
-                    $('#quarter_issued_box').append('</select>');
+                    // $('#quarter_issues_label').empty().append("Issue");
+                    // $('#quarter_issued_box').empty().append("<select class='form-control' name = 'quarter_issue' id = 'quarter_issued_select'>");
+                    // $('#quarter_issued_select').append("<option value = '' disabled selected>select</option>");
+                    // for(i = 1; i <= 12; i++) {
+                    //     $('#quarter_issued_select').append("<option value = "+ i +"> " + i + "</option>");
+                    // }
+                    // $('#quarter_issued_box').append('</select>');
 
                     //select quarter
-                    $('#quarter_issued_select').on('change',function()
-                    {
-                        $('#line_item_qty_label').empty().append("Line Item QTY");
-                        $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
-
-                        //$("#artwork_label").empty().append("Artwork");
-                        //$('#artwork').empty().append("<select class='form-control' name = 'artwork_select' id = 'artwork_select'>");
-                        //$('#artwork_select').append("<option value = '' disabled selected>select</option>");
-                        //$('#artwork_select').append("<option value = '1'>Supplied</option>");
-                        //$('#artwork_select').append("<option value = '2'>Build</option>");
-                        //$('#artwork_select').append("<option value = '3'>Renewal</option>");
-                        //$('#artwork_select').append("<option value = '4'>Renewal with Changes</option>");
-                        //$('#artwork').append('</select>');
-
-                        //$("#directions_label").empty().append("Directions");
-                        //$("#directions").empty().append("<textarea class='form-control' rows='5' name = 'comment' id='comment'></textarea>");
-                        $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary pull-right" value = "Save">');
-                    });
+                    $('#line_item_qty_label').empty().append("Line Item QTY");
+                    $('#line_item_qty').empty().append('<input type="number" name = "line_item_qty" class="form-control" value = "1">');
+                    $('#btn_save_box').empty().append('<input type="submit" class="btn btn-primary pull-right" value = "Save">');
                 });
             }
         });

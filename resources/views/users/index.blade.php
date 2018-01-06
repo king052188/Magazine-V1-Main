@@ -118,111 +118,111 @@
                 <h4 class="modal-title" id="myModalLabel">Settings</h4>
             </div>
             <div class="modal-body">
-                <h3 id="gaol_sales_name" style="margin: 0 0 30px 0;"></h3>
+              <h3 id="gaol_sales_name" style="margin: 0 0 30px 0;"></h3>
 
-                <div class="col-lg-12">
-                  <div class="tabbable-panel">
-                    <div class="tabbable-line">
-                      <ul class="nav nav-tabs ">
-                        <li >
-                          <a href="#tab_default_1" data-toggle="tab">Edit Profile</a>
-                        </li>
-                        <li class="active">
-                          <a href="#tab_default_2" data-toggle="tab">Set Goal</a>
-                        </li>
-                        <li >
-                          <a href="#tab_default_3" data-toggle="tab">Goal Lists</a>
-                        </li>
-                      </ul>
+              <div class="col-lg-12">
+                <div class="tabbable-panel">
+                  <div class="tabbable-line">
+                    <ul class="nav nav-tabs ">
+                      <li >
+                        <a href="#tab_default_1" data-toggle="tab">Edit Profile</a>
+                      </li>
+                      <li class="active">
+                        <a href="#tab_default_2" data-toggle="tab">Set Goal</a>
+                      </li>
+                      <li >
+                        <a href="#tab_default_3" data-toggle="tab">Goal Lists</a>
+                      </li>
+                    </ul>
 
-                      <div class="tab-content">
+                    <div class="tab-content">
 
-                        <div class="tab-pane" id="tab_default_1">
-                          <div class="tab_container">
-                              <h3>It's being updated... </h3>
-                          </div>
+                      <div class="tab-pane" id="tab_default_1">
+                        <div class="tab_container">
+                            <h3>It's being updated... </h3>
                         </div>
+                      </div>
 
-                        <div class="tab-pane active" id="tab_default_2">
-                          <div class="tab_container">
+                      <div class="tab-pane active" id="tab_default_2">
+                        <div class="tab_container">
 
-                            <h3>GOAL SETTINGS</h3>
-                            <table style="width: 100%;" cellspacing="0" cellpadding="0">
-                              <tr>
-                                <td> Magazine: </td>
-                                <td>
-                                  <select class="form-control" id = "ddlPublication" style = "margin-top: -7px;">
-                                      <option value = "0">-- All --</option>
-                                      @for($o = 0; $o < COUNT($publication); $o++)
-                                          <option value = "{{ $publication[$o]->Id }}">{{ $publication[$o]->magazine_name }}</option>
-                                      @endfor
-                                  </select>
-                                </td>
-                              </tr>
+                          <h3>GOAL SETTINGS</h3>
+                          <table style="width: 100%;" cellspacing="0" cellpadding="0">
+                            <tr>
+                              <td> Magazine: </td>
+                              <td>
+                                <select class="form-control" id = "ddlPublication" style = "margin-top: -7px;">
+                                    <option value = "0">-- All --</option>
+                                    @for($o = 0; $o < COUNT($publication); $o++)
+                                        <option value = "{{ $publication[$o]->Id }}">{{ $publication[$o]->magazine_name }}</option>
+                                    @endfor
+                                </select>
+                              </td>
+                            </tr>
 
-                              <tr>
-                                <td> Issue: </td>
-                                <td>
-                                  <select class="form-control" id = "ddlIssue" style = "margin-top: -7px;">
-                                      <option value = "0">-- All --</option>
-                                      @for($o = 1; $o <= 12; $o++)
-                                          <option value = "{{ $o }}">{{ $o }}</option>
-                                      @endfor
-                                  </select>
-                                </td>
-                              </tr>
+                            <tr>
+                              <td> Issue: </td>
+                              <td>
+                                <select class="form-control" id = "ddlIssue" style = "margin-top: -7px;">
+                                    <option value = "0">-- All --</option>
+                                    @for($o = 1; $o <= 12; $o++)
+                                        <option value = "{{ $o }}">{{ $o }}</option>
+                                    @endfor
+                                </select>
+                              </td>
+                            </tr>
 
-                              <tr>
-                                <td> Year: </td>
-                                <td>
-                                  <select class="form-control" id = "ddlYear" style = "margin-top: -7px;">
-                                      <option value = "0">-- All --</option>
-                                      @for($o = 2014; $o <= date("Y"); $o++)
-                                          <option value = "{{ $o }}">{{ $o }}</option>
-                                      @endfor
-                                  </select>
-                                </td>
-                              </tr>
+                            <tr>
+                              <td> Year: </td>
+                              <td>
+                                <select class="form-control" id = "ddlYear" style = "margin-top: -7px;">
+                                    <option value = "0">-- All --</option>
+                                    @for($o = 2014; $o <= date("Y"); $o++)
+                                        <option value = "{{ $o }}">{{ $o }}</option>
+                                    @endfor
+                                </select>
+                              </td>
+                            </tr>
 
-                              <tr>
-                                <td> Amount: </td>
-                                <td><input type="text" class="form-control input-sm" id="txtAmount" placeholder="Amount here..."></td>
-                              </tr>
+                            <tr>
+                              <td> Amount: </td>
+                              <td><input type="text" class="form-control input-sm" id="txtAmount" placeholder="Amount here..."></td>
+                            </tr>
 
-                            </table>
-                            <button id="btnAdGoalSettings" class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
+                          </table>
+                          <button id="btnAdGoalSettings" class="btn btn-primary pull-right" style="margin-right: 8px;"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
 
-                          </div>
                         </div>
+                      </div>
 
-                        <div class="tab-pane" id="tab_default_3">
-                          <div class="tab_container">
+                      <div class="tab-pane" id="tab_default_3">
+                        <div class="tab_container">
 
-                            <h3>GOAL LISTS</h3>
-                            <table id="tblGoalSettingsList" style="width: 100%; border:" cellspacing="0" cellpadding="0">
-                              <thead>
-                                <tr>
-                                  <th>Magazine</th>
-                                  <th style="width: 180px;">Date Set</th>
-                                  <th style="width: 100px;">Issue</th>
-                                  <th style="width: 100px;">Year</th>
-                                  <th style="width: 100px;">Goal Amount</th>
-                                  <th style="width: 100px;">Sale</th>
-                                  <th style="width: 100px;">Achievement</th>
-                                </th>
-                              </thead>
-                              <tbody></tbody>
-                            </table>
+                          <h3>GOAL LISTS</h3>
+                          <table id="tblGoalSettingsList" style="width: 100%; border:" cellspacing="0" cellpadding="0">
+                            <thead>
+                              <tr>
+                                <th>Magazine</th>
+                                <th style="width: 180px;">Date Set</th>
+                                <th style="width: 100px;">Issue</th>
+                                <th style="width: 100px;">Year</th>
+                                <th style="width: 100px;">Goal Amount</th>
+                                <th style="width: 100px;">Sale</th>
+                                <th style="width: 100px;">Achievement</th>
+                              </th>
+                            </thead>
+                            <tbody></tbody>
+                          </table>
 
-                          </div>
                         </div>
-
                       </div>
 
                     </div>
+
                   </div>
                 </div>
-                <div style = "clear: both;"></div>
+              </div>
+              <div style = "clear: both;"></div>
 
             </div>
             <div class="modal-footer">
