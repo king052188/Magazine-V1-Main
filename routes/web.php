@@ -158,7 +158,7 @@ Route::get('/api/api_get_digital_transaction/{mag_id}/{client_id}', 'bookingCont
 Route::get('/api/api_delete_digital_transaction/{d_uid}', 'bookingController@api_delete_digital_transaction');
 
 Route::post('/booking/save_issue/{mag_trans_uid}/{client_id}', 'bookingController@save_issue');
-Route::get('/booking/getPackageName/{criteria_id}/{mag_uid}', 'bookingController@getPackageName');
+Route::get('/booking/getPackageName/{criteria_id}/{mag_uid}/{issue?}', 'bookingController@getPackageName');
 Route::get('/booking/delete_issue/{tran_issue_uid}/{mag_trans_uid}/{client_id}', 'bookingController@delete_issue');
 Route::post('/booking/save/discount/{booking_trans_num}/{mag_trans_uid}/{client_id}/{digital?}', 'bookingController@save_discount');
 Route::get('/cancel_discretionary_discount/{trans_num}/{salesperson_uid}/{mag_trans_uid}/{client_id}', 'bookingController@cancel_discretionary_discount');

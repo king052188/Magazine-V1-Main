@@ -799,10 +799,23 @@ class bookingController extends Controller
         /* END = Additional 11-20-2016 8:54PM | MJT */
     }
 
-    public function getPackageName($criteria_id, $mag_uid)
+    public function check_packages($issue_id, $package_id) {
+      $get_strans = DB::select("
+       SELECT ad_package_id
+       FROM magazine_issue_transaction_table
+       WHERE quarter_issued = {$issue_id}
+       AND ad_package_id = {$package_id}
+       AND DATE_FORMAT(created_at, '%Y-%m-%d') = DATE_FORMAT('2017-08-29 06:45:47', '%Y-%m-%d');
+      ");
+
+      return COUNT($get_strans) > 0 ? true : false;
+    }
+    public function getPackageName($criteria_id, $mag_uid, $issue = 0)
     {
+        $issued = (int)$issue;
+
         $ad_p = DB::SELECT("
-                SELECT b.package_name, a.*
+                SELECT b.package_name, b.status AS package_status, a.*
                 FROM magzine_price_table AS a
                 INNER JOIN price_package_table AS b
                 ON a.ad_size = b.Id
@@ -813,15 +826,21 @@ class bookingController extends Controller
         {
             for($i = 0; $i < COUNT($ad_p); $i++)
             {
-                $result[] = array(
-                    "price_uid" => $ad_p[$i]->Id,
-                    "ad_size" => $ad_p[$i]->ad_size,
-                    "package_name" => $ad_p[$i]->package_name,
-                    "ad_amount" => $ad_p[$i]->ad_amount
-                );
+                if($ad_p[$i]->package_status == 3) {
+
+                }
+                else {
+                  $result[] = array(
+                      "price_uid" => $ad_p[$i]->Id,
+                      "ad_size" => $ad_p[$i]->ad_size,
+                      "package_name" => $ad_p[$i]->package_name,
+                      "ad_amount" => $ad_p[$i]->ad_amount
+                  );
+                }
             }
         }
         return array(
+            "count" => COUNT($result),
             "list" => $result
         );
     }
@@ -840,13 +859,22 @@ class bookingController extends Controller
         $booking_trans_num = DB::table('booking_sales_table')->where('Id','=',$transaction_uid[0]->transaction_id)->get();
         $mag_name = DB::table('magazine_table')->where('Id','=',$transaction_uid[0]->magazine_id)->get();
 
+        // $check_trans = DB::select("
+        //   SELECT DISTINCT ad_package_id
+        //   FROM magazine_issue_transaction_table
+        //   WHERE quarter_issued = 1
+        //   AND DATE_FORMAT(created_at, '%Y-%m-%d') = DATE_FORMAT('2017-12-02 06:44:45', '%Y-%m-%d');
+        // ");
+
+        // dd($check_trans);
+
         $ad_c = DB::SELECT("
-                SELECT b.Id as c_uid, b.name
-                FROM magzine_price_table AS a
-                INNER JOIN price_criteria_table AS b
-                ON a.ad_color = b.Id
-                WHERE a.mag_id = {$transaction_uid[0]->magazine_id}
-                GROUP BY c_uid, b.name ASC
+          SELECT b.Id as c_uid, b.name
+          FROM magzine_price_table AS a
+          INNER JOIN price_criteria_table AS b
+          ON a.ad_color = b.Id
+          WHERE a.mag_id = {$transaction_uid[0]->magazine_id}
+          GROUP BY c_uid, b.name ASC
         ");
 
         // $is_member = DB::table('client_table')->where('Id','=',$client_id)->get();
