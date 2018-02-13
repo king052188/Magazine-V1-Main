@@ -48,7 +48,7 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => 'home.kpa.ph', //client.lesterdigital.com
+            'host' => 'localhost', //client.lesterdigital.com
             'port' => '5001',
         ],
 
