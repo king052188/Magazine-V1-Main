@@ -48,8 +48,8 @@ return [
 
         'kpa' => [
             'driver' => 'api',
-            'host' => 'ckt.kpa.ph', //client.lesterdigital.com
-            'port' => '5001',
+            'host' => '0feba89a.ngrok.io', //client.lesterdigital.com
+            'port' => '80',
         ],
 
         'sqlite' => [

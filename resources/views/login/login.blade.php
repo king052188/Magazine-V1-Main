@@ -35,13 +35,13 @@
       <!-- START Login Background Pic Wrapper-->
       <div class="bg-pic">
         <!-- START Background Pic-->
-        <img src="{{ asset('img/bg.png') }}" data-src="{{ asset('img/bg.png') }}" data-src-retina="{{ asset('img/bg.png') }}" alt="" class="lazy">
+        <img src="{{ asset('img/latentbg.jpg') }}" data-src="{{ asset('img/latentbg.jpg') }}" data-src-retina="{{ asset('img/latentbg.jpg') }}" alt="" class="lazy">
         <!-- END Background Pic-->
         <!-- START Background Caption-->
         <div class="bg-caption pull-bottom sm-pull-bottom text-white p-l-20 m-b-20">
           <h2 class="semi-bold text-white"></h2>
-          <p class="small" style="color: #1a1a1a;">
-            &copy {{ date("Y") }} | <a href="/ph/developers">Developers</a>
+          <p class="small" style="color: #fff;">
+            {{ date("Y") }} &copy LatentSoftware
           </p>
         </div>
         <!-- END Background Caption-->
@@ -50,7 +50,7 @@
       <!-- START Login Right Container-->
       <div class="login-container bg-white">
         <div class="p-l-50 m-l-20 p-r-50 m-r-20 p-t-50 m-t-30 sm-p-l-15 sm-p-r-15 sm-p-t-40">
-          <img src="{{ asset('img/lester_logo.png') }}" alt="logo" data-src="{{ asset('img/lester_logo.png') }}" data-src-retina="{{ asset('img/lester_logo.png') }}">
+          <img src="{{ asset('img/latentlogo.png') }}" alt="logo" data-src="{{ asset('img/latentlogo.png') }}" data-src-retina="{{ asset('img/latentlogo.png') }}">
           <p class="p-t-35">Sign into your account</p>
           <!-- START Login Form -->
           <form id="form-login" class="p-t-15" role="form" action="index.html">
@@ -81,12 +81,12 @@
               <div class="col-md-6 text-right">
                 <input type="submit" class="btn btn-primary btn-cons m-t-10" name="login" value="Login" id="login_button" tabindex="3" >
               </div>
-            </div> 
+            </div>
             <!-- END Form Control-->
 
           </form>
           <!--END Login Form-->
-          
+
         </div>
       </div>
       <!-- END Login Right Container-->
@@ -153,8 +153,8 @@
 
 
                 <a href="#"><small>Forgot password?</small></a>
- 
-            <p class="m-t"> <small>VMK Developers &copy; 2016</small> </p>
+
+            <p class="m-t"> <small>{{ date('Y') }}  &copy; LatentSoftware</small> </p>
         </div>
     </div>
 

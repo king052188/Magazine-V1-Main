@@ -161,7 +161,7 @@ h5 {
 }
 .nav-header {
   padding: 33px 25px;
-  background: url("patterns/header-profile.png") no-repeat;
+  background: url("patterns/header-profile-skin-2.png") no-repeat;
 }
 .pace-done .nav-header {
   transition: all 0.4s;
@@ -3302,7 +3302,7 @@ body.tour-open .animated {
 }
 body {
   font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  background-color: #2f4050;
+  background-color: #1d3654;
   font-size: 13px;
   color: #676a6c;
   overflow-x: hidden;
@@ -8278,7 +8278,7 @@ body.md-skin {
     border-color: #33b791;
 }
 .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a {
-    color: #fff;   
+    color: #fff;
 }
 .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:hover,
 .with-nav-tabs.panel-primary .nav-tabs > li.dropdown .dropdown-menu > li > a:focus {
